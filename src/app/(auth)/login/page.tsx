@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { ArrowLeft, Lock, AlertCircle } from 'lucide-react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { loginAction } from '@/app/(auth)/actions';
 
 function SubmitButton() {
@@ -15,7 +16,7 @@ function SubmitButton() {
 }
 
 export default function Login() {
-  const [state, formAction] = useFormState(loginAction, null);
+  const [state, formAction] = useActionState(loginAction, null);
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-6">
