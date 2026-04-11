@@ -1,0 +1,55 @@
+﻿node.exe : ΓÜá Warning: Next.js inferred your 
+workspace root, but it may not be correct.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (ΓÜá Warni 
+   ng: Ne...not be correct.:String) [], RemoteExcepti  
+  on
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ We detected multiple lockfiles and selected the 
+directory of C:\Users\Iris\package-lock.json as the 
+root directory.
+ To silence this warning, set `turbopack.root` in your 
+Next.js config, or consider removing one of the 
+lockfiles if it's not needed.
+   See https://nextjs.org/docs/app/api-reference/config
+/next-config-js/turbopack#root-directory for more 
+information.
+ Detected additional lockfiles: 
+   * C:\Users\Iris\.gemini\antigravity\scratch\PlayIQ\p
+ackage-lock.json
+
+Γû▓ Next.js 16.2.3 (Turbopack)
+
+ΓÜá The "middleware" file convention is deprecated. 
+Please use "proxy" instead. Learn more: 
+https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 2.5s
+  Running TypeScript ...
+  Finished TypeScript in 2.6s ...
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/17) ...
+  Generating static pages using 11 workers (4/17) 
+  Generating static pages using 11 workers (8/17) 
+Error occurred prerendering page "/beta". Read more: 
+https://nextjs.org/docs/messages/prerender-error
+Error: Invalid input: not a Zod schema
+    at <unknown> (C:\Users\Iris\.gemini\antigravity\scr
+atch\PlayIQ\.next\server\chunks\ssr\_gemini_antigravity
+_scratch_PlayIQ_src_components_forms_BetaForm_tsx_0ktwl
+sk._.js:1:39667)
+    at <unknown> (C:\Users\Iris\.gemini\antigravity\scr
+atch\PlayIQ\.next\server\chunks\ssr\_gemini_antigravity
+_scratch_PlayIQ_src_components_forms_BetaForm_tsx_0ktwl
+sk._.js:1:39708) {
+  digest: '3795896800'
+}
+Export encountered an error on /(public)/beta/page: 
+/beta, exiting the build.
+Γ¿» Next.js build worker exited with code: 1 and 
+signal: null

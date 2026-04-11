@@ -1,0 +1,18 @@
+# Environment Variables Checklist
+
+Required in `.env.local`:
+
+```env
+# URL Configuration
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# Supabase Auth & Database
+NEXT_PUBLIC_SUPABASE_URL=YOUR_SUPABASE_PROJ_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY=YOUR_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY=YOUR_SUPABASE_SERVICE_KEY
+
+# Stripe Support (Pending Phase)
+STRIPE_PUBLIC_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+```

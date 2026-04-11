@@ -1,0 +1,12 @@
+import { z } from 'zod';
+
+export const BetaApplicationSchema = z.object({
+  parentFullName: z.string().min(2, "Parent name is required"),
+  emailAddress: z.string().email("Please provide a valid email address"),
+  childAge: z.enum(["under_13", "13_14", "15_17", "over_17"], {
+    error: "Please select the target teen's age"
+  }),
+  shippingZipCode: z.string().min(5, "Zip code is required for logistics allocation"),
+});
+
+export type BetaApplicationData = z.infer<typeof BetaApplicationSchema>;
