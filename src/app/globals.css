@@ -1,26 +1,393 @@
 @import "tailwindcss";
 
+/* ── PlayIQ Neon Cyberpunk Design System ────────────────────── */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Core palette */
+  --neon-cyan: #00f2ff;
+  --neon-magenta: #ff00ff;
+  --neon-green: #39ff14;
+  --space-deep: #020617;
+  --space-mid: #0b1120;
+  --space-card: rgba(15, 23, 42, 0.65);
+  --space-card-border: rgba(0, 242, 255, 0.18);
+
+  /* Text */
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+
+  /* Glassmorphism */
+  --glass-bg: rgba(15, 23, 42, 0.55);
+  --glass-border: rgba(0, 242, 255, 0.15);
+  --glass-blur: 16px;
+
+  /* Override Tailwind defaults */
+  --background: #020617;
+  --foreground: #e2e8f0;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-neon-cyan: #00f2ff;
+  --color-neon-magenta: #ff00ff;
+  --color-neon-green: #39ff14;
+  --color-space-deep: #020617;
+  --color-space-mid: #0b1120;
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-orbitron);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ─────────────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #020617 !important;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #020617 !important;
+  background: #020617 !important;
+  color: #e2e8f0 !important;
+  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* CRT Scanline Overlay */
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.2) 50%,
+    rgba(0, 0, 0, 0.2)
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 242, 255, 0.3);
+  border-radius: 999px;
+}
+
+/* ── Typography ───────────────────────────────────────────── */
+
+.font-display {
+  font-family: var(--font-display, 'Orbitron', sans-serif);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 7px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3);
+}
+
+.text-glow-magenta {
+  text-shadow: 0 0 7px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+}
+
+/* ── Glassmorphism Card ───────────────────────────────────── */
+
+.glass-card {
+  position: relative;
+  background: rgba(10, 15, 25, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 242, 255, 0.4);
+}
+
+.glass-card::before, .glass-card::after {
+  content: "";
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #00f2ff;
+  pointer-events: none;
+}
+
+.glass-card::before {
+  top: -2px; left: -2px;
+  border-right: none; border-bottom: none;
+}
+
+.glass-card::after {
+  bottom: -2px; right: -2px;
+  border-left: none; border-top: none;
+}
+
+.glass-card-hover {
+  transition: all 0.35s ease;
+}
+
+.glass-card-hover:hover {
+  border-color: rgba(0, 242, 255, 0.35);
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.1), 0 0 40px rgba(0, 242, 255, 0.05);
+  transform: translateY(-4px);
+}
+
+/* ── Neon Buttons ─────────────────────────────────────────── */
+
+.btn-neon-cyan {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #00f2ff;
+  background: transparent;
+  border: 2px solid #00f2ff;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-neon-cyan:hover {
+  background: rgba(0, 242, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.35), 0 0 30px rgba(0, 242, 255, 0.15), inset 0 0 15px rgba(0, 242, 255, 0.08);
+}
+
+.btn-neon-filled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #020617;
+  background: #00f2ff;
+  border: 2px solid #00f2ff;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-neon-filled:hover {
+  background: #33f5ff;
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.5), 0 0 40px rgba(0, 242, 255, 0.2);
+}
+
+.btn-neon-magenta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 2rem;
+  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ff00ff;
+  background: transparent;
+  border: 2px solid #ff00ff;
+  border-radius: 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.btn-neon-magenta:hover {
+  background: rgba(255, 0, 255, 0.1);
+  box-shadow: 0 0 15px rgba(255, 0, 255, 0.35), 0 0 30px rgba(255, 0, 255, 0.15);
+}
+
+/* ── Glow Effects ─────────────────────────────────────────── */
+
+.glow-border-cyan {
+  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2), 0 0 30px rgba(0, 242, 255, 0.05), inset 0 0 15px rgba(0, 242, 255, 0.02);
+}
+
+.neon-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+  opacity: 0.4;
+}
+
+/* ── Animations ───────────────────────────────────────────── */
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3), 0 0 20px rgba(0, 242, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.5), 0 0 40px rgba(0, 242, 255, 0.2), 0 0 60px rgba(0, 242, 255, 0.1);
+  }
+}
+
+@keyframes subtle-drift {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(5px, -5px); }
+  50% { transform: translate(-3px, 8px); }
+  75% { transform: translate(7px, 3px); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animate-drift {
+  animation: subtle-drift 15s ease-in-out infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out both;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+/* ── Space Background Utilities ───────────────────────────── */
+
+.bg-space-gradient {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 242, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(255, 0, 255, 0.06) 0%, transparent 60%),
+    #020617 !important;
+}
+
+.bg-space-hero {
+  background:
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(0, 242, 255, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 85% 70%, rgba(255, 0, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 15% 80%, rgba(0, 242, 255, 0.06) 0%, transparent 50%),
+    #020617 !important;
+}
+
+/* ── Circular Image Frame (like the reference site) ──────── */
+
+.circle-frame {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid rgba(0, 242, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), 0 0 40px rgba(0, 242, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.circle-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ── Utility ──────────────────────────────────────────────── */
+
+.gradient-text-cyan {
+  background: linear-gradient(135deg, #00f2ff, #38bdf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-magenta {
+  background: linear-gradient(135deg, #ff00ff, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Star particles */
+.star-field {
+  position: relative;
+}
+
+.star-field::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 30% 60%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 15% 75%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 45% 35%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 65% 55%, rgba(255,255,255,0.2) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 85% 15%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 25% 90%, rgba(255,255,255,0.2) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Input styling for forms */
+.neon-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(0, 242, 255, 0.2);
+  border-radius: 0.5rem;
+  color: #e2e8f0;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.neon-input:focus {
+  border-color: #00f2ff;
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.2), 0 0 20px rgba(0, 242, 255, 0.05);
+}
+
+.neon-input::placeholder {
+  color: #64748b;
+}
+
+/* Section backgrounds - forced dark */
+.section-space-mid {
+  background-color: #0b1120 !important;
 }

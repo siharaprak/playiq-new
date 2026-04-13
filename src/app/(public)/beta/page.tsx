@@ -3,59 +3,62 @@ import { BetaForm } from '@/components/forms/BetaForm';
 
 export default function Beta() {
   return (
-    <main className="w-full">
-      <section className="px-6 py-20 bg-slate-900 text-center border-b border-slate-800">
-        <div className="mx-auto max-w-3xl">
-          <span className="text-indigo-400 font-semibold tracking-wide uppercase text-sm">Founding Cohort</span>
-          <h1 className="mt-4 text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
-            Apply for Pilot Access
-          </h1>
-          <p className="text-xl text-slate-300">
-            We are opening exactly <strong>25 spots</strong> for the inaugural launch of Course 1. 
-            Because we rely heavily on direct feedback to improve the curriculum, we are keeping this first wave small and intimate.
-          </p>
-        </div>
-      </section>
+    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+      <div className="absolute top-[30%] right-[15%] w-[600px] h-[600px] bg-[rgba(255,0,255,0.03)] rounded-full blur-[140px] pointer-events-none" />
 
-      <section className="px-6 py-20 bg-white">
-        <div className="mx-auto max-w-5xl grid md:grid-cols-2 gap-16">
+      <div className="max-w-6xl mx-auto px-6 py-28 relative z-10 space-y-16">
+        <section className="text-center">
+          <p className="font-display uppercase tracking-[0.4em] text-[0.65rem] text-[#00f2ff] opacity-80 mb-4">&gt; FOUNDING COHORT</p>
+          <h1 className="font-display font-black text-4xl md:text-6xl uppercase tracking-widest text-[#ff00ff] drop-shadow-[0_0_15px_rgba(255,0,255,0.4)] mb-8">
+            APPLY FOR PILOT
+          </h1>
+          <p className="font-mono text-sm max-w-2xl mx-auto text-slate-400 capitalize bg-black/40 p-4 border border-[rgba(0,242,255,0.2)]">
+            <span className="text-white font-bold">WARNING: SPOT LIMIT REACHED SOON.</span> We are opening exactly <strong>25 spots</strong> for the inaugural launch of Course 1 to calibrate system endpoints.
+          </p>
+        </section>
+
+        <section className="grid md:grid-cols-2 gap-16">
           
-          <div>
-             <h2 className="text-3xl font-bold text-gray-900 mb-6">What Families Receive</h2>
-             <ul className="space-y-4 mb-8">
-               <li className="flex items-center text-lg text-gray-600">
-                 <span className="text-indigo-600 mr-3">✓</span> Full physical hardware kit shipped immediately.
+          <div className="glass-card p-8 !rounded-none border-t-4 border-t-[#00f2ff]">
+             <h2 className="font-display text-2xl font-bold text-white mb-6 uppercase tracking-[0.2em]">&gt; WHAT YOU GET</h2>
+             <ul className="space-y-6 mb-8 font-mono text-xs text-slate-300 uppercase tracking-widest">
+               <li className="flex items-start">
+                 <span className="text-[#00f2ff] text-lg mr-3 shadow-[0_0_5px_#00f2ff] leading-none">[+]</span> 
+                 <p className="opacity-80 mt-1">Full physical hardware kit shipped immediately.</p>
                </li>
-               <li className="flex items-center text-lg text-gray-600">
-                 <span className="text-indigo-600 mr-3">✓</span> 12 weeks of access to the guided app.
+               <li className="flex items-start">
+                 <span className="text-[#00f2ff] text-lg mr-3 shadow-[0_0_5px_#00f2ff] leading-none">[+]</span> 
+                 <p className="opacity-80 mt-1">12 weeks of access to the guided system.</p>
                </li>
-               <li className="flex items-center text-lg text-gray-600">
-                 <span className="text-indigo-600 mr-3">✓</span> Live access to your Parent Proof Packet dashboard.
+               <li className="flex items-start">
+                 <span className="text-[#00f2ff] text-lg mr-3 shadow-[0_0_5px_#00f2ff] leading-none">[+]</span> 
+                 <p className="opacity-80 mt-1">Live access to Parent Proof telemetry.</p>
                </li>
-               <li className="flex items-center text-lg text-gray-600">
-                 <span className="text-indigo-600 mr-3">✓</span> Direct input into the evolution of Course 2.
+               <li className="flex items-start">
+                 <span className="text-[#00f2ff] text-lg mr-3 shadow-[0_0_5px_#00f2ff] leading-none">[+]</span> 
+                 <p className="opacity-80 mt-1">Direct feedback uplink for V2 calibration.</p>
                </li>
              </ul>
              
-             <div className="p-6 bg-indigo-50 border border-indigo-100 rounded-xl">
-               <h3 className="font-bold text-indigo-900 text-lg">Pilot Pricing Structure</h3>
-               <p className="text-indigo-800 mt-2"><strong>[Pricing Placeholder]</strong> includes all hardware and the software license. Hardware arrives in 3-5 business days.</p>
+             <div className="p-6 bg-[rgba(0,242,255,0.05)] border border-[#00f2ff] font-mono text-xs text-white">
+               <h3 className="font-bold text-[#00f2ff] uppercase tracking-widest mb-2">&gt; PRICING</h3>
+               <p className="opacity-80 leading-relaxed uppercase"><strong>[PRICING OVERRIDE]</strong> Includes all hardware and software license. Dropship executes in 3-5 standard cycles.</p>
              </div>
           </div>
 
-          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8 shadow-sm">
-            <h3 className="text-2xl font-bold text-gray-900 mb-6">Application</h3>
+          <div className="glass-card p-8 border border-[rgba(255,0,255,0.3)] !rounded-none">
+            <h3 className="text-[#ff00ff] font-display text-2xl font-bold mb-6 uppercase tracking-[0.2em] drop-shadow-[0_0_5px_#ff00ff]">&gt; SECURE APPLICATION</h3>
             <BetaForm />
           </div>
-        </div>
-      </section>
-      
-      <section className="px-6 py-20 bg-gray-50 border-t border-gray-200 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">Questions before applying?</h2>
-        <Link href="/contact" className="text-indigo-600 font-semibold text-lg hover:underline">
-          View our FAQs and Contact Support
-        </Link>
-      </section>
+        </section>
+        
+        <section className="text-center pt-8 border-t border-slate-800">
+          <p className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-4">QUESTIONS?</p>
+          <Link href="/contact" className="font-display uppercase text-sm tracking-[0.2em] text-[#00f2ff] underline hover:text-[#ff00ff] transition-colors">
+            CONTACT SUPPORT
+          </Link>
+        </section>
+      </div>
     </main>
   );
 }

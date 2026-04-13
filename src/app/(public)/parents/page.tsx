@@ -2,67 +2,72 @@ import Link from 'next/link';
 
 export default function Parents() {
   return (
-    <main className="w-full">
-      {/* Hero */}
-      <section className="px-6 py-20 bg-slate-50 border-b border-gray-200">
-        <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6">
-            Proof, not promises.
+    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+      <div className="absolute top-[25%] right-[10%] w-[500px] h-[500px] bg-[rgba(0,242,255,0.04)] rounded-full blur-[140px] pointer-events-none" />
+
+      <div className="absolute top-[5%] left-[5%] font-display text-[0.6rem] tracking-[0.3em] text-[#ff00ff] opacity-60 uppercase text-left">
+        VIEW_MODE: PARENT<br/>
+        SECURE
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-28 relative z-10 space-y-20">
+        
+        {/* Hero */}
+        <section className="text-center">
+          <h1 className="font-display font-black text-4xl md:text-6xl uppercase tracking-widest text-[#00f2ff] drop-shadow-[0_0_15px_rgba(0,242,255,0.4)] mb-6">
+            PROOF NOT PROMISES
           </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Why hope they are learning when you can see it? PlayIQ shows you real progress through the Parent Proof Packet.
+          <p className="font-mono text-sm uppercase text-slate-400 max-w-2xl mx-auto leading-relaxed tracking-wider border-r-2 border-[#ff00ff] pr-4">
+            Don't just trust that they are learning. 
+            See actual photos of what they build with the Parent Proof Packet.
           </p>
-        </div>
-      </section>
+        </section>
 
-      {/* Difference / Trust factor */}
-      <section className="px-6 py-20 bg-white">
-        <div className="mx-auto max-w-7xl grid md:grid-cols-2 gap-16 items-center">
-           <div className="order-2 md:order-1 bg-gray-100 rounded-2xl h-80 flex items-center justify-center border border-gray-200 overflow-hidden shadow-inner">
-            <img src="/images/tier2-parent-proof-packet.png" alt="Parent Proof Packet Snapshot" className="w-full h-full object-cover bg-gray-50" />
-          </div>
-          <div className="order-1 md:order-2">
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">You deserve to know what they're actually doing.</h2>
-            <p className="text-lg text-gray-600 mb-6">
-              When a teen uses a passive learning app, you usually just see a screen saying "100% complete." You have no idea if they just guessed their way to the end.
-            </p>
-            <p className="text-lg text-gray-600">
-              PlayIQ requires them to physically build the solution and upload a photo. This verified update gets packaged directly into a distinct <strong>Parent Proof Packet</strong> on your dashboard.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* What parents can expect */}
-      <section className="px-6 py-20 bg-indigo-50 border-y border-indigo-100">
-        <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-3xl font-bold text-indigo-900 mb-12">What you'll see on your dashboard</h2>
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white p-6 rounded-xl shadow-sm text-left border border-indigo-100">
-               <h3 className="font-bold text-gray-900 text-lg mb-2">Verified Photos</h3>
-               <p className="text-gray-600 text-sm">See the real engineering structures they built with their own hands, side-by-side with the goal.</p>
+        {/* Difference / Trust factor */}
+        <section className="glass-card p-10 !rounded-none !border-t-0 !border-b-0 border-x-4 border-l-[#00f2ff] border-r-[#ff00ff]">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+             <div className="border border-[rgba(255,0,255,0.3)] bg-black h-80 relative overflow-hidden flex items-center justify-center">
+              <div className="absolute inset-0 bg-[url('/images/tier2-parent-proof-packet.png')] bg-cover bg-center opacity-30 mix-blend-screen"></div>
+              <span className="font-display tracking-[0.4em] text-xs text-[#ff00ff] z-10">[ PHOTO_EVIDENCE ]</span>
             </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm text-left border border-indigo-100">
-               <h3 className="font-bold text-gray-900 text-lg mb-2">Effort Indicators</h3>
-               <p className="text-gray-600 text-sm">Transparent insights showing how hard they tried and how much they persevered before asking for hints.</p>
-            </div>
-            <div className="bg-white p-6 rounded-xl shadow-sm text-left border border-indigo-100">
-               <h3 className="font-bold text-gray-900 text-lg mb-2">Skill Stages</h3>
-               <p className="text-gray-600 text-sm">Clear visual indicators showing that they fully grasped one concept before the app allowed them to proceed.</p>
+            <div className="font-mono text-xs text-slate-300 uppercase tracking-widest leading-[2]">
+              <h2 className="font-display text-xl text-white mb-6 tracking-[0.2em] border-b border-[#00f2ff] pb-4 inline-block">&gt; WHY THIS IS DIFFERENT</h2>
+              <p className="mb-6 opacity-80">
+                Passive learning apps give false progress (e.g. "100% COMPLETE") when kids just click buttons. Guesses look like success.
+              </p>
+              <p className="opacity-80">
+                PlayIQ forces real-world effort. Kids must physically build the solution and snap a photo. We send that photo straight to you.
+              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-24 bg-white text-center">
-         <div className="mx-auto max-w-2xl">
-           <h2 className="text-3xl font-bold text-slate-900 mb-6">Stop guessing. Start verifying.</h2>
-           <p className="text-lg text-slate-600 mb-10">Enroll in Course 1 to get access to the hardware kit and parental proof dashboard.</p>
-           <Link href="/beta" className="rounded-full bg-indigo-600 px-8 py-4 text-base font-bold text-white shadow-sm hover:bg-indigo-500 transition-colors inline-block">
-              Apply for the Pilot
-           </Link>
-         </div>
-      </section>
+        {/* What parents can expect */}
+        <section className="text-center">
+          <h2 className="font-display text-2xl uppercase tracking-[0.3em] text-[#ff00ff] mb-12">&gt; WHAT PARENTS SEE</h2>
+          
+          <div className="grid md:grid-cols-3 gap-6 font-mono text-left">
+            <div className="glass-card p-6 !rounded-none">
+               <h3 className="text-[#00f2ff] text-sm uppercase font-bold mb-3">01. VISUAL PROOF</h3>
+               <p className="text-xs text-slate-400 uppercase leading-relaxed">See photos of the real structures they build offline.</p>
+            </div>
+            <div className="glass-card p-6 !rounded-none">
+               <h3 className="text-[#00f2ff] text-sm uppercase font-bold mb-3">02. EFFORT TRACKING</h3>
+               <p className="text-xs text-slate-400 uppercase leading-relaxed">See how long they spent building vs how often they asked for hints.</p>
+            </div>
+            <div className="glass-card p-6 !rounded-none">
+               <h3 className="text-[#00f2ff] text-sm uppercase font-bold mb-3">03. SKILL_GATES</h3>
+               <p className="text-xs text-slate-400 uppercase leading-relaxed">Visual locks verifying concept mastery before next sequence initiates.</p>
+            </div>
+          </div>
+        </section>
+
+        <section className="text-center pt-8 pb-10">
+           <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="inline-block font-display uppercase font-bold text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff]">
+              BUY ON AMAZON
+           </a>
+        </section>
+      </div>
     </main>
   );
 }

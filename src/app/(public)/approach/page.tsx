@@ -2,62 +2,67 @@ import Link from 'next/link';
 
 export default function Approach() {
   return (
-    <main className="w-full">
-      <section className="px-6 py-20 bg-emerald-900 border-b border-emerald-800 text-center">
-        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-white mb-6">
-          A guide. Never a crutch.
-        </h1>
-        <p className="text-xl text-emerald-100 max-w-3xl mx-auto">
-          We designed our app to teach resilience, not dependency. We demand effort before delivering answers.
-        </p>
-      </section>
+    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+      <div className="absolute top-[10%] left-[30%] w-[500px] h-[500px] bg-[rgba(0,242,255,0.03)] rounded-full blur-[140px] pointer-events-none" />
 
-      <section className="px-6 py-20 bg-white">
-        <div className="mx-auto max-w-5xl">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h2 className="text-3xl font-bold text-gray-900 mb-6">Effort-based learning</h2>
-              <p className="text-lg text-gray-600 mb-4">
-                Most educational software lets a teenager click a button and instantly receive the answer. That is outsourcing cognition. It creates weaker thinkers.
+      <div className="max-w-6xl mx-auto px-6 py-28 relative z-10 space-y-20">
+        <section className="text-center">
+          <p className="font-display uppercase tracking-[0.4em] text-[0.65rem] text-[#ff00ff] opacity-80 mb-4">&gt; PLAYIQ APPROACH</p>
+          <h1 className="font-display font-black text-4xl md:text-5xl uppercase tracking-widest text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.4)] mb-6">
+            A GUIDE <br/> <span className="text-[#00f2ff]"> NEVER A CRUTCH</span>
+          </h1>
+          <p className="font-mono text-sm max-w-3xl mx-auto text-slate-400 capitalize bg-[rgba(0,242,255,0.05)] p-4 border border-[rgba(0,242,255,0.2)]">
+            We designed our logic engine to teach resilience, not dependency. Effort is mandatory before answers are decrypted.
+          </p>
+        </section>
+
+        {/* The Why */}
+        <section className="glass-card p-10 !rounded-none !border-l-0 !border-r-0 border-y-4 border-t-[#00f2ff] border-b-[#ff00ff]">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="font-mono text-xs text-slate-300 uppercase tracking-widest leading-[2]">
+              <h2 className="font-display text-2xl text-white mb-6 tracking-[0.2em]">&gt; EFFORT REWARDED</h2>
+              <p className="mb-6 opacity-80">
+                Passive education protocols (one-click answers) outsource cognition. Result: Compromised neural resilience.
               </p>
-              <p className="text-lg text-gray-600">
-                PlayIQ’s app is purposefully gated by effort.
+              <p className="opacity-80">
+                PlayIQ’s logic engine is purposefully gated by effort limits. Force a solution? Denied. Users must demonstrate attempts.
               </p>
             </div>
-            <div className="bg-gray-100 rounded-xl h-64 flex items-center justify-center border border-gray-200 overflow-hidden shadow-inner">
-              <img src="/images/tier2-effort-gating-app.png" alt="Effort Gated App Interaction" className="w-full h-full object-cover bg-gray-50" />
+            <div className="border border-[rgba(0,242,255,0.3)] bg-black h-80 relative overflow-hidden flex items-center justify-center">
+              <div className="absolute inset-0 bg-[url('/images/tier2-effort-gating-app.png')] bg-cover bg-center opacity-30 mix-blend-screen"></div>
+              <span className="font-display tracking-[0.4em] text-xs text-[#00f2ff] z-10">[ APP PREVIEW ]</span>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section className="px-6 py-20 bg-gray-50 border-t border-gray-200">
-         <div className="mx-auto max-w-7xl">
-           <div className="grid md:grid-cols-3 gap-8">
-             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center font-bold text-xl mb-4">1</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Effort Required Before Answers</h3>
-                <p className="text-gray-600">When they ask for help, the app responds: <em>"Show me what you've tried."</em> They must engage their own reasoning before receiving assistance.</p>
+        <section className="text-center font-mono">
+           <h2 className="font-display text-2xl uppercase tracking-[0.3em] text-white mb-12">&gt; HOW IT WORKS</h2>
+           
+           <div className="grid md:grid-cols-3 gap-8 text-left">
+             <div className="glass-card p-8 border border-[rgba(0,242,255,0.2)] !rounded-none">
+                <div className="text-[#00f2ff] font-display text-3xl font-bold mb-4 drop-shadow-[0_0_5px_#00f2ff]">[01]</div>
+                <h3 className="text-white uppercase font-bold tracking-widest mb-3">EFFORT BEFORE ANSWERS</h3>
+                <p className="text-xs text-slate-400 leading-relaxed uppercase opacity-80">Requesting help is not enough. You must show us what you tried first. Thinking is required.</p>
              </div>
-             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center font-bold text-xl mb-4">2</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Guiding Questions</h3>
-                <p className="text-gray-600">The guide limits itself to asking questions or delivering small hints. The final breakthrough must always be earned by the teen.</p>
+             <div className="glass-card p-8 border border-[rgba(255,0,255,0.2)] !rounded-none">
+                <div className="text-[#ff00ff] font-display text-3xl font-bold mb-4 drop-shadow-[0_0_5px_#ff00ff]">[02]</div>
+                <h3 className="text-white uppercase font-bold tracking-widest mb-3">ASK THE GUIDE</h3>
+                <p className="text-xs text-slate-400 leading-relaxed uppercase opacity-80">The app gives hints, not solutions. You still have to figure out the final piece of the puzzle yourself.</p>
              </div>
-             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-                <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center font-bold text-xl mb-4">3</div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">Teach-Back Verification</h3>
-                <p className="text-gray-600">After solving a tough challenge, the guide sometimes asks them to explain how they solved it to prove they actually retained the logic.</p>
+             <div className="glass-card p-8 border border-[rgba(0,242,255,0.2)] !rounded-none">
+                <div className="text-[#00f2ff] font-display text-3xl font-bold mb-4 drop-shadow-[0_0_5px_#00f2ff]">[03]</div>
+                <h3 className="text-white uppercase font-bold tracking-widest mb-3">TEACH IT BACK</h3>
+                <p className="text-xs text-slate-400 leading-relaxed uppercase opacity-80">Sometimes the app will ask you to explain how you solved a tough problem to prove you really learned it.</p>
              </div>
            </div>
-         </div>
-      </section>
+        </section>
 
-       <section className="px-6 py-20 bg-white text-center">
-         <Link href="/beta" className="text-indigo-600 font-bold hover:text-indigo-500 text-lg">
-            See the guide in action in our early access Pilot &rarr;
-         </Link>
-      </section>
+        <section className="text-center pt-8 border-t border-slate-800">
+           <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="font-display uppercase font-bold text-sm tracking-[0.2em] text-[#ff00ff] underline hover:text-white transition-colors">
+              BUY ON AMAZON &gt;
+           </a>
+        </section>
+      </div>
     </main>
   );
 }

@@ -2,111 +2,102 @@ import Link from 'next/link';
 
 export default function Apprentice() {
   return (
-    <main className="w-full">
-      {/* Hero / Offer Summary */}
-      <section className="px-6 py-24 bg-slate-900 border-b border-slate-800">
-        <div className="mx-auto max-w-5xl text-center">
-          <span className="text-indigo-400 font-semibold tracking-wide uppercase text-sm">Course 1</span>
-          <h1 className="mt-4 text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-6">
-            The Apprentice
-          </h1>
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-10">
-            An engaging foundational journey blending physical structural hardware with adaptive, screen-free logic puzzles.
-          </p>
-          <Link href="/beta" className="rounded-full bg-indigo-500 px-8 py-4 text-base font-semibold text-white shadow-sm hover:bg-indigo-400 transition-colors inline-block">
-            Apply for Beta Access
-          </Link>
-        </div>
-      </section>
+    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,242,255,0.04)] rounded-full blur-[140px] animate-drift pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[rgba(255,0,255,0.04)] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
 
-      {/* Who it is for & What is included */}
-      <section className="px-6 py-24 bg-white">
-        <div className="mx-auto max-w-7xl grid md:grid-cols-2 gap-16">
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">Who is this for?</h2>
-            <p className="text-lg text-gray-600 mb-4">
-              Designed for ages 13–17 who need a challenge that bridges the gap between passive apps and real-world engineering. 
-              Perfect for hands-on teens and logical thinkers seeking engaging, tactile problem solving.
+      {/* Screen Tracker */}
+      <div className="absolute top-[10%] right-[5%] font-display text-[0.6rem] tracking-[0.3em] text-[#ff00ff] opacity-60 uppercase text-right">
+        COURSE: APPRENTICE<br/>
+        READY
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 py-24 relative z-10 space-y-16">
+        
+        {/* Header HUD */}
+        <section className="text-center pt-10">
+          <p className="font-display uppercase tracking-[0.4em] text-[0.65rem] text-[#00f2ff] opacity-80 mb-4">&gt; COURSE 1</p>
+          <h1 className="font-display font-black text-5xl md:text-7xl uppercase tracking-widest text-transparent bg-clip-text bg-gradient-to-b from-white to-slate-500 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] mb-8">
+            THE APPRENTICE
+          </h1>
+          <p className="font-mono text-sm md:text-lg text-slate-400 max-w-2xl mx-auto border-l-2 border-[#00f2ff] pl-4 text-left">
+            HARDWARE INCLUDED. A SCREEN-FREE ENGINEERING CHALLENGE FOR TEENS.
+          </p>
+        </section>
+
+        {/* Data Grid */}
+        <section className="grid md:grid-cols-2 gap-8">
+          <div className="glass-card p-8 border-l-[3px] border-l-[#ff00ff] !rounded-none">
+            <h2 className="font-display text-xl uppercase tracking-[0.2em] text-[#ff00ff] mb-6">&gt; WHO IS THIS FOR?</h2>
+            <p className="text-sm font-mono text-slate-300 leading-relaxed uppercase mb-6 opacity-80">
+              BUILT FOR AGES 13-17. BRIDGING THE GAP BETWEEN SCROLLING ON A SCREEN AND ACTUAL TACTILE ENGINEERING.
             </p>
-            <div className="bg-gray-100 rounded-xl h-64 flex items-center justify-center border border-gray-200 mt-8 overflow-hidden shadow-inner">
-               <img src="/images/tier3-apprentice-teen.png" alt="Teen engaging with Course 1 hardware build" className="w-full h-full object-cover bg-gray-50" />
+            <div className="w-full h-48 border border-[rgba(255,0,255,0.3)] bg-[rgba(0,0,0,0.5)] relative overflow-hidden flex items-center justify-center">
+              <div className="absolute inset-0 bg-[url('/images/tier3-apprentice-teen.png')] bg-cover bg-center opacity-40 mix-blend-luminosity"></div>
+              <span className="font-display text-xs tracking-widest text-[#ff00ff]">[ IMAGE_DATA_MISSING ]</span>
             </div>
           </div>
-          <div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6">What's Included</h2>
-            <ul className="space-y-6">
-              <li className="flex items-start">
-                 <div className="bg-indigo-100 p-2 rounded-lg mr-4 mt-1">
-                   <svg className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-                 </div>
-                 <div>
-                   <h3 className="font-bold text-gray-900 text-lg">Premium Hardware Kit</h3>
-                   <p className="text-gray-600 mt-1">Hardware sets designed for structural engineering, shipped directly to your door.</p>
-                 </div>
+
+          <div className="glass-card p-8 border-r-[3px] border-r-[#00f2ff] !rounded-none">
+            <h2 className="font-display text-xl uppercase tracking-[0.2em] text-[#00f2ff] mb-6">&gt; WHAT YOU GET</h2>
+            <ul className="space-y-6 font-mono text-xs text-slate-300 tracking-wider">
+              <li className="flex gap-4">
+                <span className="text-[#00f2ff]">&gt;&gt;</span>
+                <div>
+                  <h3 className="text-[#00f2ff] uppercase font-bold mb-1">MAGNETIC BLOCKS</h3>
+                  <p className="opacity-70">Physical construction nodes shipped straight to your door.</p>
+                </div>
               </li>
-              <li className="flex items-start">
-                 <div className="bg-indigo-100 p-2 rounded-lg mr-4 mt-1">
-                   <svg className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-                 </div>
-                 <div>
-                   <h3 className="font-bold text-gray-900 text-lg">Guided App Access</h3>
-                   <p className="text-gray-600 mt-1">Digital access to the PlayIQ guide tracking their journey through the foundational course missions.</p>
-                 </div>
+              <li className="flex gap-4">
+                <span className="text-[#00f2ff]">&gt;&gt;</span>
+                <div>
+                  <h3 className="text-[#00f2ff] uppercase font-bold mb-1">THE APP GUIDE</h3>
+                  <p className="opacity-70">Digital access to the challenges and validation engine.</p>
+                </div>
               </li>
-              <li className="flex items-start">
-                 <div className="bg-indigo-100 p-2 rounded-lg mr-4 mt-1">
-                   <svg className="w-6 h-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4C15.358 6.136 12.382 5 12 5s-3.358 1.136-5.427 3A14.996 14.996 0 0112 21c4.542-1.748 7.37-4.8 8.423-7.5" /></svg>
-                 </div>
-                 <div>
-                   <h3 className="font-bold text-gray-900 text-lg">Parent Proof Packet</h3>
-                   <p className="text-gray-600 mt-1">Continuous visual reports on your dashboard proving what they successfully engineered.</p>
-                 </div>
+              <li className="flex gap-4">
+                <span className="text-[#00f2ff]">&gt;&gt;</span>
+                <div>
+                  <h3 className="text-[#00f2ff] uppercase font-bold mb-1">PARENT PROOF PACKET</h3>
+                  <p className="opacity-70">Over-the-shoulder transmission of verified structures.</p>
+                </div>
               </li>
             </ul>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* How it works / What parents see / Different */}
-      <section className="px-6 py-24 bg-gray-50 border-t border-gray-200">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-gray-900">Why it's distinctly different.</h2>
-            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">It's not just a box of generic parts. It's an engaging curriculum governed by real-world constraints.</p>
+        {/* System Differentiators */}
+        <section className="glass-card p-10 !border-t-4 !border-t-[#ff00ff] !rounded-none">
+          <div className="mb-12 text-center">
+            <h2 className="font-display text-2xl uppercase tracking-[0.3em] text-white">SYSTEM_DIFFERENTIATORS</h2>
+            <p className="font-mono text-xs mt-4 text-[#ff00ff]">&gt; ANOMALY DETECTED IN STANDARD EDUCATION PROTOCOLS</p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">1. Screen-Free Execution</h3>
-              <p className="text-gray-600">The app provides the blueprint and the goal. The actual failing, trying, and succeeding happens with real parts on the table.</p>
+          <div className="grid md:grid-cols-3 gap-6 font-mono">
+            <div className="border border-[rgba(0,242,255,0.2)] bg-black/40 p-6">
+              <h3 className="text-[#00f2ff] mb-2 uppercase text-sm">01. OFFLINE_EXEC</h3>
+              <p className="text-xs text-slate-400 uppercase leading-relaxed">App provides blueprint. Execution is physical. Screen logic suspended.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">2. Smart Assistance</h3>
-              <p className="text-gray-600">If they ask for the answer, the guide asks them what they tried first. We help them think; we don't spoon-feed solutions.</p>
+            <div className="border border-[rgba(0,242,255,0.2)] bg-black/40 p-6">
+              <h3 className="text-[#00f2ff] mb-2 uppercase text-sm">02. SMART_HINTING</h3>
+              <p className="text-xs text-slate-400 uppercase leading-relaxed">Direct answers = false. Demanding user effort = true.</p>
             </div>
-            <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-xl font-bold text-gray-900 mb-3">3. Visible Progress</h3>
-              <p className="text-gray-600">You log into your dashboard and see actual photos of what they built today, proving they earned their new skills.</p>
+            <div className="border border-[rgba(0,242,255,0.2)] bg-black/40 p-6">
+              <h3 className="text-[#00f2ff] mb-2 uppercase text-sm">03. VISUAL_PROOF</h3>
+              <p className="text-xs text-slate-400 uppercase leading-relaxed">Upload physical structure image array for verification.</p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* CTA & Objection Handling */}
-      <section className="px-6 py-24 bg-white">
-        <div className="mx-auto max-w-4xl">
-          <div className="bg-indigo-600 rounded-3xl p-10 md:p-16 text-center shadow-lg">
-            <h2 className="text-3xl font-bold text-white mb-6">Join the Pilot Experience</h2>
-            <p className="text-indigo-100 text-lg mb-10 max-w-xl mx-auto">
-              We are opening a limited beta for 25 families. Secure early hardware delivery and heavily discounted access to the full course.
-            </p>
-            <Link href="/beta" className="rounded-full bg-white px-8 py-4 text-base font-bold text-indigo-600 shadow-sm hover:bg-gray-50 transition-colors inline-block mb-6">
-              Apply for the Beta
-            </Link>
-            <p className="text-sm text-indigo-200">100% money-back guarantee if they don't stick with it.</p>
-          </div>
-        </div>
-      </section>
+        {/* CTA */}
+        <section className="text-center pt-8 pb-16">
+          <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="inline-block font-display uppercase font-black text-xl tracking-[0.3em] text-[#020617] bg-[#ff00ff] px-10 py-5 hover:bg-[#00f2ff] transition-colors border-2 border-white shadow-[0_0_20px_#ff00ff] hover:shadow-[0_0_30px_#00f2ff]">
+            BUY ON AMAZON
+          </a>
+        </section>
+
+      </div>
     </main>
   );
 }
