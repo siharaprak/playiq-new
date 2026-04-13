@@ -64,7 +64,7 @@ export default function Home() {
           <div className="glass-card glass-card-hover p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8 glow-border-cyan">
             <div className="circle-frame animate-float" style={{ animationDelay: '0.5s' }}>
               <Image
-                src="/images/playiq-branding/CONTENT, BRAND ASSETS & GUIDELINES/REFERENCE - MAGNETIC BLOCK PRODUCT IMAGES/Main Image #2 No Logo.png"
+                src="/images/playiq-amz-product.jpg"
                 alt="181-Piece Magnetic Building Blocks"
                 width={220}
                 height={220}
