@@ -119,7 +119,7 @@ export function BetaForm() {
          <button 
           type="submit" 
           disabled={isSubmitting}
-          className="w-full flex justify-center items-center gap-2 bg-indigo-600 text-white font-bold py-4 rounded-full shadow hover:bg-indigo-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+          className="btn-neon-filled w-full gap-2 !rounded-none disabled:opacity-50 disabled:cursor-not-allowed"
          >
             {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
             {isSubmitting ? "Processing Application..." : "Proceed to Registration"}
