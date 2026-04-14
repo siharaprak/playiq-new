@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { enforceNodeGating } from '@/lib/gating'; from 'next/link';
+import { enforceNodeGating } from '@/lib/gating';
 
 export default async function NodeCompletionPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;

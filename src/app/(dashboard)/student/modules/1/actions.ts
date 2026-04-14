@@ -79,7 +79,7 @@ export async function submitTeachBackMVP(formData: FormData) {
   const content = formData.get('explanation') as string;
   const nodeId = formData.get('nodeId') as string;
 
-  if (!content || !nodeId) return { error: 'Missing required fields' };
+  if (!content || !nodeId) throw new Error('Missing required fields');
 
   const wordCount = content.split(/\s+/).filter((w) => w.length > 0).length;
   const lowercaseContent = content.toLowerCase();
@@ -97,9 +97,9 @@ export async function submitTeachBackMVP(formData: FormData) {
     passStatus = 'pass';
     feedback = 'Great job! You\'ve met the MVP threshold covering the required concepts.';
   } else if (wordCount < 30) {
-    return { error: 'Explanation is too short. MVP threshold is 30 words minimum.', passStatus: 'revise' };
+    throw new Error('Explanation is too short. MVP threshold is 30 words minimum.');
   } else if (!hasConceptCoverage) {
-    return { error: 'Your explanation is missing core concepts. Be sure to mention AI, prompting, or coaching.', passStatus: 'revise' };
+    throw new Error('Your explanation is missing core concepts. Be sure to mention AI, prompting, or coaching.');
   }
 
   await supabase.from('assessment_submissions').insert({
@@ -129,9 +129,9 @@ export async function submitTeachBackMVP(formData: FormData) {
     await mockOtherNodes(user.id);
       
     redirect(`/student/modules/1/nodes/${nodeId}/completion`);
+  } else {
+    redirect(`/student/modules/1/nodes/${nodeId}/teach-back`);
   }
-
-  return { success: true, passStatus, feedback };
 }
 
 // Helper to auto-complete nodes 2,3,4 to test the quiz lock efficiently during verification

@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { enforceModuleGating } from '@/lib/gating'; from 'next/link';
+import { enforceModuleGating } from '@/lib/gating';
 
 export default async function ModuleCompletionPage() {
   await enforceModuleGating('completion');
