@@ -18,11 +18,11 @@ export default function Home() {
         </div>
 
         {/* HUD Overlay Elements */}
-        <div className="absolute top-[20%] left-[5%] font-display tracking-[0.3em] text-[#00f2ff] text-[0.6rem] uppercase opacity-60">
+        <div className="absolute top-[20%] right-[3%] font-display tracking-[0.3em] text-[#00f2ff] text-[0.6rem] uppercase opacity-60 text-right">
           SYS.INIT // v.2.0.4<br/>
           CONNECTING...
         </div>
-        <div className="absolute bottom-[10%] right-[5%] font-display tracking-[0.3em] text-[#ff00ff] text-[0.6rem] uppercase opacity-60 text-right">
+        <div className="absolute bottom-[10%] left-[8%] font-display tracking-[0.3em] text-[#ff00ff] text-[0.6rem] uppercase opacity-60">
           [SYSTEM_READY]<br/>
           STATUS: ONLINE
         </div>
@@ -35,7 +35,7 @@ export default function Home() {
              </h1>
           </div>
 
-          <div className="glass-card !bg-transparent !border-none !backdrop-blur-none text-center max-w-4xl mx-auto flex flex-col items-center gap-6 mt-[-2rem] md:mt-[-4rem]">
+          <div className="glass-card !bg-transparent !border-none !backdrop-blur-none text-center max-w-4xl mx-auto flex flex-col items-center gap-6 mt-[-1rem] md:mt-[-2rem]">
             <p className="animate-fade-in-up font-display font-bold text-xs md:text-sm uppercase tracking-[0.4em] text-[#ff00ff] text-glow-magenta bg-black/50 px-4 py-1 border border-[#ff00ff]"
                style={{ animationDelay: '0.2s' }}>
               IMAGINE &gt; BUILD &gt; CONQUER

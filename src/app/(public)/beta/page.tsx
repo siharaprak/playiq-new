@@ -6,7 +6,7 @@ export default function Beta() {
     <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       <div className="absolute top-[30%] right-[15%] w-[600px] h-[600px] bg-[rgba(255,0,255,0.03)] rounded-full blur-[140px] pointer-events-none" />
 
-      <div className="max-w-6xl mx-auto px-6 py-28 relative z-10 space-y-16">
+      <div className="max-w-6xl mx-auto px-6 pt-28 pb-12 relative z-10 space-y-16">
         <section className="text-center">
           <p className="font-display uppercase tracking-[0.4em] text-[0.65rem] text-[#00f2ff] opacity-80 mb-4">&gt; FOUNDING COHORT</p>
           <h1 className="font-display font-black text-4xl md:text-6xl uppercase tracking-widest text-[#ff00ff] drop-shadow-[0_0_15px_rgba(255,0,255,0.4)] mb-8">
@@ -52,10 +52,16 @@ export default function Beta() {
           </div>
         </section>
         
-        <section className="text-center pt-8 border-t border-slate-800">
-          <p className="font-mono text-xs uppercase tracking-widest text-slate-400 mb-4">QUESTIONS?</p>
-          <Link href="/contact" className="font-display uppercase text-sm tracking-[0.2em] text-[#00f2ff] underline hover:text-[#ff00ff] transition-colors">
-            CONTACT SUPPORT
+        <section className="text-center pt-12 border-t border-[rgba(255,0,255,0.15)] flex flex-col items-center">
+          <p className="font-mono text-sm uppercase tracking-[0.2em] text-[#ff00ff] mb-3 opacity-80">
+            &gt; SECURE_COMMUNICATIONS
+          </p>
+          <p className="font-mono text-sm max-w-md mx-auto text-slate-400 mb-8 leading-relaxed">
+            Have any additional questions? <br/>
+            Contact our team for priority assistance.
+          </p>
+          <Link href="/contact" className="btn-neon-magenta !text-[0.7rem] !py-3 !px-6 bg-[rgba(0,0,0,0.4)]">
+            OPEN SUPPORT CHANNEL
           </Link>
         </section>
       </div>
