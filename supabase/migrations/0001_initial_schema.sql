@@ -17,7 +17,7 @@ CREATE TABLE profiles (
 
 -- PARENT CHILD LINKS (Join Table)
 CREATE TABLE parent_child_links (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   parent_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   student_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ DEFAULT NOW(),
@@ -26,7 +26,7 @@ CREATE TABLE parent_child_links (
 
 -- COURSES
 CREATE TABLE courses (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   title VARCHAR(255) NOT NULL,
   description TEXT,
   is_active BOOLEAN DEFAULT false,
@@ -36,7 +36,7 @@ CREATE TABLE courses (
 
 -- MODULES
 CREATE TABLE modules (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   course_id UUID REFERENCES courses(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
   order_num INTEGER NOT NULL,
@@ -46,7 +46,7 @@ CREATE TABLE modules (
 
 -- SKILL NODES
 CREATE TABLE skill_nodes (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   module_id UUID REFERENCES modules(id) ON DELETE CASCADE,
   title VARCHAR(255) NOT NULL,
   mastery_threshold_placeholder INTEGER,
@@ -55,7 +55,7 @@ CREATE TABLE skill_nodes (
 
 -- ATTEMPTS
 CREATE TABLE attempts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   node_id UUID REFERENCES skill_nodes(id) ON DELETE CASCADE,
   pdi_score_placeholder NUMERIC,
@@ -67,7 +67,7 @@ CREATE TABLE attempts (
 CREATE TYPE checkpoint_status AS ENUM ('locked', 'in_progress', 'mastered');
 
 CREATE TABLE mastery_checkpoints (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   node_id UUID REFERENCES skill_nodes(id) ON DELETE CASCADE,
   status checkpoint_status DEFAULT 'locked',
@@ -80,7 +80,7 @@ CREATE TABLE mastery_checkpoints (
 CREATE TYPE artifact_status AS ENUM ('submitted', 'verified');
 
 CREATE TABLE proof_artifacts (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   node_id UUID REFERENCES skill_nodes(id) ON DELETE CASCADE,
   media_path VARCHAR(500) NOT NULL,
@@ -90,7 +90,7 @@ CREATE TABLE proof_artifacts (
 
 -- REPORTS (Parent Proof Packets)
 CREATE TABLE reports (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   parent_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   generated_summary_placeholder JSONB,
@@ -101,7 +101,7 @@ CREATE TABLE reports (
 CREATE TYPE shipment_status AS ENUM ('preparing', 'shipped', 'delivered', 'activated');
 
 CREATE TABLE shipments (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   student_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   status shipment_status DEFAULT 'preparing',
   tracking_number_placeholder VARCHAR(255),
@@ -113,7 +113,7 @@ CREATE TABLE shipments (
 CREATE TYPE issue_status AS ENUM ('open', 'resolved');
 
 CREATE TABLE support_issues (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   reporter_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
   issue_text TEXT NOT NULL,
   status issue_status DEFAULT 'open',
