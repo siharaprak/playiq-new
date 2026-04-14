@@ -47,14 +47,7 @@ export function Navbar() {
           >
             &gt; LOG IN
           </Link>
-          <a
-            href="https://www.amazon.com/dp/B0F3LV725Z"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-neon-filled !py-[10px] !px-8 !text-[0.75rem] animate-pulse-glow !rounded-none !border-[#ff00ff] !text-[#020617] !bg-[#00f2ff] hover:!bg-[#ff00ff] ml-4"
-          >
-            BUY ON AMAZON
-          </a>
+
           <button
             className="lg:hidden text-[#00f2ff] p-1"
             onClick={() => setMobileOpen(!mobileOpen)}
