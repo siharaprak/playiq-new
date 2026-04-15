@@ -81,9 +81,22 @@ export default async function ParentDashboard() {
                      </div>
                    </div>
                 </div>
-              </div>
-           </div>
-        </div>
+               </div>
+
+            {/* BETA SIMULATOR BUTTON */}
+            <div className="bg-indigo-50 p-6 rounded-2xl border border-indigo-100 shadow-sm mt-6">
+              <h3 className="font-bold text-lg text-indigo-900 mb-2">Beta Testing Controls</h3>
+              <p className="text-sm text-indigo-700 mb-4">
+                Use this testing override to jump directly into the student's guided learning flow and test the AI module gating.
+              </p>
+              <a 
+                href="/student/modules/1/overview"
+                className="block text-center w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition-colors"
+              >
+                Access Module 1 (Student View) &rarr;
+              </a>
+            </div>
+         </div>
       </div>
     </div>
   );
