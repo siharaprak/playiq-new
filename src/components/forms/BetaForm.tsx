@@ -55,76 +55,76 @@ export function BetaForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 form-cyberpunk" noValidate>
       {serverState.type === 'error' && (
-        <div className="p-4 bg-red-50 border border-red-100 rounded-lg flex gap-3 text-red-800 text-sm">
+        <div className="p-4 bg-[rgba(255,0,0,0.1)] border border-red-500/50 rounded-none flex gap-3 text-red-400 font-mono text-sm">
           <AlertCircle className="w-5 h-5 flex-shrink-0" />
           <p>{serverState.message}</p>
         </div>
       )}
 
       <div>
-        <label htmlFor="parentFullName" className="block text-sm font-medium text-gray-700 mb-1">Parent's Full Name</label>
+        <label htmlFor="parentFullName" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Parent's Full Name</label>
         <input 
           id="parentFullName"
           {...register('parentFullName')}
-          className={`w-full rounded-md shadow-sm p-3 border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all ${errors.parentFullName ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'}`}
+          className={`neon-input ${errors.parentFullName ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
           placeholder="Jane Doe" 
           aria-invalid={!!errors.parentFullName}
         />
-        {errors.parentFullName && <p className="mt-1 text-sm text-red-500">{errors.parentFullName.message}</p>}
+        {errors.parentFullName && <p className="mt-1 text-xs font-mono text-red-400">{errors.parentFullName.message}</p>}
       </div>
 
       <div>
-        <label htmlFor="emailAddress" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+        <label htmlFor="emailAddress" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Email Address</label>
         <input 
           id="emailAddress"
           type="email"
           {...register('emailAddress')}
-          className={`w-full rounded-md shadow-sm p-3 border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all ${errors.emailAddress ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'}`}
+          className={`neon-input ${errors.emailAddress ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
           placeholder="jane@example.com" 
           aria-invalid={!!errors.emailAddress}
         />
-        {errors.emailAddress && <p className="mt-1 text-sm text-red-500">{errors.emailAddress.message}</p>}
+        {errors.emailAddress && <p className="mt-1 text-xs font-mono text-red-400">{errors.emailAddress.message}</p>}
       </div>
 
       <div>
-        <label htmlFor="childAge" className="block text-sm font-medium text-gray-700 mb-1">Teen's Target Age Group</label>
+        <label htmlFor="childAge" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Teen's Target Age Group</label>
         <select 
           id="childAge"
           {...register('childAge')}
-          className={`w-full rounded-md shadow-sm p-3 border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all ${errors.childAge ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'}`}
+          className={`neon-input ${errors.childAge ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
         >
-          <option value="">Select an age group</option>
-          <option value="under_13">Under 13</option>
-          <option value="13_14">13 - 14</option>
-          <option value="15_17">15 - 17</option>
-          <option value="over_17">18+</option>
+          <option value="" className="bg-[#020617] text-slate-400">Select an age group</option>
+          <option value="under_13" className="bg-[#020617] text-[#e2e8f0]">Under 13</option>
+          <option value="13_14" className="bg-[#020617] text-[#e2e8f0]">13 - 14</option>
+          <option value="15_17" className="bg-[#020617] text-[#e2e8f0]">15 - 17</option>
+          <option value="over_17" className="bg-[#020617] text-[#e2e8f0]">18+</option>
         </select>
-        {errors.childAge && <p className="mt-1 text-sm text-red-500">{errors.childAge.message}</p>}
+        {errors.childAge && <p className="mt-1 text-xs font-mono text-red-400">{errors.childAge.message}</p>}
       </div>
 
       <div>
-        <label htmlFor="shippingZipCode" className="block text-sm font-medium text-gray-700 mb-1">Shipping Zip Code</label>
+        <label htmlFor="shippingZipCode" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Shipping Zip Code</label>
         <input 
           id="shippingZipCode"
           {...register('shippingZipCode')}
-          className={`w-full rounded-md shadow-sm p-3 border focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all ${errors.shippingZipCode ? 'border-red-500 bg-red-50' : 'border-gray-300 bg-white'}`}
+          className={`neon-input ${errors.shippingZipCode ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
           placeholder="e.g. 90210" 
         />
-        {errors.shippingZipCode && <p className="mt-1 text-sm text-red-500">{errors.shippingZipCode.message}</p>}
+        {errors.shippingZipCode && <p className="mt-1 text-xs font-mono text-red-400">{errors.shippingZipCode.message}</p>}
       </div>
 
-      <div className="pt-4">
+      <div className="pt-6">
          <button 
           type="submit" 
           disabled={isSubmitting}
-          className="w-full flex justify-center items-center gap-2 bg-indigo-600 text-white font-bold py-4 rounded-full shadow hover:bg-indigo-500 transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+          className="btn-neon-filled w-full font-display text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
          >
-            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin" /> : null}
-            {isSubmitting ? "Processing Application..." : "Proceed to Registration"}
+            {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mr-3 inline-block" /> : null}
+            {isSubmitting ? "PROCESSING..." : "PROCEED TO ENTRY"}
          </button>
-         <p className="text-xs text-center text-gray-500 mt-3">By applying, you acknowledge this is an early access pilot program.</p>
+         <p className="font-mono text-[10px] text-center text-slate-500 mt-4 uppercase tracking-[0.2em]">By applying, you acknowledge this is an early access pilot program.</p>
       </div>
     </form>
   );
