@@ -82,7 +82,13 @@ export async function signupAction(prevState: any, formData: FormData) {
     return { error: error?.message || 'Signup failed' };
   }
 
+  // Fetch true role resolution from profiles table (auto-generated via trigger)
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', authData.user.id)
+    .single();
 
-
-  redirect('/parent/home');
+  const role = profile?.role || 'parent';
+  redirect(`/${role}/home`);
 }
