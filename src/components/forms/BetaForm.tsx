@@ -119,12 +119,28 @@ export function BetaForm() {
          <button 
           type="submit" 
           disabled={isSubmitting}
-          className="btn-neon-filled w-full font-display text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-neon-filled w-full font-display text-lg py-4 disabled:opacity-50 disabled:cursor-not-allowed mb-4"
          >
             {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mr-3 inline-block" /> : null}
             {isSubmitting ? "PROCESSING..." : "PROCEED TO ENTRY"}
          </button>
-         <p className="font-mono text-[10px] text-center text-slate-500 mt-4 uppercase tracking-[0.2em]">By applying, you acknowledge this is an early access pilot program.</p>
+         
+         <div className="relative flex items-center py-4">
+           <div className="flex-grow border-t border-[rgba(0,242,255,0.2)]"></div>
+           <span className="flex-shrink-0 mx-4 font-mono text-[10px] text-slate-500 uppercase tracking-[0.2em]">OR SECURE VIA DROPSHIP</span>
+           <div className="flex-grow border-t border-[rgba(0,242,255,0.2)]"></div>
+         </div>
+
+         <a 
+           href="https://www.amazon.com/dp/B0F3LV725Z"
+           target="_blank"
+           rel="noopener noreferrer"
+           className="btn-neon-cyan w-full text-sm py-4 tracking-[0.2em] animate-pulse-glow"
+         >
+           BUY DIRECT ON AMAZON
+         </a>
+
+         <p className="font-mono text-[10px] text-center text-slate-500 mt-6 uppercase tracking-[0.2em]">By applying, you acknowledge this is an early access pilot program.</p>
       </div>
     </form>
   );
