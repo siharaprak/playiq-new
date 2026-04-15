@@ -11,7 +11,7 @@ BEGIN
     new.id, 
     new.email, 
     new.raw_user_meta_data->>'full_name',
-    'parent'
+    COALESCE((new.raw_user_meta_data->>'role')::user_role, 'parent'::user_role)
   );
   RETURN new;
 END;

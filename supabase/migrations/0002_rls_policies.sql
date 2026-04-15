@@ -23,6 +23,10 @@ CREATE POLICY "Users can view own profile"
   ON profiles FOR SELECT 
   USING (auth.uid() = id);
 
+CREATE POLICY "Parents can view their child profiles"
+  ON profiles FOR SELECT
+  USING (EXISTS (SELECT 1 FROM parent_child_links WHERE parent_id = auth.uid() AND student_id = profiles.id));
+
 CREATE POLICY "Users can update own profile" 
   ON profiles FOR UPDATE 
   USING (auth.uid() = id);
