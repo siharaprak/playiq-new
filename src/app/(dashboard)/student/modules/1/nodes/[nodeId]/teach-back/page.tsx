@@ -1,50 +1,56 @@
 import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
-import { submitTeachBackMVP } from '../../../actions';
+import { advanceNodePhase } from '../../../actions';
+import { module1Nodes } from '@/data/module1Content';
 
 export default async function NodeTeachBackPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
   await enforceNodeGating(nodeId, 'teach-back');
 
+  const lessonData = module1Nodes[nodeId];
+
+  if (!lessonData) {
+    return <div className="p-12 text-center text-red-500 font-mono">ERR: NODE_DATA_NOT_FOUND</div>;
+  }
+
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-3xl mx-auto">
-      <div className="mb-4 text-sm text-purple-500 font-semibold uppercase tracking-wider">
-        Node {nodeId} • Mastery Phase
+      <div className="mb-4 text-sm text-[#00f2ff] font-semibold uppercase tracking-wider">
+        Node {nodeId} • Teach-Back Phase
       </div>
       
-      <h1 className="text-4xl font-bold tracking-tight mb-8">Teach-Back</h1>
+      <h1 className="text-4xl font-bold tracking-tight mb-8 text-white uppercase font-display">Knowledge Extraction</h1>
       
-      <form action={submitTeachBackMVP}>
-        <input type="hidden" name="nodeId" value={nodeId} />
-        
-        <div className="bg-card text-card-foreground p-8 rounded-xl border shadow-sm mb-12">
-          <h2 className="text-xl font-semibold mb-4">Explain It Your Way</h2>
-          <p className="mb-6 text-muted-foreground">
-            To prove mastery, write a short explanation of what you just learned. 
-            Use your own words—do not copy the lesson.
-          </p>
-          
-          <textarea 
-            name="explanation"
-            className="w-full min-h-[200px] p-4 bg-background border rounded-lg resize-y focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="Start typing your explanation here..."
-            required
-            minLength={50}
-          />
-          <div className="mt-2 text-sm text-muted-foreground text-right border-t pt-2">
-            MVP threshold: Minimum 30 words required. Must cover 'AI', 'coach', or 'prompt'.
-          </div>
-        </div>
+      <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 mb-12 backdrop-blur-md">
+        <h2 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-3">FINAL GATING PROTOCOL</h2>
+        <p className="mb-6 text-slate-300 font-mono text-sm leading-relaxed">
+          To complete this node, you must prove cognitive ownership of the concept.
+        </p>
 
-        <div className="flex justify-end mt-8 border-t pt-8">
-          <button 
-            type="submit"
-            className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-medium hover:opacity-90 transition-opacity"
-          >
-            Submit Teach-Back
-          </button>
+        <div className="bg-indigo-900/30 p-6 border-l-4 border-[#00f2ff] rounded-r-lg mb-8">
+           <p className="text-white font-mono text-lg">&gt; "{lessonData.teachBack}"</p>
         </div>
-      </form>
+        
+        <form action={async () => {
+          'use server';
+          await advanceNodePhase(nodeId, 'teach-back');
+        }}>
+          <textarea 
+            required
+            className="neon-input w-full min-h-[200px] p-5 rounded-lg border border-slate-700 focus:border-[#00f2ff] bg-black/60 text-white placeholder:opacity-50 font-mono text-sm outline-none mb-8"
+            placeholder="Awaiting audio/text dictation... Explain the concept clearly as if teaching another apprentice."
+          ></textarea>
+
+          <div className="flex justify-end mt-4 border-t border-slate-800 pt-8">
+            <button 
+              type="submit"
+              className="btn-neon-filled px-8 py-4 rounded-lg font-bold uppercase tracking-wider w-full md:w-auto"
+            >
+              Submit Proof & Complete Node →
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
