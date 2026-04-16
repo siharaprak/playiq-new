@@ -1,7 +1,12 @@
+"use client";
+
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Home() {
+  const [selectedPath, setSelectedPath] = useState<'none' | 'physical' | 'digital' | 'both'>('none');
+
   return (
     <main className="w-full">
       {/* ═══════════ 1. HERO ═══════════ */}
@@ -13,11 +18,11 @@ export default function Home() {
         </div>
 
         {/* HUD Overlay Elements */}
-        <div className="absolute top-[20%] left-[5%] font-display tracking-[0.3em] text-[#00f2ff] text-[0.6rem] uppercase opacity-60">
+        <div className="absolute top-[20%] right-[3%] font-display tracking-[0.3em] text-[#00f2ff] text-[0.6rem] uppercase opacity-60 text-right">
           SYS.INIT // v.2.0.4<br/>
           CONNECTING...
         </div>
-        <div className="absolute bottom-[10%] right-[5%] font-display tracking-[0.3em] text-[#ff00ff] text-[0.6rem] uppercase opacity-60 text-right">
+        <div className="absolute bottom-[10%] left-[8%] font-display tracking-[0.3em] text-[#ff00ff] text-[0.6rem] uppercase opacity-60">
           [SYSTEM_READY]<br/>
           STATUS: ONLINE
         </div>
@@ -30,27 +35,57 @@ export default function Home() {
              </h1>
           </div>
 
-          <div className="glass-card !bg-transparent !border-none !backdrop-blur-none text-center max-w-4xl mx-auto flex flex-col items-center gap-6 mt-[-2rem] md:mt-[-4rem]">
+          <div className="glass-card !bg-transparent !border-none !backdrop-blur-none text-center max-w-4xl mx-auto flex flex-col items-center gap-6 mt-[-1rem] md:mt-[-2rem]">
             <p className="animate-fade-in-up font-display font-bold text-xs md:text-sm uppercase tracking-[0.4em] text-[#ff00ff] text-glow-magenta bg-black/50 px-4 py-1 border border-[#ff00ff]"
                style={{ animationDelay: '0.2s' }}>
               IMAGINE &gt; BUILD &gt; CONQUER
             </p>
 
-            <div className="text-center animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <div className="text-center animate-fade-in-up w-full" style={{ animationDelay: '0.4s' }}>
               <h2 className="text-2xl md:text-5xl font-extrabold text-white leading-tight uppercase font-display tracking-widest drop-shadow-[2px_2px_0_#ff00ff]">
                 Engineer Your <br/>
                 <span className="text-[#00f2ff] text-glow-cyan text-[1.2em]">Reality</span>
               </h2>
               <p className="mt-8 text-sm md:text-lg text-slate-300 font-bold max-w-2xl mx-auto uppercase tracking-wide">
-                Physical building blocks meet digital dominance. Earn your progress. 
+                Where physical building blocks meet digital dominance. 
               </p>
               
-              <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
-                <Link href="/beta" className="font-display uppercase font-black text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff] hover:shadow-[0_0_30px_#ff00ff]">
-                  JOIN EARLY ACCESS
-                </Link>
-                <Link href="/how-it-works" className="font-display uppercase font-bold text-sm tracking-[0.2em] text-white underline hover:text-[#00f2ff] transition-colors">
-                  HOW IT WORKS &gt;
+              <div className="mt-12 flex flex-col items-center justify-center gap-6">
+                <p className="font-display text-sm md:text-base text-white tracking-[0.1em] uppercase">
+                  Do you want <span className="text-[#ff00ff]">physical hands-on play</span> OR <span className="text-[#00f2ff]">digital learning</span> OR the best of both worlds?
+                </p>
+                <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
+                  <button 
+                    onClick={() => {
+                        setSelectedPath('physical');
+                        setTimeout(() => document.getElementById('content-start')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                    }}
+                    className={`font-display uppercase font-bold text-sm tracking-[0.1em] px-6 py-4 transition-all border-2 ${selectedPath === 'physical' ? 'bg-[#ff00ff] text-white border-[#ff00ff] shadow-[0_0_20px_#ff00ff]' : 'bg-transparent text-white border-white/30 hover:border-[#ff00ff] hover:text-[#ff00ff]'}`}
+                  >
+                    Physical Play
+                  </button>
+                  <button 
+                    onClick={() => {
+                        setSelectedPath('digital');
+                        setTimeout(() => document.getElementById('content-start')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                    }}
+                    className={`font-display uppercase font-bold text-sm tracking-[0.1em] px-6 py-4 transition-all border-2 ${selectedPath === 'digital' ? 'bg-[#00f2ff] text-[#020617] border-[#00f2ff] shadow-[0_0_20px_#00f2ff]' : 'bg-transparent text-white border-white/30 hover:border-[#00f2ff] hover:text-[#00f2ff]'}`}
+                  >
+                    Digital Learning
+                  </button>
+                  <button 
+                    onClick={() => {
+                        setSelectedPath('both');
+                        setTimeout(() => document.getElementById('content-start')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                    }}
+                    className={`font-display uppercase font-bold text-sm tracking-[0.1em] px-6 py-4 transition-all border-2 ${selectedPath === 'both' ? 'bg-gradient-to-r from-[#00f2ff] to-[#ff00ff] text-white border-transparent shadow-[0_0_20px_rgba(255,0,255,0.5)]' : 'bg-transparent text-white border-white/30 hover:border-[#ff00ff] hover:shadow-[0_0_15px_#ff00ff]'}`}
+                  >
+                    Best of Both Worlds
+                  </button>
+                </div>
+
+                <Link href="/how-it-works" className="mt-4 font-display uppercase font-bold text-xs tracking-[0.2em] text-white/70 underline hover:text-white transition-colors">
+                  OR SEE HOW IT WORKS &gt;
                 </Link>
               </div>
             </div>
@@ -58,8 +93,11 @@ export default function Home() {
         </div>
       </section>
 
+      <div id="content-start" className="scroll-mt-10" />
+
       {/* ═══════════ 2. PRODUCT — Magnetic Building Set ═══════════ */}
-      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden">
+      {(selectedPath === 'physical' || selectedPath === 'both') && (
+      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden animate-fade-in-up">
         <div className="relative z-10 mx-auto max-w-4xl">
           <div className="glass-card glass-card-hover p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8 glow-border-cyan">
             <div className="circle-frame animate-float" style={{ animationDelay: '0.5s' }}>
@@ -78,18 +116,20 @@ export default function Home() {
               <p className="mt-3 text-slate-400 text-sm md:text-base">
                 STEM Toys for Kids Ages 3+ | Educational Space-Themed Magnetic Construction Kit with LED Light-Up Cubes
               </p>
-              <div className="mt-5">
-                <Link href="/beta" className="btn-neon-cyan">
-                  JOIN EARLY ACCESS &rarr;
+              <div className="mt-5 flex gap-4">
+                <Link href="#get-started" className="btn-neon-cyan">
+                  LEARN MORE ↗
                 </Link>
               </div>
             </div>
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══════════ 3. FEATURES — Why Teens Stick ═══════════ */}
-      <section className="relative px-6 py-20 md:py-28 overflow-hidden" style={{ background: '#0b1120' }}>
+      {(selectedPath === 'digital' || selectedPath === 'both') && (
+      <section className="relative px-6 py-20 md:py-28 overflow-hidden animate-fade-in-up" style={{ background: '#0b1120' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[20%] right-[10%] w-[300px] h-[300px] bg-[rgba(0,242,255,0.04)] rounded-full blur-[80px]" />
           <div className="absolute bottom-[15%] left-[5%] w-[250px] h-[250px] bg-[rgba(255,0,255,0.04)] rounded-full blur-[80px]" />
@@ -140,9 +180,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══════════ 4. CHARACTER / YOUR FIRST ADVENTURE ═══════════ */}
-      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden">
+      {(selectedPath === 'digital' || selectedPath === 'both') && (
+      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden animate-fade-in-up">
         <div className="relative z-10 mx-auto max-w-4xl">
           <div className="glass-card glass-card-hover p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8 glow-border-cyan">
             <div className="circle-frame animate-float" style={{ animationDelay: '1s' }}>
@@ -170,9 +212,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══════════ 5. PARENT TRUST / PROOF ═══════════ */}
-      <section className="relative px-6 py-20 md:py-28 overflow-hidden" style={{ background: '#0b1120' }}>
+      {(selectedPath === 'digital' || selectedPath === 'both') && (
+      <section className="relative px-6 py-20 md:py-28 overflow-hidden animate-fade-in-up" style={{ background: '#0b1120' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[30%] left-[50%] w-[400px] h-[400px] bg-[rgba(0,242,255,0.03)] rounded-full blur-[100px]" />
         </div>
@@ -215,9 +259,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══════════ 6. REPLAYABILITY ═══════════ */}
-      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden">
+      {(selectedPath === 'physical' || selectedPath === 'both') && (
+      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden animate-fade-in-up">
         <div className="relative z-10 mx-auto max-w-5xl text-center">
           <h2 className="font-display text-xs uppercase tracking-[0.25em] text-[#00f2ff] text-glow-cyan mb-4">
             Infinite Replay
@@ -239,9 +285,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
 
       {/* ═══════════ 7. FAQ & FINAL CTA ═══════════ */}
-      <section className="relative px-6 py-20 md:py-28 overflow-hidden" style={{ background: '#0b1120' }}>
+      {selectedPath !== 'none' && (
+      <section id="get-started" className="relative px-6 py-20 md:py-28 overflow-hidden animate-fade-in-up" style={{ background: '#0b1120' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[rgba(0,242,255,0.05)] rounded-full blur-[120px]" />
         </div>
@@ -285,6 +333,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      )}
     </main>
   );
 }

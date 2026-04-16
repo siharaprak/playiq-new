@@ -47,6 +47,7 @@ export function Navbar() {
           >
             &gt; LOG IN
           </Link>
+
           <button
             className="lg:hidden text-[#00f2ff] p-1"
             onClick={() => setMobileOpen(!mobileOpen)}

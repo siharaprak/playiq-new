@@ -24,13 +24,13 @@ export default function Login() {
   const [state, formAction] = useActionState(loginAction, null);
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden py-12 px-6">
+    <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-28 pb-12 px-6">
       {/* Background elements */}
       <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,242,255,0.08)] rounded-full blur-[140px] animate-drift pointer-events-none" />
       <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[rgba(255,0,255,0.08)] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
 
       {/* HUD Overlays */}
-      <div className="absolute top-[5%] left-[5%] font-display tracking-[0.3em] text-[#00f2ff] text-[0.6rem] uppercase opacity-60">
+      <div className="absolute top-32 left-[5%] hidden md:block font-display tracking-[0.3em] text-[#00f2ff] text-[0.6rem] uppercase opacity-60">
         LOGIN PORTAL<br/>
         READY
       </div>

@@ -3,6 +3,7 @@ import { Inter, Orbitron } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { SocialSidebar } from "@/components/layout/SocialSidebar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${inter.variable} ${orbitron.variable} font-sans min-h-screen flex flex-col pt-24`}
       >
         <Navbar />
+        <SocialSidebar />
         <div className="flex-grow">{children}</div>
         <Footer />
       </body>
