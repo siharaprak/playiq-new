@@ -3,6 +3,8 @@ import { enforceNodeGating } from '@/lib/gating';
 import { advanceNodePhase } from '../../../actions';
 import { module1Nodes } from '@/data/module1Content';
 
+import { TeachBackForm } from '@/components/forms/TeachBackForm';
+
 export default async function NodeTeachBackPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
   await enforceNodeGating(nodeId, 'teach-back');
@@ -31,25 +33,7 @@ export default async function NodeTeachBackPage({ params }: { params: Promise<{ 
            <p className="text-white font-mono text-lg">&gt; "{lessonData.teachBack}"</p>
         </div>
         
-        <form action={async () => {
-          'use server';
-          await advanceNodePhase(nodeId, 'teach-back');
-        }}>
-          <textarea 
-            required
-            className="neon-input w-full min-h-[200px] p-5 rounded-lg border border-slate-700 focus:border-[#00f2ff] bg-black/60 text-white placeholder:opacity-50 font-mono text-sm outline-none mb-8"
-            placeholder="Awaiting audio/text dictation... Explain the concept clearly as if teaching another apprentice."
-          ></textarea>
-
-          <div className="flex justify-end mt-4 border-t border-slate-800 pt-8">
-            <button 
-              type="submit"
-              className="btn-neon-filled px-8 py-4 rounded-lg font-bold uppercase tracking-wider w-full md:w-auto"
-            >
-              Submit Proof & Complete Node →
-            </button>
-          </div>
-        </form>
+        <TeachBackForm nodeId={nodeId} prompt={lessonData.teachBack} />
       </div>
     </div>
   );

@@ -70,68 +70,50 @@ export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activi
   if (phase === 'mini-check') redirect(`/student/modules/1/nodes/${nodeId}/teach-back`);
 }
 
-export async function submitTeachBackMVP(formData: FormData) {
+export async function submitTeachBackAction(nodeId: string, prompt: string, prevState: any, formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  if (!user) throw new Error('Not authenticated');
+  if (!user) return { error: 'Not authenticated' };
 
-  const content = formData.get('explanation') as string;
-  const nodeId = formData.get('nodeId') as string;
+  const content = formData.get('teachBackResponse') as string;
+  if (!content) return { error: 'Response is required.', submittedText: content };
 
-  if (!content || !nodeId) throw new Error('Missing required fields');
+  // Run Semantic LLM Check via Gemini
+  const { evaluateTeachBack } = await import('@/lib/gemini');
+  const evaluation = await evaluateTeachBack(prompt, content);
 
-  const wordCount = content.split(/\s+/).filter((w) => w.length > 0).length;
-  const lowercaseContent = content.toLowerCase();
-  
-  const hasConceptCoverage = lowercaseContent.includes('coach') || 
-                             lowercaseContent.includes('prompt') || 
-                             lowercaseContent.includes('ai') || 
-                             lowercaseContent.includes('model') ||
-                             lowercaseContent.includes('hallucination');
-  
-  let passStatus = 'revise';
-  let feedback = 'Your explanation needs more detail. Try to summarize what you learned in your own words.';
-
-  if (wordCount >= 30 && hasConceptCoverage) {
-    passStatus = 'pass';
-    feedback = 'Great job! You\'ve met the MVP threshold covering the required concepts.';
-  } else if (wordCount < 30) {
-    throw new Error('Explanation is too short. MVP threshold is 30 words minimum.');
-  } else if (!hasConceptCoverage) {
-    throw new Error('Your explanation is missing core concepts. Be sure to mention AI, prompting, or coaching.');
+  if (!evaluation.passed) {
+    return { error: evaluation.feedback, submittedText: content };
   }
 
+  // Pass! Log and advance
   await supabase.from('assessment_submissions').insert({
       student_id: user.id,
       module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
       node_id: nodeId,
       assessment_type: 'teach_back',
-      submission_payload: { text: content },
-      pass_status: passStatus,
-    });
+      submission_payload: { text: content, geminiFeedback: evaluation.feedback },
+      pass_status: 'pass',
+  });
 
   await supabase.from('events_log').insert({
     student_id: user.id,
     event_type: 'assessment_submitted',
     target_type: 'teach_back',
     target_id: nodeId,
-    metadata: { passed: passStatus === 'pass', wordCount }
+    metadata: { passed: true, auto_graded: true }
   });
 
-  if (passStatus === 'pass') {
-    await supabase.from('student_node_progress')
-      .update({ teach_back_status: 'pass', node_mastered: true })
-      .eq('student_id', user.id)
-      .eq('node_id', nodeId);
+  await supabase.from('student_node_progress')
+    .update({ teach_back_status: 'pass', node_mastered: true })
+    .eq('student_id', user.id)
+    .eq('node_id', nodeId);
 
-    // MOCK: Auto-master nodes 2, 3, 4 for testing Module Quiz seamlessly
-    await mockOtherNodes(user.id);
-      
-    redirect(`/student/modules/1/nodes/${nodeId}/completion`);
-  } else {
-    redirect(`/student/modules/1/nodes/${nodeId}/teach-back`);
-  }
+  // MOCK: Auto-master nodes 2, 3, 4 for testing Module Quiz seamlessly
+  await mockOtherNodes(user.id);
+    
+  redirect(`/student/modules/1/nodes/${nodeId}/completion`);
 }
 
 // Helper to auto-complete nodes 2,3,4 to test the quiz lock efficiently during verification
@@ -184,33 +166,48 @@ export async function submitQuiz(formData: FormData) {
   }
 }
 
-export async function submitBossBattle(formData: FormData) {
+export async function submitBossBattleAction(prevState: any, formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if(!user) throw new Error('Not authenticated');
+  if(!user) return { error: 'Not authenticated' };
 
-  const s1 = formData.get('scenario1') as string;
-  const s2 = formData.get('scenario2') as string;
-  const s3 = formData.get('scenario3') as string;
+  // Reconstruct scenarios
+  const scenarios = [
+    {
+      label: formData.get('s1_label') as string,
+      nextMode: formData.get('s1_mode') as string,
+      question: formData.get('s1_question') as string,
+      verification: formData.get('s1_verify') as string
+    },
+    {
+       label: formData.get('s2_label') as string,
+       nextMode: formData.get('s2_mode') as string,
+       question: formData.get('s2_question') as string,
+       verification: formData.get('s2_verify') as string
+    }
+  ];
 
-  let score = 0;
-  // basic check
-  if (s1 && s1.length > 5) score += 2; 
-  if (s2 && s2.length > 5) score += 2;
-  if (s3 && s3.length > 5) score += 1;
+  const reflection = formData.get('reflection') as string;
 
-  const passStatus = score >= 4 ? 'pass' : 'revise';
+  // Run Semantic LLM Check via Gemini
+  const { evaluateBossBattle } = await import('@/lib/gemini');
+  const evaluation = await evaluateBossBattle(scenarios);
 
+  // In testing we had 2 scenarios, each worth 2 points, plus 1 point for the reflection.
+  let extraScore = reflection && reflection.length > 10 ? 1 : 0;
+  const totalScore = evaluation.score + extraScore;
+
+  if (totalScore < 4) { // Threshold for fail
+     return { error: evaluation.feedback };
+  }
+
+  // Pass logic
   await supabase.from('assessment_submissions').insert({
     student_id: user.id, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
-    assessment_type: 'boss_battle', submission_payload: { s1, s2, s3 }, score_numeric: score, pass_status: passStatus
+    assessment_type: 'boss_battle', submission_payload: { scenarios, reflection, geminiFeedback: evaluation.feedback }, score_numeric: totalScore, pass_status: 'pass'
   });
 
-  if (passStatus === 'pass') {
-    redirect('/student/modules/1/proof-artifacts');
-  } else {
-    redirect('/student/modules/1/boss-battle');
-  }
+  redirect('/student/modules/1/proof-artifacts');
 }
 
 export async function submitArtifacts(formData: FormData) {
