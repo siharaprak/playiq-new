@@ -117,9 +117,12 @@ export default async function ParentDashboard() {
                        <span className="text-slate-400 tracking-wider text-xs uppercase">Module 1 (Foundations)</span>
                        <span className="font-bold text-[#39ff14]">100%</span>
                      </div>
-                     <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                     <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden mb-3">
                        <div className="bg-[#39ff14] h-full shadow-[0_0_10px_rgba(57,255,20,0.5)]" style={{ width: '100%' }}></div>
                      </div>
+                     <Link href="/student/modules/1/overview" className="block text-center w-full bg-[#00f2ff]/10 hover:bg-[#00f2ff]/20 text-[#00f2ff] border border-[#00f2ff]/30 py-2 rounded text-xs font-bold uppercase tracking-widest transition-colors mb-6">
+                       ENTER LMS SIMULATOR &rarr;
+                     </Link>
                    </div>
                    <div>
                      <div className="flex justify-between text-sm mb-2">

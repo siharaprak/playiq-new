@@ -21,6 +21,9 @@ export default function StudentDashboard() {
                  Using pieces A4 and B2, construct a bridge span capable of holding targeted compressive force without bending.
                </p>
                <div className="flex gap-4">
+                 <a href="/student/modules/1/overview" className="bg-[#00f2ff] text-black hover:bg-[#00f2ff]/80 px-6 py-3 rounded-lg font-bold transition-colors shadow-[0_0_15px_rgba(0,242,255,0.4)]">
+                   START LMS MODULE 1 &rarr;
+                 </a>
                  <button className="bg-indigo-600 hover:bg-indigo-500 px-6 py-3 rounded-lg font-bold transition-colors flex items-center gap-2">
                    <UploadCloud className="w-5 h-5" />
                    Submit Artifact

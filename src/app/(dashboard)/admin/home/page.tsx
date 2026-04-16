@@ -65,12 +65,17 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
              </div>
            </div>
 
-           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4">
-             <div className="p-3 bg-emerald-100 rounded-lg text-emerald-700"><Activity className="w-6 h-6" /></div>
-             <div>
-               <p className="text-sm text-slate-500 font-medium">System Health</p>
-               <p className="text-2xl font-bold text-slate-900">Nominal</p>
+           <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between gap-4">
+             <div className="flex items-center gap-4">
+               <div className="p-3 bg-fuchsia-100 rounded-lg text-fuchsia-700"><Activity className="w-6 h-6" /></div>
+               <div>
+                 <p className="text-sm text-slate-500 font-medium">LMS Simulator</p>
+                 <p className="text-sm font-bold text-slate-900">Module 1 (Unlocked)</p>
+               </div>
              </div>
+             <Link href="/student/modules/1/overview" className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 text-sm font-bold rounded shadow transition-colors">
+               Enter LMS &rarr;
+             </Link>
            </div>
         </div>
 
