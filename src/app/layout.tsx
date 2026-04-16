@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${orbitron.variable} font-sans min-h-screen flex flex-col`}
+        className={`${inter.variable} ${orbitron.variable} font-sans min-h-screen flex flex-col pt-24`}
       >
         <Navbar />
         <div className="flex-grow">{children}</div>
