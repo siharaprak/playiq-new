@@ -58,9 +58,9 @@ export default function Approach() {
         </section>
 
         <section className="text-center pt-8 border-t border-slate-800">
-           <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="font-display uppercase font-bold text-sm tracking-[0.2em] text-[#ff00ff] underline hover:text-white transition-colors">
-              BUY ON AMAZON &gt;
-           </a>
+           <Link href="/beta" className="font-display uppercase font-bold text-sm tracking-[0.2em] text-[#ff00ff] underline hover:text-white transition-colors">
+              JOIN EARLY ACCESS &gt;
+           </Link>
         </section>
       </div>
     </main>

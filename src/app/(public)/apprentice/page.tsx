@@ -92,9 +92,9 @@ export default function Apprentice() {
 
         {/* CTA */}
         <section className="text-center pt-8 pb-16">
-          <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="inline-block font-display uppercase font-black text-xl tracking-[0.3em] text-[#020617] bg-[#ff00ff] px-10 py-5 hover:bg-[#00f2ff] transition-colors border-2 border-white shadow-[0_0_20px_#ff00ff] hover:shadow-[0_0_30px_#00f2ff]">
-            BUY ON AMAZON
-          </a>
+          <Link href="/beta" className="inline-block font-display uppercase font-black text-xl tracking-[0.3em] text-[#020617] bg-[#ff00ff] px-10 py-5 hover:bg-[#00f2ff] transition-colors border-2 border-white shadow-[0_0_20px_#ff00ff] hover:shadow-[0_0_30px_#00f2ff]">
+            JOIN EARLY ACCESS
+          </Link>
         </section>
 
       </div>

@@ -63,9 +63,9 @@ export default function Parents() {
         </section>
 
         <section className="text-center pt-8 pb-10">
-           <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="inline-block font-display uppercase font-bold text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff]">
-              BUY ON AMAZON
-           </a>
+           <Link href="/beta" className="inline-block font-display uppercase font-bold text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff]">
+              JOIN EARLY ACCESS
+           </Link>
         </section>
       </div>
     </main>

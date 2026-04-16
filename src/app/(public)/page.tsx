@@ -46,9 +46,9 @@ export default function Home() {
               </p>
               
               <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-6">
-                <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="font-display uppercase font-black text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff] hover:shadow-[0_0_30px_#ff00ff]">
-                  BUY ON AMAZON
-                </a>
+                <Link href="/beta" className="font-display uppercase font-black text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff] hover:shadow-[0_0_30px_#ff00ff]">
+                  JOIN EARLY ACCESS
+                </Link>
                 <Link href="/how-it-works" className="font-display uppercase font-bold text-sm tracking-[0.2em] text-white underline hover:text-[#00f2ff] transition-colors">
                   HOW IT WORKS &gt;
                 </Link>
@@ -79,9 +79,9 @@ export default function Home() {
                 STEM Toys for Kids Ages 3+ | Educational Space-Themed Magnetic Construction Kit with LED Light-Up Cubes
               </p>
               <div className="mt-5">
-                <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="btn-neon-cyan">
-                  BUY ON AMAZON ↗
-                </a>
+                <Link href="/beta" className="btn-neon-cyan">
+                  JOIN EARLY ACCESS &rarr;
+                </Link>
               </div>
             </div>
           </div>
@@ -253,9 +253,9 @@ export default function Home() {
             Ready to reshape how they{' '}
             <span className="text-[#ff00ff] text-glow-magenta">learn?</span>
           </h3>
-          <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="btn-neon-filled animate-pulse-glow mb-16 inline-block">
-            BUY ON AMAZON
-          </a>
+          <Link href="/beta" className="btn-neon-filled animate-pulse-glow mb-16 inline-block">
+            JOIN EARLY ACCESS
+          </Link>
 
           {/* FAQ */}
           <div className="glass-card p-8 text-left max-w-2xl mx-auto mt-12">

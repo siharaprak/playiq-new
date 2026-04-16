@@ -56,9 +56,9 @@ export default function HowItWorks() {
         </section>
         
         <section className="text-center pt-10">
-           <a href="https://www.amazon.com/dp/B0F3LV725Z" target="_blank" rel="noopener noreferrer" className="inline-block font-display uppercase font-bold text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff] hover:shadow-[0_0_30px_#ff00ff]">
-              BUY ON AMAZON
-           </a>
+           <Link href="/beta" className="inline-block font-display uppercase font-bold text-xl tracking-[0.3em] text-[#020617] bg-[#00f2ff] px-10 py-5 hover:bg-[#ff00ff] transition-colors border-2 border-white shadow-[0_0_20px_#00f2ff] hover:shadow-[0_0_30px_#ff00ff]">
+              JOIN EARLY ACCESS
+           </Link>
         </section>
       </div>
     </main>
