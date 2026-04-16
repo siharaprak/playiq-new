@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 
 const navLinks = [
@@ -15,6 +15,28 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const { createClient } = await import('@/utils/supabase/client');
+        const supabase = createClient();
+        const { data: { session } } = await supabase.auth.getSession();
+        
+        if (session?.user) {
+          const { data: profile } = await supabase.from('profiles').select('role').eq('id', session.user.id).single();
+          setUserRole(profile?.role || 'student');
+        }
+      } catch (err) {
+        console.error("Auth check failed", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    checkAuth();
+  }, []);
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-[1400px]">
@@ -40,16 +62,18 @@ export function Navbar() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 xl:gap-4 flex-shrink-0">
-          <Link
-            href="/login"
-            className="hidden sm:block font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] text-slate-400 hover:text-[#00f2ff] transition-colors whitespace-nowrap ml-4"
-          >
-            &gt; LOG IN
-          </Link>
+        <div className="flex items-center gap-3 xl:gap-4 flex-shrink-0 min-w-[100px] justify-end">
+          {!isLoading && (
+            <Link
+              href={userRole ? `/${userRole}/home` : "/login"}
+              className={`hidden sm:block font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00f2ff] transition-colors whitespace-nowrap ml-4 ${userRole ? 'text-[#ff00ff]' : 'text-slate-400'}`}
+            >
+              &gt; {userRole ? "DASHBOARD" : "LOG IN"}
+            </Link>
+          )}
 
           <button
-            className="lg:hidden text-[#00f2ff] p-1"
+            className="lg:hidden text-[#00f2ff] p-1 ml-2"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -72,13 +96,15 @@ export function Navbar() {
                 &gt; {link.label}
               </Link>
             ))}
-            <Link
-              href="/login"
-              onClick={() => setMobileOpen(false)}
-              className="font-display text-xs font-bold uppercase tracking-[0.2em] text-[#ff00ff] py-2 px-3 border-t border-[rgba(255,0,255,0.2)] mt-2"
-            >
-              &gt; LOG IN
-            </Link>
+            {!isLoading && (
+              <Link
+                href={userRole ? `/${userRole}/home` : "/login"}
+                onClick={() => setMobileOpen(false)}
+                className={`font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 border-t border-[rgba(255,0,255,0.2)] mt-2 ${userRole ? 'text-[#00f2ff]' : 'text-[#ff00ff]'}`}
+              >
+                &gt; {userRole ? "DASHBOARD" : "LOG IN"}
+              </Link>
+            )}
           </div>
         </div>
       )}
