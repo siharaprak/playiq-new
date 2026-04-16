@@ -135,6 +135,7 @@ export default async function ParentDashboard() {
                 </div>
                </div>
          </div>
+        </div>
       </div>
     </div>
   );

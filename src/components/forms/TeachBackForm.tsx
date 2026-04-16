@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useActionState } from 'react';
-import { submitTeachBackAction } from '@/app/(dashboard)/actions'; // I will create this
+import { submitTeachBackAction } from '@/app/(dashboard)/student/modules/1/actions';
 
 export function TeachBackForm({ nodeId, prompt }: { nodeId: string, prompt: string }) {
   // Bind the static arguments to the server action
