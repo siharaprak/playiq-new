@@ -55,6 +55,9 @@ async function run() {
   const userId = newUser.user.id;
   console.log("User officially established in GoTrue. Injecting Modules...", userId);
 
+  // Forcing role to admin in the public profile to overwrite default trigger
+  await supabase.from('profiles').update({ role: 'admin' }).eq('id', userId);
+
   const { error: progErr } = await supabase.from('student_node_progress').upsert([
     { student_id: userId, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', node_id: '1', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
     { student_id: userId, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', node_id: '2', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
