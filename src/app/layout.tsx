@@ -50,6 +50,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${inter.variable} ${orbitron.variable} font-sans min-h-screen flex flex-col pt-24`}
+        suppressHydrationWarning
       >
         <ThemeProvider>
           <Navbar />

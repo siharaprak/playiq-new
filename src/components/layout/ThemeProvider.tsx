@@ -40,11 +40,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  // Prevent flash of wrong theme
-  if (!mounted) {
-    return <>{children}</>;
-  }
-
+  // The head script in layout.tsx prevents the theme flash.
+  // We should always wrap children with the provider to avoid React tree mismatch between SSR and client.
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       {children}

@@ -1,0 +1,3 @@
+export const MODULES = {
+  MODULE_1_ID: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
+};

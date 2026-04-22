@@ -3,6 +3,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
+import { MODULES } from '@/lib/constants';
 
 export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') {
   const supabase = await createClient();
@@ -20,7 +21,7 @@ export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activi
   if (!progress) {
     await supabase.from('student_node_progress').insert({
       student_id: user.id,
-      module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
+      module_id: MODULES.MODULE_1_ID,
       node_id: nodeId,
       lesson_completed: phase === 'lesson',
       activity_completed: false,
@@ -57,7 +58,7 @@ export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activi
   if (phase === 'mini-check') {
     await supabase.from('assessment_submissions').insert({
       student_id: user.id,
-      module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
+      module_id: MODULES.MODULE_1_ID,
       node_id: nodeId,
       assessment_type: 'mini_check',
       submission_payload: { status: 'passed' },
@@ -90,7 +91,7 @@ export async function submitTeachBackAction(nodeId: string, prompt: string, prev
   // Pass! Log and advance
   await supabase.from('assessment_submissions').insert({
       student_id: user.id,
-      module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
+      module_id: MODULES.MODULE_1_ID,
       node_id: nodeId,
       assessment_type: 'teach_back',
       submission_payload: { text: content, geminiFeedback: evaluation.feedback },
@@ -110,8 +111,10 @@ export async function submitTeachBackAction(nodeId: string, prompt: string, prev
     .eq('student_id', user.id)
     .eq('node_id', nodeId);
 
-  // MOCK: Auto-master nodes 2, 3, 4 for testing Module Quiz seamlessly
-  await mockOtherNodes(user.id);
+  // DEV ONLY: Auto-master nodes 2, 3, 4 to test the Module Quiz gate without completing the full flow.
+  if (process.env.NODE_ENV !== 'production') {
+    await mockOtherNodes(user.id);
+  }
     
   redirect(`/student/modules/1/nodes/${nodeId}/completion`);
 }
@@ -124,7 +127,7 @@ async function mockOtherNodes(student_id: string) {
      const { data } = await supabase.from('student_node_progress').select('id').eq('student_id', student_id).eq('node_id', n).single();
      if (!data) {
        await supabase.from('student_node_progress').insert({
-         student_id, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', node_id: n,
+         student_id, module_id: MODULES.MODULE_1_ID, node_id: n,
          lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true
        });
      }
@@ -152,7 +155,7 @@ export async function submitQuiz(formData: FormData) {
   const passStatus = score >= 80 ? 'pass' : 'revise';
 
   const { error } = await supabase.from('assessment_submissions').insert({
-    student_id: user.id, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
+    student_id: user.id, module_id: MODULES.MODULE_1_ID,
     assessment_type: 'module_quiz', submission_payload: { q1, q2, q3, q4, q5 }, score_numeric: score, pass_status: passStatus
   });
   
@@ -202,10 +205,20 @@ export async function submitBossBattleAction(prevState: any, formData: FormData)
   }
 
   // Pass logic
-  await supabase.from('assessment_submissions').insert({
-    student_id: user.id, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228',
+  const { data: bossSubmission } = await supabase.from('assessment_submissions').insert({
+    student_id: user.id, module_id: MODULES.MODULE_1_ID,
     assessment_type: 'boss_battle', submission_payload: { scenarios, reflection, geminiFeedback: evaluation.feedback }, score_numeric: totalScore, pass_status: 'pass'
-  });
+  }).select().single();
+
+  if (evaluation.fingerprints && bossSubmission) {
+    const signals = [
+      { student_id: user.id, module_id: MODULES.MODULE_1_ID, signal_type: 'explanation_preference', signal_value: evaluation.fingerprints.explanationPreference },
+      { student_id: user.id, module_id: MODULES.MODULE_1_ID, signal_type: 'mode_preference', signal_value: evaluation.fingerprints.modePreference },
+      { student_id: user.id, module_id: MODULES.MODULE_1_ID, signal_type: 'shortcut_tendency', signal_value: evaluation.fingerprints.shortcutTendency },
+      { student_id: user.id, module_id: MODULES.MODULE_1_ID, signal_type: 'integrity_snapshot', signal_value: evaluation.fingerprints.integritySnapshot },
+    ];
+    await supabase.from('fingerprint_signals').insert(signals);
+  }
 
   redirect('/student/modules/1/proof-artifacts');
 }
@@ -213,15 +226,39 @@ export async function submitBossBattleAction(prevState: any, formData: FormData)
 export async function submitArtifacts(formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if(!user) throw new Error('Not authenticated');
+  if (!user) throw new Error('Not authenticated');
 
-  const studyRules = formData.get('studyRules');
-  const errorReview = formData.get('errorReview');
+  // Collect the fill-in-the-blank fields from Artifact 1: My AI Study Rules
+  const studyRulesPayload = {
+    useAI: formData.get('sr_use') as string,
+    confusedMode: formData.get('sr_confused') as string,
+    beforeTrusting: formData.get('sr_trust') as string,
+    aiStrengthens: formData.get('sr_strengthen') as string,
+  };
 
-  await supabase.from('proof_artifact_submissions').insert([
-    { student_id: user.id, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', artifact_type: 'study_rules', content_payload: { text: studyRules } },
-    { student_id: user.id, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', artifact_type: 'error_review', content_payload: { text: errorReview } }
+  // Collect the fill-in-the-blank fields from Artifact 2: AI Error Review Sheet
+  const errorReviewPayload = {
+    aiWasTryingTo: formData.get('er_trying') as string,
+    whatWasWrong: formData.get('er_wrong') as string,
+    clue: formData.get('er_clue') as string,
+  };
+
+  const { error } = await supabase.from('proof_artifact_submissions').insert([
+    {
+      student_id: user.id,
+      module_id: MODULES.MODULE_1_ID,
+      artifact_type: 'study_rules',
+      content_payload: studyRulesPayload,
+    },
+    {
+      student_id: user.id,
+      module_id: MODULES.MODULE_1_ID,
+      artifact_type: 'error_review',
+      content_payload: errorReviewPayload,
+    },
   ]);
-  
+
+  if (error) throw new Error('Failed to submit artifacts: ' + error.message);
+
   redirect('/student/modules/1/completion');
 }

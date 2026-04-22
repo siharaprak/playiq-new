@@ -83,12 +83,22 @@ export async function signupAction(prevState: any, formData: FormData) {
   }
 
   // Fetch true role resolution from profiles table (auto-generated via trigger)
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', authData.user.id)
-    .single();
+  // Use a retry loop to handle the race condition where the trigger hasn't finished yet.
+  let role = 'parent';
+  for (let i = 0; i < 5; i++) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', authData.user.id)
+      .single();
 
-  const role = profile?.role || 'parent';
+    if (profile) {
+      role = profile.role;
+      break;
+    }
+    // Wait 500ms before retrying
+    await new Promise(resolve => setTimeout(resolve, 500));
+  }
+
   redirect(`/${role}/home`);
 }

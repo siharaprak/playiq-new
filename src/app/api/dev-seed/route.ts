@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { MODULES } from '@/lib/constants';
 
 export async function GET() {
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
@@ -52,10 +53,10 @@ export async function GET() {
      // 2. Safely wipe constraints temporarily and inject string-based progress
      // Note: we just inject via standard RPC or API insert
      await supabase.from('student_node_progress').upsert([
-        { student_id: userId, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', node_id: '1', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
-        { student_id: userId, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', node_id: '2', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
-        { student_id: userId, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', node_id: '3', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
-        { student_id: userId, module_id: 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', node_id: '4', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true }
+        { student_id: userId, module_id: MODULES.MODULE_1_ID, node_id: '1', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
+        { student_id: userId, module_id: MODULES.MODULE_1_ID, node_id: '2', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
+        { student_id: userId, module_id: MODULES.MODULE_1_ID, node_id: '3', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true },
+        { student_id: userId, module_id: MODULES.MODULE_1_ID, node_id: '4', lesson_completed: true, activity_completed: true, mini_check_passed: true, teach_back_status: 'pass', node_mastered: true }
      ], { onConflict: 'student_id, node_id' });
      
      // Update profiles to force admin role just in case trigger missed it

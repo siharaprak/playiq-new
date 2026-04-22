@@ -69,6 +69,12 @@ Format:
 export type BossBattleEvaluation = {
   score: number;
   feedback: string;
+  fingerprints?: {
+    explanationPreference: string;
+    modePreference: string;
+    shortcutTendency: string;
+    integritySnapshot: string;
+  };
 };
 
 export async function evaluateBossBattle(
@@ -92,7 +98,13 @@ Return a raw JSON object and nothing else.
 Format:
 {
   "score": number, // an integer from 0 to 5
-  "feedback": "Targeted feedback on their performance."
+  "feedback": "Targeted feedback on their performance.",
+  "fingerprints": {
+    "explanationPreference": "Short description (e.g., 'Visual metaphors', 'Direct bullet points')",
+    "modePreference": "Short description (e.g., 'Socratic Coach', 'Direct Answers')",
+    "shortcutTendency": "Short description (e.g., 'Low - Prefers step-by-step', 'High - Seeks quick answers')",
+    "integritySnapshot": "Short description (e.g., 'Strong Verification Habit', 'Trusts AI too quickly')"
+  }
 }`;
 
     const contents = `Student Boss Battle Data:\n${JSON.stringify(scenarios, null, 2)}\n\nEvaluate and return JSON.`;
