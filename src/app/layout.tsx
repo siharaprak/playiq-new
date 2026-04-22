@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SocialSidebar } from "@/components/layout/SocialSidebar";
 import { ChatBot } from "@/components/chat/ChatBot";
+import { ThemeProvider } from "@/components/layout/ThemeProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -30,15 +31,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('playiq-theme');
+                  if (theme === 'light') {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                  }
+                } catch(e) {}
+              })();
+            `,
+          }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${orbitron.variable} font-sans min-h-screen flex flex-col pt-24`}
       >
-        <Navbar />
-        <SocialSidebar />
-        <div className="flex-grow">{children}</div>
-        <ChatBot />
-        <Footer />
+        <ThemeProvider>
+          <Navbar />
+          <SocialSidebar />
+          <div className="flex-grow">{children}</div>
+          <ChatBot />
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -5,7 +5,12 @@ import { usePathname } from 'next/navigation';
 export function SocialSidebar() {
   const pathname = usePathname();
 
-  if (pathname.startsWith('/admin')) return null;
+  // Only show on public front-end pages
+  const publicRoutes = ['/', '/apprentice', '/how-it-works', '/parents', '/proof', '/contact', '/login', '/beta', '/approach'];
+  const isPublicPage = publicRoutes.some(route =>
+    route === '/' ? pathname === '/' : pathname.startsWith(route)
+  );
+  if (!isPublicPage) return null;
   const socials = [
     {
       label: 'Facebook',

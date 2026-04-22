@@ -58,11 +58,23 @@ export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', content: "Hello! I'm Agent PiQ, your PlayIQ AI Guide. How can I help you with this module today?" }
+    { role: 'model', content: "Hello! I'm Agent PiQ, your PlayIQ AI Guide. How can I help you today?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Check if user is logged in
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { createClient } = await import('@/utils/supabase/client');
+      const supabase = createClient();
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsLoggedIn(!!session);
+    };
+    checkAuth();
+  }, [pathname]);
 
   // Auto-scroll to bottom of messages
   const scrollToBottom = () => {
@@ -75,8 +87,8 @@ export function ChatBot() {
     }
   }, [messages, isOpen]);
 
-  // Only show on student module pages
-  if (!pathname.startsWith('/student/modules')) {
+  // Only show when user is logged in
+  if (!isLoggedIn) {
     return null;
   }
 

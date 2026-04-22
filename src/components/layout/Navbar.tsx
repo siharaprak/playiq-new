@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { ThemeToggle } from './ThemeToggle';
 
 const navLinks = [
   { href: '/', label: 'HOME' },
@@ -67,11 +68,13 @@ export function Navbar() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 xl:gap-4 flex-shrink-0 min-w-[100px] justify-end">
+        <div className="flex items-center gap-4 xl:gap-6 flex-shrink-0 min-w-[100px] justify-end ml-4">
+          <ThemeToggle />
+
           {!isLoading && (
             <Link
               href={userRole ? `/${userRole}/home` : "/login"}
-              className={`hidden sm:block font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00f2ff] transition-colors whitespace-nowrap ml-4 ${userRole ? 'text-[#ff00ff]' : 'text-slate-400'}`}
+              className={`hidden sm:block font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00f2ff] transition-colors whitespace-nowrap ${userRole ? 'text-[#ff00ff]' : 'text-slate-400'}`}
             >
               &gt; {userRole ? "DASHBOARD" : "LOG IN"}
             </Link>
