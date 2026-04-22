@@ -1,6 +1,11 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
+
 export function SocialSidebar() {
+  const pathname = usePathname();
+
+  if (pathname.startsWith('/admin')) return null;
   const socials = [
     {
       label: 'Facebook',
@@ -37,28 +42,28 @@ export function SocialSidebar() {
   ];
 
   return (
-    <div className="fixed left-5 top-28 z-40 hidden md:flex flex-col items-center gap-0">
+    <div className="fixed left-1.5 top-20 sm:left-2 sm:top-24 md:left-3 md:top-28 lg:left-5 lg:top-28 z-40 flex flex-col items-center gap-0">
       {/* Top line */}
-      <div className="w-px h-10 bg-gradient-to-b from-transparent to-[#00f2ff]/40" />
+      <div className="w-px h-5 sm:h-7 md:h-8 lg:h-10 bg-gradient-to-b from-transparent to-[#00f2ff]/40" />
 
       {socials.map((social, i) => (
         <div key={social.label} className="flex flex-col items-center">
           <a
             href="#"
             aria-label={social.label}
-            className="group relative w-9 h-9 flex items-center justify-center border border-slate-600/60 bg-[#020617]/80 backdrop-blur-sm text-slate-400 hover:text-[#00f2ff] hover:border-[#00f2ff]/60 hover:shadow-[0_0_12px_rgba(0,242,255,0.3)] transition-all duration-300"
+            className="group relative w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 flex items-center justify-center border border-slate-600/60 bg-[#020617]/80 backdrop-blur-sm text-slate-400 hover:text-[#00f2ff] hover:border-[#00f2ff]/60 hover:shadow-[0_0_12px_rgba(0,242,255,0.3)] transition-all duration-300"
           >
             {social.icon}
           </a>
           {/* Connecting line between icons */}
           {i < socials.length - 1 && (
-            <div className="w-px h-3 bg-slate-700/40" />
+            <div className="w-px h-1.5 sm:h-2 md:h-3 bg-slate-700/40" />
           )}
         </div>
       ))}
 
       {/* Bottom line */}
-      <div className="w-px h-10 bg-gradient-to-b from-[#ff00ff]/40 to-transparent" />
+      <div className="w-px h-5 sm:h-7 md:h-8 lg:h-10 bg-gradient-to-b from-[#ff00ff]/40 to-transparent" />
     </div>
   );
 }

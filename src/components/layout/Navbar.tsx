@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
   { href: '/', label: 'HOME' },
@@ -17,6 +18,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [userRole, setUserRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const pathname = usePathname();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -28,15 +30,18 @@ export function Navbar() {
         if (session?.user) {
           const { data: profile } = await supabase.from('profiles').select('role').eq('id', session.user.id).single();
           setUserRole(profile?.role || 'student');
+        } else {
+          setUserRole(null);
         }
       } catch (err) {
         console.error("Auth check failed", err);
+        setUserRole(null);
       } finally {
         setIsLoading(false);
       }
     };
     checkAuth();
-  }, []);
+  }, [pathname]);
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-[1400px]">
