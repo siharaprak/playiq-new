@@ -46,19 +46,28 @@ export async function updateSession(request: NextRequest) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    return NextResponse.redirect(url)
+    const redirectResponse = NextResponse.redirect(url)
+    
+    // Crucial: preserve any cookies that were updated by the createServerClient
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+    })
+    
+    return redirectResponse
   }
 
   if (user && isAuthRoute) {
     // User is logged in, but tries to access login/signup. 
-    // We should redirect them to their respective dashboard.
-    // NOTE: In Phase 1C, we don't have deep role resolution attached to the JWT 
-    // yet for immediate redirecting here cleanly without querying public.profiles.
-    // For now, we redirect to a unified entry point, or default to parent.
-    // We will do a basic default redirect to /parent/home for now.
     const url = request.nextUrl.clone()
     url.pathname = '/parent/home' // Ideally resolves against profiles.role
-    return NextResponse.redirect(url)
+    const redirectResponse = NextResponse.redirect(url)
+    
+    // Crucial: preserve any cookies that were updated by the createServerClient
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+    })
+    
+    return redirectResponse
   }
 
   // To properly gate /admin, we would inspect the profiles table, but since middleware 

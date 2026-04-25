@@ -26,8 +26,9 @@ export function Footer() {
                 <Link href="/how-it-works" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">How It Works</Link>
                 <Link href="/parents" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">Parents</Link>
                 <Link href="/contact" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">Contact</Link>
-                <Link href="#" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">Terms</Link>
-                <Link href="#" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">Privacy</Link>
+                <Link href="/terms" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">Terms</Link>
+                <Link href="/privacy" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">Privacy</Link>
+                <Link href="/data-protection" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">Data Protection</Link>
               </div>
 
               {/* Socials */}
