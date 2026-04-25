@@ -46,7 +46,14 @@ export async function updateSession(request: NextRequest) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
     url.pathname = '/login'
-    return NextResponse.redirect(url)
+    const redirectResponse = NextResponse.redirect(url)
+    
+    // Crucial: preserve any cookies that were updated by the createServerClient
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+    })
+    
+    return redirectResponse
   }
 
   if (user && isAuthRoute) {
@@ -60,7 +67,14 @@ export async function updateSession(request: NextRequest) {
     const role = profile?.role || 'parent';
     const url = request.nextUrl.clone();
     url.pathname = `/${role}/home`;
-    return NextResponse.redirect(url);
+    const redirectResponse = NextResponse.redirect(url)
+    
+    // Crucial: preserve any cookies that were updated by the createServerClient
+    supabaseResponse.cookies.getAll().forEach((cookie) => {
+      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+    })
+    
+    return redirectResponse
   }
 
   // To properly gate /admin, we would inspect the profiles table, but since middleware 
