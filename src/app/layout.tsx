@@ -6,6 +6,8 @@ import { Footer } from "@/components/layout/Footer";
 import { SocialSidebar } from "@/components/layout/SocialSidebar";
 import { ChatBot } from "@/components/chat/ChatBot";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { GoogleAnalytics } from "@next/third-parties/google";
+import { GA4RouteTracker } from "@/components/analytics/GA4RouteTracker";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,6 +26,8 @@ export const metadata: Metadata = {
     "PlayIQ is a hybrid digital and physical Learning Operating System. Future-proof learning with AI-powered STEM education, magnetic building kits, and guided digital experiences.",
   keywords: ["STEM", "education", "magnetic blocks", "AI learning", "PlayIQ"],
 };
+
+const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export default function RootLayout({
   children,
@@ -52,6 +56,12 @@ export default function RootLayout({
         className={`${inter.variable} ${orbitron.variable} font-sans min-h-screen flex flex-col pt-24`}
         suppressHydrationWarning
       >
+        {gaId && (
+          <>
+            <GoogleAnalytics gaId={gaId} />
+            <GA4RouteTracker gaId={gaId} />
+          </>
+        )}
         <ThemeProvider>
           <Navbar />
           <SocialSidebar />
