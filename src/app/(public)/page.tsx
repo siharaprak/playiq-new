@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { PlayIQLogo } from '@/components/layout/PlayIQLogo';
 
 export default function Home() {
   const [selectedPath, setSelectedPath] = useState<'none' | 'physical' | 'digital' | 'both'>('none');
@@ -30,9 +31,7 @@ export default function Home() {
         <div className="relative z-10 w-full max-w-7xl px-4 pt-20 pb-10 flex flex-col items-center justify-center">
           {/* MASSIVE Logo */}
           <div className="animate-fade-in-up mb-6 w-full text-center">
-             <h1 className="font-display font-black text-[6rem] sm:text-[10rem] md:text-[14rem] leading-none tracking-[-0.05em] text-transparent bg-clip-text bg-gradient-to-br from-[#00f2ff] to-[#ff00ff] drop-shadow-[0_0_40px_rgba(0,242,255,0.6)]">
-               PLAY<span className="text-white">IQ</span>
-             </h1>
+            <PlayIQLogo variant="hero" className="mx-auto" />
           </div>
 
           <div className="glass-card !bg-transparent !border-none !backdrop-blur-none text-center max-w-4xl mx-auto flex flex-col items-center gap-6 mt-[-1rem] md:mt-[-2rem]">

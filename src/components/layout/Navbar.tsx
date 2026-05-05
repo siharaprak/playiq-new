@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
+import { PlayIQLogo } from './PlayIQLogo';
 
 const navLinks = [
   { href: '/', label: 'HOME' },
@@ -48,10 +49,8 @@ export function Navbar() {
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-[1400px]">
       <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00f2ff]">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 flex-shrink-0 group">
-          <span className="font-display font-black text-2xl tracking-[0.2em] text-[#e2e8f0] group-hover:text-[#00f2ff] transition-colors drop-shadow-[0_0_8px_rgba(0,242,255,0.5)]">
-            PLAY<span className="text-[#ff00ff]">IQ</span>_
-          </span>
+        <Link href="/" className="flex items-center gap-2 flex-shrink-0 group" aria-label="PlayIQ Home">
+          <PlayIQLogo variant="navbar" className="group-hover:brightness-125 transition-all duration-300" />
         </Link>
 
         {/* Desktop Links */}
