@@ -62,14 +62,7 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
         <feGaussianBlur stdDeviation="30" />
       </filter>
 
-      {/* tagline glow */}
-      <filter id={`${id}-tag`} x="-20%" y="-60%" width="140%" height="220%">
-        <feGaussianBlur stdDeviation="5" result="b" />
-        <feMerge>
-          <feMergeNode in="b" />
-          <feMergeNode in="SourceGraphic" />
-        </feMerge>
-      </filter>
+
     </defs>
   );
 
@@ -88,9 +81,9 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
     return (
       <div className={`flex flex-col items-center select-none ${className}`}>
         <svg
-          viewBox="0 0 770 215"
+          viewBox="0 0 770 175"
           xmlns="http://www.w3.org/2000/svg"
-          aria-label="PlayIQ — Imagine. Build. Grow."
+          aria-label="PlayIQ"
           role="img"
           className="w-full max-w-[760px]"
           style={{ overflow: 'visible' }}
@@ -218,21 +211,7 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
               strokeLinecap="round" opacity="0.35" />
           </g>
 
-          {/* ═══════════════════════════════════════════════
-              TAGLINE
-          ═══════════════════════════════════════════════ */}
-          <text
-            x="375" y="203"
-            textAnchor="middle"
-            fontFamily="'Orbitron', 'Share Tech Mono', monospace"
-            fontSize="16"
-            fontWeight="700"
-            letterSpacing="5"
-            fill={PURPLE_LT}
-            filter={`url(#${id}-tag)`}
-          >
-            Imagine. Build. Grow.
-          </text>
+
         </svg>
       </div>
     );

@@ -1,55 +1,107 @@
 <svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <!-- Cyan glow for Q -->
-    <filter id="cyan" x="-40%" y="-40%" width="180%" height="180%">
-      <feGaussianBlur stdDeviation="15" result="b1"/>
-      <feGaussianBlur stdDeviation="6" result="b2"/>
+    <filter id="cn" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="10" result="b1"/>
+      <feGaussianBlur stdDeviation="4" result="b2"/>
       <feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    
-    <!-- Purple glow for i and handle -->
-    <filter id="purple" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="12" result="b"/>
+    <filter id="pu" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="8" result="b"/>
       <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-
-    <!-- Background bloom -->
-    <filter id="bloom" x="-60%" y="-60%" width="220%" height="220%">
-      <feGaussianBlur stdDeviation="40"/>
+    <filter id="bl" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="35"/>
     </filter>
   </defs>
 
-  <!-- Deep navy background (matches photo 2) -->
-  <rect width="512" height="512" fill="#060b19" />
-  
-  <!-- Ambient purple bloom -->
-  <circle cx="256" cy="256" r="200" fill="rgba(157,78,221,0.25)" filter="url(#bloom)"/>
+  <!-- Deep navy background -->
+  <rect width="512" height="512" fill="#07101f"/>
 
-  <!-- "i" letter -->
-  <g filter="url(#purple)">
-    <!-- dot -->
-    <circle cx="160" cy="130" r="18" fill="#9d4edd" stroke="#c77dff" stroke-width="4" />
-    <!-- stem -->
-    <path d="M 160,190 L 160,370" stroke="#c77dff" stroke-width="26" stroke-linecap="round" />
-    <!-- serifs -->
-    <path d="M 130,190 L 190,190" stroke="#c77dff" stroke-width="26" stroke-linecap="round" />
-    <path d="M 130,370 L 190,370" stroke="#c77dff" stroke-width="26" stroke-linecap="round" />
-    <!-- white highlight -->
-    <path d="M 160,190 L 160,370" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.4" />
+  <!-- Purple ambient bloom -->
+  <ellipse cx="256" cy="256" r="220" fill="rgba(120,0,210,0.35)" filter="url(#bl)"/>
+
+  <!-- === PLAY letters (cyan) === -->
+  <!-- Scale: letters span roughly x=18..395, y=110..390, all packed tight -->
+
+  <!-- P: vertical bar + bowl -->
+  <g stroke="#00d4ff" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#cn)">
+    <line x1="30" y1="110" x2="30" y2="390"/>
+    <path d="M 30,110 L 100,110 Q 125,110 125,155 Q 125,200 100,200 L 30,200"/>
+  </g>
+  <g stroke="#7df9ff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="30" y1="110" x2="30" y2="390" opacity="0.6"/>
+    <path d="M 30,110 L 100,110 Q 125,110 125,155 Q 125,200 100,200 L 30,200" opacity="0.6"/>
   </g>
 
-  <!-- "Q" letter -->
-  <g>
-    <!-- main circle -->
-    <circle cx="340" cy="240" r="110" stroke="#00d4ff" stroke-width="26" fill="none" filter="url(#cyan)" />
-    <!-- white highlight -->
-    <circle cx="340" cy="240" r="110" stroke="#7df9ff" stroke-width="8" fill="none" opacity="0.8" />
-    
-    <!-- magnifier handle -->
-    <g filter="url(#purple)">
-      <line x1="418" y1="318" x2="465" y2="385" stroke="#9d4edd" stroke-width="32" stroke-linecap="round" />
-      <line x1="418" y1="318" x2="465" y2="385" stroke="#c77dff" stroke-width="12" stroke-linecap="round" />
-      <line x1="418" y1="318" x2="465" y2="385" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
-    </g>
+  <!-- L -->
+  <g stroke="#00d4ff" stroke-width="18" fill="none" stroke-linecap="round" filter="url(#cn)">
+    <line x1="148" y1="110" x2="148" y2="390"/>
+    <line x1="148" y1="390" x2="220" y2="390"/>
+  </g>
+  <g stroke="#7df9ff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.6">
+    <line x1="148" y1="110" x2="148" y2="390"/>
+    <line x1="148" y1="390" x2="220" y2="390"/>
+  </g>
+
+  <!-- A + arrow -->
+  <g stroke="#00d4ff" stroke-width="18" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#cn)">
+    <path d="M 240,390 L 302,110 L 364,390"/>
+    <line x1="259" y1="300" x2="345" y2="300"/>
+  </g>
+  <g stroke="#7df9ff" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.6">
+    <path d="M 240,390 L 302,110 L 364,390"/>
+    <line x1="259" y1="300" x2="345" y2="300"/>
+  </g>
+  <!-- arrow inside A -->
+  <g stroke="#c77dff" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#pu)">
+    <line x1="268" y1="300" x2="330" y2="300"/>
+    <path d="M 316,282 L 334,300 L 316,318"/>
+  </g>
+
+  <!-- Y -->
+  <g stroke="#00d4ff" stroke-width="18" fill="none" stroke-linecap="round" filter="url(#cn)">
+    <line x1="385" y1="110" x2="430" y2="228"/>
+    <line x1="475" y1="110" x2="430" y2="228"/>
+    <line x1="430" y1="228" x2="430" y2="390"/>
+  </g>
+  <g stroke="#7df9ff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.6">
+    <line x1="385" y1="110" x2="430" y2="228"/>
+    <line x1="475" y1="110" x2="430" y2="228"/>
+    <line x1="430" y1="228" x2="430" y2="390"/>
+  </g>
+
+  <!-- === iQ (purple i + cyan Q) right side, scaled down to fit === -->
+
+  <!-- lowercase i (purple) -->
+  <g filter="url(#pu)">
+    <circle cx="50" cy="430" r="0" fill="none"/>
+  </g>
+
+  <!-- We fit iQ below PLAY in a second row, centered -->
+  <!-- i at ~x=155, Q at ~x=310 in a 512-wide canvas, row y=410..490 -->
+
+  <!-- i dot -->
+  <g filter="url(#pu)">
+    <circle cx="170" cy="415" r="11" fill="#9d4edd" stroke="#c77dff" stroke-width="3"/>
+    <circle cx="170" cy="415" r="5" fill="white" opacity="0.45"/>
+    <!-- i stem -->
+    <line x1="170" y1="434" x2="170" y2="492" stroke="#c77dff" stroke-width="14" stroke-linecap="round"/>
+    <!-- i serifs -->
+    <line x1="154" y1="434" x2="186" y2="434" stroke="#c77dff" stroke-width="14" stroke-linecap="round"/>
+    <line x1="154" y1="492" x2="186" y2="492" stroke="#c77dff" stroke-width="14" stroke-linecap="round"/>
+    <!-- highlight -->
+    <line x1="170" y1="434" x2="170" y2="492" stroke="white" stroke-width="3.5" stroke-linecap="round" opacity="0.35"/>
+  </g>
+
+  <!-- Q (cyan) -->
+  <g filter="url(#cn)">
+    <circle cx="330" cy="455" r="50" stroke="#00d4ff" stroke-width="14" fill="none"/>
+  </g>
+  <circle cx="330" cy="455" r="50" stroke="#7df9ff" stroke-width="4" fill="none" opacity="0.65"/>
+  <!-- Q handle (purple) -->
+  <g filter="url(#pu)">
+    <line x1="365" y1="490" x2="392" y2="504" stroke="#9d4edd" stroke-width="20" stroke-linecap="round"/>
+    <line x1="365" y1="490" x2="392" y2="504" stroke="#c77dff" stroke-width="7" stroke-linecap="round"/>
+    <line x1="365" y1="490" x2="392" y2="504" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.35"/>
   </g>
 </svg>
