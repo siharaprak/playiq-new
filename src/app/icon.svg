@@ -1,0 +1,55 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Cyan glow for Q -->
+    <filter id="cyan" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="15" result="b1"/>
+      <feGaussianBlur stdDeviation="6" result="b2"/>
+      <feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    
+    <!-- Purple glow for i and handle -->
+    <filter id="purple" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="12" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <!-- Background bloom -->
+    <filter id="bloom" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="40"/>
+    </filter>
+  </defs>
+
+  <!-- Deep navy background (matches photo 2) -->
+  <rect width="512" height="512" fill="#060b19" />
+  
+  <!-- Ambient purple bloom -->
+  <circle cx="256" cy="256" r="200" fill="rgba(157,78,221,0.25)" filter="url(#bloom)"/>
+
+  <!-- "i" letter -->
+  <g filter="url(#purple)">
+    <!-- dot -->
+    <circle cx="160" cy="130" r="18" fill="#9d4edd" stroke="#c77dff" stroke-width="4" />
+    <!-- stem -->
+    <path d="M 160,190 L 160,370" stroke="#c77dff" stroke-width="26" stroke-linecap="round" />
+    <!-- serifs -->
+    <path d="M 130,190 L 190,190" stroke="#c77dff" stroke-width="26" stroke-linecap="round" />
+    <path d="M 130,370 L 190,370" stroke="#c77dff" stroke-width="26" stroke-linecap="round" />
+    <!-- white highlight -->
+    <path d="M 160,190 L 160,370" stroke="white" stroke-width="6" stroke-linecap="round" opacity="0.4" />
+  </g>
+
+  <!-- "Q" letter -->
+  <g>
+    <!-- main circle -->
+    <circle cx="340" cy="240" r="110" stroke="#00d4ff" stroke-width="26" fill="none" filter="url(#cyan)" />
+    <!-- white highlight -->
+    <circle cx="340" cy="240" r="110" stroke="#7df9ff" stroke-width="8" fill="none" opacity="0.8" />
+    
+    <!-- magnifier handle -->
+    <g filter="url(#purple)">
+      <line x1="418" y1="318" x2="465" y2="385" stroke="#9d4edd" stroke-width="32" stroke-linecap="round" />
+      <line x1="418" y1="318" x2="465" y2="385" stroke="#c77dff" stroke-width="12" stroke-linecap="round" />
+      <line x1="418" y1="318" x2="465" y2="385" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.4" />
+    </g>
+  </g>
+</svg>
