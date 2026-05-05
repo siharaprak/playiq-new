@@ -23,10 +23,7 @@ export default async function DiscussionsLayout({ children }: { children: React.
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-10">
         {/* Header */}
         <div className="mb-6">
-          <Link href={`/${userRole}/home`} className="flex items-center gap-1.5 text-xs font-medium transition-colors w-fit mb-4" style={{ color: '#94a3b8' }}
-            onMouseOver={e => (e.currentTarget.style.color = '#00c8ff')}
-            onMouseOut={e => (e.currentTarget.style.color = '#94a3b8')}
-          >
+          <Link href={`/${userRole}/home`} className="discussions-back-link flex items-center gap-1.5 text-xs font-medium transition-colors w-fit mb-4">
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Dashboard
           </Link>

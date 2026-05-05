@@ -97,6 +97,11 @@ body {
   text-shadow: 0 0 12px rgba(123, 79, 206, 0.25);
 }
 
+/* Discussions back link hover */
+.discussions-back-link { color: #94a3b8; }
+.discussions-back-link:hover { color: #00c8ff; }
+
+
 /* ── Glassmorphism Card ───────────────────────────────────── */
 
 .glass-card {
