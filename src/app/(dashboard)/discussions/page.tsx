@@ -8,31 +8,32 @@ export default async function DiscussionsIndex() {
   return (
     <div className="space-y-3">
       {/* Welcome banner */}
-      <div className="bg-gradient-to-r from-indigo-600/20 to-purple-600/20 border border-indigo-500/20 rounded-lg p-5 mb-4">
+      <div className="rounded-lg p-5 mb-4" style={{ background: 'linear-gradient(135deg, rgba(123,79,206,0.18), rgba(0,200,255,0.08))', border: '1px solid rgba(123,79,206,0.25)' }}>
         <div className="flex items-center gap-2 mb-1">
-          <TrendingUp className="w-4 h-4 text-indigo-400" />
-          <h2 className="font-bold text-sm text-indigo-300">Welcome to PlayIQ Discussions</h2>
+          <TrendingUp className="w-4 h-4" style={{ color: '#00c8ff' }} />
+          <h2 className="font-bold text-sm font-display" style={{ color: '#9b6fe8' }}>Welcome to PlayIQ Discussions</h2>
         </div>
-        <p className="text-xs text-slate-400">Choose a category below to browse topics or start a new conversation.</p>
+        <p className="text-xs" style={{ color: '#64748b' }}>Choose a category below to browse topics or start a new conversation.</p>
       </div>
 
-      {/* Category list — Reddit subreddit style */}
+      {/* Category list */}
       {categories.map((category: any) => (
-        <Link 
-          key={category.id} 
+        <Link
+          key={category.id}
           href={`/discussions/${category.slug}`}
-          className="flex items-center gap-4 bg-slate-800/60 hover:bg-slate-700/60 border border-slate-700/50 hover:border-indigo-500/30 rounded-lg p-4 transition-all group"
+          className="flex items-center gap-4 rounded-lg p-4 transition-all group"
+          style={{ background: 'rgba(17,24,39,0.8)', border: '1px solid rgba(123,79,206,0.2)' }}
         >
-          <div className="w-10 h-10 bg-indigo-500/15 border border-indigo-500/25 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-indigo-500/25 transition-colors">
-            <Hash className="w-5 h-5 text-indigo-400" />
+          <div className="w-10 h-10 rounded-lg flex items-center justify-center shrink-0 transition-colors" style={{ background: 'rgba(0,200,255,0.08)', border: '1px solid rgba(0,200,255,0.2)' }}>
+            <Hash className="w-5 h-5" style={{ color: '#00c8ff' }} />
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="font-bold text-white group-hover:text-indigo-300 transition-colors">{category.title}</h3>
+            <h3 className="font-bold text-white transition-colors group-hover:text-[#00c8ff]">{category.title}</h3>
             {category.description && (
-              <p className="text-xs text-slate-500 mt-0.5 truncate">{category.description}</p>
+              <p className="text-xs mt-0.5 truncate" style={{ color: '#64748b' }}>{category.description}</p>
             )}
           </div>
-          <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-indigo-400 transition-colors shrink-0" />
+          <ChevronRight className="w-4 h-4 shrink-0 transition-colors" style={{ color: '#4a5568' }} />
         </Link>
       ))}
     </div>

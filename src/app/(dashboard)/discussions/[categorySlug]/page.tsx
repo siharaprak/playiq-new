@@ -18,7 +18,7 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
   const user = await requireAuth(req).catch(() => null);
   
   if (!user) {
-    return <div className="p-8 text-center text-slate-400 bg-slate-800 rounded-xl">Please log in to view discussions.</div>;
+    return <div className="p-8 text-center rounded-xl" style={{ color: '#64748b', background: 'rgba(17,24,39,0.8)' }}>Please log in to view discussions.</div>;
   }
   
   let category;
@@ -39,11 +39,11 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
   return (
     <div className="space-y-3">
       {/* Category header */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-lg p-4">
-        <h2 className="font-bold text-lg text-white">
-          <span className="text-indigo-400 mr-1">#</span>{category.title}
+      <div className="rounded-lg p-4" style={{ background: 'rgba(17,24,39,0.8)', borderLeft: '3px solid #7b4fce', border: '1px solid rgba(123,79,206,0.25)' }}>
+        <h2 className="font-bold text-lg font-display">
+          <span className="mr-1" style={{ color: '#00c8ff' }}>#</span>{category.title}
         </h2>
-        {category.description && <p className="text-xs text-slate-500 mt-1">{category.description}</p>}
+        {category.description && <p className="text-xs mt-1" style={{ color: '#64748b' }}>{category.description}</p>}
       </div>
 
       {/* Create a post bar (hidden for parents) */}
@@ -54,27 +54,28 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
       {/* Search */}
       <form className="flex items-center gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
-          <input 
-            type="text" 
-            name="q" 
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#64748b' }} />
+          <input
+            type="text"
+            name="q"
             defaultValue={query}
-            placeholder="Search posts..." 
-            className="w-full bg-slate-800/60 border border-slate-700/50 rounded-lg pl-9 pr-4 py-2 text-white text-sm focus:outline-none focus:border-indigo-500/50 placeholder:text-slate-600"
+            placeholder="Search posts..."
+            className="w-full rounded-lg pl-9 pr-4 py-2 text-white text-sm focus:outline-none"
+            style={{ background: 'rgba(17,24,39,0.8)', border: '1px solid rgba(123,79,206,0.25)' }}
           />
         </div>
-        <button type="submit" className="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-3 py-2 rounded-lg text-xs font-bold text-slate-300 transition-colors">
+        <button type="submit" className="px-3 py-2 rounded-lg text-xs font-bold transition-colors" style={{ background: 'rgba(17,24,39,0.8)', border: '1px solid rgba(123,79,206,0.3)', color: '#94a3b8' }}>
           Search
         </button>
         {query && (
-          <Link href={`/discussions/${categorySlug}`} className="text-xs text-slate-500 hover:text-white px-2">Clear</Link>
+          <Link href={`/discussions/${categorySlug}`} className="text-xs px-2 transition-colors" style={{ color: '#64748b' }}>Clear</Link>
         )}
       </form>
 
       {/* Topic feed */}
       <div className="space-y-2">
         {filteredTopics.length === 0 ? (
-          <div className="text-center py-16 text-slate-500 text-sm">
+          <div className="text-center py-16 text-sm" style={{ color: '#64748b' }}>
             {query ? 'No posts found matching your search.' : 'No posts yet. Be the first to start a discussion!'}
           </div>
         ) : (
@@ -82,14 +83,13 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
             <Link 
               key={topic.id} 
               href={`/discussions/topic/${topic.id}`}
-              className={`block bg-slate-800/60 hover:bg-slate-700/50 border rounded-lg p-4 transition-all group ${
-                topic.is_pinned ? 'border-amber-500/30 bg-amber-500/5' : 'border-slate-700/50 hover:border-slate-600'
-              }`}
+              className="block rounded-lg p-4 transition-all group"
+            style={{ background: topic.is_pinned ? 'rgba(245,197,24,0.05)' : 'rgba(17,24,39,0.8)', border: topic.is_pinned ? '1px solid rgba(245,197,24,0.3)' : '1px solid rgba(123,79,206,0.2)' }}
             >
               {/* Pinned badge */}
               {topic.is_pinned && (
-                <div className="flex items-center gap-1.5 text-amber-400 text-[0.65rem] font-bold uppercase tracking-wider mb-2">
-                  <Pin className="w-3 h-3 fill-amber-400/30" />
+                <div className="flex items-center gap-1.5 text-[0.65rem] font-bold uppercase tracking-wider mb-2" style={{ color: '#f5c518' }}>
+                  <Pin className="w-3 h-3" style={{ fill: 'rgba(245,197,24,0.3)' }} />
                   Pinned
                 </div>
               )}
@@ -110,7 +110,7 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-bold text-white group-hover:text-indigo-300 transition-colors leading-snug mb-1">
+                  <h3 className="font-bold text-white transition-colors leading-snug mb-1 group-hover:text-[#00c8ff]">
                     {topic.title}
                   </h3>
 

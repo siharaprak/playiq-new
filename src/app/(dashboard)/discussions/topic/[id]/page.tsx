@@ -14,7 +14,7 @@ export default async function TopicPage(props: { params: Promise<{ id: string }>
   const appUser = await requireAuth(req).catch(() => null);
   
   if (!appUser) {
-    return <div className="p-8 text-center text-slate-400 bg-slate-800 rounded-xl">Please log in to view discussions.</div>;
+    return <div className="p-8 text-center rounded-xl" style={{ color: '#64748b', background: 'rgba(17,24,39,0.8)' }}>Please log in to view discussions.</div>;
   }
 
   const params = await props.params;
@@ -40,16 +40,16 @@ export default async function TopicPage(props: { params: Promise<{ id: string }>
       </Link>
 
       {/* ── Main Post (OP) ── */}
-      <div className="bg-slate-800/60 border border-slate-700/50 rounded-lg overflow-hidden">
+      <div className="rounded-lg overflow-hidden" style={{ background: 'rgba(17,24,39,0.85)', border: '1px solid rgba(123,79,206,0.25)' }}>
         {/* Pinned / Locked banners */}
         {topic.is_pinned && (
-          <div className="flex items-center gap-1.5 px-4 py-2 bg-amber-500/10 border-b border-amber-500/20 text-amber-400 text-[0.65rem] font-bold uppercase tracking-wider">
-            <Pin className="w-3 h-3 fill-amber-400/30" />
+          <div className="flex items-center gap-1.5 px-4 py-2 text-[0.65rem] font-bold uppercase tracking-wider" style={{ background: 'rgba(245,197,24,0.08)', borderBottom: '1px solid rgba(245,197,24,0.2)', color: '#f5c518' }}>
+            <Pin className="w-3 h-3" style={{ fill: 'rgba(245,197,24,0.3)' }} />
             Pinned by moderator
           </div>
         )}
         {topic.is_locked && (
-          <div className="flex items-center gap-1.5 px-4 py-2 bg-amber-500/10 border-b border-amber-500/20 text-amber-400 text-[0.65rem] font-bold uppercase tracking-wider">
+          <div className="flex items-center gap-1.5 px-4 py-2 text-[0.65rem] font-bold uppercase tracking-wider" style={{ background: 'rgba(245,197,24,0.08)', borderBottom: '1px solid rgba(245,197,24,0.2)', color: '#f5c518' }}>
             <Lock className="w-3 h-3" />
             This thread is locked
           </div>
@@ -86,7 +86,7 @@ export default async function TopicPage(props: { params: Promise<{ id: string }>
           </div>
           
           {/* Action bar */}
-          <div className="mt-4 pt-3 border-t border-slate-700/40">
+          <div className="mt-4 pt-3" style={{ borderTop: '1px solid rgba(123,79,206,0.15)' }}>
             <ThreadActions 
               itemId={topic.id} 
               itemType="topic" 
@@ -114,13 +114,12 @@ export default async function TopicPage(props: { params: Promise<{ id: string }>
         )}
 
         {replies.map((reply: any) => (
-          <div key={reply.id} className="bg-slate-800/40 border border-slate-700/40 rounded-lg p-4">
+          <div key={reply.id} className="rounded-lg p-4" style={{ background: 'rgba(17,24,39,0.6)', border: '1px solid rgba(123,79,206,0.15)' }}>
             <div className="flex gap-3">
               {/* Reply thread line + avatar */}
               <div className="flex flex-col items-center">
                 <UserAvatar name={reply.author?.full_name} role={reply.author?.role} size="sm" />
-                {/* Thread line */}
-                <div className="w-px flex-1 bg-slate-700/40 mt-2" />
+                <div className="w-px flex-1 mt-2" style={{ background: 'rgba(123,79,206,0.2)' }} />
               </div>
 
               {/* Reply content */}
@@ -173,13 +172,13 @@ export default async function TopicPage(props: { params: Promise<{ id: string }>
             <ReplyComposer topicId={topic.id} />
           </div>
         ) : (
-          <div className="mt-2 px-4 py-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center gap-2 text-emerald-400 text-xs">
+          <div className="mt-2 px-4 py-3 rounded-lg flex items-center gap-2 text-xs" style={{ background: 'rgba(0,200,255,0.06)', border: '1px solid rgba(0,200,255,0.18)', color: '#00c8ff' }}>
             <Eye className="w-4 h-4" />
             <span>You have read-only access as a parent. You can view discussions but cannot post replies.</span>
           </div>
         )
       ) : (
-        <div className="mt-2 px-4 py-3 bg-amber-500/10 border border-amber-500/20 rounded-lg flex items-center gap-2 text-amber-400 text-xs">
+        <div className="mt-2 px-4 py-3 rounded-lg flex items-center gap-2 text-xs" style={{ background: 'rgba(245,197,24,0.06)', border: '1px solid rgba(245,197,24,0.2)', color: '#f5c518' }}>
           <Lock className="w-4 h-4" />
           <span>This thread has been locked by a moderator. No new comments can be added.</span>
         </div>
