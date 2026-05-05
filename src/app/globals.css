@@ -661,11 +661,11 @@ html[data-theme="light"] .text-white {
 }
 
 /* Accent color adjustments for visibility on light bg */
-html[data-theme="light"] .text-\[\#00f2ff\] {
+html[data-theme="light"] .text-\[\#00c8ff\] {
   color: #008899 !important;
 }
 
-html[data-theme="light"] .text-\[\#ff00ff\] {
+html[data-theme="light"] .text-\[\#7b4fce\] {
   color: #990099 !important;
 }
 
@@ -674,12 +674,12 @@ html[data-theme="light"] .text-\[\#39ff14\] {
 }
 
 /* Hover text color overrides for links/logo */
-html[data-theme="light"] .hover\:text-\[\#00f2ff\]:hover,
-html[data-theme="light"] .group:hover .group-hover\:text-\[\#00f2ff\] {
+html[data-theme="light"] .hover\:text-\[\#00c8ff\]:hover,
+html[data-theme="light"] .group:hover .group-hover\:text-\[\#00c8ff\] {
   color: #008899 !important;
 }
 
-html[data-theme="light"] .hover\:text-\[\#ff00ff\]:hover {
+html[data-theme="light"] .hover\:text-\[\#7b4fce\]:hover {
   color: #990099 !important;
 }
 
@@ -689,35 +689,35 @@ html[data-theme="light"] .drop-shadow-\[0_0_8px_rgba\(0\,242\,255\,0\.5\)\] {
 }
 
 /* Border color overrides */
-html[data-theme="light"] .border-\[\#00f2ff\] {
+html[data-theme="light"] .border-\[\#00c8ff\] {
   border-color: #008899 !important;
 }
 
-html[data-theme="light"] .border-\[\#ff00ff\] {
+html[data-theme="light"] .border-\[\#7b4fce\] {
   border-color: #990099 !important;
 }
 
-html[data-theme="light"] .border-t-\[\#00f2ff\] {
+html[data-theme="light"] .border-t-\[\#00c8ff\] {
   border-top-color: #008899 !important;
 }
 
-html[data-theme="light"] .border-l-\[\#ff00ff\] {
+html[data-theme="light"] .border-l-\[\#7b4fce\] {
   border-left-color: #990099 !important;
 }
 
-html[data-theme="light"] .border-\[\#00f2ff\]\/40 {
+html[data-theme="light"] .border-\[\#00c8ff\]\/40 {
   border-color: rgba(0, 136, 153, 0.4) !important;
 }
 
-html[data-theme="light"] .border-\[\#00f2ff\]\/30 {
+html[data-theme="light"] .border-\[\#00c8ff\]\/30 {
   border-color: rgba(0, 136, 153, 0.3) !important;
 }
 
-html[data-theme="light"] .border-\[\#00f2ff\]\/20 {
+html[data-theme="light"] .border-\[\#00c8ff\]\/20 {
   border-color: rgba(0, 136, 153, 0.2) !important;
 }
 
-html[data-theme="light"] .border-\[\#ff00ff\]\/30 {
+html[data-theme="light"] .border-\[\#7b4fce\]\/30 {
   border-color: rgba(153, 0, 153, 0.3) !important;
 }
 
@@ -739,15 +739,15 @@ html[data-theme="light"] .shadow-\[0_0_5px_\#39ff14\] {
 }
 
 /* Chat bubble backgrounds */
-html[data-theme="light"] .bg-\[\#00f2ff\]\/10 {
+html[data-theme="light"] .bg-\[\#00c8ff\]\/10 {
   background-color: rgba(0, 136, 153, 0.1) !important;
 }
 
-html[data-theme="light"] .bg-\[\#ff00ff\]\/10 {
+html[data-theme="light"] .bg-\[\#7b4fce\]\/10 {
   background-color: rgba(153, 0, 153, 0.08) !important;
 }
 
-html[data-theme="light"] .bg-\[\#ff00ff\] {
+html[data-theme="light"] .bg-\[\#7b4fce\] {
   background-color: #990099 !important;
 }
 
@@ -756,12 +756,12 @@ html[data-theme="light"] .bg-\[\#39ff14\] {
 }
 
 /* Neon cyan button backgrounds */
-html[data-theme="light"] .bg-\[\#00f2ff\] {
+html[data-theme="light"] .bg-\[\#00c8ff\] {
   background-color: #00a0b3 !important;
   color: #ffffff !important;
 }
 
-html[data-theme="light"] .hover\:bg-\[\#00f2ff\]\/80:hover {
+html[data-theme="light"] .hover\:bg-\[\#00c8ff\]\/80:hover {
   background-color: rgba(0, 160, 179, 0.8) !important;
 }
 
@@ -776,15 +776,15 @@ html[data-theme="light"] .border-slate-600\/60 {
 }
 
 /* Hover states */
-html[data-theme="light"] .hover\:text-\[\#00f2ff\]:hover {
+html[data-theme="light"] .hover\:text-\[\#00c8ff\]:hover {
   color: #008899 !important;
 }
 
-html[data-theme="light"] .hover\:text-\[\#ff00ff\]:hover {
+html[data-theme="light"] .hover\:text-\[\#7b4fce\]:hover {
   color: #990099 !important;
 }
 
-html[data-theme="light"] .hover\:border-\[\#00f2ff\]\/60:hover {
+html[data-theme="light"] .hover\:border-\[\#00c8ff\]\/60:hover {
   border-color: rgba(0, 136, 153, 0.6) !important;
 }
 
@@ -792,7 +792,7 @@ html[data-theme="light"] .hover\:bg-\[rgba\(0\,242\,255\,0\.1\)\]:hover {
   background-color: rgba(0, 136, 153, 0.1) !important;
 }
 
-html[data-theme="light"] .hover\:border-\[\#00f2ff\]:hover {
+html[data-theme="light"] .hover\:border-\[\#00c8ff\]:hover {
   border-color: #008899 !important;
 }
 
@@ -876,13 +876,13 @@ html[data-theme="light"] .hover\:drop-shadow-\[0_0_8px_rgba\(255\,0\,255\,0\.8\)
 }
 
 /* Social sidebar gradient lines */
-html[data-theme="light"] .from-\[\#00f2ff\]\/40,
-html[data-theme="light"] .to-\[\#00f2ff\]\/40 {
+html[data-theme="light"] .from-\[\#00c8ff\]\/40,
+html[data-theme="light"] .to-\[\#00c8ff\]\/40 {
   --tw-gradient-from: rgba(0, 136, 153, 0.3);
 }
 
-html[data-theme="light"] .from-\[\#ff00ff\]\/40,
-html[data-theme="light"] .to-\[\#ff00ff\]\/40 {
+html[data-theme="light"] .from-\[\#7b4fce\]\/40,
+html[data-theme="light"] .to-\[\#7b4fce\]\/40 {
   --tw-gradient-from: rgba(153, 0, 153, 0.3);
 }
 
@@ -1012,25 +1012,25 @@ html[data-theme="light"] .text-white\/70 {
 }
 
 /* Hero border bottom */
-html[data-theme="light"] .border-b-\[\#ff00ff\] {
+html[data-theme="light"] .border-b-\[\#7b4fce\] {
   border-bottom-color: #990099 !important;
 }
 
-/* border-[#ff00ff] for tagline */
-html[data-theme="light"] .border-\[\#ff00ff\] {
+/* border-[#7b4fce] for tagline */
+html[data-theme="light"] .border-\[\#7b4fce\] {
   border-color: #990099 !important;
 }
 
 /* Active button states in hero */
-html[data-theme="light"] .bg-\[\#ff00ff\] {
+html[data-theme="light"] .bg-\[\#7b4fce\] {
   background-color: #990099 !important;
 }
 
-html[data-theme="light"] .shadow-\[0_0_20px_\#ff00ff\] {
+html[data-theme="light"] .shadow-\[0_0_20px_\#7b4fce\] {
   box-shadow: 0 0 15px rgba(153, 0, 153, 0.4) !important;
 }
 
-html[data-theme="light"] .shadow-\[0_0_20px_\#00f2ff\] {
+html[data-theme="light"] .shadow-\[0_0_20px_\#00c8ff\] {
   box-shadow: 0 0 15px rgba(0, 136, 153, 0.4) !important;
 }
 
@@ -1038,7 +1038,7 @@ html[data-theme="light"] .shadow-\[0_0_20px_rgba\(255\,0\,255\,0\.5\)\] {
   box-shadow: 0 0 15px rgba(153, 0, 153, 0.3) !important;
 }
 
-html[data-theme="light"] .shadow-\[0_0_15px_\#ff00ff\] {
+html[data-theme="light"] .shadow-\[0_0_15px_\#7b4fce\] {
   box-shadow: 0 0 12px rgba(153, 0, 153, 0.3) !important;
 }
 
@@ -1061,12 +1061,12 @@ html[data-theme="light"] .hover\:shadow-\[0_0_25px_rgba\(0\,242\,255\,0\.6\)\]:h
   box-shadow: 0 0 20px rgba(0, 136, 153, 0.4) !important;
 }
 
-html[data-theme="light"] .hover\:bg-\[\#00f2ff\]\/20:hover {
+html[data-theme="light"] .hover\:bg-\[\#00c8ff\]\/20:hover {
   background-color: rgba(0, 136, 153, 0.2) !important;
 }
 
 /* Focus ring for chat input */
-html[data-theme="light"] .focus\:border-\[\#00f2ff\]:focus {
+html[data-theme="light"] .focus\:border-\[\#00c8ff\]:focus {
   border-color: #008899 !important;
 }
 
@@ -1120,11 +1120,11 @@ html[data-theme="light"] .drop-shadow-\[0_0_15px_rgba\(255\,255\,255\,0\.2\)\] {
   filter: drop-shadow(0 0 10px rgba(26, 30, 46, 0.15)) !important;
 }
 
-html[data-theme="light"] .text-\[\#00f2ff\].opacity-80 {
+html[data-theme="light"] .text-\[\#00c8ff\].opacity-80 {
   opacity: 1 !important;
 }
 
-html[data-theme="light"] .text-\[\#ff00ff\].opacity-60 {
+html[data-theme="light"] .text-\[\#7b4fce\].opacity-60 {
   opacity: 0.9 !important;
 }
 
@@ -1145,7 +1145,7 @@ html[data-theme="light"] .text-glow-cyan {
   text-shadow: none !important;
 }
 
-html[data-theme="light"] .bg-gradient-to-br.from-\[\#00f2ff\].to-\[\#ff00ff\] {
+html[data-theme="light"] .bg-gradient-to-br.from-\[\#00c8ff\].to-\[\#7b4fce\] {
   background-image: linear-gradient(to bottom right, #008899, #990099) !important;
 }
 
@@ -1153,7 +1153,7 @@ html[data-theme="light"] .drop-shadow-\[0_0_20px_rgba\(0\,242\,255\,0\.6\)\] {
   filter: drop-shadow(0 0 5px rgba(0, 136, 153, 0.2)) !important;
 }
 
-html[data-theme="light"] .text-\[\#00f2ff\].opacity-60 {
+html[data-theme="light"] .text-\[\#00c8ff\].opacity-60 {
   opacity: 0.9 !important;
 }
 
@@ -1166,7 +1166,7 @@ html[data-theme="light"] .text-glow-magenta {
   text-shadow: none !important;
 }
 
-html[data-theme="light"] .drop-shadow-\[2px_2px_0_\#ff00ff\] {
+html[data-theme="light"] .drop-shadow-\[2px_2px_0_\#7b4fce\] {
   filter: drop-shadow(2px 2px 0 rgba(153, 0, 153, 0.6)) !important;
 }
 
@@ -1179,18 +1179,18 @@ html[data-theme="light"] .bg-black\/50 {
 }
 
 /* Contact Page Overrides */
-html[data-theme="light"] .hover\:bg-\[\#ff00ff\]:hover {
+html[data-theme="light"] .hover\:bg-\[\#7b4fce\]:hover {
   background-color: #990099 !important;
 }
 
-html[data-theme="light"] .shadow-\[0_0_10px_\#00f2ff\] {
+html[data-theme="light"] .shadow-\[0_0_10px_\#00c8ff\] {
   box-shadow: 0 0 5px rgba(0, 136, 153, 0.4) !important;
 }
 
-html[data-theme="light"] .drop-shadow-\[0_0_5px_\#00f2ff\] {
+html[data-theme="light"] .drop-shadow-\[0_0_5px_\#00c8ff\] {
   filter: drop-shadow(0 0 3px rgba(0, 136, 153, 0.5)) !important;
 }
 
-html[data-theme="light"] .drop-shadow-\[0_0_5px_\#ff00ff\] {
+html[data-theme="light"] .drop-shadow-\[0_0_5px_\#7b4fce\] {
   filter: drop-shadow(0 0 3px rgba(153, 0, 153, 0.5)) !important;
 }

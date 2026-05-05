@@ -26,28 +26,31 @@ export default function Login() {
   return (
     <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-28 pb-12 px-6">
       {/* Background elements */}
-      <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,242,255,0.08)] rounded-full blur-[140px] animate-drift pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[rgba(255,0,255,0.08)] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
+      <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.08)] rounded-full blur-[140px] animate-drift pointer-events-none" />
+      <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[ 
+    $m = $args[0].Value
+    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
+  ] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
 
       {/* HUD Overlays */}
-      <div className="absolute top-32 left-[5%] hidden md:block font-display tracking-[0.3em] text-[#00f2ff] text-[0.6rem] uppercase opacity-60">
+      <div className="absolute top-32 left-[5%] hidden md:block font-display tracking-[0.3em] text-[#00c8ff] text-[0.6rem] uppercase opacity-60">
         LOGIN PORTAL<br/>
         READY
       </div>
 
       <div className="relative z-10 w-full max-w-md">
-        <div className="glass-card !border-t-4 !border-t-[#ff00ff] !rounded-none p-8">
+        <div className="glass-card !border-t-4 !border-t-[#7b4fce] !rounded-none p-8">
           {/* Header */}
           <div className="mb-8 text-center flex flex-col items-center">
             <Link
               href="/"
-              className="inline-flex items-center font-display uppercase tracking-[0.2em] text-[0.65rem] text-slate-500 hover:text-[#00f2ff] mb-6 transition-colors"
+              className="inline-flex items-center font-display uppercase tracking-[0.2em] text-[0.65rem] text-slate-500 hover:text-[#00c8ff] mb-6 transition-colors"
             >
               &lt; GO BACK
             </Link>
 
             <div className="flex justify-center mb-5">
-               <h1 className="font-display font-black text-4xl tracking-[-0.05em] text-transparent bg-clip-text bg-gradient-to-br from-[#00f2ff] to-[#ff00ff] drop-shadow-[0_0_20px_rgba(0,242,255,0.6)]">
+               <h1 className="font-display font-black text-4xl tracking-[-0.05em] text-transparent bg-clip-text bg-gradient-to-br from-[#00c8ff] to-[#7b4fce] drop-shadow-[0_0_20px_rgba(0,200,255,0.6)]">
                  PLAY<span className="text-white">IQ</span>
                </h1>
             </div>
@@ -55,7 +58,7 @@ export default function Login() {
             <h1 className="font-display text-xl font-bold text-white uppercase tracking-wider text-glow-cyan">
               LOG IN
             </h1>
-            <p className="text-[#ff00ff] mt-2 font-display text-xs uppercase tracking-[0.2em]">
+            <p className="text-[#7b4fce] mt-2 font-display text-xs uppercase tracking-[0.2em]">
               [STUDENT & PARENT ACCESS]
             </p>
           </div>
@@ -70,26 +73,26 @@ export default function Login() {
             )}
 
             <div>
-              <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00f2ff] mb-2 opacity-80">
+              <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] mb-2 opacity-80">
                 &gt; USER_ID [EMAIL]
               </label>
               <input
                 type="email"
                 name="email"
                 required
-                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00f2ff] !bg-black/40"
+                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40"
                 placeholder="USER@DOMAIN.COM"
               />
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00f2ff] opacity-80">
+                <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] opacity-80">
                   &gt; PASSKEY
                 </label>
                 <Link
                   href="#"
-                  className="text-[0.65rem] font-display uppercase text-[#ff00ff] hover:text-[#00f2ff] hover:underline tracking-[0.1em]"
+                  className="text-[0.65rem] font-display uppercase text-[#7b4fce] hover:text-[#00c8ff] hover:underline tracking-[0.1em]"
                 >
                   RECOVER_KEY?
                 </Link>
@@ -98,7 +101,7 @@ export default function Login() {
                 type="password"
                 name="password"
                 required
-                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00f2ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#ff00ff]"
+                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce]"
                 placeholder="********"
               />
             </div>
@@ -111,7 +114,7 @@ export default function Login() {
             NOT_ENROLLED_YET?{' '}
             <Link
               href="/beta"
-              className="text-[#00f2ff] font-bold hover:animate-pulse-glow"
+              className="text-[#00c8ff] font-bold hover:animate-pulse-glow"
             >
               [APPLY_NOW]
             </Link>

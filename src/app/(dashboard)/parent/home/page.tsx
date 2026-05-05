@@ -99,7 +99,7 @@ export default async function ParentDashboard() {
 
                  <Link 
                    href="/parent/apprentice-setup"
-                   className="flex items-center justify-center w-full bg-transparent border border-[#00f2ff] hover:bg-[#00f2ff]/10 text-[#00f2ff] font-bold py-3 text-sm rounded transition-all uppercase tracking-widest shadow-[0_0_10px_rgba(0,242,255,0.1)]"
+                   className="flex items-center justify-center w-full bg-transparent border border-[#00c8ff] hover:bg-[#00c8ff]/10 text-[#00c8ff] font-bold py-3 text-sm rounded transition-all uppercase tracking-widest shadow-[0_0_10px_rgba(0,200,255,0.1)]"
                  >
                    + Provision New Apprentice
                  </Link>
@@ -120,19 +120,19 @@ export default async function ParentDashboard() {
                      <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden mb-3">
                        <div className="bg-[#39ff14] h-full shadow-[0_0_10px_rgba(57,255,20,0.5)]" style={{ width: '100%' }}></div>
                      </div>
-                     <Link href="/parent/modules/1" className="block text-center w-full bg-[#00f2ff]/10 hover:bg-[#00f2ff]/20 text-[#00f2ff] border border-[#00f2ff]/30 py-2 rounded text-xs font-bold uppercase tracking-widest transition-colors mb-6">
+                     <Link href="/parent/modules/1" className="block text-center w-full bg-[#00c8ff]/10 hover:bg-[#00c8ff]/20 text-[#00c8ff] border border-[#00c8ff]/30 py-2 rounded text-xs font-bold uppercase tracking-widest transition-colors mb-6">
                        VIEW MODULE REPORT &rarr;
                      </Link>
                    </div>
                    <div>
                      <div className="flex justify-between text-sm mb-2">
                        <span className="text-slate-400 tracking-wider text-xs uppercase flex items-center gap-2">
-                         <AlertCircle className="w-3 h-3 text-[#ff00ff]" /> Module 2 (Load Bearing)
+                         <AlertCircle className="w-3 h-3 text-[#7b4fce]" /> Module 2 (Load Bearing)
                        </span>
                        <span className="font-bold text-white">40%</span>
                      </div>
                      <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                       <div className="bg-[#ff00ff] h-full shadow-[0_0_10px_rgba(255,0,255,0.5)]" style={{ width: '40%' }}></div>
+                       <div className="bg-[#7b4fce] h-full shadow-[0_0_10px_rgba(123,79,206,0.5)]" style={{ width: '40%' }}></div>
                      </div>
                    </div>
                 </div>

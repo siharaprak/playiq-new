@@ -9,7 +9,7 @@ export default function ApprenticeSetupPage() {
 
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
-      <div className="mb-4 text-sm text-[#ff00ff] font-semibold uppercase tracking-wider">
+      <div className="mb-4 text-sm text-[#7b4fce] font-semibold uppercase tracking-wider">
         Parent Gateway
       </div>
       
@@ -32,7 +32,7 @@ export default function ApprenticeSetupPage() {
               required 
               type="text" 
               name="name"
-              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none" 
+              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" 
               placeholder="e.g. John Doe" 
             />
           </div>
@@ -42,7 +42,7 @@ export default function ApprenticeSetupPage() {
               required 
               type="text" 
               name="username"
-              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none" 
+              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" 
               placeholder="e.g. johnny_plays or email" 
             />
           </div>
@@ -52,7 +52,7 @@ export default function ApprenticeSetupPage() {
               required 
               type="password" 
               name="password"
-              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none" 
+              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" 
               placeholder="Minimum 6 characters" 
               minLength={6}
             />

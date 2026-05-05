@@ -39,9 +39,9 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
         <header className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
           <div>
             <h1 className="text-3xl font-display font-black flex items-center gap-4 tracking-widest uppercase">
-              PlayIQ <span className="bg-[#ff00ff] text-[#020617] text-xs px-3 py-1 font-bold shadow-[0_0_10px_#ff00ff]">SYS.ADMIN</span>
+              PlayIQ <span className="bg-[#7b4fce] text-[#020617] text-xs px-3 py-1 font-bold shadow-[0_0_10px_#7b4fce]">SYS.ADMIN</span>
             </h1>
-            <p className="text-[#00f2ff] font-mono text-xs mt-2 tracking-widest uppercase opacity-80">&gt; CURRENT_SESSION_BETA_2.0.4: {user.email}</p>
+            <p className="text-[#00c8ff] font-mono text-xs mt-2 tracking-widest uppercase opacity-80">&gt; CURRENT_SESSION_BETA_2.0.4: {user.email}</p>
           </div>
           <form action="/auth/signout" method="post">
             <button className="text-xs font-mono tracking-widest uppercase border border-slate-600 bg-transparent text-slate-300 px-4 py-2 hover:bg-slate-800 hover:text-white transition-colors">
@@ -52,9 +52,9 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
 
         {/* HUD Modules */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
-           <div className="glass-card p-6 border-l-[3px] border-l-[#00f2ff] !rounded-none shadow-none flex flex-col justify-between h-full">
+           <div className="glass-card p-6 border-l-[3px] border-l-[#00c8ff] !rounded-none shadow-none flex flex-col justify-between h-full">
              <div className="flex items-center gap-4 mb-4">
-               <div className="text-[#00f2ff]"><Users className="w-6 h-6" /></div>
+               <div className="text-[#00c8ff]"><Users className="w-6 h-6" /></div>
                <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Beta Intake Capacity</p>
              </div>
              <div>
@@ -72,17 +72,20 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
              </div>
            </div>
 
-           <div className="glass-card p-6 border-r-[3px] border-r-[#ff00ff] !rounded-none shadow-none flex flex-col justify-between h-full bg-[rgba(255,0,255,0.02)]">
+           <div className="glass-card p-6 border-r-[3px] border-r-[#7b4fce] !rounded-none shadow-none flex flex-col justify-between h-full bg-[ 
+    $m = $args[0].Value
+    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
+  ]">
              <div className="flex items-start justify-between gap-4 mb-2">
                <div className="flex items-center gap-4">
-                 <div className="text-[#ff00ff]"><Activity className="w-6 h-6 animate-pulse" /></div>
+                 <div className="text-[#7b4fce]"><Activity className="w-6 h-6 animate-pulse" /></div>
                  <div>
-                   <p className="text-xs font-mono tracking-widest text-[#ff00ff] uppercase">LMS Simulator Console</p>
+                   <p className="text-xs font-mono tracking-widest text-[#7b4fce] uppercase">LMS Simulator Console</p>
                  </div>
                </div>
              </div>
              <div className="mt-4">
-                <Link href="/student/modules/1/overview" className="block text-center w-full bg-[#00f2ff] hover:bg-white text-black py-3 font-display font-bold uppercase tracking-[0.2em] transition-colors shadow-[0_0_15px_rgba(0,242,255,0.6)]">
+                <Link href="/student/modules/1/overview" className="block text-center w-full bg-[#00c8ff] hover:bg-white text-black py-3 font-display font-bold uppercase tracking-[0.2em] transition-colors shadow-[0_0_15px_rgba(0,200,255,0.6)]">
                   ENTER LMS &rarr;
                 </Link>
              </div>
@@ -92,9 +95,9 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
         {/* Database Table view */}
         <div className="glass-card !p-0 !rounded-none overflow-hidden border border-slate-800">
           <div className="px-6 py-4 border-b border-slate-800 bg-[#020617] flex justify-between items-center overflow-x-auto">
-            <h2 className="font-mono text-sm tracking-widest text-[#00f2ff] uppercase mr-4">&gt; COHORT_TABLE_MANIFEST</h2>
+            <h2 className="font-mono text-sm tracking-widest text-[#00c8ff] uppercase mr-4">&gt; COHORT_TABLE_MANIFEST</h2>
             <div className="flex bg-black/50 border border-slate-800 p-1 gap-1 text-xs font-mono uppercase">
-               <Link href="/admin/home" className={`px-4 py-2 transition-colors ${!searchParams?.status || searchParams.status === 'all' ? 'bg-[#00f2ff] text-black font-bold shadow-[0_0_10px_rgba(0,242,255,0.4)]' : 'text-slate-400 hover:text-white'}`}>All</Link>
+               <Link href="/admin/home" className={`px-4 py-2 transition-colors ${!searchParams?.status || searchParams.status === 'all' ? 'bg-[#00c8ff] text-black font-bold shadow-[0_0_10px_rgba(0,200,255,0.4)]' : 'text-slate-400 hover:text-white'}`}>All</Link>
                <Link href="/admin/home?status=paid" className={`px-4 py-2 transition-colors ${searchParams?.status === 'paid' ? 'bg-emerald-500 text-black font-bold shadow-[0_0_10px_rgba(16,185,129,0.4)]' : 'text-slate-400 hover:text-white'}`}>Paid</Link>
                <Link href="/admin/home?status=checkout_started" className={`px-4 py-2 transition-colors ${searchParams?.status === 'checkout_started' ? 'bg-amber-400 text-black font-bold shadow-[0_0_10px_rgba(251,191,36,0.4)]' : 'text-slate-400 hover:text-white'}`}>Started</Link>
                <Link href="/admin/home?status=canceled" className={`px-4 py-2 transition-colors ${searchParams?.status === 'canceled' ? 'bg-red-500 text-white font-bold shadow-[0_0_10px_rgba(239,68,68,0.4)]' : 'text-slate-400 hover:text-white'}`}>VOIDED</Link>
@@ -119,7 +122,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                     <tr key={app.id} className="border-b border-slate-800 hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4 text-slate-200">{app.parent_full_name}</td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{app.email}</td>
-                      <td className="px-6 py-4 text-[#00f2ff]">{app.child_age_band}</td>
+                      <td className="px-6 py-4 text-[#00c8ff]">{app.child_age_band}</td>
                       <td className="px-6 py-4 text-slate-400">{app.shipping_zip_code}</td>
                       <td className="px-6 py-4">
                         <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest 
@@ -127,7 +130,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                           ${app.status === 'checkout_started' ? 'text-amber-400 border border-amber-400 bg-amber-400/10' : ''}
                           ${app.status === 'canceled' ? 'text-red-400 border border-red-400 bg-red-400/10' : ''}
                           ${app.status === 'pending' ? 'text-slate-400 border border-slate-600 bg-slate-800' : ''}
-                          ${app.status === 'fulfilled' ? 'text-[#00f2ff] border border-[#00f2ff] bg-[#00f2ff]/10' : ''}
+                          ${app.status === 'fulfilled' ? 'text-[#00c8ff] border border-[#00c8ff] bg-[#00c8ff]/10' : ''}
                         `}>
                           {app.status === 'checkout_started' ? 'Processing' : app.status}
                         </span>
@@ -142,7 +145,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             </div>
           ) : (
             <div className="p-16 text-center text-slate-500 flex flex-col items-center justify-center font-mono">
-              <Filter className="w-8 h-8 text-[#ff00ff] mb-4 opacity-50" />
+              <Filter className="w-8 h-8 text-[#7b4fce] mb-4 opacity-50" />
               <p className="uppercase tracking-widest text-xs">0 Records Retrieved.</p>
             </div>
           )}

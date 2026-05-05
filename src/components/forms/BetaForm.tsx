@@ -64,7 +64,7 @@ export function BetaForm() {
       )}
 
       <div>
-        <label htmlFor="parentFullName" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Parent's Full Name</label>
+        <label htmlFor="parentFullName" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Parent's Full Name</label>
         <input 
           id="parentFullName"
           {...register('parentFullName')}
@@ -76,7 +76,7 @@ export function BetaForm() {
       </div>
 
       <div>
-        <label htmlFor="emailAddress" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Email Address</label>
+        <label htmlFor="emailAddress" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Email Address</label>
         <input 
           id="emailAddress"
           type="email"
@@ -89,7 +89,7 @@ export function BetaForm() {
       </div>
 
       <div>
-        <label htmlFor="childAge" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Teen's Target Age Group</label>
+        <label htmlFor="childAge" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Teen's Target Age Group</label>
         <select 
           id="childAge"
           {...register('childAge')}
@@ -105,7 +105,7 @@ export function BetaForm() {
       </div>
 
       <div>
-        <label htmlFor="shippingZipCode" className="block font-mono text-xs text-[#00f2ff] uppercase tracking-widest mb-2 opacity-80">Shipping Zip Code</label>
+        <label htmlFor="shippingZipCode" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Shipping Zip Code</label>
         <input 
           id="shippingZipCode"
           {...register('shippingZipCode')}

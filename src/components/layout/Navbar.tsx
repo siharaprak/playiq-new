@@ -47,7 +47,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-[1400px]">
-      <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00f2ff]">
+      <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00c8ff]">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 flex-shrink-0 group" aria-label="PlayIQ Home">
           <PlayIQLogo variant="navbar" className="group-hover:brightness-125 transition-all duration-300" />
@@ -59,7 +59,7 @@ export function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="font-display text-[0.65rem] xl:text-[0.75rem] font-bold uppercase tracking-[0.15em] xl:tracking-[0.2em] text-[#94a3b8] hover:text-[#ff00ff] hover:text-glow-magenta transition-colors duration-300 before:content-['['] before:mr-1 before:text-[#00f2ff] after:content-[']'] after:ml-1 after:text-[#00f2ff] whitespace-nowrap"
+              className="font-display text-[0.65rem] xl:text-[0.75rem] font-bold uppercase tracking-[0.15em] xl:tracking-[0.2em] text-[#94a3b8] hover:text-[#7b4fce] hover:text-glow-magenta transition-colors duration-300 before:content-['['] before:mr-1 before:text-[#00c8ff] after:content-[']'] after:ml-1 after:text-[#00c8ff] whitespace-nowrap"
             >
               {link.label}
             </Link>
@@ -73,14 +73,14 @@ export function Navbar() {
           {!isLoading && (
             <Link
               href={userRole ? `/${userRole}/home` : "/login"}
-              className={`hidden sm:block font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00f2ff] transition-colors whitespace-nowrap ${userRole ? 'text-[#ff00ff]' : 'text-slate-400'}`}
+              className={`hidden sm:block font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00c8ff] transition-colors whitespace-nowrap ${userRole ? 'text-[#7b4fce]' : 'text-slate-400'}`}
             >
               &gt; {userRole ? "DASHBOARD" : "LOG IN"}
             </Link>
           )}
 
           <button
-            className="lg:hidden text-[#00f2ff] p-1 ml-2"
+            className="lg:hidden text-[#00c8ff] p-1 ml-2"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -91,14 +91,14 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="glass-card mt-2 p-4 lg:hidden border-l-[3px] border-l-[#ff00ff] border-r-0 border-b-0 border-t-0 rounded-none">
+        <div className="glass-card mt-2 p-4 lg:hidden border-l-[3px] border-l-[#7b4fce] border-r-0 border-b-0 border-t-0 rounded-none">
           <div className="flex flex-col gap-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00f2ff] transition-colors py-2 px-3 hover:bg-[rgba(0,242,255,0.1)] border-l-2 border-transparent hover:border-[#00f2ff]"
+                className="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.1)] border-l-2 border-transparent hover:border-[#00c8ff]"
               >
                 &gt; {link.label}
               </Link>
@@ -107,7 +107,7 @@ export function Navbar() {
               <Link
                 href={userRole ? `/${userRole}/home` : "/login"}
                 onClick={() => setMobileOpen(false)}
-                className={`font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 border-t border-[rgba(255,0,255,0.2)] mt-2 ${userRole ? 'text-[#00f2ff]' : 'text-[#ff00ff]'}`}
+                className={`font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 border-t border-[rgba(123,79,206,0.2)] mt-2 ${userRole ? 'text-[#00c8ff]' : 'text-[#7b4fce]'}`}
               >
                 &gt; {userRole ? "DASHBOARD" : "LOG IN"}
               </Link>

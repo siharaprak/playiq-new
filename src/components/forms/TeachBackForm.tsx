@@ -20,7 +20,7 @@ export function TeachBackForm({ nodeId, prompt }: { nodeId: string, prompt: stri
       <textarea 
         required
         name="teachBackResponse"
-        className={`neon-input w-full min-h-[200px] p-5 rounded-lg border ${state?.error ? 'border-red-500/50 focus:border-red-400' : 'border-slate-700 focus:border-[#00f2ff]'} bg-black/60 text-white placeholder:opacity-50 font-mono text-sm outline-none mb-8 transition-colors`}
+        className={`neon-input w-full min-h-[200px] p-5 rounded-lg border ${state?.error ? 'border-red-500/50 focus:border-red-400' : 'border-slate-700 focus:border-[#00c8ff]'} bg-black/60 text-white placeholder:opacity-50 font-mono text-sm outline-none mb-8 transition-colors`}
         placeholder="Awaiting audio/text dictation... Explain the concept clearly as if teaching another apprentice."
         defaultValue={state?.submittedText || ''}
       ></textarea>

@@ -13,14 +13,14 @@ export default function PrivacyPage() {
       {/* Header */}
       <section className="relative py-20 px-6 border-b border-slate-800/50 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-[10%] w-[400px] h-[400px] bg-[rgba(0,242,255,0.06)] rounded-full blur-[120px]" />
+          <div className="absolute top-0 left-[10%] w-[400px] h-[400px] bg-[rgba(0,200,255,0.06)] rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <p className="font-display text-xs uppercase tracking-[0.3em] text-[#ff00ff] mb-4">
+          <p className="font-display text-xs uppercase tracking-[0.3em] text-[#7b4fce] mb-4">
             Legal
           </p>
-          <h1 className="font-display font-black text-4xl md:text-5xl text-white tracking-widest uppercase drop-shadow-[0_0_20px_rgba(0,242,255,0.4)]">
-            Privacy <span className="text-[#00f2ff]">Policy</span>
+          <h1 className="font-display font-black text-4xl md:text-5xl text-white tracking-widest uppercase drop-shadow-[0_0_20px_rgba(0,200,255,0.4)]">
+            Privacy <span className="text-[#00c8ff]">Policy</span>
           </h1>
           <p className="mt-4 text-slate-500 text-sm">
             Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
@@ -33,7 +33,7 @@ export default function PrivacyPage() {
         <div className="mx-auto max-w-3xl space-y-10 text-slate-400 leading-relaxed">
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               1. Introduction
             </h2>
             <p>
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               2. Information We Collect
             </h2>
             <h3 className="text-white font-semibold mb-2">Personal Information</h3>
@@ -76,7 +76,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               3. How We Use Your Information
             </h2>
             <ul className="space-y-2 list-disc list-inside">
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               4. Sharing Your Information
             </h2>
             <p>
@@ -105,7 +105,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               5. Cookies and Tracking Technologies
             </h2>
             <p>
@@ -116,7 +116,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               6. Your Rights and Choices
             </h2>
             <p>Depending on your location, you may have the right to:</p>
@@ -129,7 +129,7 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-3">
               To exercise any of these rights, contact us at{' '}
-              <a href="mailto:hello@playiq.com" className="text-[#00f2ff] hover:underline">
+              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">
                 hello@playiq.com
               </a>
               .
@@ -137,14 +137,14 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               7. Children's Privacy (COPPA)
             </h2>
             <p>
               PlayIQ is designed for use by children under parental supervision. We comply with the Children's Online
               Privacy Protection Act (COPPA). If you believe we have inadvertently collected information from a child
               under 13 without parental consent, please contact us immediately at{' '}
-              <a href="mailto:hello@playiq.com" className="text-[#00f2ff] hover:underline">
+              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">
                 hello@playiq.com
               </a>{' '}
               and we will delete it promptly.
@@ -152,7 +152,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               8. Changes to This Policy
             </h2>
             <p>
@@ -163,7 +163,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00f2ff] font-bold mb-4">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
               9. Contact Us
             </h2>
             <p>
@@ -173,7 +173,7 @@ export default function PrivacyPage() {
               <p className="text-white font-semibold">PlayIQ Learning</p>
               <p>
                 Email:{' '}
-                <a href="mailto:hello@playiq.com" className="text-[#00f2ff] hover:underline">
+                <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">
                   hello@playiq.com
                 </a>
               </p>
@@ -182,10 +182,10 @@ export default function PrivacyPage() {
 
           {/* Nav to other legal */}
           <div className="flex flex-wrap justify-center gap-6 pt-4 border-t border-slate-800/50">
-            <Link href="/data-protection" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">
+            <Link href="/data-protection" className="text-sm text-slate-500 hover:text-[#00c8ff] transition-colors">
               Data Protection Policy →
             </Link>
-            <Link href="/terms" className="text-sm text-slate-500 hover:text-[#00f2ff] transition-colors">
+            <Link href="/terms" className="text-sm text-slate-500 hover:text-[#00c8ff] transition-colors">
               Terms of Service →
             </Link>
           </div>

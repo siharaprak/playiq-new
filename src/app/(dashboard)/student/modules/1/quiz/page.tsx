@@ -8,7 +8,7 @@ export default async function QuizPage() {
   
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
-      <div className="mb-4 text-sm text-[#00f2ff] font-semibold uppercase tracking-wider">
+      <div className="mb-4 text-sm text-[#00c8ff] font-semibold uppercase tracking-wider">
         Module 1 • Gateway 1
       </div>
       
@@ -104,7 +104,7 @@ export default async function QuizPage() {
                
                <div className="pt-4 border-t border-slate-700/50">
                  <p className="text-white font-mono text-sm mb-3">&gt; Rewrite this weak prompt into a better learning prompt: "Give me the answer."</p>
-                 <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Your learning prompt..." />
+                 <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Your learning prompt..." />
                </div>
              </div>
           </div>

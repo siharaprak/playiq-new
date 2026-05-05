@@ -7,7 +7,7 @@ export default async function ProofArtifactsPage() {
 
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
-      <div className="mb-4 text-sm text-[#00f2ff] font-semibold uppercase tracking-wider">
+      <div className="mb-4 text-sm text-[#00c8ff] font-semibold uppercase tracking-wider">
         Module 1 • Final Output
       </div>
 
@@ -21,44 +21,44 @@ export default async function ProofArtifactsPage() {
         <form action={submitArtifacts} className="space-y-12">
 
           {/* Artifact 1: My AI Study Rules */}
-          <div className="bg-slate-800/60 p-8 rounded-xl border border-[#00f2ff]/50 backdrop-blur-md">
-            <h3 className="text-[#00f2ff] font-bold uppercase tracking-widest text-sm mb-6 border-b border-[#00f2ff]/30 pb-2">ARTIFACT 1: MY AI STUDY RULES</h3>
+          <div className="bg-slate-800/60 p-8 rounded-xl border border-[#00c8ff]/50 backdrop-blur-md">
+            <h3 className="text-[#00c8ff] font-bold uppercase tracking-widest text-sm mb-6 border-b border-[#00c8ff]/30 pb-2">ARTIFACT 1: MY AI STUDY RULES</h3>
             <div className="space-y-6">
               <div>
                 <label className="block text-slate-300 font-mono text-sm mb-2">&gt; I use AI to ________, not to ________.</label>
-                <input required name="sr_use" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none" />
+                <input required name="sr_use" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
               </div>
               <div>
                 <label className="block text-slate-300 font-mono text-sm mb-2">&gt; When I'm confused, I usually start with ________ Mode.</label>
-                <input required name="sr_confused" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none" />
+                <input required name="sr_confused" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
               </div>
               <div>
                 <label className="block text-slate-300 font-mono text-sm mb-2">&gt; Before trusting an answer, I always ________.</label>
-                <input required name="sr_trust" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none" />
+                <input required name="sr_trust" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
               </div>
               <div>
                 <label className="block text-slate-300 font-mono text-sm mb-2">&gt; One way AI can make me stronger is ________.</label>
-                <input required name="sr_strengthen" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00f2ff] rounded p-3 text-white text-sm outline-none" />
+                <input required name="sr_strengthen" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
               </div>
             </div>
           </div>
 
           {/* Artifact 2: AI Error Review Sheet */}
-          <div className="bg-slate-800/60 p-8 rounded-xl border border-[#ff00ff]/50 backdrop-blur-md">
-            <h3 className="text-[#ff00ff] font-bold uppercase tracking-widest text-sm mb-6 border-b border-[#ff00ff]/30 pb-2">ARTIFACT 2: AI ERROR REVIEW SHEET</h3>
+          <div className="bg-slate-800/60 p-8 rounded-xl border border-[#7b4fce]/50 backdrop-blur-md">
+            <h3 className="text-[#7b4fce] font-bold uppercase tracking-widest text-sm mb-6 border-b border-[#7b4fce]/30 pb-2">ARTIFACT 2: AI ERROR REVIEW SHEET</h3>
             <div className="space-y-6">
               <p className="text-slate-400 font-mono text-sm mb-4">Choose an AI mistake from this module and review it below.</p>
               <div>
                 <label className="block text-slate-300 font-mono text-sm mb-2">&gt; What was the AI trying to help with?</label>
-                <input required name="er_trying" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#ff00ff] rounded p-3 text-white text-sm outline-none" />
+                <input required name="er_trying" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-white text-sm outline-none" />
               </div>
               <div>
                 <label className="block text-slate-300 font-mono text-sm mb-2">&gt; What was wrong or risky about the answer?</label>
-                <input required name="er_wrong" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#ff00ff] rounded p-3 text-white text-sm outline-none" />
+                <input required name="er_wrong" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-white text-sm outline-none" />
               </div>
               <div>
                 <label className="block text-slate-300 font-mono text-sm mb-2">&gt; What clue told you it needed checking?</label>
-                <input required name="er_clue" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#ff00ff] rounded p-3 text-white text-sm outline-none" />
+                <input required name="er_clue" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-white text-sm outline-none" />
               </div>
             </div>
           </div>

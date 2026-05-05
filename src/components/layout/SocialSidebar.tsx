@@ -49,14 +49,14 @@ export function SocialSidebar() {
   return (
     <div className="fixed left-1.5 top-20 sm:left-2 sm:top-24 md:left-3 md:top-28 lg:left-5 lg:top-28 z-40 flex flex-col items-center gap-0">
       {/* Top line */}
-      <div className="w-px h-5 sm:h-7 md:h-8 lg:h-10 bg-gradient-to-b from-transparent to-[#00f2ff]/40" />
+      <div className="w-px h-5 sm:h-7 md:h-8 lg:h-10 bg-gradient-to-b from-transparent to-[#00c8ff]/40" />
 
       {socials.map((social, i) => (
         <div key={social.label} className="flex flex-col items-center">
           <a
             href="#"
             aria-label={social.label}
-            className="group relative w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 flex items-center justify-center border border-slate-600/60 bg-[#020617]/80 backdrop-blur-sm text-slate-400 hover:text-[#00f2ff] hover:border-[#00f2ff]/60 hover:shadow-[0_0_12px_rgba(0,242,255,0.3)] transition-all duration-300"
+            className="group relative w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 flex items-center justify-center border border-slate-600/60 bg-[#020617]/80 backdrop-blur-sm text-slate-400 hover:text-[#00c8ff] hover:border-[#00c8ff]/60 hover:shadow-[0_0_12px_rgba(0,200,255,0.3)] transition-all duration-300"
           >
             {social.icon}
           </a>
@@ -68,7 +68,7 @@ export function SocialSidebar() {
       ))}
 
       {/* Bottom line */}
-      <div className="w-px h-5 sm:h-7 md:h-8 lg:h-10 bg-gradient-to-b from-[#ff00ff]/40 to-transparent" />
+      <div className="w-px h-5 sm:h-7 md:h-8 lg:h-10 bg-gradient-to-b from-[#7b4fce]/40 to-transparent" />
     </div>
   );
 }
