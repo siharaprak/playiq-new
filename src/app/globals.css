@@ -3,40 +3,44 @@
 /* ── PlayIQ Neon Cyberpunk Design System ────────────────────── */
 
 :root {
-  /* Core palette */
-  --neon-cyan: #00f2ff;
-  --neon-magenta: #ff00ff;
+  /* Core palette — deck colors */
+  --neon-cyan: #00c8ff;
+  --neon-purple: #7b4fce;
+  --neon-purple-light: #9b6fe8;
+  --neon-gold: #f5c518;
   --neon-green: #39ff14;
-  --space-deep: #020617;
-  --space-mid: #0b1120;
-  --space-card: rgba(15, 23, 42, 0.65);
-  --space-card-border: rgba(0, 242, 255, 0.18);
+  --space-deep: #0a0f1e;
+  --space-mid: #111827;
+  --space-card: rgba(17, 24, 39, 0.8);
+  --space-card-border: rgba(0, 200, 255, 0.18);
 
   /* Text */
-  --text-primary: #e2e8f0;
+  --text-primary: #f0f4ff;
   --text-secondary: #94a3b8;
   --text-muted: #64748b;
 
   /* Glassmorphism */
-  --glass-bg: rgba(15, 23, 42, 0.55);
-  --glass-border: rgba(0, 242, 255, 0.15);
+  --glass-bg: rgba(10, 15, 30, 0.75);
+  --glass-border: rgba(123, 79, 206, 0.25);
   --glass-blur: 16px;
 
   /* Override Tailwind defaults */
-  --background: #020617;
-  --foreground: #e2e8f0;
+  --background: #0a0f1e;
+  --foreground: #f0f4ff;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-neon-cyan: #00f2ff;
-  --color-neon-magenta: #ff00ff;
+  --color-neon-cyan: #00c8ff;
+  --color-neon-purple: #7b4fce;
+  --color-neon-purple-light: #9b6fe8;
+  --color-neon-gold: #f5c518;
   --color-neon-green: #39ff14;
-  --color-space-deep: #020617;
-  --color-space-mid: #0b1120;
+  --color-space-deep: #0a0f1e;
+  --color-space-mid: #111827;
   --font-sans: var(--font-inter);
-  --font-display: var(--font-orbitron);
+  --font-display: var(--font-display);
 }
 
 /* ── Base ─────────────────────────────────────────────────── */
@@ -47,14 +51,14 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: #020617 !important;
+  background-color: #0a0f1e !important;
 }
 
 body {
-  background-color: #020617 !important;
-  background: #020617 !important;
-  color: #e2e8f0 !important;
-  font-family: var(--font-sans, 'Inter', system-ui, sans-serif);
+  background-color: #0a0f1e !important;
+  background: #0a0f1e !important;
+  color: #f0f4ff !important;
+  font-family: var(--font-inter, 'Inter', system-ui, sans-serif);
   min-height: 100vh;
   overflow-x: hidden;
 }
@@ -84,35 +88,41 @@ body::after {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #020617;
+  background: #07101f;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 242, 255, 0.3);
+  background: rgba(0, 212, 255, 0.3);
   border-radius: 999px;
 }
 
 /* ── Typography ───────────────────────────────────────────── */
 
 .font-display {
-  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
+  font-weight: 700;
 }
 
 .text-glow-cyan {
-  text-shadow: 0 0 7px rgba(0, 242, 255, 0.5), 0 0 20px rgba(0, 242, 255, 0.3);
+  text-shadow: 0 0 7px rgba(0, 200, 255, 0.5), 0 0 20px rgba(0, 200, 255, 0.3);
 }
 
+.text-glow-purple {
+  text-shadow: 0 0 7px rgba(123, 79, 206, 0.5), 0 0 20px rgba(123, 79, 206, 0.3);
+}
+
+/* alias for backward compat */
 .text-glow-magenta {
-  text-shadow: 0 0 7px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.3);
+  text-shadow: 0 0 7px rgba(123, 79, 206, 0.5), 0 0 20px rgba(123, 79, 206, 0.3);
 }
 
 /* ── Glassmorphism Card ───────────────────────────────────── */
 
 .glass-card {
   position: relative;
-  background: rgba(10, 15, 25, 0.85);
+  background: rgba(17, 24, 39, 0.85);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 242, 255, 0.4);
+  border: 1px solid rgba(123, 79, 206, 0.3);
 }
 
 .glass-card::before, .glass-card::after {
@@ -120,7 +130,7 @@ body::after {
   position: absolute;
   width: 12px;
   height: 12px;
-  border: 2px solid #00f2ff;
+  border: 2px solid #7b4fce;
   pointer-events: none;
 }
 
@@ -139,8 +149,8 @@ body::after {
 }
 
 .glass-card-hover:hover {
-  border-color: rgba(0, 242, 255, 0.35);
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.1), 0 0 40px rgba(0, 242, 255, 0.05);
+  border-color: rgba(123, 79, 206, 0.5);
+  box-shadow: 0 0 20px rgba(123, 79, 206, 0.15), 0 0 40px rgba(0, 200, 255, 0.05);
   transform: translateY(-4px);
 }
 
@@ -151,23 +161,23 @@ body::after {
   align-items: center;
   justify-content: center;
   padding: 0.875rem 2rem;
-  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
   font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #00f2ff;
+  color: #00c8ff;
   background: transparent;
-  border: 2px solid #00f2ff;
-  border-radius: 0;
+  border: 2px solid #00c8ff;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
 .btn-neon-cyan:hover {
-  background: rgba(0, 242, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 242, 255, 0.35), 0 0 30px rgba(0, 242, 255, 0.15), inset 0 0 15px rgba(0, 242, 255, 0.08);
+  background: rgba(0, 200, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 200, 255, 0.35), 0 0 30px rgba(0, 200, 255, 0.15), inset 0 0 15px rgba(0, 200, 255, 0.08);
 }
 
 .btn-neon-filled {
@@ -175,58 +185,61 @@ body::after {
   align-items: center;
   justify-content: center;
   padding: 0.875rem 2rem;
-  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
   font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #020617;
-  background: #00f2ff;
-  border: 2px solid #00f2ff;
-  border-radius: 0;
+  color: #0a0f1e;
+  background: #00c8ff;
+  border: 2px solid #00c8ff;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
 .btn-neon-filled:hover {
-  background: #33f5ff;
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.5), 0 0 40px rgba(0, 242, 255, 0.2);
+  background: #33d4ff;
+  box-shadow: 0 0 20px rgba(0, 200, 255, 0.5), 0 0 40px rgba(0, 200, 255, 0.2);
 }
 
-.btn-neon-magenta {
+/* purple accent button (replaces magenta) */
+.btn-neon-magenta,
+.btn-neon-purple {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0.875rem 2rem;
-  font-family: var(--font-display, 'Orbitron', sans-serif);
+  font-family: var(--font-display, 'Space Grotesk', sans-serif);
   font-size: 0.875rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: #ff00ff;
+  color: #9b6fe8;
   background: transparent;
-  border: 2px solid #ff00ff;
-  border-radius: 0;
+  border: 2px solid #7b4fce;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
 }
 
-.btn-neon-magenta:hover {
-  background: rgba(255, 0, 255, 0.1);
-  box-shadow: 0 0 15px rgba(255, 0, 255, 0.35), 0 0 30px rgba(255, 0, 255, 0.15);
+.btn-neon-magenta:hover,
+.btn-neon-purple:hover {
+  background: rgba(123, 79, 206, 0.15);
+  box-shadow: 0 0 15px rgba(123, 79, 206, 0.35), 0 0 30px rgba(123, 79, 206, 0.15);
 }
 
 /* ── Glow Effects ─────────────────────────────────────────── */
 
 .glow-border-cyan {
-  box-shadow: 0 0 15px rgba(0, 242, 255, 0.2), 0 0 30px rgba(0, 242, 255, 0.05), inset 0 0 15px rgba(0, 242, 255, 0.02);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2), 0 0 30px rgba(0, 212, 255, 0.05), inset 0 0 15px rgba(0, 212, 255, 0.02);
 }
 
 .neon-line {
   height: 1px;
-  background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
   opacity: 0.4;
 }
 
@@ -239,10 +252,10 @@ body::after {
 
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(0, 242, 255, 0.3), 0 0 20px rgba(0, 242, 255, 0.1);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3), 0 0 20px rgba(0, 212, 255, 0.1);
   }
   50% {
-    box-shadow: 0 0 20px rgba(0, 242, 255, 0.5), 0 0 40px rgba(0, 242, 255, 0.2), 0 0 60px rgba(0, 242, 255, 0.1);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 212, 255, 0.2), 0 0 60px rgba(0, 212, 255, 0.1);
   }
 }
 
@@ -309,17 +322,17 @@ body::after {
 
 .bg-space-gradient {
   background:
-    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 242, 255, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(255, 0, 255, 0.06) 0%, transparent 60%),
-    #020617 !important;
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(0, 200, 255, 0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 60%, rgba(123, 79, 206, 0.08) 0%, transparent 60%),
+    #0a0f1e !important;
 }
 
 .bg-space-hero {
   background:
-    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(0, 242, 255, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 60% at 85% 70%, rgba(255, 0, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 15% 80%, rgba(0, 242, 255, 0.06) 0%, transparent 50%),
-    #020617 !important;
+    radial-gradient(ellipse 120% 80% at 50% 0%, rgba(123, 79, 206, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 60% at 85% 70%, rgba(0, 200, 255, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 15% 80%, rgba(123, 79, 206, 0.06) 0%, transparent 50%),
+    #0a0f1e !important;
 }
 
 /* ── Circular Image Frame (like the reference site) ──────── */
@@ -330,8 +343,8 @@ body::after {
   height: 220px;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid rgba(0, 242, 255, 0.3);
-  box-shadow: 0 0 20px rgba(0, 242, 255, 0.2), 0 0 40px rgba(0, 242, 255, 0.08);
+  border: 3px solid rgba(0, 212, 255, 0.3);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2), 0 0 40px rgba(0, 212, 255, 0.08);
   flex-shrink: 0;
 }
 
@@ -344,14 +357,15 @@ body::after {
 /* ── Utility ──────────────────────────────────────────────── */
 
 .gradient-text-cyan {
-  background: linear-gradient(135deg, #00f2ff, #38bdf8);
+  background: linear-gradient(135deg, #00d4ff, #38bdf8);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+.gradient-text-purple,
 .gradient-text-magenta {
-  background: linear-gradient(135deg, #ff00ff, #f472b6);
+  background: linear-gradient(135deg, #c77dff, #9d4edd);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -385,8 +399,8 @@ body::after {
 .neon-input {
   width: 100%;
   padding: 0.875rem 1rem;
-  background: rgba(15, 23, 42, 0.8);
-  border: 1px solid rgba(0, 242, 255, 0.2);
+  background: rgba(7, 16, 31, 0.8);
+  border: 1px solid rgba(0, 212, 255, 0.2);
   border-radius: 0.5rem;
   color: #e2e8f0;
   outline: none;
@@ -394,8 +408,8 @@ body::after {
 }
 
 .neon-input:focus {
-  border-color: #00f2ff;
-  box-shadow: 0 0 10px rgba(0, 242, 255, 0.2), 0 0 20px rgba(0, 242, 255, 0.05);
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.2), 0 0 20px rgba(0, 212, 255, 0.05);
 }
 
 .neon-input::placeholder {
@@ -404,8 +418,18 @@ body::after {
 
 /* Section backgrounds - forced dark */
 .section-space-mid {
-  background-color: #0b1120 !important;
+  background-color: #111827 !important;
 }
+
+/* ── Deck-style card accent borders ──────────────────────── */
+/* Cyan accent (default info card) */
+.card-accent-cyan  { border-left: 3px solid #00c8ff; }
+/* Purple accent (featured/highlight card) */
+.card-accent-purple { border-left: 3px solid #7b4fce; }
+/* Gold accent (decision/action card) */
+.card-accent-gold  { border-left: 3px solid #f5c518; }
+/* Green accent (status/success card) */
+.card-accent-green  { border-left: 3px solid #39ff14; }
 
 /* ══════════════════════════════════════════════════════════════
    STEEL GRAY LIGHT MODE — Cyberpunk-meets-daylight
@@ -894,8 +918,8 @@ html[data-theme="light"] .to-\[\#ff00ff\]\/40 {
   position: relative;
   width: 44px;
   height: 22px;
-  background: rgba(0, 242, 255, 0.15);
-  border: 1px solid rgba(0, 242, 255, 0.4);
+  background: rgba(0, 212, 255, 0.15);
+  border: 1px solid rgba(0, 212, 255, 0.4);
   border-radius: 999px;
   transition: all 0.35s ease;
   display: flex;
@@ -913,13 +937,13 @@ html[data-theme="light"] .theme-toggle-track {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #00f2ff;
+  background: #00d4ff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #020617;
+  color: #07101f;
   transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  box-shadow: 0 0 8px rgba(0, 242, 255, 0.4);
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.4);
 }
 
 html[data-theme="light"] .theme-toggle-thumb {
@@ -930,8 +954,8 @@ html[data-theme="light"] .theme-toggle-thumb {
 }
 
 .theme-toggle-btn:hover .theme-toggle-track {
-  border-color: rgba(0, 242, 255, 0.7);
-  box-shadow: 0 0 10px rgba(0, 242, 255, 0.15);
+  border-color: rgba(0, 212, 255, 0.7);
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.15);
 }
 
 html[data-theme="light"] .theme-toggle-btn:hover .theme-toggle-track {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Orbitron } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
@@ -14,10 +14,10 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-const orbitron = Orbitron({
+const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  variable: "--font-orbitron",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-display",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -53,7 +53,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${orbitron.variable} font-sans min-h-screen flex flex-col pt-24`}
+        className={`${inter.variable} ${spaceGrotesk.variable} font-sans min-h-screen flex flex-col pt-24`}
         suppressHydrationWarning
       >
         {gaId && (
