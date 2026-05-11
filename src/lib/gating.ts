@@ -1,13 +1,20 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 
-export async function enforceNodeGating(nodeId: string, phase: 'lesson' | 'activity' | 'mini-check' | 'teach-back' | 'completion') {
+// Module-agnostic node gating
+export async function enforceNodeGating(
+  nodeId: string,
+  phase: 'lesson' | 'activity' | 'mini-check' | 'teach-back' | 'completion',
+  moduleNumber: number = 1
+) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) {
     redirect('/login');
   }
+
+  const basePath = `/student/modules/${moduleNumber}`;
 
   // Fetch progress for this specific node
   const { data: progress } = await supabase
@@ -19,24 +26,23 @@ export async function enforceNodeGating(nodeId: string, phase: 'lesson' | 'activ
 
   switch (phase) {
     case 'activity':
-      // Cannot access activity unless lesson started (we use lesson_completed flag for simplicity of DB state)
       if (!progress?.lesson_completed) {
-        redirect(`/student/modules/1/nodes/${nodeId}/lesson`);
+        redirect(`${basePath}/nodes/${nodeId}/lesson`);
       }
       break;
     case 'mini-check':
       if (!progress?.activity_completed) {
-        redirect(`/student/modules/1/nodes/${nodeId}/activity`);
+        redirect(`${basePath}/nodes/${nodeId}/activity`);
       }
       break;
     case 'teach-back':
       if (!progress?.mini_check_passed) {
-        redirect(`/student/modules/1/nodes/${nodeId}/mini-check`);
+        redirect(`${basePath}/nodes/${nodeId}/mini-check`);
       }
       break;
     case 'completion':
       if (progress?.teach_back_status !== 'pass') {
-        redirect(`/student/modules/1/nodes/${nodeId}/teach-back`);
+        redirect(`${basePath}/nodes/${nodeId}/teach-back`);
       }
       break;
   }
@@ -44,7 +50,11 @@ export async function enforceNodeGating(nodeId: string, phase: 'lesson' | 'activ
   return { user, progress };
 }
 
-export async function enforceModuleGating(phase: 'quiz' | 'boss-battle' | 'artifacts' | 'completion') {
+export async function enforceModuleGating(
+  phase: 'quiz' | 'boss-battle' | 'artifacts' | 'completion',
+  moduleNumber: number = 1,
+  totalNodes: number = 4
+) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -52,7 +62,9 @@ export async function enforceModuleGating(phase: 'quiz' | 'boss-battle' | 'artif
     redirect('/login');
   }
 
-  // Check 4 nodes mastery for quiz step
+  const basePath = `/student/modules/${moduleNumber}`;
+
+  // Check node mastery count
   if (phase === 'quiz' || phase === 'boss-battle' || phase === 'artifacts' || phase === 'completion') {
     const { data: allNodes } = await supabase
       .from('student_node_progress')
@@ -60,8 +72,8 @@ export async function enforceModuleGating(phase: 'quiz' | 'boss-battle' | 'artif
       .eq('student_id', user.id)
       .eq('node_mastered', true);
 
-    if (!allNodes || allNodes.length < 4) {
-      redirect('/student/modules/1/overview');
+    if (!allNodes || allNodes.length < totalNodes) {
+      redirect(`${basePath}/overview`);
     }
   }
 
@@ -85,25 +97,23 @@ export async function enforceModuleGating(phase: 'quiz' | 'boss-battle' | 'artif
   switch (phase) {
     case 'boss-battle':
       if (!quiz || quiz.score_numeric < 80) {
-        redirect('/student/modules/1/quiz');
+        redirect(`${basePath}/quiz`);
       }
       break;
     case 'artifacts':
-      // Cannot access artifacts until boss battle passed (e.g. score >= 4)
       if (!bossBattle || bossBattle.score_numeric < 4) {
-        redirect('/student/modules/1/boss-battle');
+        redirect(`${basePath}/boss-battle`);
       }
       break;
     case 'completion':
-      // Module completion requires ALL 4 nodes mastered, quiz passed, boss battle passed, BOTH artifacts submitted.
       if (!quiz || quiz.score_numeric < 80) {
-        redirect('/student/modules/1/quiz');
+        redirect(`${basePath}/quiz`);
       }
       if (!bossBattle || bossBattle.score_numeric < 4) {
-        redirect('/student/modules/1/boss-battle');
+        redirect(`${basePath}/boss-battle`);
       }
       if (!studyRules || !errorReview) {
-        redirect('/student/modules/1/proof-artifacts');
+        redirect(`${basePath}/proof-artifacts`);
       }
       break;
   }
