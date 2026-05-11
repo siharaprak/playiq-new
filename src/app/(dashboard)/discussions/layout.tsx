@@ -14,8 +14,7 @@ export const metadata: Metadata = {
 export default async function DiscussionsLayout({ children }: { children: React.ReactNode }) {
   const categories = await listDiscussionCategories();
   
-  const req = new Request('http://localhost', { headers: await headers() });
-  const user = await requireAuth(req).catch(() => null);
+  const user = await requireAuth().catch(() => null);
   const userRole = user?.primary_role || 'student';
   
   return (

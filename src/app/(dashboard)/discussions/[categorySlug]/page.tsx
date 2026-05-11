@@ -14,8 +14,7 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
   const categorySlug = params.categorySlug;
   const query = searchParams.q?.toLowerCase() || '';
   
-  const req = new Request('http://localhost', { headers: await headers() });
-  const user = await requireAuth(req).catch(() => null);
+  const user = await requireAuth().catch(() => null);
   
   if (!user) {
     return <div className="p-8 text-center rounded-xl" style={{ color: '#64748b', background: 'rgba(17,24,39,0.8)' }}>Please log in to view discussions.</div>;

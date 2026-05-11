@@ -1,5 +1,6 @@
 import 'server-only';
 import { supabaseAdmin } from '@/lib/supabase/admin';
+import { createClient } from '@/utils/supabase/server';
 
 export type UserRole = 'student' | 'parent' | 'teacher' | 'admin';
 
@@ -15,42 +16,14 @@ export interface AppUser {
  * Require a valid authenticated session from the incoming request cookies.
  * Throws if the user is not authenticated.
  */
-export async function requireAuth(request: Request): Promise<AppUser> {
-  const authHeader = request.headers.get('cookie') || '';
+export async function requireAuth(request?: Request): Promise<AppUser> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
 
-  // Extract the Supabase auth token from the cookie header
-  const cookieMap: Record<string, string> = {};
-  authHeader.split(';').forEach((part) => {
-    const [key, ...rest] = part.trim().split('=');
-    if (key) cookieMap[key.trim()] = rest.join('=');
-  });
+  let userId: string | null = user?.id ?? null;
 
-  // Try to get the user from the service role client using the access token
-  // embedded in the sb-access-token cookie (set by @supabase/ssr)
-  const accessTokenKey = Object.keys(cookieMap).find(
-    (k) => k.includes('auth-token') || k.includes('access-token')
-  );
-  const accessToken = accessTokenKey ? cookieMap[accessTokenKey] : null;
-
-  let userId: string | null = null;
-
-  if (accessToken) {
-    try {
-      const token = decodeURIComponent(accessToken).replace(/^base64-/, '');
-      const parts = token.split('.');
-      if (parts.length === 3) {
-        const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString());
-        userId = payload.sub;
-      }
-    } catch {
-      // ignore parse errors
-    }
-  }
-
-  // Fallback: try getUser with the supabase admin if we have a bearer token
-  if (!userId) {
-    // Use the Next.js headers() from @/utils/supabase/server context
-    // As a last resort, check the Authorization header
+  // Fallback: try getUser with the supabase admin if we have a bearer token (for API routes)
+  if (!userId && request) {
     const authBearer = request.headers.get('authorization');
     if (authBearer?.startsWith('Bearer ')) {
       const { data } = await supabaseAdmin.auth.getUser(authBearer.slice(7));
@@ -92,7 +65,7 @@ export async function requireAuth(request: Request): Promise<AppUser> {
 /**
  * Require a specific role. Throws if the user doesn't have it.
  */
-export async function requireRole(request: Request, role: UserRole): Promise<AppUser> {
+export async function requireRole(request: Request | undefined, role: UserRole): Promise<AppUser> {
   const user = await requireAuth(request);
   if (!user.roles.includes(role)) {
     throw new Error(`Forbidden: requires role ${role}`);

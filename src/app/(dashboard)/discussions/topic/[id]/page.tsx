@@ -10,8 +10,7 @@ import { UserAvatar, RoleBadge } from '@/components/discussions/UserAvatar';
 import TimeAgo from '@/components/discussions/TimeAgo';
 
 export default async function TopicPage(props: { params: Promise<{ id: string }> }) {
-  const req = new Request('http://localhost', { headers: await headers() });
-  const appUser = await requireAuth(req).catch(() => null);
+  const appUser = await requireAuth().catch(() => null);
   
   if (!appUser) {
     return <div className="p-8 text-center rounded-xl" style={{ color: '#64748b', background: 'rgba(17,24,39,0.8)' }}>Please log in to view discussions.</div>;
