@@ -4,10 +4,7 @@ import { BetaForm } from '@/components/forms/BetaForm';
 export default function Beta() {
   return (
     <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
-      <div className="absolute top-[30%] right-[15%] w-[600px] h-[600px] bg-[ 
-    $m = $args[0].Value
-    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
-  ] rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute top-[30%] right-[15%] w-[600px] h-[600px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-6 pt-28 pb-12 relative z-10 space-y-16">
         <section className="text-center">

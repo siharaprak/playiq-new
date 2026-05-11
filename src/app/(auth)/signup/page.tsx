@@ -29,10 +29,7 @@ function SignupContent() {
     <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-28 pb-12 px-6">
       {/* Background elements */}
       <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.08)] rounded-full blur-[140px] animate-drift pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[ 
-    $m = $args[0].Value
-    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
-  ] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
+      <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
 
       <div className="relative z-10 w-full max-w-md">
         <div className="glass-card !border-t-4 !border-t-[#00c8ff] !rounded-none p-8">

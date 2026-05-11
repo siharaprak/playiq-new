@@ -5,10 +5,7 @@ export default function Apprentice() {
     <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.04)] rounded-full blur-[140px] animate-drift pointer-events-none" />
-      <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[ 
-    $m = $args[0].Value
-    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
-  ] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
+      <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
 
       {/* Screen Tracker */}
       <div className="absolute top-[10%] right-[5%] font-display text-[0.6rem] tracking-[0.3em] text-[#7b4fce] opacity-60 uppercase text-right">

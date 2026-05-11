@@ -11,10 +11,7 @@ export default function DataProtectionPage() {
     <main className="w-full min-h-screen" style={{ background: '#020617' }}>
       <section className="relative py-20 px-6 border-b border-slate-800/50 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-[10%] w-[400px] h-[400px] bg-[ 
-    $m = $args[0].Value
-    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
-  ] rounded-full blur-[120px]" />
+          <div className="absolute top-0 right-[10%] w-[400px] h-[400px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl text-center">
           <p className="font-display text-xs uppercase tracking-[0.3em] text-[#7b4fce] mb-4">Legal</p>

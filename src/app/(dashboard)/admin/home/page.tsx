@@ -72,10 +72,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
              </div>
            </div>
 
-           <div className="glass-card p-6 border-r-[3px] border-r-[#7b4fce] !rounded-none shadow-none flex flex-col justify-between h-full bg-[ 
-    $m = $args[0].Value
-    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
-  ]">
+           <div className="glass-card p-6 border-r-[3px] border-r-[#7b4fce] !rounded-none shadow-none flex flex-col justify-between h-full bg-[rgba(123,79,206,0.03)]">
              <div className="flex items-start justify-between gap-4 mb-2">
                <div className="flex items-center gap-4">
                  <div className="text-[#7b4fce]"><Activity className="w-6 h-6 animate-pulse" /></div>

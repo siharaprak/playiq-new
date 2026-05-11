@@ -15,10 +15,7 @@ export default function Home() {
         {/* Nebula glow accent */}
         <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
           <div className="absolute top-[10%] left-[5%] w-[600px] h-[600px] bg-[rgba(0,200,255,0.08)] rounded-full blur-[140px] animate-drift" />
-          <div className="absolute bottom-[10%] right-[5%] w-[500px] h-[500px] bg-[ 
-    $m = $args[0].Value
-    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
-  ] rounded-full blur-[120px] animate-drift" style={{ animationDelay: '3s' }} />
+          <div className="absolute bottom-[10%] right-[5%] w-[500px] h-[500px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[120px] animate-drift" style={{ animationDelay: '3s' }} />
         </div>
 
         {/* HUD Overlay Elements */}
@@ -134,10 +131,7 @@ export default function Home() {
       <section className="relative px-6 py-20 md:py-28 overflow-hidden animate-fade-in-up" style={{ background: '#0b1120' }}>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-[20%] right-[10%] w-[300px] h-[300px] bg-[rgba(0,200,255,0.04)] rounded-full blur-[80px]" />
-          <div className="absolute bottom-[15%] left-[5%] w-[250px] h-[250px] bg-[ 
-    $m = $args[0].Value
-    $m -replace 'rgba\(255,\s*0,\s*255,\s*', 'rgba(123,79,206,' 
-  ] rounded-full blur-[80px]" />
+          <div className="absolute bottom-[15%] left-[5%] w-[250px] h-[250px] bg-[rgba(123,79,206,0.04)] rounded-full blur-[80px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-7xl">
           <div className="text-center max-w-3xl mx-auto mb-14">
