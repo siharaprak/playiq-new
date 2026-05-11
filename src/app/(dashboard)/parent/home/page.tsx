@@ -23,8 +23,13 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
 
   if (!user) redirect('/login');
 
+  const supabaseAdmin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
   // Fetch linked apprentices
-  const { data: links } = await supabase
+  const { data: links } = await supabaseAdmin
     .from('parent_child_links')
     .select('student_id')
     .eq('parent_id', user.id);
@@ -33,7 +38,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
 
   let apprentices: { id: string; full_name: string; email: string }[] = [];
   if (studentIds.length > 0) {
-    const { data: profiles } = await supabase
+    const { data: profiles } = await supabaseAdmin
       .from('profiles')
       .select('id, full_name, email')
       .in('id', studentIds);
@@ -44,7 +49,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
   let progressByStudent: Record<string, Record<string, number>> = {};
 
   if (studentIds.length > 0) {
-    const { data: allProgress } = await supabase
+    const { data: allProgress } = await supabaseAdmin
       .from('student_node_progress')
       .select('student_id, module_id, node_mastered')
       .in('student_id', studentIds);
