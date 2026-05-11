@@ -22,7 +22,7 @@ export async function submitBetaApplication(data: BetaApplicationData) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const appDomain = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  const appDomain = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const priceId = process.env.STRIPE_BETA_PRICE_ID; 
 
