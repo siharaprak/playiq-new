@@ -17,7 +17,7 @@ const MODULE_LIST = [
   { id: MODULES.MODULE_10_ID, num: 10, title: 'Build Your AI Assistant', totalNodes: 7 },
 ];
 
-export default async function ParentDashboard() {
+export default async function ParentDashboard({ searchParams }: { searchParams: { provisioned?: string } }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -86,6 +86,16 @@ export default async function ParentDashboard() {
             )}
           </div>
         </header>
+
+        {searchParams?.provisioned === '1' && (
+          <div className="mb-8 p-4 bg-[#39ff14]/10 border border-[#39ff14]/30 flex items-start gap-3">
+            <CheckCircle2 className="w-5 h-5 text-[#39ff14] flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="font-display font-bold text-[#39ff14] uppercase tracking-widest text-sm">Apprentice Provisioned Successfully</p>
+              <p className="font-mono text-xs text-slate-400 mt-1">Their profile is active. They can now log in at weplayiq.com/login.</p>
+            </div>
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">

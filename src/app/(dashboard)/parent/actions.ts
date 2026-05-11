@@ -13,60 +13,81 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     return { error: 'Name, Username, and Password are all required.' };
   }
 
-  // To prevent logging the parent out, we use an Admin Service Client
-  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
-    return { error: 'Missing SUPABASE_SERVICE_ROLE_KEY in .env.local to provision sub-accounts!' };
+  if (password.length < 6) {
+    return { error: 'Password must be at least 6 characters.' };
   }
 
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return { error: 'Server configuration error. Please contact support.' };
+  }
+
+  // Admin client — bypasses RLS, won't log out the parent
   const adminClient = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    }
+    { auth: { autoRefreshToken: false, persistSession: false } }
   );
 
-  // Fake an email if they just input a username handle for their kid
+  // Accept username handle or real email
   const email = username.includes('@') ? username : `${username}@student.playiq.dev`;
 
-  // Create the authentic sub-account securely
+  // Step 1: Create the Supabase auth user
   const { data: userData, error: signUpError } = await adminClient.auth.admin.createUser({
     email,
     password,
-    email_confirm: true,
-    user_metadata: {
-      full_name: name,
-      role: 'student'
-    }
+    email_confirm: true, // Skip email verification for provisioned accounts
+    user_metadata: { full_name: name }
   });
 
   if (signUpError || !userData.user) {
+    // Handle duplicate email gracefully
+    if (signUpError?.message?.includes('already been registered')) {
+      return { error: `That username "${username}" is already taken. Please choose another.` };
+    }
     return { error: signUpError?.message || 'Failed to create apprentice account.' };
   }
 
-  // Get the current logged-in parent
+  const studentId = userData.user.id;
+
+  // Step 2: Explicitly set profile role to 'student'
+  // The DB trigger may create the profile but default to 'parent' — we override it here.
+  const { error: profileError } = await adminClient
+    .from('profiles')
+    .upsert({
+      id: studentId,
+      full_name: name,
+      email: email,
+      role: 'student',   // ← Critical: this is what grants access to /student/home and modules
+    }, { onConflict: 'id' });
+
+  if (profileError) {
+    // Clean up the auth user if profile setup fails
+    await adminClient.auth.admin.deleteUser(studentId);
+    return { error: 'Failed to configure apprentice profile. Please try again.' };
+  }
+
+  // Step 3: Verify the parent is still logged in
   const parentClient = await createServerClient();
   const { data: parentSession } = await parentClient.auth.getUser();
 
   if (!parentSession.user) {
-    return { error: 'Parent authentication lost during provisioning.' };
+    return { error: 'Parent session expired during provisioning. Please log in again.' };
   }
 
-  // Link them locally bypassing RLS just in case (using adminClient)
+  // Step 4: Link parent → student
   const { error: linkError } = await adminClient
     .from('parent_child_links')
     .insert({
       parent_id: parentSession.user.id,
-      student_id: userData.user.id
+      student_id: studentId,
     });
 
   if (linkError) {
-    return { error: 'Apprentice account created, but linking failed.' };
+    // Don't fail silently — student exists but isn't linked yet
+    console.error('Link error:', linkError);
+    return { error: 'Apprentice account created but could not link to your account. Please contact support.' };
   }
 
-  // Roster logic done!
-  redirect('/parent/home');
+  // All done — redirect to parent home showing success
+  redirect('/parent/home?provisioned=1');
 }
