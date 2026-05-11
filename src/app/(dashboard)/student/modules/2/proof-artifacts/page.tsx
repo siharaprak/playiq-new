@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
 import { submitArtifacts } from '../actions';
@@ -11,7 +12,7 @@ export default async function Module2ProofArtifactsPage() {
         Module 2 · Final Output
       </div>
 
-      <h1 className="text-4xl font-bold tracking-tight mb-4 text-white uppercase font-display">Proof Artifact Generation</h1>
+      <h1 className="text-4xl font-bold tracking-tight mb-4 text-[var(--text-primary)] uppercase font-display">Proof Artifact Generation</h1>
       <p className="text-slate-400 font-mono text-sm leading-relaxed mb-10">
         Turn your learning into a personal code. Complete both artifacts below to finalize Module 2.
       </p>
@@ -27,27 +28,27 @@ export default async function Module2ProofArtifactsPage() {
           <div className="space-y-5">
             <div>
               <label className="block text-slate-300 font-mono text-sm mb-2">&gt; I want technology to help me become more _______________.</label>
-              <input required name="dw_be_more" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
+              <input required name="dw_be_more" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
             </div>
             <div>
               <label className="block text-slate-300 font-mono text-sm mb-2">&gt; One way I will protect my attention is _______________.</label>
-              <input required name="dw_attention" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
+              <input required name="dw_attention" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
             </div>
             <div>
               <label className="block text-slate-300 font-mono text-sm mb-2">&gt; Before I trust something online, I will _______________.</label>
-              <input required name="dw_trust" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
+              <input required name="dw_trust" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
             </div>
             <div>
               <label className="block text-slate-300 font-mono text-sm mb-2">&gt; When AI helps me, I will still make sure I _______________.</label>
-              <input required name="dw_ensure" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
+              <input required name="dw_ensure" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
             </div>
             <div>
               <label className="block text-slate-300 font-mono text-sm mb-2">&gt; One Highest Path question I want to use more often is _______________.</label>
-              <input required name="dw_hp_question" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
+              <input required name="dw_hp_question" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
             </div>
             <div>
               <label className="block text-slate-300 font-mono text-sm mb-2">&gt; One digital habit I want to improve is _______________.</label>
-              <input required name="dw_habit" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" />
+              <input required name="dw_habit" type="text" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
             </div>
           </div>
         </div>
@@ -70,15 +71,15 @@ export default async function Module2ProofArtifactsPage() {
               <div className="space-y-4">
                 <div>
                   <label className="block text-slate-300 font-mono text-xs mb-2 uppercase tracking-wider">Boundary</label>
-                  <input required name={`hp_b${n}_boundary`} type="text" placeholder="What is the boundary?" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-white text-sm outline-none" />
+                  <input required name={`hp_b${n}_boundary`} type="text" placeholder="What is the boundary?" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
                 </div>
                 <div>
                   <label className="block text-slate-300 font-mono text-xs mb-2 uppercase tracking-wider">Why It Matters</label>
-                  <input required name={`hp_b${n}_why`} type="text" placeholder="Why does this boundary matter?" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-white text-sm outline-none" />
+                  <input required name={`hp_b${n}_why`} type="text" placeholder="Why does this boundary matter?" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
                 </div>
                 <div>
                   <label className="block text-slate-300 font-mono text-xs mb-2 uppercase tracking-wider">When I Will Use It</label>
-                  <input required name={`hp_b${n}_when`} type="text" placeholder="When will you use this boundary?" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-white text-sm outline-none" />
+                  <input required name={`hp_b${n}_when`} type="text" placeholder="When will you use this boundary?" className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-[var(--text-primary)] text-sm outline-none" />
                 </div>
               </div>
             </div>

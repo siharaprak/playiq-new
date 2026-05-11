@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
 import { advanceNodePhase } from '../../../actions';
@@ -19,7 +20,7 @@ export default async function NodeMiniCheckPage({ params }: { params: Promise<{ 
         Module 2 · Node {nodeId} · Check Phase
       </div>
 
-      <h1 className="text-4xl font-bold tracking-tight mb-8 text-white uppercase font-display">Mini-Check Validation</h1>
+      <h1 className="text-4xl font-bold tracking-tight mb-8 text-[var(--text-primary)] uppercase font-display">Mini-Check Validation</h1>
 
       <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 mb-12 backdrop-blur-md">
         <h2 className="text-[#7b4fce] font-bold uppercase tracking-widest text-xs mb-3">LESSON CHECK</h2>
@@ -31,11 +32,11 @@ export default async function NodeMiniCheckPage({ params }: { params: Promise<{ 
         }} className="space-y-8">
           {lessonData.miniCheck.map((q, i) => (
             <div key={i}>
-              <label className="block text-white font-mono text-sm mb-3">&gt; {q}</label>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; {q}</label>
               <textarea
                 required
                 placeholder="Awaiting validation input..."
-                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded-lg p-4 text-white text-sm outline-none placeholder:opacity-50 h-24"
+                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded-lg p-4 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-24"
               />
             </div>
           ))}

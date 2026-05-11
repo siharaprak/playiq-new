@@ -19,7 +19,7 @@ export default async function DiscussionsLayout({ children }: { children: React.
   const userRole = user?.primary_role || 'student';
   
   return (
-    <div className="min-h-screen text-white" style={{ backgroundColor: '#0a0f1e' }}>
+    <div className="min-h-screen text-[var(--text-primary)]" style={{ backgroundColor: '#0a0f1e' }}>
       <div className="max-w-6xl mx-auto px-4 py-6 md:py-10">
         {/* Header */}
         <div className="mb-6">
@@ -31,16 +31,16 @@ export default async function DiscussionsLayout({ children }: { children: React.
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg flex items-center justify-center" style={{ background: 'rgba(0,200,255,0.1)', border: '1px solid rgba(0,200,255,0.25)' }}>
-                <MessageSquare style={{ color: '#00c8ff' }} className="w-5 h-5" />
+                <MessageSquare style={{ color: 'var(--neon-cyan)' }} className="w-5 h-5" />
               </div>
               <div>
                 <h1 className="text-xl font-bold leading-tight font-display">PlayIQ Discussions</h1>
-                <p className="text-xs mt-0.5" style={{ color: '#64748b' }}>Ask questions, share builds, help others</p>
+                <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>Ask questions, share builds, help others</p>
               </div>
             </div>
             {user && (
               <div className="hidden sm:flex items-center gap-2">
-                <span className="text-xs" style={{ color: '#64748b' }}>{user.full_name || 'User'}</span>
+                <span className="text-xs" style={{ color: 'var(--text-muted)' }}>{user.full_name || 'User'}</span>
                 <RoleBadge role={user.primary_role} />
               </div>
             )}
@@ -54,7 +54,7 @@ export default async function DiscussionsLayout({ children }: { children: React.
             <div className="sticky top-28">
               <div className="rounded-lg overflow-hidden" style={{ background: 'rgba(17,24,39,0.8)', border: '1px solid rgba(123,79,206,0.2)' }}>
                 <div className="px-4 py-3" style={{ borderBottom: '1px solid rgba(123,79,206,0.15)', background: 'rgba(17,24,39,0.9)' }}>
-                  <h2 className="text-xs font-bold uppercase tracking-wider" style={{ color: '#7b4fce' }}>Categories</h2>
+                  <h2 className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>Categories</h2>
                 </div>
                 <nav className="py-1">
                   {categories.map((cat: any) => (
@@ -62,10 +62,10 @@ export default async function DiscussionsLayout({ children }: { children: React.
                       key={cat.id}
                       href={`/discussions/${cat.slug}`}
                       className="flex items-center gap-3 px-4 py-2.5 text-sm transition-colors group"
-                      style={{ color: '#94a3b8' }}
+                      style={{ color: 'var(--text-secondary)' }}
                     >
-                      <span className="text-xs font-bold transition-colors" style={{ color: '#00c8ff' }}>#</span>
-                      <span className="truncate group-hover:text-white transition-colors">{cat.title}</span>
+                      <span className="text-xs font-bold transition-colors" style={{ color: 'var(--neon-cyan)' }}>#</span>
+                      <span className="truncate group-hover:text-[var(--text-primary)] transition-colors">{cat.title}</span>
                     </Link>
                   ))}
                 </nav>
@@ -74,10 +74,10 @@ export default async function DiscussionsLayout({ children }: { children: React.
               {/* Community info */}
               <div className="mt-4 rounded-lg p-4" style={{ background: 'rgba(17,24,39,0.8)', border: '1px solid rgba(123,79,206,0.2)' }}>
                 <div className="flex items-center gap-2 mb-3">
-                  <Users className="w-4 h-4" style={{ color: '#7b4fce' }} />
+                  <Users className="w-4 h-4" style={{ color: 'var(--neon-purple)' }} />
                   <h3 className="text-sm font-bold">About PlayIQ Community</h3>
                 </div>
-                <p className="text-xs leading-relaxed" style={{ color: '#64748b' }}>
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                   A space for PlayIQ learners, parents, and educators to connect, share wins, ask questions, and grow together.
                 </p>
                 {user?.primary_role === 'parent' && (

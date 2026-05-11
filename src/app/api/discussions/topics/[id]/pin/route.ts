@@ -23,10 +23,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'topic_pinned_toggled',
-      entityType: 'discussion_topics',
-      entityId: id,
+      userId: appUser.id,
+      action: 'topic_pinned_toggled',
+      resourceType: 'discussion_topics',
+      resourceId: id,
       metadata: { isPinned }
     });
 

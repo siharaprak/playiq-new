@@ -24,7 +24,9 @@ export async function GET() {
   }
   
   // Also force raw DB cleanup just in case listUsers misses a fully broken ghost row
-  await supabase.rpc('delete_user_by_email', { target_email: email }).catch(() => {});
+  try {
+    await supabase.rpc('delete_user_by_email', { target_email: email });
+  } catch (err) {}
   // Or just pure SQL equivalent via supabase client if we had setup an RPC...
   // Since we have the service role, let's just make sure the user is deleted via admin API.
 

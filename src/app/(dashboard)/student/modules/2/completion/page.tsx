@@ -35,12 +35,12 @@ export default async function Module2CompletionPage() {
         Module 2 Complete!
       </h1>
 
-      <p className="text-2xl pb-4 mb-6 font-medium" style={{ color: '#94a3b8' }}>
+      <p className="text-2xl pb-4 mb-6 font-medium" style={{ color: 'var(--text-secondary)' }}>
         New Tier Unlocked:{' '}
-        <span className="font-bold" style={{ color: '#00c8ff' }}>Digital Strategist</span>
+        <span className="font-bold" style={{ color: 'var(--neon-cyan)' }}>Digital Strategist</span>
       </p>
 
-      <p className="text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: '#94a3b8' }}>
+      <p className="text-lg mb-8 max-w-2xl leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
         You&apos;ve proven you understand how to use technology as a force multiplier for your growth — not a distraction from it.
         You stop being someone pulled around by technology, and start becoming someone who knows how to use power without being used by it.
       </p>
@@ -54,7 +54,7 @@ export default async function Module2CompletionPage() {
         <ul className="space-y-2">
           {unlocks.map(item => (
             <li key={item} className="flex items-center gap-3 text-sm" style={{ color: '#cbd5e1' }}>
-              <span style={{ color: '#39ff14' }}>✓</span> {item}
+              <span style={{ color: 'var(--neon-green)' }}>✓</span> {item}
             </li>
           ))}
         </ul>

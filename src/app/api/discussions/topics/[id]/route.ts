@@ -34,10 +34,10 @@ export async function PATCH(request: NextRequest, ctx: { params: Promise<{ id: s
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'topic_edited',
-      entityType: 'discussion_topics',
-      entityId: id,
+      userId: appUser.id,
+      action: 'topic_edited',
+      resourceType: 'discussion_topics',
+      resourceId: id,
     });
 
     return createApiSuccess(topic);
@@ -57,10 +57,10 @@ export async function DELETE(request: NextRequest, ctx: { params: Promise<{ id: 
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'topic_deleted',
-      entityType: 'discussion_topics',
-      entityId: id,
+      userId: appUser.id,
+      action: 'topic_deleted',
+      resourceType: 'discussion_topics',
+      resourceId: id,
     });
 
     return createApiSuccess(topic);

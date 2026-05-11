@@ -49,10 +49,10 @@ export async function POST(request: NextRequest) {
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'topic_created',
-      entityType: 'discussion_topics',
-      entityId: topic.id,
+      userId: appUser.id,
+      action: 'topic_created',
+      resourceType: 'discussion_topics',
+      resourceId: topic.id,
       metadata: { categoryId: parsed.data.categoryId }
     });
 

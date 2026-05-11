@@ -33,7 +33,7 @@ export default async function ParentDashboard() {
       <div className="max-w-6xl mx-auto">
         <header className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
           <div>
-             <h1 className="text-3xl font-bold text-white uppercase tracking-wider">Parent Gateway</h1>
+             <h1 className="text-3xl font-bold text-[var(--text-primary)] uppercase tracking-wider">Parent Gateway</h1>
              <p className="text-slate-400 text-sm mt-1">&gt; ACTIVE LOG: {user.email}</p>
           </div>
           <div className="w-12 h-12 bg-indigo-900/50 border border-indigo-500 text-indigo-400 rounded flex items-center justify-center font-bold">PT</div>
@@ -46,7 +46,7 @@ export default async function ParentDashboard() {
              <div className="bg-slate-900/50 p-8 rounded-xl border border-slate-800 shadow-sm backdrop-blur-sm">
                <div className="flex justify-between items-start mb-6">
                  <div>
-                   <h2 className="text-xl font-bold text-white uppercase tracking-wider">Latest Proof Packet</h2>
+                   <h2 className="text-xl font-bold text-[var(--text-primary)] uppercase tracking-wider">Latest Proof Packet</h2>
                    <p className="text-xs text-slate-500 uppercase tracking-widest mt-1">Submitted 2 hours ago</p>
                  </div>
                  <span className="bg-[#39ff14]/10 border border-[#39ff14]/30 text-[#39ff14] text-xs font-bold px-3 py-1 rounded flex items-center gap-2 tracking-widest uppercase">
@@ -90,7 +90,7 @@ export default async function ParentDashboard() {
                     ) : (
                        apprentices.map(app => (
                          <div key={app.id} className="p-3 bg-black/50 border border-slate-700 hover:border-indigo-500/50 rounded transition-colors group">
-                           <p className="text-white font-bold text-sm uppercase">{app.full_name}</p>
+                           <p className="text-[var(--text-primary)] font-bold text-sm uppercase">{app.full_name}</p>
                            <p className="text-slate-500 text-xs mt-1 truncate">{app.email}</p>
                          </div>
                        ))
@@ -129,7 +129,7 @@ export default async function ParentDashboard() {
                        <span className="text-slate-400 tracking-wider text-xs uppercase flex items-center gap-2">
                          <AlertCircle className="w-3 h-3 text-[#7b4fce]" /> Module 2 (Load Bearing)
                        </span>
-                       <span className="font-bold text-white">40%</span>
+                       <span className="font-bold text-[var(--text-primary)]">40%</span>
                      </div>
                      <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
                        <div className="bg-[#7b4fce] h-full shadow-[0_0_10px_rgba(123,79,206,0.5)]" style={{ width: '40%' }}></div>

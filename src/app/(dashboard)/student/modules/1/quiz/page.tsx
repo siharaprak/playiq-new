@@ -1,124 +1,147 @@
+import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
-import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
 
-export default async function QuizPage() {
-  const { user } = await enforceModuleGating('quiz');
-  
+export default async function Module2QuizPage() {
+  await enforceModuleGating('quiz', 2, 6);
+
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
       <div className="mb-4 text-sm text-[#00c8ff] font-semibold uppercase tracking-wider">
-        Module 1 • Gateway 1
+        Module 1 · Gateway Assessment
       </div>
-      
-      <h1 className="text-4xl font-bold tracking-tight mb-8 text-white font-display uppercase">1Q AI Learning Code Quiz</h1>
-      
-      <div className="prose dark:prose-invert max-w-none mb-12">
-        <p className="text-slate-400 font-mono text-sm leading-relaxed mb-8">
-          This quiz evaluates your foundational mastery of AI learning tools. You must achieve an 80% passing threshold to unlock the Boss Battle sequence.
-        </p>
 
-        <form action={async () => {
-          'use server';
-          const supabase = await createClient();
-          // Mocking an 85% submission to pass the 80% gate threshold natively
-          await supabase
-            .from('assessment_submissions')
-            .upsert({
-               student_id: user.id,
-               assessment_type: 'module_quiz',
-               score_numeric: 85,
-               pass_status: true,
-               raw_responses: { autoPass: true }
-            }, { onConflict: 'student_id, assessment_type' });
-            
-          redirect('/student/modules/1/boss-battle');
-        }} className="space-y-12">
+      <h1 className="text-4xl font-bold tracking-tight mb-8 text-[var(--text-primary)] font-display uppercase">
+        2Q Digital Smarts Quiz
+      </h1>
 
-          {/* Part A: AI Basics */}
-          <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">
-            <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART A: AI BASICS</h3>
-            <div className="space-y-6">
-              <div>
-                <p className="text-white font-mono text-sm mb-3">&gt; Which of these is the best use of AI?</p>
-                <div className="space-y-2">
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" required /> A. Writing your full homework answer</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" required /> B. Explaining a difficult idea in simpler language</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" required /> C. Telling you exactly what to submit</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" required /> D. Finishing your worksheet for you</label>
-                </div>
+      <p className="text-slate-400 font-mono text-sm leading-relaxed mb-10">
+        This quiz evaluates your mastery of digital responsibility and highest-path thinking. Achieve 80%+ to unlock the Boss Battle.
+      </p>
+
+      <form className="space-y-10">
+
+        {/* Part A: Power and Truth */}
+        <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">
+          <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART A — POWER AND TRUTH</h3>
+          <div className="space-y-6">
+
+            <div>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 1. What does it mean that AI is a multiplier?</p>
+              <div className="space-y-2">
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" value="a" required /> A. It always makes people smarter</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" value="b" /> B. It makes your habits and choices stronger in whatever direction they already go</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" value="c" /> C. It makes the internet faster</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" value="d" /> D. It copies people&apos;s thoughts</label>
               </div>
-              
-              <div className="pt-4 border-t border-slate-700/50">
-                <p className="text-white font-mono text-sm mb-3">&gt; What is the best reason to verify an AI answer?</p>
-                <div className="space-y-2">
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" required /> A. AI is always lying</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" required /> B. AI is always confusing</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" required /> C. AI can sound correct while still being wrong</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" required /> D. AI is useless</label>
-                </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-700/50">
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 2. Which of these is part of the Truth Filter?</p>
+              <div className="space-y-2">
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" value="a" required /> A. Believe what sounds confident</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" value="b" /> B. Share first, check later</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" value="c" /> C. Compare it with another trusted source</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" value="d" /> D. Trust popular opinions</label>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-700/50">
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 3. Why is repetition not proof?</p>
+              <div className="space-y-2">
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" value="a" required /> A. Because repeated things are always false</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" value="b" /> B. Because something can be repeated and still be wrong</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" value="c" /> C. Because the internet hides truth</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" value="d" /> D. Because teachers do not like repetition</label>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Part B: Mode Selection */}
-          <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">
-            <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART B: MODE SELECTION</h3>
-            <div className="space-y-6">
-              <div>
-                <p className="text-white font-mono text-sm mb-3">&gt; Which mode should you use if you already tried a problem and want a clue?</p>
-                <div className="space-y-2">
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" required /> A. Explain Mode</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" required /> B. Hint Mode</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" required /> C. Coach Mode</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" required /> D. Lesson Rescue Mode</label>
-                </div>
+        {/* Part B: Attention and Highest Path */}
+        <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">
+          <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART B — ATTENTION AND HIGHEST PATH</h3>
+          <div className="space-y-6">
+
+            <div>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 4. What is the difference between rest and escape?</p>
+              <div className="space-y-2">
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" value="a" required /> A. Rest builds you; escape avoids what matters</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" value="b" /> B. Escape is always good</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" value="c" /> C. Rest is only for weekends</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" value="d" /> D. They are the same thing</label>
               </div>
+            </div>
 
-              <div className="pt-4 border-t border-slate-700/50">
-                <p className="text-white font-mono text-sm mb-3">&gt; Which prompt best helps the AI learn how to teach you better?</p>
-                <div className="space-y-2">
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" required /> A. "Give me the answer fast."</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" required /> B. "Ask me 4 questions so you can learn the best way to explain this to me."</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" required /> C. "Do the paragraph for me."</label>
-                  <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" required /> D. "Just tell me what to write."</label>
-                </div>
+            <div className="pt-4 border-t border-slate-700/50">
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 5. Which question is part of the Highest Path Test?</p>
+              <div className="space-y-2">
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q5" value="a" required /> A. Will this make me look smart?</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q5" value="b" /> B. Does this make me stronger or weaker?</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q5" value="c" /> C. Can I avoid effort here?</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q5" value="d" /> D. Will this help me finish faster no matter what?</label>
+              </div>
+            </div>
+
+            <div className="pt-4 border-t border-slate-700/50">
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 6. Which is the highest path choice?</p>
+              <div className="space-y-2">
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" value="a" required /> A. Copying an AI answer because it sounds good</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" value="b" /> B. Asking AI to explain a concept and then writing your own answer</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" value="c" /> C. Scrolling when you meant to study</label>
+                <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" value="d" /> D. Believing something because it matches your opinion</label>
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Part C: Better Questions */}
-          <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">
-             <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART C: BETTER QUESTIONS</h3>
-             <div className="space-y-6">
-               <div>
-                 <p className="text-white font-mono text-sm mb-3">&gt; Which question is strongest for learning?</p>
-                 <div className="space-y-2">
-                   <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" required /> A. "What's the answer?"</label>
-                   <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" required /> B. "Do it for me."</label>
-                   <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" required /> C. "Can you explain the first step and then quiz me?"</label>
-                   <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" required /> D. "Write this faster."</label>
-                 </div>
-               </div>
-               
-               <div className="pt-4 border-t border-slate-700/50">
-                 <p className="text-white font-mono text-sm mb-3">&gt; Rewrite this weak prompt into a better learning prompt: "Give me the answer."</p>
-                 <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Your learning prompt..." />
-               </div>
-             </div>
+        {/* Part C: Integrity and Social Impact */}
+        <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">
+          <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART C — INTEGRITY AND SOCIAL IMPACT</h3>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 7. What does &quot;AI can coach me, but I earn the skill&quot; mean?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+            </div>
+            <div>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 8. Why is cheating an identity problem?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+            </div>
+            <div>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 9. Why should you pause before sharing something online?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+            </div>
           </div>
+        </div>
 
-          <div className="flex justify-end pt-8">
-            <button 
-              type="submit"
-              className="btn-neon-filled w-full md:w-auto px-10 py-4 rounded-lg font-bold uppercase tracking-widest"
-            >
-              Submit Protocol & Verify →
-            </button>
+        {/* Part D: Applied Thinking */}
+        <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">
+          <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART D — APPLIED THINKING</h3>
+          <div className="space-y-6">
+            <div>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 10. A confident AI answer matches what you hoped was true. What should you do next, and why?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+            </div>
+            <div>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 11. What is one attention trap you want to reduce, and what boundary could help?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+            </div>
+            <div>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 12. What is one Highest Path rule you want to use more often?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+            </div>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div className="flex justify-end pt-4">
+          <button
+            type="submit"
+            className="btn-neon-filled w-full md:w-auto px-10 py-4 rounded-lg font-bold uppercase tracking-widest"
+          >
+            Submit Quiz &amp; Verify →
+          </button>
+        </div>
+      </form>
     </div>
   );
 }

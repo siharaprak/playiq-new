@@ -9,6 +9,7 @@
   --neon-purple-light: #9b6fe8;
   --neon-gold: #f5c518;
   --neon-green: #39ff14;
+  --neon-cyan-pale: #7df9ff;
   --space-deep: #0a0f1e;
   --space-mid: #111827;
   --space-card: rgba(17, 24, 39, 0.8);
@@ -427,6 +428,7 @@ body {
   --neon-cyan: #00b8cc;
   --neon-magenta: #cc00cc;
   --neon-green: #1faa0a;
+  --neon-cyan-pale: #008899;
   --space-deep: #c8cdd5;
   --space-mid: #b8bfc9;
   --space-card: rgba(200, 207, 218, 0.85);
@@ -613,6 +615,12 @@ html[data-theme="light"] .gradient-text-magenta {
 html[data-theme="light"] .circle-frame {
   border-color: rgba(0, 184, 204, 0.4);
   box-shadow: 0 0 15px rgba(0, 184, 204, 0.15), 0 0 30px rgba(0, 184, 204, 0.05);
+}
+
+/* ── Light Mode: Logo fixes ──────────────────────────────── */
+
+html[data-theme="light"] .logo-ambient-bloom {
+  opacity: 0;
 }
 
 /* ══════════════════════════════════════════════════════════════

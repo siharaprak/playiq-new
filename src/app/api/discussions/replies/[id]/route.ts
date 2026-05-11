@@ -22,10 +22,10 @@ export async function PATCH(request: NextRequest, ctx: { params: Promise<{ id: s
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'reply_edited',
-      entityType: 'discussion_replies',
-      entityId: id,
+      userId: appUser.id,
+      action: 'reply_edited',
+      resourceType: 'discussion_replies',
+      resourceId: id,
     });
 
     return createApiSuccess(reply);
@@ -45,10 +45,10 @@ export async function DELETE(request: NextRequest, ctx: { params: Promise<{ id: 
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'reply_deleted',
-      entityType: 'discussion_replies',
-      entityId: id,
+      userId: appUser.id,
+      action: 'reply_deleted',
+      resourceType: 'discussion_replies',
+      resourceId: id,
     });
 
     return createApiSuccess(reply);

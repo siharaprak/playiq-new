@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
 
@@ -10,7 +11,7 @@ export default async function Module2QuizPage() {
         Module 2 · Gateway Assessment
       </div>
 
-      <h1 className="text-4xl font-bold tracking-tight mb-8 text-white font-display uppercase">
+      <h1 className="text-4xl font-bold tracking-tight mb-8 text-[var(--text-primary)] font-display uppercase">
         2Q Digital Smarts Quiz
       </h1>
 
@@ -26,7 +27,7 @@ export default async function Module2QuizPage() {
           <div className="space-y-6">
 
             <div>
-              <p className="text-white font-mono text-sm mb-3">&gt; 1. What does it mean that AI is a multiplier?</p>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 1. What does it mean that AI is a multiplier?</p>
               <div className="space-y-2">
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" value="a" required /> A. It always makes people smarter</label>
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q1" value="b" /> B. It makes your habits and choices stronger in whatever direction they already go</label>
@@ -36,7 +37,7 @@ export default async function Module2QuizPage() {
             </div>
 
             <div className="pt-4 border-t border-slate-700/50">
-              <p className="text-white font-mono text-sm mb-3">&gt; 2. Which of these is part of the Truth Filter?</p>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 2. Which of these is part of the Truth Filter?</p>
               <div className="space-y-2">
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" value="a" required /> A. Believe what sounds confident</label>
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q2" value="b" /> B. Share first, check later</label>
@@ -46,7 +47,7 @@ export default async function Module2QuizPage() {
             </div>
 
             <div className="pt-4 border-t border-slate-700/50">
-              <p className="text-white font-mono text-sm mb-3">&gt; 3. Why is repetition not proof?</p>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 3. Why is repetition not proof?</p>
               <div className="space-y-2">
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" value="a" required /> A. Because repeated things are always false</label>
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q3" value="b" /> B. Because something can be repeated and still be wrong</label>
@@ -63,7 +64,7 @@ export default async function Module2QuizPage() {
           <div className="space-y-6">
 
             <div>
-              <p className="text-white font-mono text-sm mb-3">&gt; 4. What is the difference between rest and escape?</p>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 4. What is the difference between rest and escape?</p>
               <div className="space-y-2">
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" value="a" required /> A. Rest builds you; escape avoids what matters</label>
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q4" value="b" /> B. Escape is always good</label>
@@ -73,7 +74,7 @@ export default async function Module2QuizPage() {
             </div>
 
             <div className="pt-4 border-t border-slate-700/50">
-              <p className="text-white font-mono text-sm mb-3">&gt; 5. Which question is part of the Highest Path Test?</p>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 5. Which question is part of the Highest Path Test?</p>
               <div className="space-y-2">
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q5" value="a" required /> A. Will this make me look smart?</label>
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q5" value="b" /> B. Does this make me stronger or weaker?</label>
@@ -83,7 +84,7 @@ export default async function Module2QuizPage() {
             </div>
 
             <div className="pt-4 border-t border-slate-700/50">
-              <p className="text-white font-mono text-sm mb-3">&gt; 6. Which is the highest path choice?</p>
+              <p className="text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 6. Which is the highest path choice?</p>
               <div className="space-y-2">
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" value="a" required /> A. Copying an AI answer because it sounds good</label>
                 <label className="flex gap-3 text-sm text-slate-300"><input type="radio" name="q6" value="b" /> B. Asking AI to explain a concept and then writing your own answer</label>
@@ -99,16 +100,16 @@ export default async function Module2QuizPage() {
           <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART C — INTEGRITY AND SOCIAL IMPACT</h3>
           <div className="space-y-6">
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; 7. What does &quot;AI can coach me, but I earn the skill&quot; mean?</label>
-              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 7. What does &quot;AI can coach me, but I earn the skill&quot; mean?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
             </div>
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; 8. Why is cheating an identity problem?</label>
-              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 8. Why is cheating an identity problem?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
             </div>
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; 9. Why should you pause before sharing something online?</label>
-              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 9. Why should you pause before sharing something online?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
             </div>
           </div>
         </div>
@@ -118,16 +119,16 @@ export default async function Module2QuizPage() {
           <h3 className="text-[#39ff14] font-bold uppercase tracking-widest text-xs mb-6 border-b border-slate-700 pb-2">PART D — APPLIED THINKING</h3>
           <div className="space-y-6">
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; 10. A confident AI answer matches what you hoped was true. What should you do next, and why?</label>
-              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 10. A confident AI answer matches what you hoped was true. What should you do next, and why?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
             </div>
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; 11. What is one attention trap you want to reduce, and what boundary could help?</label>
-              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 11. What is one attention trap you want to reduce, and what boundary could help?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
             </div>
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; 12. What is one Highest Path rule you want to use more often?</label>
-              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; 12. What is one Highest Path rule you want to use more often?</label>
+              <textarea required className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none placeholder:opacity-50 h-20" placeholder="Write 1–3 full sentences..." />
             </div>
           </div>
         </div>

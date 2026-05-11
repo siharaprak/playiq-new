@@ -20,7 +20,7 @@ export default async function NodeActivityPage({ params }: { params: Promise<{ n
         Module 2 · Node {nodeId} · Application Phase
       </div>
 
-      <h1 className="text-4xl font-bold tracking-tight mb-4 text-white uppercase font-display">
+      <h1 className="text-4xl font-bold tracking-tight mb-4 text-[var(--text-primary)] uppercase font-display">
         {lessonData.activity.title}
       </h1>
 
@@ -36,24 +36,24 @@ export default async function NodeActivityPage({ params }: { params: Promise<{ n
       <div className="space-y-6 mb-12">
         {lessonData.activity.scenarios.map((scenario, i) => (
           <div key={i} className="bg-slate-900/80 p-5 border border-[#7b4fce]/30 rounded-lg shadow-lg">
-            <p className="text-white font-mono text-sm mb-4 tracking-wide">&gt; {scenario}</p>
+            <p className="text-[var(--text-primary)] font-mono text-sm mb-4 tracking-wide">&gt; {scenario}</p>
             <textarea
               placeholder="AWAITING INPUT..."
-              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm font-mono placeholder:opacity-50 outline-none h-20"
+              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm font-mono placeholder:opacity-50 outline-none h-20"
             />
           </div>
         ))}
 
         {lessonData.activity.reflection && lessonData.activity.reflection.length > 0 && (
           <div className="mt-12 pt-12 border-t border-slate-800">
-            <h3 className="text-xl font-bold text-white mb-6 font-display uppercase tracking-wider">Reflective Synthesis</h3>
+            <h3 className="text-xl font-bold text-[var(--text-primary)] mb-6 font-display uppercase tracking-wider">Reflective Synthesis</h3>
             <div className="space-y-6">
               {lessonData.activity.reflection.map((prompt, i) => (
                 <div key={`ref-${i}`} className="bg-[#7b4fce]/10 p-5 border border-[#7b4fce]/40 rounded-lg">
                   <p className="text-purple-200 font-bold mb-3">{prompt}</p>
                   <textarea
                     placeholder="Synthesizing..."
-                    className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm font-mono h-24 outline-none"
+                    className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm font-mono h-24 outline-none"
                   />
                 </div>
               ))}
@@ -65,7 +65,7 @@ export default async function NodeActivityPage({ params }: { params: Promise<{ n
       <div className="flex justify-between items-center mt-8 border-t border-slate-800 pt-8">
         <Link
           href={`/student/modules/2/nodes/${nodeId}/lesson`}
-          className="text-slate-500 hover:text-white transition-colors font-mono text-sm uppercase tracking-widest"
+          className="text-slate-500 hover:text-[var(--text-primary)] transition-colors font-mono text-sm uppercase tracking-widest"
         >
           ← Return to Lesson
         </Link>

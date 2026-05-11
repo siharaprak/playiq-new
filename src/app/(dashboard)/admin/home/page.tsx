@@ -34,7 +34,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   const totalCount = allApps?.length || 0;
 
   return (
-    <div className="min-h-screen bg-[#020617] star-field text-white p-6 md:p-12">
+    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] p-6 md:p-12">
       <div className="max-w-6xl mx-auto relative z-10">
         <header className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
           <div>
@@ -44,7 +44,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             <p className="text-[#00c8ff] font-mono text-xs mt-2 tracking-widest uppercase opacity-80">&gt; CURRENT_SESSION_BETA_2.0.4: {user.email}</p>
           </div>
           <form action="/auth/signout" method="post">
-            <button className="text-xs font-mono tracking-widest uppercase border border-slate-600 bg-transparent text-slate-300 px-4 py-2 hover:bg-slate-800 hover:text-white transition-colors">
+            <button className="text-xs font-mono tracking-widest uppercase border border-slate-600 bg-transparent text-slate-300 px-4 py-2 hover:bg-slate-800 hover:text-[var(--text-primary)] transition-colors">
               [ LOGOUT ]
             </button>
           </form>
@@ -58,7 +58,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Beta Intake Capacity</p>
              </div>
              <div>
-               <p className="font-display text-4xl font-black text-white">{totalCount} <span className="text-sm text-slate-500">/ 25</span></p>
+               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{totalCount} <span className="text-sm text-slate-500">/ 25</span></p>
              </div>
            </div>
            
@@ -68,7 +68,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Orders Pending Dispatch</p>
              </div>
              <div>
-               <p className="font-display text-4xl font-black text-white">{allApps?.filter(a => a.status === 'paid').length || 0}</p>
+               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{allApps?.filter(a => a.status === 'paid').length || 0}</p>
              </div>
            </div>
 
@@ -85,7 +85,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                </div>
              </div>
              <div className="mt-4">
-                <Link href="/student/modules/1/overview" className="block text-center w-full bg-[#00c8ff] hover:bg-white text-black py-3 font-display font-bold uppercase tracking-[0.2em] transition-colors shadow-[0_0_15px_rgba(0,200,255,0.6)]">
+                <Link href="/student/home" className="block text-center w-full bg-[#00c8ff] hover:bg-white text-black py-3 font-display font-bold uppercase tracking-[0.2em] transition-colors shadow-[0_0_15px_rgba(0,200,255,0.6)]">
                   ENTER LMS &rarr;
                 </Link>
              </div>
@@ -97,10 +97,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
           <div className="px-6 py-4 border-b border-slate-800 bg-[#020617] flex justify-between items-center overflow-x-auto">
             <h2 className="font-mono text-sm tracking-widest text-[#00c8ff] uppercase mr-4">&gt; COHORT_TABLE_MANIFEST</h2>
             <div className="flex bg-black/50 border border-slate-800 p-1 gap-1 text-xs font-mono uppercase">
-               <Link href="/admin/home" className={`px-4 py-2 transition-colors ${!searchParams?.status || searchParams.status === 'all' ? 'bg-[#00c8ff] text-black font-bold shadow-[0_0_10px_rgba(0,200,255,0.4)]' : 'text-slate-400 hover:text-white'}`}>All</Link>
-               <Link href="/admin/home?status=paid" className={`px-4 py-2 transition-colors ${searchParams?.status === 'paid' ? 'bg-emerald-500 text-black font-bold shadow-[0_0_10px_rgba(16,185,129,0.4)]' : 'text-slate-400 hover:text-white'}`}>Paid</Link>
-               <Link href="/admin/home?status=checkout_started" className={`px-4 py-2 transition-colors ${searchParams?.status === 'checkout_started' ? 'bg-amber-400 text-black font-bold shadow-[0_0_10px_rgba(251,191,36,0.4)]' : 'text-slate-400 hover:text-white'}`}>Started</Link>
-               <Link href="/admin/home?status=canceled" className={`px-4 py-2 transition-colors ${searchParams?.status === 'canceled' ? 'bg-red-500 text-white font-bold shadow-[0_0_10px_rgba(239,68,68,0.4)]' : 'text-slate-400 hover:text-white'}`}>VOIDED</Link>
+               <Link href="/admin/home" className={`px-4 py-2 transition-colors ${!searchParams?.status || searchParams.status === 'all' ? 'bg-[#00c8ff] text-black font-bold shadow-[0_0_10px_rgba(0,200,255,0.4)]' : 'text-slate-400 hover:text-[var(--text-primary)]'}`}>All</Link>
+               <Link href="/admin/home?status=paid" className={`px-4 py-2 transition-colors ${searchParams?.status === 'paid' ? 'bg-emerald-500 text-black font-bold shadow-[0_0_10px_rgba(16,185,129,0.4)]' : 'text-slate-400 hover:text-[var(--text-primary)]'}`}>Paid</Link>
+               <Link href="/admin/home?status=checkout_started" className={`px-4 py-2 transition-colors ${searchParams?.status === 'checkout_started' ? 'bg-amber-400 text-black font-bold shadow-[0_0_10px_rgba(251,191,36,0.4)]' : 'text-slate-400 hover:text-[var(--text-primary)]'}`}>Started</Link>
+               <Link href="/admin/home?status=canceled" className={`px-4 py-2 transition-colors ${searchParams?.status === 'canceled' ? 'bg-red-500 text-[var(--text-primary)] font-bold shadow-[0_0_10px_rgba(239,68,68,0.4)]' : 'text-slate-400 hover:text-[var(--text-primary)]'}`}>VOIDED</Link>
             </div>
           </div>
           

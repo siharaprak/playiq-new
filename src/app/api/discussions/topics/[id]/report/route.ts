@@ -20,10 +20,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'topic_reported',
-      entityType: 'discussion_reports',
-      entityId: report.id,
+      userId: appUser.id,
+      action: 'topic_reported',
+      resourceType: 'discussion_reports',
+      resourceId: report.id,
       metadata: { topicId: id, reason }
     });
 

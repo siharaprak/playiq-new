@@ -34,38 +34,43 @@ export default async function Module2OverviewPage() {
 
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
-      <div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: '#00c8ff' }}>
+      
+      <Link href="/student/home" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-8 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
+        <span className="group-hover:-translate-x-1 transition-transform">←</span>
+        <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Dashboard</span>
+      </Link>
+<div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
         Module 2 • Skill Tree: Highest Path
       </div>
 
       <header className="mb-10">
-        <h1 className="text-4xl font-bold tracking-tight text-white font-display">
+        <h1 className="text-4xl font-bold tracking-tight text-[var(--text-primary)] font-display">
           Digital Smarts &amp; Human Responsibility
         </h1>
-        <p className="text-lg mt-3 leading-relaxed" style={{ color: '#94a3b8' }}>
+        <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           AI and the internet are amplifiers. They can make you more focused, help you learn faster, and create better work — or, if used badly, distract you and turn you into a passive consumer. By the end of this module, you&apos;ll know how to use technology in a way that keeps you on your highest path.
         </p>
       </header>
 
       {/* What You'll Learn */}
-      <section className="p-6 rounded-xl border mb-8" style={{ background: 'rgba(17,24,39,0.85)', borderColor: 'rgba(0,200,255,0.2)' }}>
-        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: '#00c8ff' }}>
+      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>
+        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
           What You&apos;ll Learn
         </h2>
-        <div className="grid md:grid-cols-2 gap-4 text-sm" style={{ color: '#94a3b8' }}>
+        <div className="grid md:grid-cols-2 gap-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
           <div>
-            <p className="font-bold mb-2" style={{ color: '#39ff14' }}>Used well, technology can help you:</p>
+            <p className="font-bold mb-2" style={{ color: 'var(--neon-green)' }}>Used well, technology can help you:</p>
             <ul className="space-y-1 list-none">
               {['Become more focused', 'Learn faster', 'Create better work', 'Make smarter decisions'].map(item => (
-                <li key={item} className="flex items-center gap-2"><span style={{ color: '#00c8ff' }}>✓</span> {item}</li>
+                <li key={item} className="flex items-center gap-2"><span style={{ color: 'var(--neon-cyan)' }}>✓</span> {item}</li>
               ))}
             </ul>
           </div>
           <div>
-            <p className="font-bold mb-2" style={{ color: '#ff4444' }}>Used badly, it can:</p>
+            <p className="font-bold mb-2 text-red-500">Used badly, it can:</p>
             <ul className="space-y-1 list-none">
               {['Distract you', 'Weaken your focus', 'Make you believe things too quickly', 'Turn you into a passive consumer'].map(item => (
-                <li key={item} className="flex items-center gap-2"><span style={{ color: '#ff4444' }}>✗</span> {item}</li>
+                <li key={item} className="flex items-center gap-2"><span className="text-red-500">✗</span> {item}</li>
               ))}
             </ul>
           </div>
@@ -73,8 +78,8 @@ export default async function Module2OverviewPage() {
       </section>
 
       {/* Skill Tree Nodes */}
-      <section className="p-6 rounded-xl border mb-8" style={{ background: 'rgba(17,24,39,0.85)', borderColor: 'rgba(123,79,206,0.25)' }}>
-        <h2 className="text-xl font-bold mb-6 uppercase tracking-wider" style={{ color: '#7b4fce' }}>
+      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--glass-border)' }}>
+        <h2 className="text-xl font-bold mb-6 uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
           Skill Tree
         </h2>
         <div className="flex flex-col gap-3">
@@ -85,11 +90,11 @@ export default async function Module2OverviewPage() {
 
             if (mastered) {
               return (
-                <div key={node.id} className="p-4 rounded-lg flex items-center gap-3" style={{ background: 'rgba(57,255,20,0.07)', border: '1px solid rgba(57,255,20,0.3)' }}>
-                  <span style={{ color: '#39ff14' }}>✓</span>
-                  <span className="text-sm font-mono" style={{ color: '#39ff14' }}>Node {node.id}: {node.title}</span>
-                  <span className="ml-auto text-xs px-2 py-1 rounded" style={{ background: 'rgba(57,255,20,0.15)', color: '#39ff14' }}>MASTERED</span>
-                </div>
+                <Link key={node.id} href={`/student/modules/2/nodes/${node.id}/lesson`} className="p-4 rounded-lg flex items-center gap-3 transition-all group hover:bg-[rgba(57,255,20,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-green)' }}>
+                  <span style={{ color: 'var(--neon-green)' }}>✓</span>
+                  <span className="text-sm font-mono" style={{ color: 'var(--neon-green)' }}>Node {node.id}: {node.title}</span>
+                  <span className="ml-auto text-xs px-2 py-1 rounded" style={{ background: 'transparent', border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>MASTERED</span>
+                </Link>
               );
             }
 
@@ -97,18 +102,18 @@ export default async function Module2OverviewPage() {
               return (
                 <Link key={node.id} href={`/student/modules/2/nodes/${node.id}/lesson`}
                   className="p-4 rounded-lg flex items-center gap-3 transition-all group"
-                  style={{ background: 'rgba(0,200,255,0.05)', border: '1px solid rgba(0,200,255,0.3)' }}>
-                  <span style={{ color: '#00c8ff' }}>→</span>
-                  <span className="text-sm font-mono text-white group-hover:text-[#00c8ff] transition-colors">Node {node.id}: {node.title}</span>
-                  {isNext && <span className="ml-auto text-xs px-2 py-1 rounded" style={{ background: 'rgba(0,200,255,0.15)', color: '#00c8ff' }}>START</span>}
+                  style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}>
+                  <span style={{ color: 'var(--neon-cyan)' }}>→</span>
+                  <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">Node {node.id}: {node.title}</span>
+                  {isNext && <span className="ml-auto text-xs px-2 py-1 rounded" style={{ background: 'transparent', border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>START</span>}
                 </Link>
               );
             }
 
             return (
-              <div key={node.id} className="p-4 rounded-lg flex items-center gap-3 opacity-40 cursor-not-allowed" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-                <span style={{ color: '#64748b' }}>🔒</span>
-                <span className="text-sm font-mono" style={{ color: '#64748b' }}>Node {node.id}: {node.title} (Locked)</span>
+              <div key={node.id} className="p-4 rounded-lg flex items-center gap-3 opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+                <span style={{ color: 'var(--text-muted)' }}>🔒</span>
+                <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Node {node.id}: {node.title} (Locked)</span>
               </div>
             );
           })}
@@ -116,19 +121,19 @@ export default async function Module2OverviewPage() {
       </section>
 
       {/* Assessments */}
-      <section className="p-6 rounded-xl border" style={{ background: 'rgba(17,24,39,0.85)', borderColor: 'rgba(123,79,206,0.2)' }}>
-        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: '#7b4fce' }}>
+      <section className="p-6 rounded-xl border" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-purple)' }}>
+        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
           Module Assessments
         </h2>
         <div className="flex flex-col gap-3">
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-            <span className="text-sm font-mono" style={{ color: '#64748b' }}>Module Quiz — Requires 6 Nodes Mastered</span>
+          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 6 Nodes Mastered</span>
           </div>
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-            <span className="text-sm font-mono" style={{ color: '#64748b' }}>Boss Battle — Requires Quiz 80%+</span>
+          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>
           </div>
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-            <span className="text-sm font-mono" style={{ color: '#64748b' }}>Proof Artifacts — Requires Boss Battle</span>
+          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Proof Artifacts — Requires Boss Battle</span>
           </div>
         </div>
       </section>

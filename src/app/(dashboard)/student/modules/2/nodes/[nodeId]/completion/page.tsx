@@ -18,8 +18,8 @@ export default async function NodeCompletionPage({ params }: { params: Promise<{
       >
         ✓
       </div>
-      <h1 className="text-4xl font-bold tracking-tight mb-4 text-white">Node {nodeId} Mastered!</h1>
-      <p className="text-xl mb-8 max-w-lg leading-relaxed" style={{ color: '#94a3b8' }}>
+      <h1 className="text-4xl font-bold tracking-tight mb-4 text-[var(--text-primary)]">Node {nodeId} Mastered!</h1>
+      <p className="text-xl mb-8 max-w-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
         You&apos;ve successfully mastered Node {nodeId}. Your Teach-Back was approved — you own this concept.
       </p>
 

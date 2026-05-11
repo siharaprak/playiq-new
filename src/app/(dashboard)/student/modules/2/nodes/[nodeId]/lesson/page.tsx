@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
 import { advanceNodePhase } from '../../../actions';
@@ -15,7 +16,12 @@ export default async function NodeLessonPage({ params }: { params: Promise<{ nod
 
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-3xl mx-auto">
-      <div className="mb-4 text-sm text-muted-foreground uppercase tracking-wider">
+      
+      <Link href="/student/modules/2/overview" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-8 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
+        <span className="group-hover:-translate-x-1 transition-transform">←</span>
+        <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Module</span>
+      </Link>
+<div className="mb-4 text-sm text-muted-foreground uppercase tracking-wider">
         Module 2 · Node {nodeId} · Lesson Phase
       </div>
 
@@ -32,7 +38,7 @@ export default async function NodeLessonPage({ params }: { params: Promise<{ nod
 
           {lessonData.sections.map((section, idx) => (
             <div key={idx} className="bg-slate-800/80 p-6 rounded-xl border border-slate-700/50 backdrop-blur-sm">
-              {section.title && <h3 className="text-xl font-bold text-white mb-4">{section.title}</h3>}
+              {section.title && <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">{section.title}</h3>}
               <ul className="list-disc pl-5 space-y-2 text-slate-300">
                 {section.content.map((item, i) => (
                   <li key={i}>{item}</li>

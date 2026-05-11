@@ -25,10 +25,10 @@ interface PlayIQLogoProps {
  *   - Background: transparent
  */
 export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoProps) {
-  const CYAN      = '#00d4ff';
-  const CYAN_PALE = '#7df9ff';
-  const PURPLE    = '#9d4edd';
-  const PURPLE_LT = '#c77dff';
+  const CYAN      = 'var(--neon-cyan, #00d4ff)';
+  const CYAN_PALE = 'var(--neon-cyan-pale, #7df9ff)';
+  const PURPLE    = 'var(--neon-purple, #9d4edd)';
+  const PURPLE_LT = 'var(--neon-purple-light, #c77dff)';
 
   /* ─────────────────────────────────────────────────────────────────────
      Shared SVG defs (filters + gradients)
@@ -36,7 +36,7 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
   const Defs = ({ id }: { id: string }) => (
     <defs>
       {/* ── cyan neon tube glow ── */}
-      <filter id={`${id}-cyan`} x="-40%" y="-40%" width="180%" height="180%">
+      <filter id={`${id}-cyan`} filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
         {/* outer bloom */}
         <feGaussianBlur in="SourceGraphic" stdDeviation="9" result="blur-outer" />
         {/* tight tube glow */}
@@ -49,7 +49,7 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
       </filter>
 
       {/* ── purple glow ── */}
-      <filter id={`${id}-purple`} x="-50%" y="-50%" width="200%" height="200%">
+      <filter id={`${id}-purple`} filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="b" />
         <feMerge>
           <feMergeNode in="b" />
@@ -58,11 +58,9 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
       </filter>
 
       {/* ── large purple ambient bloom ── */}
-      <filter id={`${id}-bloom`} x="-60%" y="-60%" width="220%" height="220%">
+      <filter id={`${id}-bloom`} filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
         <feGaussianBlur stdDeviation="30" />
       </filter>
-
-
     </defs>
   );
 
@@ -92,8 +90,8 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
 
           {/* ── ambient purple bloom behind all letters ── */}
           <ellipse cx="375" cy="90" rx="340" ry="75"
-            fill="rgba(100,0,200,0.45)"
-            filter={`url(#${id}-bloom)`} />
+            fill="var(--neon-purple, rgba(100,0,200,0.45))" opacity="0.3"
+            filter={`url(#${id}-bloom)`} className="logo-ambient-bloom" />
 
           {/* ═══════════════════════════════════════════════
               CYAN LETTER OUTLINES
@@ -235,23 +233,23 @@ export function PlayIQLogo({ variant = 'navbar', className = '' }: PlayIQLogoPro
       style={{ overflow: 'visible' }}
     >
       <defs>
-        <filter id={`${id}-cyan`} x="-40%" y="-40%" width="180%" height="180%">
+        <filter id={`${id}-cyan`} filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="2.5" result="b" />
           <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
-        <filter id={`${id}-purple`} x="-50%" y="-50%" width="200%" height="200%">
+        <filter id={`${id}-purple`} filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="3" result="b" />
           <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
         </filter>
-        <filter id={`${id}-bloom`} x="-60%" y="-60%" width="220%" height="220%">
+        <filter id={`${id}-bloom`} filterUnits="userSpaceOnUse" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="10" />
         </filter>
       </defs>
 
       {/* ambient bloom */}
       <ellipse cx="140" cy="28" rx="130" ry="22"
-        fill="rgba(100,0,200,0.3)"
-        filter={`url(#${id}-bloom)`} />
+        fill="var(--neon-purple, rgba(100,0,200,0.3))" opacity="0.2"
+        filter={`url(#${id}-bloom)`} className="logo-ambient-bloom" />
 
       {/* ── P ── */}
       {['M 8,5 L 8,51', 'M 8,5 L 36,5 Q 46,5 46,18 Q 46,31 36,31 L 8,31'].map((d, i) => (

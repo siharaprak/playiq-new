@@ -69,7 +69,7 @@ export default async function TopicPage(props: { params: Promise<{ id: string }>
           </div>
 
           {/* Title */}
-          <h1 className="text-xl font-bold text-white mb-3 leading-snug">{topic.title}</h1>
+          <h1 className="text-xl font-bold text-[var(--text-primary)] mb-3 leading-snug">{topic.title}</h1>
           
           {/* Body */}
           <div className="text-slate-300 whitespace-pre-wrap leading-relaxed text-sm">

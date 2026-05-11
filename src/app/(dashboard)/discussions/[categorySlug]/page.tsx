@@ -41,9 +41,9 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
       {/* Category header */}
       <div className="rounded-lg p-4" style={{ background: 'rgba(17,24,39,0.8)', borderLeft: '3px solid #7b4fce', border: '1px solid rgba(123,79,206,0.25)' }}>
         <h2 className="font-bold text-lg font-display">
-          <span className="mr-1" style={{ color: '#00c8ff' }}>#</span>{category.title}
+          <span className="mr-1" style={{ color: 'var(--neon-cyan)' }}>#</span>{category.title}
         </h2>
-        {category.description && <p className="text-xs mt-1" style={{ color: '#64748b' }}>{category.description}</p>}
+        {category.description && <p className="text-xs mt-1" style={{ color: 'var(--text-muted)' }}>{category.description}</p>}
       </div>
 
       {/* Create a post bar (hidden for parents) */}
@@ -54,13 +54,13 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
       {/* Search */}
       <form className="flex items-center gap-2">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: '#64748b' }} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4" style={{ color: 'var(--text-muted)' }} />
           <input
             type="text"
             name="q"
             defaultValue={query}
             placeholder="Search posts..."
-            className="w-full rounded-lg pl-9 pr-4 py-2 text-white text-sm focus:outline-none"
+            className="w-full rounded-lg pl-9 pr-4 py-2 text-[var(--text-primary)] text-sm focus:outline-none"
             style={{ background: 'rgba(17,24,39,0.8)', border: '1px solid rgba(123,79,206,0.25)' }}
           />
         </div>
@@ -68,14 +68,14 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
           Search
         </button>
         {query && (
-          <Link href={`/discussions/${categorySlug}`} className="text-xs px-2 transition-colors" style={{ color: '#64748b' }}>Clear</Link>
+          <Link href={`/discussions/${categorySlug}`} className="text-xs px-2 transition-colors" style={{ color: 'var(--text-muted)' }}>Clear</Link>
         )}
       </form>
 
       {/* Topic feed */}
       <div className="space-y-2">
         {filteredTopics.length === 0 ? (
-          <div className="text-center py-16 text-sm" style={{ color: '#64748b' }}>
+          <div className="text-center py-16 text-sm" style={{ color: 'var(--text-muted)' }}>
             {query ? 'No posts found matching your search.' : 'No posts yet. Be the first to start a discussion!'}
           </div>
         ) : (
@@ -110,7 +110,7 @@ export default async function CategoryPage(props: { params: Promise<{ categorySl
                   </div>
 
                   {/* Title */}
-                  <h3 className="font-bold text-white transition-colors leading-snug mb-1 group-hover:text-[#00c8ff]">
+                  <h3 className="font-bold text-[var(--text-primary)] transition-colors leading-snug mb-1 group-hover:text-[var(--neon-cyan)]">
                     {topic.title}
                   </h3>
 

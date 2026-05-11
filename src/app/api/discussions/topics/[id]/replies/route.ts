@@ -25,10 +25,10 @@ export async function POST(request: NextRequest, ctx: { params: Promise<{ id: st
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'reply_created',
-      entityType: 'discussion_replies',
-      entityId: reply.id,
+      userId: appUser.id,
+      action: 'reply_created',
+      resourceType: 'discussion_replies',
+      resourceId: reply.id,
       metadata: { topicId: id }
     });
 

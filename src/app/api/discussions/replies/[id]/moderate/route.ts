@@ -32,10 +32,10 @@ export async function PATCH(request: NextRequest, ctx: { params: Promise<{ id: s
     });
 
     await logAuditEvent({
-      actorUserId: appUser.id,
-      eventType: 'reply_moderated',
-      entityType: 'discussion_replies',
-      entityId: id,
+      userId: appUser.id,
+      action: 'reply_moderated',
+      resourceType: 'discussion_replies',
+      resourceId: id,
       metadata: { action: parsed.data.action, reason: parsed.data.reason }
     });
 

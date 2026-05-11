@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
 
@@ -35,7 +36,7 @@ export default async function Module2BossBattlePage() {
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
       <div
         className="mb-4 text-sm font-semibold uppercase tracking-wider animate-pulse"
-        style={{ color: '#7b4fce' }}
+        style={{ color: 'var(--neon-purple)' }}
       >
         Module 2 · Final Assessment
       </div>
@@ -72,7 +73,7 @@ export default async function Module2BossBattlePage() {
             <p className="text-[#00c8ff] font-bold uppercase tracking-widest text-xs mb-3">
               SCENARIO {scenario.id}
             </p>
-            <p className="text-white font-mono text-sm mb-6 leading-relaxed">&gt; {scenario.text}</p>
+            <p className="text-[var(--text-primary)] font-mono text-sm mb-6 leading-relaxed">&gt; {scenario.text}</p>
 
             <div className="space-y-4">
               <div>
@@ -80,11 +81,11 @@ export default async function Module2BossBattlePage() {
                 <div className="flex gap-4">
                   <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
                     <input type="radio" name={`s${scenario.id}_label`} value="superpower" required />
-                    <span style={{ color: '#39ff14' }}>⚡ Superpower</span>
+                    <span style={{ color: 'var(--neon-green)' }}>⚡ Superpower</span>
                   </label>
                   <label className="flex items-center gap-2 text-sm text-slate-300 cursor-pointer">
                     <input type="radio" name={`s${scenario.id}_label`} value="superweapon" />
-                    <span style={{ color: '#ff4444' }}>⚠ Superweapon Against Me</span>
+                    <span className="text-red-500">⚠ Superweapon Against Me</span>
                   </label>
                 </div>
               </div>
@@ -95,7 +96,7 @@ export default async function Module2BossBattlePage() {
                   name={`s${scenario.id}_why`}
                   required
                   placeholder="Explain in 1–3 sentences..."
-                  className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm font-mono h-20 outline-none"
+                  className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm font-mono h-20 outline-none"
                 />
               </div>
 
@@ -105,7 +106,7 @@ export default async function Module2BossBattlePage() {
                   name={`s${scenario.id}_next`}
                   required
                   placeholder="What would the smartest next action be?"
-                  className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-white text-sm font-mono h-20 outline-none"
+                  className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#7b4fce] rounded p-3 text-[var(--text-primary)] text-sm font-mono h-20 outline-none"
                 />
               </div>
             </div>
@@ -122,30 +123,30 @@ export default async function Module2BossBattlePage() {
           </h3>
           <div className="space-y-6">
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; When is technology most dangerous to your growth?</label>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; When is technology most dangerous to your growth?</label>
               <textarea
                 name="reflection1"
                 required
                 placeholder="Write 2–4 full sentences..."
-                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm font-mono h-24 outline-none"
+                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm font-mono h-24 outline-none"
               />
             </div>
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; What is one way you can keep technology on your highest path?</label>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; What is one way you can keep technology on your highest path?</label>
               <textarea
                 name="reflection2"
                 required
                 placeholder="Write 2–4 full sentences..."
-                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm font-mono h-24 outline-none"
+                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm font-mono h-24 outline-none"
               />
             </div>
             <div>
-              <label className="block text-white font-mono text-sm mb-3">&gt; What kind of person do you become when you use powerful tools with discipline?</label>
+              <label className="block text-[var(--text-primary)] font-mono text-sm mb-3">&gt; What kind of person do you become when you use powerful tools with discipline?</label>
               <textarea
                 name="reflection3"
                 required
                 placeholder="Write 2–4 full sentences..."
-                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm font-mono h-24 outline-none"
+                className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm font-mono h-24 outline-none"
               />
             </div>
           </div>

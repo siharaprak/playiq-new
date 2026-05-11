@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
 import { module2Nodes } from '@/data/module2Content';
@@ -19,7 +20,7 @@ export default async function NodeTeachBackPage({ params }: { params: Promise<{ 
         Module 2 · Node {nodeId} · Teach-Back Phase
       </div>
 
-      <h1 className="text-4xl font-bold tracking-tight mb-8 text-white uppercase font-display">Knowledge Extraction</h1>
+      <h1 className="text-4xl font-bold tracking-tight mb-8 text-[var(--text-primary)] uppercase font-display">Knowledge Extraction</h1>
 
       <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 mb-12 backdrop-blur-md">
         <h2 className="text-[#7b4fce] font-bold uppercase tracking-widest text-xs mb-3">FINAL GATING PROTOCOL</h2>
@@ -28,7 +29,7 @@ export default async function NodeTeachBackPage({ params }: { params: Promise<{ 
         </p>
 
         <div className="bg-[#7b4fce]/10 p-6 border-l-4 border-[#00c8ff] rounded-r-lg mb-8">
-          <p className="text-white font-mono text-lg">&gt; &quot;{lessonData.teachBack}&quot;</p>
+          <p className="text-[var(--text-primary)] font-mono text-lg">&gt; &quot;{lessonData.teachBack}&quot;</p>
         </div>
 
         <TeachBackForm nodeId={nodeId} prompt={lessonData.teachBack} />

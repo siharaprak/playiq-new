@@ -1,0 +1,135 @@
+import React from 'react';
+import Link from 'next/link';
+import { createClient } from '@/utils/supabase/server';
+import { redirect } from 'next/navigation';
+import { MODULES } from '@/lib/constants';
+
+import { module7Nodes } from '@/data/module7Content';
+const MODULE_NODES = Object.values(module7Nodes).map(n => ({ id: n.id, title: n.title }));
+
+export default async function Module7OverviewPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect('/login');
+
+  // Fetch mastered nodes for this module
+  const { data: progressData } = await supabase
+    .from('student_node_progress')
+    .select('node_id, node_mastered')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULES.MODULE_7_ID);
+
+  const masteredNodeIds = new Set(
+    progressData?.filter(p => p.node_mastered).map(p => p.node_id) ?? []
+  );
+
+  // Find first unlocked node (first not mastered)
+  const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
+
+  return (
+    <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
+      
+      <Link href="/student/home" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-8 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
+        <span className="group-hover:-translate-x-1 transition-transform">←</span>
+        <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Dashboard</span>
+      </Link>
+<div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+        Module 7 • Skill Tree: Highest Path
+      </div>
+
+      <header className="mb-10">
+        <h1 className="text-4xl font-bold tracking-tight text-[var(--text-primary)] font-display">
+          Notes and Study Pack Creation
+        </h1>
+        <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          Turn learning into a Study Pack that helps you study faster and gives your future AI tutor better fuel.</p>
+      </header>
+
+      {/* What You'll Learn */}
+      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>
+        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+          What You&apos;ll Learn
+        </h2>
+        <div className="grid md:grid-cols-2 gap-4 text-sm" style={{ color: 'var(--text-secondary)' }}>
+          <div>
+            <p className="font-bold mb-2" style={{ color: 'var(--neon-green)' }}>Used well, technology can help you:</p>
+            <ul className="space-y-1 list-none">
+              {['Become more focused', 'Learn faster', 'Create better work', 'Make smarter decisions'].map(item => (
+                <li key={item} className="flex items-center gap-2"><span style={{ color: 'var(--neon-cyan)' }}>✓</span> {item}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="font-bold mb-2 text-red-500">Used badly, it can:</p>
+            <ul className="space-y-1 list-none">
+              {['Distract you', 'Weaken your focus', 'Make you believe things too quickly', 'Turn you into a passive consumer'].map(item => (
+                <li key={item} className="flex items-center gap-2"><span className="text-red-500">✗</span> {item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Skill Tree Nodes */}
+      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--glass-border)' }}>
+        <h2 className="text-xl font-bold mb-6 uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
+          Skill Tree
+        </h2>
+        <div className="flex flex-col gap-3">
+          {MODULE_NODES.map((node, idx) => {
+            const mastered = masteredNodeIds.has(node.id);
+            const isNext = node.id === firstActiveNodeId && !mastered;
+            const locked = !mastered && !isNext && idx > 0 && !masteredNodeIds.has(MODULE_NODES[idx - 1]?.id ?? '');
+
+            if (mastered) {
+              return (
+                <Link key={node.id} href={`/student/modules/7/nodes/${node.id}/lesson`} className="p-4 rounded-lg flex items-center gap-3 transition-all group hover:bg-[rgba(57,255,20,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-green)' }}>
+                  <span style={{ color: 'var(--neon-green)' }}>✓</span>
+                  <span className="text-sm font-mono" style={{ color: 'var(--neon-green)' }}>Node {node.id}: {node.title}</span>
+                  <span className="ml-auto text-xs px-2 py-1 rounded" style={{ background: 'transparent', border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>MASTERED</span>
+                </Link>
+              );
+            }
+
+            if (isNext || !locked) {
+              return (
+                <Link key={node.id} href={`/student/modules/7/nodes/${node.id}/lesson`}
+                  className="p-4 rounded-lg flex items-center gap-3 transition-all group"
+                  style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}>
+                  <span style={{ color: 'var(--neon-cyan)' }}>→</span>
+                  <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">Node {node.id}: {node.title}</span>
+                  {isNext && <span className="ml-auto text-xs px-2 py-1 rounded" style={{ background: 'transparent', border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>START</span>}
+                </Link>
+              );
+            }
+
+            return (
+              <div key={node.id} className="p-4 rounded-lg flex items-center gap-3 opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+                <span style={{ color: 'var(--text-muted)' }}>🔒</span>
+                <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Node {node.id}: {node.title} (Locked)</span>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Assessments */}
+      <section className="p-6 rounded-xl border" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-purple)' }}>
+        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
+          Module Assessments
+        </h2>
+        <div className="flex flex-col gap-3">
+          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 6 Nodes Mastered</span>
+          </div>
+          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>
+          </div>
+          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Proof Artifacts — Requires Boss Battle</span>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

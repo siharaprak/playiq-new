@@ -13,7 +13,7 @@ export default function ApprenticeSetupPage() {
         Parent Gateway
       </div>
       
-      <h1 className="text-4xl font-bold tracking-tight mb-4 text-white uppercase font-display">Provision Apprentice</h1>
+      <h1 className="text-4xl font-bold tracking-tight mb-4 text-[var(--text-primary)] uppercase font-display">Provision Apprentice</h1>
       <p className="text-slate-400 font-mono text-sm mb-12">
         Create an isolated, independent PlayIQ account for your child. Their progression and module data will be strictly walled off from your billing and telemetry dashboard.
       </p>
@@ -32,7 +32,7 @@ export default function ApprenticeSetupPage() {
               required 
               type="text" 
               name="name"
-              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" 
+              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" 
               placeholder="e.g. John Doe" 
             />
           </div>
@@ -42,7 +42,7 @@ export default function ApprenticeSetupPage() {
               required 
               type="text" 
               name="username"
-              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" 
+              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" 
               placeholder="e.g. johnny_plays or email" 
             />
           </div>
@@ -52,7 +52,7 @@ export default function ApprenticeSetupPage() {
               required 
               type="password" 
               name="password"
-              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-white text-sm outline-none" 
+              className="neon-input w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" 
               placeholder="Minimum 6 characters" 
               minLength={6}
             />
@@ -72,7 +72,7 @@ export default function ApprenticeSetupPage() {
       <div className="mt-8">
         <Link 
           href="/parent/home"
-          className="text-slate-500 hover:text-white transition-colors font-mono text-sm uppercase tracking-widest"
+          className="text-slate-500 hover:text-[var(--text-primary)] transition-colors font-mono text-sm uppercase tracking-widest"
         >
           ← Return to Dashboard
         </Link>
