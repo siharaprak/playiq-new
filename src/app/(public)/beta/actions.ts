@@ -27,7 +27,7 @@ export async function submitBetaApplication(data: BetaApplicationData) {
   const priceId = process.env.STRIPE_BETA_PRICE_ID; 
 
   const promoAttempt = parsed.data.promoCode?.trim();
-  const validPromoCode = (process.env.BETA_PROMO_CODE || 'FOUNDER100').toUpperCase();
+  const validPromoCode = (process.env.BETA_PROMO_CODE || 'PLAYIQ2025').toUpperCase();
   const isPromoBypass = promoAttempt && promoAttempt.toUpperCase() === validPromoCode;
 
   // Reject invalid codes immediately — don't silently proceed
