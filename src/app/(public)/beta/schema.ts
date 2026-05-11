@@ -7,6 +7,7 @@ export const BetaApplicationSchema = z.object({
     error: "Please select the target teen's age"
   }),
   shippingZipCode: z.string().min(5, "Zip code is required for logistics allocation"),
+  promoCode: z.string().optional(),
 });
 
 export type BetaApplicationData = z.infer<typeof BetaApplicationSchema>;

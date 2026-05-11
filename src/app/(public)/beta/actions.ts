@@ -17,16 +17,23 @@ export async function submitBetaApplication(data: BetaApplicationData) {
     return { success: false, message: "Validation failed on the server." };
   }
 
-  // Check capacity limits (if we hit 25, we could refuse or return a waitlist message)
-  // For Phase 1C, we trust the database but do a blind explicit insert.
-  
   const supabaseAdmin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
+  const appDomain = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const priceId = process.env.STRIPE_BETA_PRICE_ID; 
+
+  const promoAttempt = parsed.data.promoCode?.trim();
+  const validPromoCode = (process.env.BETA_PROMO_CODE || 'FOUNDER100').toUpperCase();
+  const isPromoBypass = promoAttempt && promoAttempt.toUpperCase() === validPromoCode;
+
+  // Reject invalid codes immediately — don't silently proceed
+  if (promoAttempt && !isPromoBypass) {
+    return { success: false, message: "That access code is invalid. Please double-check and try again." };
+  }
 
   const { data: insertData, error } = await supabaseAdmin
      .from('beta_applications')
@@ -35,7 +42,7 @@ export async function submitBetaApplication(data: BetaApplicationData) {
        email: parsed.data.emailAddress,
        child_age_band: parsed.data.childAge,
        shipping_zip_code: parsed.data.shippingZipCode,
-       status: (stripeSecret && priceId) ? 'checkout_started' : 'pending',
+       status: isPromoBypass ? 'fulfilled_promo' : ((stripeSecret && priceId) ? 'checkout_started' : 'pending'),
        source: 'web_form'
      })
      .select();
@@ -45,15 +52,20 @@ export async function submitBetaApplication(data: BetaApplicationData) {
      return { success: false, message: "We encountered an issue saving your application. Please try again later." };
   }
 
-  // Generate Stripe Checkout Session Hand-off
-  const appDomain = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+  // Bypass Stripe if valid promo code
+  if (isPromoBypass) {
+    return {
+      success: true,
+      redirectUrl: `${appDomain}/signup?beta=success`
+    };
+  }
 
+  // Handle Stripe Checkout
   if (!stripeSecret || !priceId) {
-     // Fallback if Stripe isn't fully configured yet, we just bypass to success
-     console.log("Stripe configuration missing. Bypassing checkout session generation.");
+     console.warn("Stripe configuration missing. Application set to pending.");
      return { 
        success: true, 
-       message: "Application recorded. (Stripe configuration pending)"
+       message: "Application recorded. You have been added to our waitlist."
      };
   }
 
@@ -72,7 +84,6 @@ export async function submitBetaApplication(data: BetaApplicationData) {
       success_url: `${appDomain}/signup?beta=success`,
       cancel_url: `${appDomain}/beta?canceled=true`,
       customer_email: parsed.data.emailAddress,
-      // We pass the new beta application ID to Stripe so the webhook can auto-update status to 'fulfilled'
       client_reference_id: insertData ? (insertData as any)[0]?.id : undefined,
     });
 

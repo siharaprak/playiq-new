@@ -115,6 +115,17 @@ export function BetaForm() {
         {errors.shippingZipCode && <p className="mt-1 text-xs font-mono text-red-400">{errors.shippingZipCode.message}</p>}
       </div>
 
+      <div>
+        <label htmlFor="promoCode" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Promo / Access Code (Optional)</label>
+        <input 
+          id="promoCode"
+          {...register('promoCode')}
+          className={`neon-input ${errors.promoCode ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
+          placeholder="Enter code to bypass payment" 
+        />
+        {errors.promoCode && <p className="mt-1 text-xs font-mono text-red-400">{errors.promoCode.message}</p>}
+      </div>
+
       <div className="pt-6">
          <button 
           type="submit" 

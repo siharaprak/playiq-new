@@ -1,0 +1,6594 @@
+PlayIQ V6 Module Drafts
+
+Modules 3 to 10 + Capstone | Human Review Draft Package
+
+Built for human review before final draft revisions.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 1
+
+Package Contents
+
+- Module 3: Pre-Learn System
+
+- Module 4: Lesson Rescue Mode
+
+- Module 5: Compression Learning
+
+- Module 6: Self-Testing and Mistake Bank
+
+- Module 7: Notes and Study Pack Creation
+
+- Module 8: Writing and Answer Clarity
+
+- Module 9: Build Your AI Tutor
+
+- Module 10: Build Your AI Assistant
+
+- Capstone: Master Trial
+
+- Human Review Scorecard
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 2
+
+Module 3: Pre-Learn System
+
+Ahead-of-Class Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 3
+
+Module 3: Pre-Learn System
+
+Skill Tree: Ahead-of-Class Tree
+
+Engine: Pre-Learn Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student can understand tomorrow's lesson before class using AI as a coach.
+
+Module Promise
+
+In this module, you will learn how to get a head start on a school topic before class, before homework, or before a test.
+
+You will not ask AI to do your work.
+
+You will use AI to help you:
+
+- map the topic
+
+- find the core idea
+
+- understand examples
+
+- test yourself
+
+- create useful proof
+
+- save learning fuel for your future Learning Supercharger
+
+A Learning Supercharger is your future personal AI tutor. It will learn how you learn best, but only if you feed it useful
+proof.
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Choose a real school topic to pre-learn.
+
+2. Break the topic into a simple map.
+
+3. Find the first principle or core idea.
+
+4. Use examples and non-examples to understand faster.
+
+5. Build five self-test questions.
+
+6. Create a 10-Line Summary.
+
+7. Save a Learning Supercharger Note for your future AI tutor.
+
+Why This Matters
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 4
+
+Most students wait until they are confused.
+
+Better students get ahead of confusion.
+
+Pre-learning does not mean you master the whole topic before class. It means you walk in with:
+
+- the main idea
+
+- important words
+
+- useful examples
+
+- better questions
+
+- a clearer brain
+
+That makes school easier because your brain is not seeing the topic for the first time.
+
+Before You Start
+
+Choose one real school topic.
+
+Use this format:
+
+Subject:
+
+Topic:
+
+Where this topic came from: class, notes, textbook, assignment, test review, or other
+
+Current confidence: 1, 2, 3, 4, or 5
+
+Confidence scale:
+
+1 = I know almost nothing
+
+2 = I know a little
+
+3 = I sort of understand
+
+4 = I mostly understand
+
+5 = I could explain it already
+
+Lesson 3.1: Topic Mapping
+
+Big Idea
+
+Do not ask AI to explain everything at once.
+
+That usually creates too much information.
+
+First, ask AI to make a simple map.
+
+A learning map shows the main parts of a topic so your brain knows where to start.
+
+Prompt to Use
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 5
+
+Act as my PlayIQ learning coach. Help me pre-learn [topic] for school. Break it into 5 simple parts. Keep it clear
+and not overwhelming. Do not do my homework for me. After the map, ask me one question to check what I
+already understand.
+
+Activity: Pre-Learn Map
+
+Fill this in:
+
+Topic:
+
+Part 1:
+
+Part 2:
+
+Part 3:
+
+Part 4:
+
+Part 5:
+
+The part I understand most is:
+
+The part that looks most confusing is:
+
+One question I have is:
+
+Example
+
+Topic: Photosynthesis
+
+Part 1: Plants need sunlight
+
+Part 2: Plants take in carbon dioxide
+
+Part 3: Roots take in water
+
+Part 4: Plants make sugar for energy
+
+Part 5: Oxygen is released
+
+The part I understand most is: Plants need sunlight.
+
+The part that looks most confusing is: How sunlight becomes energy.
+
+One question I have is: How does the plant make sugar?
+
+Lesson Check
+
+Answer in 1 to 2 sentences.
+
+1. Why is a topic map better than asking AI to explain everything at once?
+
+2. Which part of your map seems easiest?
+
+3. Which part should you study first?
+
+Lesson 3.2: First Principles
+
+Big Idea
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 6
+
+A first principle is the main truth underneath a topic.
+
+It answers:
+
+What is this really about?
+
+If you understand the core idea, details become easier.
+
+Prompt to Use
+
+Explain the core idea of [topic] in three levels:
+
+1. simple version
+
+2. normal school version
+
+3. slightly deeper version
+
+Then ask me which version helped me most.
+
+Activity: Core Idea Card
+
+Topic:
+
+Simple version:
+
+Normal school version:
+
+Deeper version:
+
+The version that helped me most was:
+
+My own one-sentence explanation:
+
+Add the 10-Line Summary
+
+Now write a short 10-Line Summary.
+
+Rules:
+
+- exactly 10 lines
+
+- short lines
+
+- your words
+
+- no copied AI paragraph
+
+- include one example
+
+- include one thing you still need to check
+
+Template:
+
+1. This topic is about...
+
+2. The main idea is...
+
+3. One key word is...
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 7
+
+4. Another key word is...
+
+5. A simple example is...
+
+6. This example matters because...
+
+7. One common mistake is...
+
+8. I should remember...
+
+9. I still need to check...
+
+10. My best question for class is...
+
+Lesson Check
+
+1. What is the core idea of your topic?
+
+2. Which explanation level helped you most?
+
+3. What question would you ask your teacher or AI next?
+
+Lesson 3.3: Example-First Learning
+
+Big Idea
+
+Examples help your brain see how the idea works.
+
+A strong pattern is:
+
+example first, pattern second, rule third, practice fourth
+
+A non-example is also useful because it shows what the idea is not.
+
+Prompt to Use
+
+Give me 2 simple examples of [topic], 1 non-example, and explain why each one matters. Keep the examples
+school-appropriate and easy to understand. After that, ask me to explain the difference between the example and
+non-example.
+
+Activity: Example Stack
+
+Topic:
+
+Example 1:
+
+Why it fits:
+
+Example 2:
+
+Why it fits:
+
+Non-example:
+
+Why it does not fit:
+
+The pattern I notice is:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 8
+
+Example
+
+Topic: Metaphor
+
+Example 1: The classroom was a zoo.
+
+Why it fits: It compares the classroom to a zoo without using like or as.
+
+Example 2: His voice was thunder.
+
+Why it fits: It directly compares his voice to thunder.
+
+Non-example: His voice was like thunder.
+
+Why it does not fit: It uses like, so it is a simile.
+
+The pattern I notice is: A metaphor compares two things directly.
+
+Lesson Check
+
+1. Which example helped most?
+
+2. What did the non-example make clearer?
+
+3. What pattern did you notice?
+
+Lesson 3.4: Self-Test Loop
+
+Big Idea
+
+You do not know something just because it sounds familiar.
+
+You know it when you can:
+
+- answer questions
+
+- fix mistakes
+
+- explain it in your own words
+
+- use it without copying
+
+That is why every pre-learn session ends with a self-test.
+
+Prompt to Use
+
+Quiz me on [topic] one question at a time. Start easy, then make it a little harder. Do not give me the answer until
+I try. If I get one wrong, explain the mistake simply and ask a follow-up question.
+
+Activity: 5 Self-Test Questions
+
+Write the five questions AI asked you.
+
+Question 1:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 9
+
+My answer:
+
+Correct or not yet:
+
+Question 2:
+
+My answer:
+
+Correct or not yet:
+
+Question 3:
+
+My answer:
+
+Correct or not yet:
+
+Question 4:
+
+My answer:
+
+Correct or not yet:
+
+Question 5:
+
+My answer:
+
+Correct or not yet:
+
+Score: ___ / 5
+
+One mistake I made was:
+
+The fix was:
+
+One thing I understand better now is:
+
+Teach-Back Unlock
+
+Write 4 to 6 sentences.
+
+This topic is about...
+
+The most important idea is...
+
+One example is...
+
+One mistake people might make is...
+
+I would check my understanding by...
+
+Lesson Check
+
+1. Why should AI wait until you try before giving answers?
+
+2. What did your self-test reveal?
+
+3. What should your future Learning Supercharger remember about how you learn?
+
+Module 3 Quiz: Pre-Learn Quiz
+
+Directions: Answer all 12 questions.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 10
+
+1. What is the main goal of pre-learning?
+
+A. To skip class
+
+B. To get a head start before class or homework
+
+C. To have AI do the work
+
+D. To avoid thinking
+
+2. Why is a Pre-Learn Map useful?
+
+A. It gives every detail at once
+
+B. It breaks a topic into smaller parts
+
+C. It replaces studying
+
+D. It makes the topic harder
+
+3. Which prompt is strongest?
+
+A. Tell me everything about this topic.
+
+B. Give me the answer.
+
+C. Act as my learning coach and break this topic into 5 simple parts.
+
+D. Write my homework.
+
+4. What is a first principle?
+
+A. A random detail
+
+B. The main idea underneath a topic
+
+C. A copied answer
+
+D. A long paragraph
+
+5. Why are examples useful?
+
+A. They help your brain see how the idea works
+
+B. They replace understanding
+
+C. They mean you do not need practice
+
+D. They are always enough by themselves
+
+6. What is a non-example?
+
+A. Something that does not fit the idea
+
+B. A perfect answer
+
+C. A quiz score
+
+D. A study plan
+
+7. Which instruction keeps AI in coach mode?
+
+A. Do it for me.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 11
+
+B. Give me the answer before I try.
+
+C. Do not give me the answer until I try.
+
+D. Finish this quickly.
+
+8. Why should self-tests happen one question at a time?
+
+A. To avoid thinking
+
+B. To reduce overwhelm and prove real understanding
+
+C. To make AI finish the assignment
+
+D. To prevent mistakes forever
+
+9. What should happen when you get a question wrong?
+
+A. Ignore it
+
+B. Copy the answer
+
+C. Find the mistake and fix the gap
+
+D. Stop learning
+
+10. What are the three official proof artifacts in this module?
+
+11. Why will your Pre-Learn artifacts help your future Learning Supercharger?
+
+12. Rewrite this weak prompt into a better learning prompt:
+
+We are learning fractions. Give me the answers.
+
+Boss Battle: Beat Tomorrow's Class
+
+Mission Setup
+
+Choose one real topic you are learning soon or struggling with now.
+
+Use the Pre-Learn System to create proof that you can walk into class more prepared.
+
+What This Tests
+
+You must show that you can:
+
+- choose a real topic
+
+- build a Pre-Learn Map
+
+- find the core idea
+
+- learn from examples
+
+- write a 10-Line Summary
+
+- create 5 Self-Test Questions
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 12
+
+- explain the topic in your own words
+
+Boss Battle Steps
+
+1. Choose your topic.
+
+2. Build a 5-part Pre-Learn Map.
+
+3. Write the core idea.
+
+4. Create 2 examples and 1 non-example.
+
+5. Write a 10-Line Summary.
+
+6. Complete 5 Self-Test Questions.
+
+7. Write a teach-back.
+
+8. Add a Learning Supercharger Note.
+
+Success Criteria
+
+You pass when:
+
+- your topic is real and school-related
+
+- your map has 5 clear parts
+
+- your summary uses your own words
+
+- your examples make sense
+
+- your self-test has 5 questions
+
+- your teach-back is clear
+
+- AI did not replace your thinking
+
+Final numeric thresholds should be configured later.
+
+Proof Artifacts
+
+Proof Artifact 1: Pre-Learn Map
+
+Subject:
+
+Topic:
+
+Part 1:
+
+Part 2:
+
+Part 3:
+
+Part 4:
+
+Part 5:
+
+Most confusing part:
+
+Best next question:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 13
+
+Proof Artifact 2: 10-Line Summary
+
+Use the 10-line template from Lesson 3.2.
+
+Proof Artifact 3: 5 Self-Test Questions
+
+Use the tracker from Lesson 3.4.
+
+Small Final Add-On: Learning Supercharger Note
+
+When my future AI tutor helps me with this topic, it should remember:
+
+- explanation style that helped:
+
+- confusing part:
+
+- mistake I made:
+
+- best practice style:
+
+- one thing to quiz me on next:
+
+Completion Reflection
+
+Answer in 2 to 4 sentences.
+
+1. What did pre-learning help you understand faster?
+
+2. Which part helped most: map, core idea, examples, summary, self-test, or teach-back?
+
+3. What did your self-test reveal?
+
+4. What should your future Learning Supercharger remember?
+
+5. How could you use this before your next class?
+
+What You Unlock
+
+After this module, you unlock:
+
+- ahead-of-class planning
+
+- your first Pre-Learn proof set
+
+- stronger self-testing
+
+- better AI coaching prompts
+
+- the first building block for your future Learning Supercharger
+
+Parent Snapshot
+
+The student learned how to use AI to pre-learn a real school topic without using AI as an answer machine.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 14
+
+Parent-visible proof:
+
+- Pre-Learn Map
+
+- 10-Line Summary
+
+- 5 Self-Test Questions
+
+- Teach-Back
+
+- Learning Supercharger Note
+
+Parent prompt:
+
+Can you show me what you learned before class and explain the topic in your own words?
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- subject chosen
+
+- topic chosen
+
+- confidence before and after
+
+- explanation level preferred
+
+- example usefulness
+
+- self-test score
+
+- mistake type
+
+- teach-back quality
+
+- overload signs
+
+- prompt quality
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 15
+
+Module 4: Lesson Rescue Mode
+
+Clarity Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 16
+
+Module 4: Lesson Rescue Mode
+
+Skill Tree: Clarity Tree
+
+Engine: Rescue Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student can diagnose confusion and fix the missing piece.
+
+Module Promise
+
+In this module, you will learn how to rescue yourself when school material feels confusing.
+
+You will not just ask AI:
+
+Explain this.
+
+That is too vague.
+
+You will learn how to:
+
+- paste a confusing section
+
+- break it into chunks
+
+- find the exact place where confusion starts
+
+- diagnose the gap type
+
+- repair the missing piece
+
+- test yourself
+
+- teach it back
+
+- save proof for your future Learning Supercharger
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Use Lesson Rescue Mode correctly.
+
+2. Break confusing material into smaller chunks.
+
+3. Rate your understanding honestly.
+
+4. Identify your confusion gap.
+
+5. Repair only the missing piece.
+
+6. Complete an adaptive question loop.
+
+7. Explain the rescued idea in your own words.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 17
+
+8. Create a Rescue Report.
+
+Why This Matters
+
+Most students say:
+
+I do not get it.
+
+That is not specific enough.
+
+A stronger learner asks:
+
+What part do I not get?
+
+Lesson Rescue Mode helps you find the real stuck point.
+
+Then you fix that instead of rereading the same paragraph over and over.
+
+Before You Start
+
+Choose one confusing school section.
+
+Good options:
+
+- one paragraph
+
+- one slide
+
+- one small notes section
+
+- one assignment direction
+
+- one textbook excerpt
+
+Do not paste an entire chapter.
+
+Do not ask AI to complete an assignment.
+
+Use AI to understand, not outsource.
+
+The Rescue System
+
+Use this order:
+
+1. Chunk it
+
+2. Scan it
+
+3. Find the gap
+
+4. Repair the gap
+
+5. Test it
+
+6. Teach it back
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 18
+
+7. Save the proof
+
+Lesson 4.1: Paste, Chunk, Scan
+
+Big Idea
+
+Confusing material feels harder when it is all smashed together.
+
+Chunking makes it easier to handle.
+
+Prompt to Use
+
+Act as my PlayIQ Lesson Rescue coach. I am going to paste a confusing school section. Do not do my work for
+me. Break it into 3 to 6 simple chunks. Give each chunk a short label. Then ask me to rate my understanding of
+each chunk from 1 to 5.
+
+Activity: Chunk Scan Table
+
+Subject:
+
+Topic:
+
+Source: class notes, textbook, slide, worksheet, assignment, or other
+
+Chunk A label:
+
+Understanding score: 1, 2, 3, 4, or 5
+
+Chunk B label:
+
+Understanding score: 1, 2, 3, 4, or 5
+
+Chunk C label:
+
+Understanding score: 1, 2, 3, 4, or 5
+
+Chunk D label:
+
+Understanding score: 1, 2, 3, 4, or 5
+
+Chunk E label:
+
+Understanding score: 1, 2, 3, 4, or 5
+
+The chunk I understand best is:
+
+The chunk I understand least is:
+
+One word or phrase that feels confusing is:
+
+Lesson Check
+
+1. Why is chunking better than asking AI to explain everything at once?
+
+2. Which chunk was hardest?
+
+3. What did your understanding score help you notice?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 19
+
+Lesson 4.2: Identify Gap Type
+
+Big Idea
+
+Not all confusion is the same.
+
+If you know the type of confusion, you can fix it faster.
+
+The 6 Gap Types
+
+1. Word Gap: You do not understand an important word.
+
+2. Background Gap: You are missing an earlier idea.
+
+3. Step Gap: You do not understand the order.
+
+4. Connection Gap: You understand pieces but not how they fit.
+
+5. Overload Gap: Too much information at once.
+
+6. Expectation Gap: You do not understand what the assignment wants.
+
+Prompt to Use
+
+Based on my chunk ratings, ask me 3 short questions to figure out my main gap type. Do not give me the full
+explanation yet. Help me identify whether this is a word gap, background gap, step gap, connection gap, overload
+gap, or expectation gap.
+
+Activity: Gap Diagnosis Card
+
+Hardest chunk:
+
+My main gap type is:
+
+I know this because:
+
+One clue that showed the gap was:
+
+The best next move is:
+
+Lesson Check
+
+1. What was your main gap type?
+
+2. How did you figure it out?
+
+3. Why is it useful to know the type of confusion?
+
+Lesson 4.3: Remediate in Personal Style
+
+Big Idea
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 20
+
+Once you find the gap, do not reteach everything.
+
+Teach only the missing piece.
+
+That is faster and less overwhelming.
+
+Choose a Repair Style
+
+Pick one:
+
+- simple explanation
+
+- step-by-step explanation
+
+- example-first explanation
+
+- analogy
+
+- quick diagram-style explanation
+
+- quiz me through it
+
+Prompt to Use
+
+Teach only the missing piece from this chunk: [chunk]. My gap type is: [gap type]. Use this style: [repair style].
+Keep it short. Give me one example. Then ask me one check question before moving on.
+
+Activity: Repair Card
+
+Chunk I repaired:
+
+Gap type:
+
+Repair style I chose:
+
+The missing piece was:
+
+The example that helped me was:
+
+The check question AI asked me was:
+
+My answer was:
+
+Did I get it right? yes or not yet
+
+Lesson Check
+
+1. What repair style helped most?
+
+2. What was the missing piece?
+
+3. What sentence makes more sense now?
+
+Lesson 4.4: Adaptive Questioning Loop
+
+Big Idea
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 21
+
+You do not prove understanding by nodding.
+
+You prove it by answering questions.
+
+Prompt to Use
+
+Ask me 4 questions about this rescued chunk, one at a time. Start easy, then make them slightly harder. Do not
+give me the answer before I try. If I get one wrong, diagnose why I missed it and give me a smaller hint.
+
+Activity: Rescue Loop Tracker
+
+Topic:
+
+Chunk:
+
+Question 1 result: correct or not yet
+
+What I learned:
+
+Question 2 result: correct or not yet
+
+What I learned:
+
+Question 3 result: correct or not yet
+
+What I learned:
+
+Question 4 result: correct or not yet
+
+What I learned:
+
+Score: ___ / 4
+
+One mistake I made was:
+
+The fix was:
+
+One thing I understand better now is:
+
+Lesson Check
+
+1. Why should AI ask one question at a time?
+
+2. What did your mistake show you?
+
+3. How did the loop improve your understanding?
+
+Lesson 4.5: Teach-Back Unlock
+
+Big Idea
+
+You do not own the idea until you can explain it in your own words.
+
+A teach-back proves:
+
+I understand this now.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 22
+
+Prompt to Use
+
+I am going to explain this rescued chunk in my own words. After I explain it, score my teach-back from 1 to 5
+using this checklist: clear main idea, correct key terms, good example, not copied from AI, no major confusion left.
+Then give me one improvement suggestion.
+
+Activity: Teach-Back Record
+
+Write 5 to 7 sentences.
+
+This lesson section is about...
+
+The most important idea is...
+
+One key word is...
+
+An example is...
+
+The part that confused me before was...
+
+Now I understand that...
+
+I would check my understanding by...
+
+Teach-back score: ___ / 5
+
+One thing I did well:
+
+One thing I need to improve:
+
+My final improved sentence:
+
+Lesson Check
+
+1. Why is teach-back required before mastery?
+
+2. What changed from the start to now?
+
+3. What should your future Learning Supercharger remember?
+
+Module 4 Quiz: Lesson Rescue Quiz
+
+1. What is the main goal of Lesson Rescue Mode?
+
+A. To have AI complete homework
+
+B. To diagnose confusion and fix the missing piece
+
+C. To avoid reading
+
+D. To make assignments shorter
+
+2. What is the first step?
+
+A. Ask for the final answer
+
+B. Chunk the confusing section
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 23
+
+C. Copy the explanation
+
+D. Skip to quiz
+
+3. Why rate your understanding?
+
+A. To prove perfection
+
+B. To find where confusion starts
+
+C. To avoid effort
+
+D. To make AI answer faster
+
+4. What is a word gap?
+
+A. You do not understand an important word
+
+B. You understand everything
+
+C. You need a longer assignment
+
+D. You want AI to write for you
+
+5. What is a connection gap?
+
+A. You forgot to submit work
+
+B. You understand pieces but not how they fit
+
+C. You do not like the topic
+
+D. You need random facts
+
+6. What is an overload gap?
+
+A. Too much information at once
+
+B. Not enough technology
+
+C. Perfect understanding
+
+D. A spelling mistake
+
+7. Which prompt keeps AI in coach mode?
+
+A. Give me the answer.
+
+B. Complete this for me.
+
+C. Ask me diagnostic questions before explaining.
+
+D. Write my response.
+
+8. Why teach only the missing piece?
+
+A. It saves time and reduces overwhelm
+
+B. It replaces the student
+
+C. It removes thinking
+
+D. It makes learning impossible
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 24
+
+9. What should AI do if you get a question wrong?
+
+A. Ignore it
+
+B. Give the final answer immediately
+
+C. Diagnose the mistake and give a smaller hint
+
+D. End the lesson
+
+10. A student understands each word but not how the process works. What gap type is this?
+
+A. Word gap
+
+B. Connection gap
+
+C. Expectation gap
+
+D. Overload gap
+
+11. Why is teach-back required before mastery?
+
+12. Rewrite this weak prompt:
+
+Explain this whole thing and give me the answer.
+
+Boss Battle: Rescue a Real Lesson
+
+Mission Setup
+
+Choose one confusing section from school.
+
+Use Lesson Rescue Mode to break it down, diagnose the gap, repair the missing piece, test yourself, and teach it
+back.
+
+Boss Battle Steps
+
+1. Choose the section.
+
+2. Chunk it into 3 to 6 parts.
+
+3. Rate each chunk from 1 to 5.
+
+4. Diagnose the gap type.
+
+5. Repair the missing piece.
+
+6. Complete a 4-question loop.
+
+7. Teach it back.
+
+8. Submit proof.
+
+Answer Format
+
+1. Section Choice
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 25
+
+2. Chunk Scan
+
+3. Gap Diagnosis
+
+4. Repair Method
+
+5. Question Loop Result
+
+6. Teach-Back
+
+7. Rescue Report
+
+Success Criteria
+
+You pass when:
+
+- your section is real and school-related
+
+- your section is short enough to rescue
+
+- chunks are clear
+
+- ratings are honest
+
+- gap type makes sense
+
+- repair method matches the gap
+
+- question loop is complete
+
+- teach-back is in your own words
+
+- proof is complete
+
+- AI did not complete work for you
+
+Final numeric thresholds should be configured later.
+
+Proof Artifacts
+
+Rescue Report
+
+Student Name:
+
+Date:
+
+Subject:
+
+Topic:
+
+Source:
+
+What I was confused about:
+
+Why I chose this section:
+
+Chunk Scan:
+
+A:
+
+B:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 26
+
+C:
+
+D:
+
+E:
+
+Hardest chunk:
+
+Gap type:
+
+Repair style:
+
+Question loop score:
+
+One mistake:
+
+Teach-back:
+
+Before clarity score: ___ / 5
+
+After clarity score: ___ / 5
+
+Learning Supercharger Note:
+
+Gap Diagnosis Summary
+
+Main gap type:
+
+Clue that showed this:
+
+Best repair style:
+
+Part that finally clicked:
+
+Next time I feel confused, I should ask AI to:
+
+Teach-Back Record
+
+Topic:
+
+Confusing chunk:
+
+My first explanation:
+
+AI score: ___ / 5
+
+Feedback:
+
+Improved explanation:
+
+One sentence that proves I understand it now:
+
+Completion Reflection
+
+1. What was confusing before Lesson Rescue Mode?
+
+2. What gap type did you find?
+
+3. Which repair style helped most?
+
+4. What changed after the question loop?
+
+5. What should your future Learning Supercharger remember?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 27
+
+What You Unlock
+
+After Module 4, you unlock:
+
+- confusion diagnosis
+
+- Rescue Report
+
+- Gap Diagnosis Summary
+
+- Teach-Back Record
+
+- stronger personal learning data
+
+- better fuel for your future Learning Supercharger
+
+Parent Snapshot
+
+The student learned how to use AI to diagnose and repair confusion instead of asking AI to complete work.
+
+Parent prompt:
+
+Can you show me where you got stuck and explain how you fixed the confusion?
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- subject
+
+- source type
+
+- chunk count
+
+- initial clarity
+
+- hardest chunk
+
+- gap type
+
+- repair style
+
+- question loop score
+
+- retries
+
+- correction latency
+
+- teach-back score
+
+- final clarity
+
+- shortcut attempts
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 28
+
+Module 5: Compression Learning
+
+Simplification Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 29
+
+Module 5: Compression Learning
+
+Skill Tree: Simplification Tree
+
+Engine: Compression Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student can turn hard concepts into clear mental models without making them wrong.
+
+Module Promise
+
+In this module, you will learn how to make hard ideas simpler without making them fake.
+
+This skill is called compression.
+
+Compression means taking a big idea and making it easier to understand, remember, and explain.
+
+You will use AI to help you create:
+
+- simple explanations
+
+- step-by-step explanations
+
+- examples
+
+- analogies
+
+- a 1-Page Understanding Card
+
+- practice questions that do not spoon-feed the answer
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Explain a topic in three different ways.
+
+2. Simplify without losing accuracy.
+
+3. Tell the difference between clear and oversimplified.
+
+4. Build a 1-Page Understanding Card.
+
+5. Generate practice without letting AI give away answers.
+
+6. Add compression preferences to your Learning Supercharger notes.
+
+Why This Matters
+
+Hard topics often feel impossible because they are explained in the wrong shape.
+
+Your brain may need:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 30
+
+- an example first
+
+- steps first
+
+- an analogy first
+
+- a picture-like explanation
+
+- a quick quiz
+
+Compression helps you find the clearest version.
+
+But there is a danger.
+
+Some simple explanations become wrong because they remove too much.
+
+The goal is not to make the idea childish.
+
+The goal is to make it clear.
+
+Before You Start
+
+Choose one topic from Module 3 or 4.
+
+Use this format:
+
+Subject:
+
+Topic:
+
+Why this topic still feels hard:
+
+Current clarity score: ___ / 5
+
+Lesson 5.1: The 3-Ways Rule
+
+Big Idea
+
+A strong learner can explain one idea in more than one way.
+
+The 3-Ways Rule means you can ask for:
+
+1. an analogy
+
+2. step-by-step
+
+3. example-first
+
+Each format helps a different kind of confusion.
+
+Prompt to Use
+
+Act as my PlayIQ learning coach. Teach [topic] in three ways: analogy, step-by-step, and example-first. Keep
+each one short. After each version, ask me to rate how helpful it was from 1 to 5.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 31
+
+Activity: 3-Ways Scorecard
+
+Topic:
+
+Analogy version rating: ___ / 5
+
+What helped or did not help:
+
+Step-by-step version rating: ___ / 5
+
+What helped or did not help:
+
+Example-first version rating: ___ / 5
+
+What helped or did not help:
+
+The strongest explanation style for me was:
+
+Why:
+
+Lesson Check
+
+1. Which explanation style helped most?
+
+2. Which style helped least?
+
+3. What does this tell your future Learning Supercharger?
+
+Lesson 5.2: Safe Simplification
+
+Big Idea
+
+A simple explanation is useful only if it stays accurate.
+
+Bad compression makes the idea sound easy but wrong.
+
+Good compression makes the idea clear and still true.
+
+Examples
+
+Too vague:
+
+Photosynthesis is plants eating sunlight.
+
+Better:
+
+Photosynthesis is how plants use sunlight, water, and carbon dioxide to make sugar for energy.
+
+Too vague:
+
+Fractions are just smaller numbers.
+
+Better:
+
+A fraction shows part of a whole or part of a group.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 32
+
+Prompt to Use
+
+Simplify [topic] for me, but do not make it inaccurate. Give me one too-simple version, one better simple version,
+and one warning about what students often oversimplify.
+
+Activity: Safe Simplification Check
+
+Too-simple version:
+
+Why it is risky or incomplete:
+
+Better simple version:
+
+Why it is clearer:
+
+Warning about oversimplifying:
+
+My final accurate simple explanation:
+
+Lesson Check
+
+1. What is the danger of oversimplifying?
+
+2. What did your too-simple version leave out?
+
+3. What is your best accurate simple explanation?
+
+Lesson 5.3: Build a 1-Page Understanding Card
+
+Big Idea
+
+A 1-Page Understanding Card is a small study asset that captures the most useful version of a topic.
+
+It is not a giant note sheet.
+
+It is a clear page you can review fast.
+
+1-Page Understanding Card Template
+
+Subject:
+
+Topic:
+
+Core idea:
+
+Best simple explanation:
+
+Best analogy or example:
+
+Key words:
+
+1.
+
+2.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 33
+
+3.
+
+Common mistake:
+
+How to avoid the mistake:
+
+Mini diagram or concept map:
+
+Write it in words or draw it separately.
+
+3 practice questions:
+
+1.
+
+2.
+
+3.
+
+One sentence teach-back:
+
+Learning Supercharger Note:
+
+When helping me with this topic, use this style:
+
+Prompt to Use
+
+Help me build a 1-Page Understanding Card for [topic]. Ask me for my own answer in each section before
+improving it. Do not write the whole card for me without my input.
+
+Activity
+
+Complete the 1-Page Understanding Card.
+
+Optional physical proof:
+
+- handwritten card
+
+- photo of concept map
+
+- typed card
+
+- simple drawing
+
+Lesson Check
+
+1. What belongs on a 1-Page Understanding Card?
+
+2. What should not be included?
+
+3. How could this help before a quiz?
+
+Lesson 5.4: Practice Without Spoon-Feeding
+
+Big Idea
+
+Practice is where understanding becomes skill.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 34
+
+But practice only works if AI does not give away the answer too fast.
+
+Your job is to make AI ask, hint, and check.
+
+Not solve.
+
+Prompt to Use
+
+Give me 5 practice questions on [topic], one at a time. Do not give the answer until I try. If I get stuck, give a hint
+instead of solving. After each answer, tell me what I did well and what to fix.
+
+Activity: Practice Tracker
+
+Question 1 result:
+
+Question 2 result:
+
+Question 3 result:
+
+Question 4 result:
+
+Question 5 result:
+
+Score: ___ / 5
+
+Most common mistake:
+
+Best hint AI gave me:
+
+What I need to review next:
+
+Lesson Check
+
+1. Why should AI not solve too fast?
+
+2. What was your most common mistake?
+
+3. What kind of hint helped most?
+
+Module 5 Quiz: Compression Quiz
+
+1. What is compression learning?
+
+A. Making hard ideas clearer and easier to use
+
+B. Skipping hard ideas
+
+C. Copying shorter AI answers
+
+D. Memorizing without understanding
+
+2. What are the three explanation styles in the 3-Ways Rule?
+
+A. Long, longer, longest
+
+B. Analogy, step-by-step, example-first
+
+C. Fast, random, copied
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 35
+
+D. Easy, boring, difficult
+
+3. What is the danger of oversimplifying?
+
+A. It can make the idea inaccurate
+
+B. It always helps
+
+C. It makes practice unnecessary
+
+D. It replaces thinking
+
+4. Which is a better simplification?
+
+A. Fractions are always smaller numbers.
+
+B. A fraction shows part of a whole or part of a group.
+
+C. Fractions are impossible.
+
+D. AI should solve fractions for me.
+
+5. What should a 1-Page Understanding Card include?
+
+A. Every detail from the chapter
+
+B. Core idea, key words, example, mistake, practice
+
+C. Only copied definitions
+
+D. Finished homework answers
+
+6. Why use practice questions?
+
+A. To prove understanding
+
+B. To avoid learning
+
+C. To make AI do work
+
+D. To skip class
+
+7. Which prompt keeps AI from spoon-feeding?
+
+A. Give me all the answers.
+
+B. Do not give the answer until I try.
+
+C. Finish this for me.
+
+D. Write my worksheet.
+
+8. What should AI do when you are stuck?
+
+A. Give a hint
+
+B. Give final answer immediately
+
+C. Ignore you
+
+D. Change the topic
+
+9. What should your Learning Supercharger remember from this module?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 36
+
+A. Your strongest explanation format
+
+B. Only your name
+
+C. Your favorite color only
+
+D. Nothing useful
+
+10. Why is explaining a topic three ways useful?
+
+11. Write one accurate simple explanation for your topic.
+
+12. Rewrite this weak prompt:
+
+Make this easier and just give me the answers.
+
+Boss Battle: Teach It 3 Ways
+
+Mission Setup
+
+Choose one hard school concept.
+
+Your mission is to teach it three ways, prove the best version, and build a 1-Page Understanding Card.
+
+Steps
+
+1. Choose a topic.
+
+2. Get three explanation styles: analogy, step-by-step, example-first.
+
+3. Rate each one.
+
+4. Identify the best style.
+
+5. Create a safe simple explanation.
+
+6. Build a 1-Page Understanding Card.
+
+7. Complete 5 practice questions.
+
+8. Teach the topic back in your own words.
+
+Success Criteria
+
+You pass when:
+
+- the topic is real
+
+- all three explanation styles are included
+
+- your final simple explanation is accurate
+
+- your card is complete
+
+- practice tracker is complete
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 37
+
+- teach-back is clear
+
+- AI did not do your thinking
+
+Final numeric thresholds should be configured later.
+
+Proof Artifacts
+
+1-Page Understanding Card
+
+Use the template from Lesson 5.3.
+
+Physical or Written Concept Map Capture
+
+Choose one:
+
+- typed mini concept map
+
+- handwritten summary
+
+- photo upload later in LMS
+
+- simple diagram in words
+
+Learning Supercharger Compression Note
+
+My strongest explanation style is:
+
+The type that helped least was:
+
+When I get confused, my tutor should first try:
+
+The kind of hint that helps me is:
+
+Completion Reflection
+
+1. What topic did you compress?
+
+2. Which explanation style worked best?
+
+3. What did you learn about simplifying safely?
+
+4. What should your Learning Supercharger remember?
+
+5. How could your 1-Page Understanding Card help later?
+
+What You Unlock
+
+After this module, you unlock:
+
+- clearer mental models
+
+- 3-way explanation skill
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 38
+
+- accurate simplification
+
+- 1-Page Understanding Card
+
+- stronger tutor personalization data
+
+Parent Snapshot
+
+The student learned how to simplify hard concepts without losing accuracy.
+
+Parent-visible proof:
+
+- 1-Page Understanding Card
+
+- practice tracker
+
+- concept map or written summary
+
+- teach-back
+
+Parent prompt:
+
+Can you teach me this concept three different ways?
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- strongest explanation format
+
+- weakest explanation format
+
+- simplification success
+
+- oversimplification risk
+
+- practice score
+
+- hint preference
+
+- teach-back clarity
+
+- physical or typed proof preference
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 39
+
+Module 6: Self-Testing and Mistake Bank
+
+Performance Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 40
+
+Module 6: Self-Testing and Mistake Bank
+
+Skill Tree: Performance Tree
+
+Engine: Retrieval Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student can build measurable memory, recall, and correction habits.
+
+Module Promise
+
+In this module, you will learn how to stop relying on rereading and start using self-testing.
+
+You will also build a Mistake Bank.
+
+A Mistake Bank is not a punishment list.
+
+It is a power tool.
+
+It shows you:
+
+- what you missed
+
+- why you missed it
+
+- what pattern is showing up
+
+- what to practice next
+
+- how you improved
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Explain why rereading is weak by itself.
+
+2. Use retrieval practice to prove memory.
+
+3. Track mistakes without shame.
+
+4. Identify mistake patterns.
+
+5. Create a review schedule.
+
+6. Show improvement from attempt to attempt.
+
+7. Save performance data for your future Learning Supercharger.
+
+Why This Matters
+
+Many students study by rereading.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 41
+
+Rereading can feel productive because the material looks familiar.
+
+But familiar is not the same as known.
+
+Self-testing shows what your brain can actually retrieve.
+
+Mistakes show where to train next.
+
+That is how progress becomes measurable.
+
+Before You Start
+
+Choose one topic from Module 3, 4, or 5.
+
+Use this format:
+
+Subject:
+
+Topic:
+
+Current confidence: ___ / 5
+
+Previous self-test score if you have one:
+
+Goal for this module:
+
+Lesson 6.1: Why Rereading Fails
+
+Big Idea
+
+Rereading can help a little, but it often tricks you.
+
+You recognize the answer when you see it, but you may not be able to produce it yourself.
+
+Retrieval practice means pulling the answer from your brain.
+
+That is stronger.
+
+Prompt to Use
+
+Explain why rereading can feel helpful but still fail. Then help me create a quick retrieval practice test for [topic].
+Do not give answers until I try.
+
+Activity: Rereading vs Retrieval
+
+Write one thing you reread recently:
+
+Did it feel familiar? yes or no
+
+Could you explain it without looking? yes or no
+
+What does that show you?
+
+Lesson Check
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 42
+
+1. Why can rereading trick students?
+
+2. What is retrieval practice?
+
+3. Why is retrieval stronger than recognition?
+
+Lesson 6.2: Retrieval Practice System
+
+Big Idea
+
+A good self-test is not random.
+
+It should include:
+
+- easy recall
+
+- meaning
+
+- examples
+
+- application
+
+- mistake correction
+
+Prompt to Use
+
+Create a 6-question retrieval practice test for [topic]. Include 2 easy recall questions, 2 understanding questions,
+1 example question, and 1 application question. Ask me one question at a time. Do not reveal answers until I try.
+
+Activity: Retrieval Tracker
+
+Question 1 result:
+
+Question 2 result:
+
+Question 3 result:
+
+Question 4 result:
+
+Question 5 result:
+
+Question 6 result:
+
+Score: ___ / 6
+
+Strongest question type:
+
+Weakest question type:
+
+What I need to practice next:
+
+Lesson Check
+
+1. Which question type was easiest?
+
+2. Which question type was hardest?
+
+3. What does that tell you?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 43
+
+Lesson 6.3: Mistake Bank Patterns
+
+Big Idea
+
+A mistake is data.
+
+The goal is not to feel bad.
+
+The goal is to find the pattern.
+
+Mistake Types
+
+1. Knowledge Gap: I did not know the idea.
+
+2. Word Gap: I misunderstood a key word.
+
+3. Step Error: I did steps in the wrong order.
+
+4. Careless Error: I knew it but rushed.
+
+5. Transfer Error: I knew it in one format but not another.
+
+6. Confidence Error: I thought I knew it, but I could not prove it.
+
+Prompt to Use
+
+Help me sort my missed questions into mistake types: knowledge gap, word gap, step error, careless error,
+transfer error, or confidence error. Ask me why I missed each one before giving your opinion.
+
+Activity: Mistake Bank Snapshot
+
+Mistake 1
+
+Question:
+
+My answer:
+
+Correct answer:
+
+Mistake type:
+
+Why I missed it:
+
+Fix plan:
+
+Mistake 2
+
+Question:
+
+My answer:
+
+Correct answer:
+
+Mistake type:
+
+Why I missed it:
+
+Fix plan:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 44
+
+Mistake 3
+
+Question:
+
+My answer:
+
+Correct answer:
+
+Mistake type:
+
+Why I missed it:
+
+Fix plan:
+
+Pattern I notice:
+
+Lesson Check
+
+1. What mistake type showed up most?
+
+2. What caused the mistake?
+
+3. What should you do differently next time?
+
+Lesson 6.4: Review Scheduling
+
+Big Idea
+
+One study session is not enough.
+
+Your brain needs smart review.
+
+A good review schedule brings back weak ideas before they disappear.
+
+Simple Review Rhythm
+
+Review weak ideas:
+
+- today
+
+- tomorrow
+
+- in 3 days
+
+- in 7 days
+
+- before the test
+
+This does not need to be complicated.
+
+It needs to be consistent.
+
+Prompt to Use
+
+Build me a simple review schedule for [topic] based on my Mistake Bank. Keep it realistic. Use short missions of
+10 to 15 minutes. Include what I should review first and how I should test myself.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 45
+
+Activity: Review Schedule
+
+Topic:
+
+Today
+
+Mission:
+
+Test method:
+
+Tomorrow
+
+Mission:
+
+Test method:
+
+3 days later
+
+Mission:
+
+Test method:
+
+7 days later
+
+Mission:
+
+Test method:
+
+Before test
+
+Mission:
+
+Test method:
+
+Lesson Check
+
+1. Why is spaced review useful?
+
+2. What should you review first?
+
+3. How will you know you improved?
+
+Module 6 Quiz: Performance Quiz
+
+1. Why is rereading weak by itself?
+
+A. It can create familiarity without recall
+
+B. It always works perfectly
+
+C. It is illegal
+
+D. It replaces practice
+
+2. What is retrieval practice?
+
+A. Looking at notes again
+
+B. Pulling information from memory
+
+C. Copying an answer
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 46
+
+D. Asking AI to finish
+
+3. What is a Mistake Bank?
+
+A. A punishment list
+
+B. A tracker that helps you fix patterns
+
+C. A place to hide errors
+
+D. A finished worksheet
+
+4. What is a knowledge gap?
+
+A. You did not know the idea
+
+B. You rushed
+
+C. You wrote too neatly
+
+D. You got bored
+
+5. What is a transfer error?
+
+A. You knew it in one format but not another
+
+B. You never studied
+
+C. You copied correctly
+
+D. You skipped the question
+
+6. What is a confidence error?
+
+A. You thought you knew it but could not prove it
+
+B. You were always right
+
+C. You disliked the topic
+
+D. You wrote too much
+
+7. Which prompt keeps AI in coach mode?
+
+A. Give me the answers.
+
+B. Ask me one question at a time and do not reveal answers until I try.
+
+C. Complete this for me.
+
+D. Skip my mistakes.
+
+8. Why sort mistakes by type?
+
+A. To find the pattern
+
+B. To feel worse
+
+C. To avoid studying
+
+D. To make AI work harder
+
+9. Why schedule reviews?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 47
+
+A. To strengthen memory over time
+
+B. To avoid all tests
+
+C. To never make mistakes
+
+D. To make school disappear
+
+10. What is your most common mistake type right now?
+
+11. How can your Learning Supercharger use your Mistake Bank?
+
+12. Rewrite this weak prompt:
+
+Give me the answers to this review sheet.
+
+Boss Battle: Improvement Challenge
+
+Mission Setup
+
+You will prove improvement through two attempts.
+
+Choose one topic.
+
+Take a first test, create a Mistake Bank, review the weak spots, then retest.
+
+Steps
+
+1. Choose topic.
+
+2. Take a 6-question retrieval test.
+
+3. Record Attempt 1 score.
+
+4. Build a Mistake Bank.
+
+5. Create a review mission.
+
+6. Retest with similar but not identical questions.
+
+7. Record Attempt 2 score.
+
+8. Explain what improved and why.
+
+Improvement Graph
+
+Topic:
+
+Attempt 1 score: ___ / 6
+
+Attempt 2 score: ___ / 6
+
+Improvement:
+
+What changed:
+
+Mistake pattern fixed:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 48
+
+Mistake pattern still needs work:
+
+Success Criteria
+
+You pass when:
+
+- both attempts are complete
+
+- mistakes are sorted by type
+
+- review mission is complete
+
+- retest is completed
+
+- improvement is explained
+
+- AI did not give answers before effort
+
+Final numeric thresholds and PDI formula should be configured later.
+
+Proof Artifacts
+
+Mistake Bank Snapshot
+
+Use the template from Lesson 6.3.
+
+Improvement Graph
+
+Use Attempt 1 and Attempt 2 scores.
+
+Mid-point PDI Check Placeholder
+
+Record:
+
+Baseline score:
+
+Current score:
+
+Skill area:
+
+Observed improvement:
+
+Notes for later PDI formula:
+
+Do not calculate official PDI until the formula is locked.
+
+Learning Supercharger Performance Note
+
+My common mistake type is:
+
+The review style that helped me most was:
+
+My tutor should quiz me by:
+
+My tutor should not:
+
+The next weak spot to train is:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 49
+
+Completion Reflection
+
+1. What did self-testing reveal?
+
+2. What mistake pattern did you notice?
+
+3. What changed between Attempt 1 and Attempt 2?
+
+4. What should your Learning Supercharger remember?
+
+5. How will you use Mistake Bank before tests?
+
+What You Unlock
+
+After Module 6, you unlock:
+
+- retrieval practice system
+
+- Mistake Bank
+
+- improvement tracking
+
+- better review schedule
+
+- stronger proof for parents
+
+- performance data for your Learning Supercharger
+
+Parent Snapshot
+
+The student learned how to test understanding, track mistakes, and improve through focused review.
+
+Parent-visible proof:
+
+- Mistake Bank Snapshot
+
+- Improvement Graph
+
+- review schedule
+
+- teach-back or retest note
+
+Parent prompt:
+
+Show me one mistake you fixed and explain how you improved it.
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- recall strength
+
+- question type weakness
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 50
+
+- mistake type frequency
+
+- correction latency
+
+- improvement delta
+
+- review schedule completion
+
+- confidence versus performance gap
+
+- persistence after errors
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 51
+
+Module 7: Notes and Study Pack
+Creation
+
+Study Systems Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 52
+
+Module 7: Notes and Study Pack Creation
+
+Skill Tree: Study Systems Tree
+
+Engine: Study Artifact Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student can turn notes into reusable study assets and future knowledge files.
+
+Module Promise
+
+In this module, you will turn learning into a Study Pack.
+
+A Study Pack is a clean set of materials that helps you study faster and gives your future Learning Supercharger
+better knowledge to use.
+
+You will learn how to create:
+
+- 10-Line Summaries
+
+- questions from notes
+
+- missing link prompts
+
+- precision prompts
+
+- a Study Pack
+
+- knowledge-file ready materials
+
+This is where your future AI tutor starts getting serious fuel.
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Turn class notes into a 10-Line Summary.
+
+2. Convert notes into quiz questions.
+
+3. Find missing links in your understanding.
+
+4. Write precision prompts.
+
+5. Build a Study Pack.
+
+6. Organize materials so they can become knowledge files later.
+
+7. Prepare for Module 9, where you build your Learning Supercharger.
+
+Why This Matters
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 53
+
+Messy notes make AI less useful.
+
+Messy notes also make studying harder.
+
+A strong Study Pack helps you:
+
+- study faster
+
+- quiz yourself
+
+- explain ideas clearly
+
+- find weak spots
+
+- give your future AI tutor better context
+
+AI is only as useful as the instructions and knowledge you give it.
+
+This module teaches you how to prepare that knowledge.
+
+Before You Start
+
+Choose one set of notes.
+
+Good options:
+
+- class notes
+
+- textbook notes
+
+- study guide
+
+- teacher slide notes
+
+- previous module artifact
+
+- Mistake Bank topic
+
+Use this format:
+
+Subject:
+
+Topic or unit:
+
+Source type:
+
+Current usefulness of these notes: ___ / 5
+
+Lesson 7.1: 10-Line Summary System
+
+Big Idea
+
+A good summary is short, clear, and useful.
+
+A bad summary copies too much.
+
+The 10-Line Summary forces you to decide what matters.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 54
+
+Prompt to Use
+
+Act as my PlayIQ study coach. Help me turn my notes on [topic] into a 10-Line Summary. Ask me to write my first
+version before improving it. Do not write the whole summary without my attempt.
+
+Activity: 10-Line Summary
+
+1. This topic is about...
+
+2. The main idea is...
+
+3. Key term 1:
+
+4. Key term 2:
+
+5. Key term 3:
+
+6. One example is...
+
+7. One common mistake is...
+
+8. One thing I should remember is...
+
+9. One thing I need to check is...
+
+10. My best study question is...
+
+Lesson Check
+
+1. Why is a 10-Line Summary better than copying notes?
+
+2. Which line was hardest to write?
+
+3. What does that show you?
+
+Lesson 7.2: Turn Notes Into Questions
+
+Big Idea
+
+Notes are not finished until they can test you.
+
+Every useful note should turn into a question.
+
+This changes studying from passive reading into active recall.
+
+Prompt to Use
+
+Help me turn these notes into study questions. Make 3 easy questions, 3 medium questions, and 2 challenge
+questions. Do not include answers until I try.
+
+Activity: Notes to Questions
+
+Easy question 1:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 55
+
+Easy question 2:
+
+Easy question 3:
+
+Medium question 1:
+
+Medium question 2:
+
+Medium question 3:
+
+Challenge question 1:
+
+Challenge question 2:
+
+Question I missed or struggled with:
+
+What that tells me:
+
+Lesson Check
+
+1. Why should notes become questions?
+
+2. Which question type was hardest?
+
+3. What should you practice next?
+
+Lesson 7.3: Find Missing Links
+
+Big Idea
+
+A missing link is the part between two ideas that you do not understand yet.
+
+You may know the words, but not the connection.
+
+Finding missing links makes studying faster.
+
+Prompt to Use
+
+Look at my summary and questions. Ask me 3 diagnostic questions to find any missing links. Tell me whether the
+missing link is a word, step, connection, example, or background idea.
+
+Activity: Missing Link Finder
+
+My missing link is:
+
+Type: word, step, connection, example, or background
+
+Clue that showed this:
+
+Best repair move:
+
+One better question to ask:
+
+Lesson Check
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 56
+
+1. What missing link did you find?
+
+2. What type was it?
+
+3. How will you repair it?
+
+Lesson 7.4: Precision Prompting
+
+Big Idea
+
+A vague prompt gives vague help.
+
+A precision prompt tells AI:
+
+- role
+
+- task
+
+- topic
+
+- limits
+
+- format
+
+- effort rule
+
+- output
+
+This is the beginning of custom instruction thinking.
+
+You are learning how to shape AI behavior.
+
+Precision Prompt Formula
+
+Use this structure:
+
+Role: Act as my learning coach.
+
+Task: Help me study this topic.
+
+Topic: [topic]
+
+Limits: Keep it short and do not give answers before I try.
+
+Format: Ask one question at a time.
+
+Effort rule: I must attempt before you explain.
+
+Output: End with a short review plan.
+
+Prompt to Use
+
+Act as my PlayIQ learning coach. Help me improve this prompt using the precision prompt formula. Keep it
+beginner-friendly and explain what you changed.
+
+Activity: Prompt Upgrade
+
+Weak prompt:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 57
+
+Upgraded precision prompt:
+
+What changed:
+
+Why it is stronger:
+
+How it keeps AI as coach, not crutch:
+
+Lesson Check
+
+1. What makes a prompt precise?
+
+2. Why do limits matter?
+
+3. How is this connected to custom instructions?
+
+Module 7 Quiz: Study Systems Quiz
+
+1. What is the purpose of a Study Pack?
+
+A. To organize learning into reusable study assets
+
+B. To hide mistakes
+
+C. To replace class
+
+D. To copy AI answers
+
+2. Why use a 10-Line Summary?
+
+A. It forces clear thinking
+
+B. It makes notes longer
+
+C. It copies everything
+
+D. It removes practice
+
+3. What should notes turn into?
+
+A. Questions
+
+B. Random paragraphs
+
+C. Finished assignments
+
+D. Nothing
+
+4. What is a missing link?
+
+A. The part between ideas you do not understand
+
+B. A missing file name
+
+C. A teacher mistake
+
+D. A copied sentence
+
+5. What is precision prompting?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 58
+
+A. Giving AI clear role, task, limits, format, and effort rules
+
+B. Asking for every answer
+
+C. Making prompts longer for no reason
+
+D. Avoiding instructions
+
+6. Why do limits matter in prompts?
+
+A. They keep AI from becoming an answer machine
+
+B. They make AI useless
+
+C. They remove thinking
+
+D. They hide the topic
+
+7. Which is strongest?
+
+A. Study this.
+
+B. Give me answers.
+
+C. Act as my learning coach and quiz me one question at a time after I attempt.
+
+D. Write my homework.
+
+8. What makes a Study Pack useful for your future tutor?
+
+A. It gives organized knowledge and rules
+
+B. It gives random data
+
+C. It gives no context
+
+D. It gives finished homework
+
+9. Why is messy information risky for AI?
+
+A. It can produce messy help
+
+B. It always becomes better
+
+C. It removes the need for thinking
+
+D. It cannot matter
+
+10. Write one precision prompt for your topic.
+
+11. What should your Study Pack include?
+
+12. Rewrite this weak prompt:
+
+Help me study this.
+
+Boss Battle: Build a Study Pack
+
+Mission Setup
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 59
+
+Choose one topic or unit.
+
+Build a Study Pack that could later become a knowledge file for your Learning Supercharger.
+
+Required Study Pack Sections
+
+1. Subject and topic
+
+2. Source notes
+
+3. 10-Line Summary
+
+4. Key terms
+
+5. Notes to Questions
+
+6. Missing Link Finder
+
+7. Mistake Bank connection
+
+8. Precision prompt
+
+9. Learning Supercharger Note
+
+Success Criteria
+
+You pass when:
+
+- the Study Pack is organized
+
+- the 10-Line Summary is clear
+
+- questions are useful
+
+- missing link is identified
+
+- prompt includes role, task, limits, format, and effort rule
+
+- AI did not write everything without your input
+
+- the Study Pack could help you study again later
+
+Final numeric thresholds should be configured later.
+
+Proof Artifacts
+
+Study Pack
+
+Subject:
+
+Topic or unit:
+
+Source:
+
+10-Line Summary:
+
+Key terms:
+
+1.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 60
+
+2.
+
+3.
+
+4.
+
+5.
+
+Study Questions:
+
+Easy:
+
+Medium:
+
+Challenge:
+
+Missing Link:
+
+Type:
+
+Repair move:
+
+Mistake Bank connection:
+
+Mistake pattern:
+
+Next practice:
+
+Precision Prompt:
+
+Role:
+
+Task:
+
+Topic:
+
+Limits:
+
+Format:
+
+Effort rule:
+
+Output:
+
+Learning Supercharger Note:
+
+This tutor should know:
+
+This tutor should ask:
+
+This tutor should avoid:
+
+Optional Written Notes or Concept Map Capture
+
+Use one:
+
+- typed notes
+
+- handwritten notes
+
+- photo upload later
+
+- concept map in words
+
+Completion Reflection
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 61
+
+1. What did your Study Pack make clearer?
+
+2. Which part was hardest to build?
+
+3. What kind of information should become a knowledge file?
+
+4. What should not become a knowledge file?
+
+5. How will this help you build your Learning Supercharger in Module 9?
+
+What You Unlock
+
+After Module 7, you unlock:
+
+- reusable Study Packs
+
+- knowledge-file ready organization
+
+- precision prompting
+
+- stronger custom instruction preparation
+
+- better AI tutor fuel
+
+Parent Snapshot
+
+The student learned how to turn notes into organized study assets that can support future AI tutor building.
+
+Parent-visible proof:
+
+- Study Pack
+
+- 10-Line Summary
+
+- study questions
+
+- missing link note
+
+- precision prompt
+
+Parent prompt:
+
+Show me your Study Pack and explain how it would help you study faster.
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- note format effectiveness
+
+- summary quality
+
+- question difficulty preference
+
+- missing link type
+
+- prompt clarity
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 62
+
+- artifact-to-performance relationship
+
+- organization level
+
+- overload signals
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 63
+
+Module 8: Writing and Answer Clarity
+
+Clarity Writing Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 64
+
+Module 8: Writing and Answer Clarity
+
+Skill Tree: Clarity Writing Tree
+
+Engine: Output Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student can use AI as a writing coach, never a ghostwriter.
+
+Module Promise
+
+In this module, you will learn how to make school answers clearer without letting AI write them for you.
+
+AI can help you:
+
+- understand the question
+
+- organize ideas
+
+- build an outline
+
+- check logic
+
+- improve clarity
+
+- revise your own writing
+
+AI should not write your full final answer and pretend it is yours.
+
+That weakens your skill and breaks trust.
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Use Claim, Evidence, Reasoning.
+
+2. Outline before drafting.
+
+3. Ask AI for feedback, not ghostwriting.
+
+4. Revise for clarity.
+
+5. Create a Before and After Revision Sample.
+
+6. Explain what improved and why.
+
+7. Add writing support rules to your future Learning Supercharger.
+
+Why This Matters
+
+A lot of students know something but lose points because their answer is unclear.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 65
+
+Writing clarity is a thinking skill.
+
+When your answer is clear, your teacher can see your thinking.
+
+AI can coach clarity.
+
+But if AI writes for you, your brain does not build the skill.
+
+The goal is not polished fake writing.
+
+The goal is strong real thinking.
+
+Before You Start
+
+Choose one answer or paragraph.
+
+Good options:
+
+- short answer response
+
+- body paragraph
+
+- science explanation
+
+- history answer
+
+- English analysis
+
+- rough draft
+
+- practice response
+
+Use this format:
+
+Subject:
+
+Assignment or question:
+
+My rough answer:
+
+What feels weak:
+
+Lesson 8.1: Claim, Evidence, Reasoning
+
+Big Idea
+
+Strong school answers often need three parts:
+
+Claim: What you think or answer.
+
+Evidence: What supports it.
+
+Reasoning: Why the evidence proves the claim.
+
+This is called CER.
+
+Prompt to Use
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 66
+
+Act as my writing coach. Help me identify the claim, evidence, and reasoning in my answer. Do not rewrite it for
+me. Ask me questions if a part is missing.
+
+Activity: Answer Blueprint
+
+Question or prompt:
+
+My claim:
+
+My evidence:
+
+My reasoning:
+
+Missing part:
+
+Question AI asked me:
+
+My improved idea:
+
+Lesson Check
+
+1. What is a claim?
+
+2. What is evidence?
+
+3. What is reasoning?
+
+Lesson 8.2: Outline First
+
+Big Idea
+
+Outlining prevents messy writing.
+
+A short outline can save a lot of time.
+
+The outline should guide your answer, not replace your thinking.
+
+Prompt to Use
+
+Help me make a simple outline for my answer. Ask me for my claim first. Then ask me what evidence I want to
+use. Do not write the final paragraph.
+
+Activity: Outline Builder
+
+Claim:
+
+Evidence 1:
+
+Evidence 2 if needed:
+
+Reasoning:
+
+Closing thought:
+
+What I still need to check:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 67
+
+Lesson Check
+
+1. Why outline before drafting?
+
+2. What part of your outline is strongest?
+
+3. What part needs more work?
+
+Lesson 8.3: Feedback Prompt System
+
+Big Idea
+
+Good AI feedback is specific.
+
+Bad feedback says:
+
+Make this better.
+
+Good feedback asks for:
+
+- clarity
+
+- logic
+
+- structure
+
+- missing evidence
+
+- confusing sentences
+
+- teacher expectations
+
+Prompt to Use
+
+Act as my writing coach. Review my answer for clarity, logic, structure, and missing evidence. Do not rewrite it.
+Give me 3 specific suggestions and ask me which one I want to fix first.
+
+Activity: Feedback Tracker
+
+My answer:
+
+AI suggestion 1:
+
+AI suggestion 2:
+
+AI suggestion 3:
+
+Suggestion I chose first:
+
+My revision:
+
+Why I changed it:
+
+Lesson Check
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 68
+
+1. Why is specific feedback better?
+
+2. Which suggestion helped most?
+
+3. How did you stay the writer?
+
+Lesson 8.4: Revision Loop
+
+Big Idea
+
+Revision means improving your own work.
+
+It does not mean letting AI replace your voice.
+
+A strong revision keeps your meaning but makes it clearer.
+
+Prompt to Use
+
+I will revise my own answer. After I revise, compare my first version and revised version. Tell me what improved,
+what still needs work, and whether it still sounds like me.
+
+Activity: Before and After Revision Sample
+
+Original answer:
+
+Feedback I used:
+
+Revised answer:
+
+What improved:
+
+What still needs work:
+
+One sentence I am proud of:
+
+Lesson Check
+
+1. What changed between your first and revised version?
+
+2. Does it still sound like you?
+
+3. What writing habit do you want to keep?
+
+Module 8 Quiz: Writing Quiz
+
+1. What does CER stand for?
+
+A. Claim, Evidence, Reasoning
+
+B. Copy, Edit, Repeat
+
+C. Check, Erase, Rewrite
+
+D. Create, Escape, Replace
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 69
+
+2. What is a claim?
+
+A. The main answer or point
+
+B. A random quote
+
+C. A copied paragraph
+
+D. A mistake
+
+3. What is evidence?
+
+A. Support for the claim
+
+B. The final sentence only
+
+C. A vague opinion
+
+D. AI's answer
+
+4. What is reasoning?
+
+A. Why the evidence proves the claim
+
+B. A title
+
+C. A copied definition
+
+D. A spelling check
+
+5. Why outline first?
+
+A. It organizes thinking before drafting
+
+B. It lets AI finish
+
+C. It makes writing longer
+
+D. It skips evidence
+
+6. Which prompt keeps AI as coach?
+
+A. Write my final answer.
+
+B. Review my answer and give 3 suggestions without rewriting it.
+
+C. Make it perfect for me.
+
+D. Turn this in for me.
+
+7. What is ghostwriting?
+
+A. AI writing the answer for you
+
+B. AI asking questions
+
+C. AI giving feedback
+
+D. AI helping with an outline
+
+8. Why is ghostwriting risky?
+
+A. It replaces your thinking and voice
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 70
+
+B. It always improves learning
+
+C. It is the only way to revise
+
+D. It makes you independent
+
+9. What should a revision preserve?
+
+A. Your thinking and voice
+
+B. Only AI language
+
+C. Random facts
+
+D. Nothing from your original work
+
+10. Write a feedback prompt for your writing.
+
+11. What is one sign an answer needs clearer reasoning?
+
+12. Rewrite this weak prompt:
+
+Write my paragraph for me.
+
+Boss Battle: Upgrade the Answer
+
+Mission Setup
+
+Choose one weak answer or paragraph.
+
+Use AI as a coach to improve it without letting AI ghostwrite.
+
+Steps
+
+1. Choose a real answer.
+
+2. Identify claim, evidence, and reasoning.
+
+3. Build or fix an outline.
+
+4. Ask AI for feedback only.
+
+5. Revise the answer yourself.
+
+6. Compare before and after.
+
+7. Explain what improved.
+
+Success Criteria
+
+You pass when:
+
+- original answer is included
+
+- Answer Blueprint is complete
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 71
+
+- feedback prompt is integrity-safe
+
+- revised answer is your own writing
+
+- before and after improvement is clear
+
+- you explain why it is better
+
+- AI did not write the final answer for you
+
+Final numeric thresholds should be configured later.
+
+Proof Artifacts
+
+Answer Blueprint
+
+Question:
+
+Claim:
+
+Evidence:
+
+Reasoning:
+
+Missing piece:
+
+Fix plan:
+
+Before and After Revision Sample
+
+Original answer:
+
+Feedback used:
+
+Revised answer:
+
+What improved:
+
+What still needs work:
+
+Why this is still my writing:
+
+Learning Supercharger Writing Note
+
+When helping me write, my tutor should:
+
+- ask for my claim first
+
+- help me find evidence
+
+- check reasoning
+
+- give feedback without rewriting
+
+- preserve my voice
+
+- refuse ghostwriting
+
+Completion Reflection
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 72
+
+1. What was weak in your original answer?
+
+2. What did AI help you notice?
+
+3. What did you improve yourself?
+
+4. How did you avoid ghostwriting?
+
+5. What writing rules should your Learning Supercharger follow?
+
+What You Unlock
+
+After Module 8, you unlock:
+
+- Answer Blueprint
+
+- integrity-safe writing support
+
+- feedback prompts
+
+- revision loop
+
+- writing rules for your future Learning Supercharger
+
+Parent Snapshot
+
+The student learned how to use AI as a writing coach without letting AI write for them.
+
+Parent-visible proof:
+
+- Answer Blueprint
+
+- Before and After Revision Sample
+
+- explanation of what improved
+
+- writing integrity note
+
+Parent prompt:
+
+Show me your before and after answer and explain what you changed yourself.
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- feedback style preference
+
+- revision lift
+
+- writing correction latency
+
+- reasoning weakness
+
+- claim clarity
+
+- evidence selection
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 73
+
+- voice preservation
+
+- ghostwriting risk signals
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 74
+
+Module 9: Build Your AI Tutor
+
+Tutor Forge Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 75
+
+Module 9: Build Your AI Tutor
+
+Skill Tree: Tutor Forge Tree
+
+Engine: Tutor Build Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student builds a personalized AI tutor, called a Learning Supercharger, using custom instructions
+and knowledge files.
+
+Module Promise
+
+In this module, you will build your own AI tutor.
+
+We will call it your Learning Supercharger.
+
+This is not a homework answer machine.
+
+It is a personalized learning coach designed to help you:
+
+- learn faster
+
+- get unstuck
+
+- ask better questions
+
+- receive hints
+
+- get quizzed
+
+- verify understanding
+
+- study in a way that fits you
+
+- become less dependent over time
+
+You will build it using beginner custom instructions and organized knowledge files.
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Explain what makes a good AI tutor.
+
+2. Separate tutor personality from tutor function.
+
+3. Write beginner custom instructions.
+
+4. Choose what your tutor should know.
+
+5. Organize knowledge files.
+
+6. Test your tutor.
+
+7. Improve your tutor after a test.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 76
+
+8. Create a Tutor Instruction Sheet and Tutor Knowledge File Pack.
+
+Why This Matters
+
+Generic AI does not know you.
+
+It does not automatically know:
+
+- how you like explanations
+
+- what confuses you
+
+- what mistakes you repeat
+
+- when you need hints
+
+- when you need quiz mode
+
+- how much detail overwhelms you
+
+- what subjects you are working on
+
+Your Learning Supercharger becomes more useful because you design it with rules and knowledge.
+
+The better your setup, the better your tutor.
+
+Before You Start
+
+Gather your best artifacts from earlier modules:
+
+- Personal Learning Profile if available
+
+- My AI Study Rules
+
+- Pre-Learn Map
+
+- Rescue Report
+
+- 1-Page Understanding Card
+
+- Mistake Bank Snapshot
+
+- Study Pack
+
+- Answer Blueprint
+
+- Learning Supercharger Notes
+
+You do not need every artifact perfect.
+
+You need enough proof to build a useful first version.
+
+Lesson 9.1: What Makes a Good AI Tutor
+
+Big Idea
+
+A good AI tutor does not just answer.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 77
+
+A good tutor:
+
+- asks questions
+
+- gives hints
+
+- explains in your style
+
+- checks understanding
+
+- catches confusion
+
+- refuses shortcuts
+
+- helps you prove mastery
+
+- helps you become independent
+
+Bad Tutor vs Good Tutor
+
+Bad tutor:
+
+Gives full answers immediately.
+
+Good tutor:
+
+Asks what you tried, gives a hint, then checks understanding.
+
+Bad tutor:
+
+Writes your homework.
+
+Good tutor:
+
+Helps you understand the assignment and plan your own answer.
+
+Activity: Tutor Quality Check
+
+Write 3 things your tutor should do:
+
+1.
+
+2.
+
+3.
+
+Write 3 things your tutor should not do:
+
+1.
+
+2.
+
+3.
+
+Lesson Check
+
+1. Why should your tutor avoid full answers too fast?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 78
+
+2. What is one behavior your tutor must have?
+
+3. What is one behavior your tutor must block?
+
+Lesson 9.2: Tutor Personality vs Tutor Function
+
+Big Idea
+
+Personality is how your tutor feels.
+
+Function is what your tutor does.
+
+You need both, but function matters more.
+
+Examples
+
+Personality:
+
+calm, direct, encouraging, challenging, funny but focused
+
+Function:
+
+explain, hint, quiz, rescue confusion, track mistakes, verify understanding
+
+Prompt to Use
+
+Help me choose a tutor personality and tutor functions. Ask me 5 questions. Then summarize my choices in a
+simple tutor profile.
+
+Activity: Tutor Profile
+
+Tutor name:
+
+Tutor personality: calm, direct, challenging, encouraging, or other
+
+Feedback style: gentle, direct, or challenge me
+
+Pacing: fast, medium, or slow
+
+Top functions:
+
+1.
+
+2.
+
+3.
+
+4.
+
+5.
+
+My tutor should avoid:
+
+Lesson Check
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 79
+
+1. What is the difference between personality and function?
+
+2. Which matters more for learning?
+
+3. What personality will help you stay focused?
+
+Lesson 9.3: Beginner Custom Instructions
+
+Big Idea
+
+Custom instructions tell your AI tutor how to behave.
+
+They should be clear, practical, and safe.
+
+They do not need to be fancy.
+
+They need to tell the tutor:
+
+- who it helps
+
+- what it does
+
+- how it teaches
+
+- what it must not do
+
+- how to respond when you are stuck
+
+- how to quiz you
+
+- how to protect integrity
+
+Custom Instructions Template
+
+Tutor Role:
+
+You are my PlayIQ Learning Supercharger. You help me learn faster while keeping me as the thinker.
+
+Student Profile:
+
+I am a student learning [subjects]. I prefer [style]. I get confused when [pattern]. I need help with [goal].
+
+Teaching Rules:
+
+- Explain clearly.
+
+- Ask before giving long explanations.
+
+- Use my preferred style when possible.
+
+- Give examples.
+
+- Ask check questions.
+
+- Use hints before answers.
+
+- Quiz me one question at a time.
+
+Integrity Rules:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 80
+
+- Do not do my homework for me.
+
+- Do not write final answers for me.
+
+- Ask what I tried first.
+
+- If I ask for copying help, redirect me into Explain, Hint, Quiz, Coach, or Lesson Rescue.
+
+- Require teach-back for important ideas.
+
+Verification Rules:
+
+- Remind me to check important answers.
+
+- Ask me to explain in my own words.
+
+- Tell me when something may need a source or class-material check.
+
+Response Format:
+
+Start with a short answer. Then guide me step by step. End with one action for me.
+
+Prompt to Use
+
+Help me turn my tutor profile into beginner custom instructions. Keep them clear and not too advanced. Make
+sure the tutor acts as a coach, not a crutch.
+
+Activity: My Tutor Instruction Sheet
+
+Complete the custom instructions template.
+
+Lesson Check
+
+1. What are custom instructions?
+
+2. Why do integrity rules belong inside them?
+
+3. What is one rule your tutor must follow?
+
+Lesson 9.4: Choosing What Your Tutor Should Know
+
+Big Idea
+
+Knowledge files give your tutor useful context.
+
+But messy files create messy help.
+
+Good knowledge files are organized.
+
+Bad knowledge files are random piles.
+
+Good Knowledge File Types
+
+- learning profile
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 81
+
+- study goals
+
+- subject summaries
+
+- teacher expectations
+
+- Pre-Learn Maps
+
+- Rescue Reports
+
+- 1-Page Understanding Cards
+
+- Mistake Bank notes
+
+- Study Packs
+
+- quiz questions
+
+- tutor rules
+
+Bad Knowledge File Types
+
+- random screenshots with no labels
+
+- copied answers
+
+- unfinished homework for AI to complete
+
+- private information you should not share
+
+- giant messy document dumps
+
+Activity: Knowledge File Sorting
+
+List 5 files or artifacts you should include:
+
+1.
+
+2.
+
+3.
+
+4.
+
+5.
+
+List 3 things you should not include:
+
+1.
+
+2.
+
+3.
+
+Lesson Check
+
+1. What makes a good knowledge file?
+
+2. Why are messy files a problem?
+
+3. What file would help your tutor most?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 82
+
+Lesson 9.5: Using Knowledge Files to Improve Teaching
+
+Big Idea
+
+A knowledge file should make your tutor more useful.
+
+It should help your tutor understand:
+
+- what you are learning
+
+- where you get stuck
+
+- how to explain things
+
+- what to quiz you on
+
+- what mistakes to watch for
+
+Tutor Knowledge File Pack Template
+
+File 1: Learning Profile
+
+Include preferred explanation style, pacing, feedback style, practice preference, subjects, and goals.
+
+File 2: Study Goals
+
+Include current classes, target topics, upcoming tests, and confidence goals.
+
+File 3: Mistake Patterns
+
+Include common mistake types, examples, and correction strategies.
+
+File 4: Study Artifacts
+
+Include Pre-Learn Maps, Rescue Reports, 1-Page Understanding Cards, and Study Packs.
+
+File 5: Tutor Rules
+
+Include help modes, integrity boundaries, quiz rules, hint rules, and verification rules.
+
+Activity: Build Your Tutor Knowledge File Pack
+
+Choose at least 3 starter files.
+
+File 1 name:
+
+Purpose:
+
+What it helps the tutor do:
+
+File 2 name:
+
+Purpose:
+
+What it helps the tutor do:
+
+File 3 name:
+
+Purpose:
+
+What it helps the tutor do:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 83
+
+Lesson Check
+
+1. Which knowledge file matters most?
+
+2. How will it improve your tutor?
+
+3. What information should stay out?
+
+Lesson 9.6: Tutor Testing and Refinement
+
+Big Idea
+
+You do not know if your tutor works until you test it.
+
+A first version is not final.
+
+You test, notice problems, revise, and test again.
+
+Test Scenarios
+
+Run your tutor through these:
+
+1. I do not understand this topic.
+
+2. I tried this problem and need a hint.
+
+3. Quiz me on this.
+
+4. I want you to write my homework.
+
+5. Help me verify this answer.
+
+6. Rescue this confusing paragraph.
+
+Activity: Tutor Test and Revision Log
+
+Test 1
+
+Scenario:
+
+Tutor response:
+
+Worked well:
+
+Needs improvement:
+
+Instruction to revise:
+
+Test 2
+
+Scenario:
+
+Tutor response:
+
+Worked well:
+
+Needs improvement:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 84
+
+Instruction to revise:
+
+Test 3
+
+Scenario:
+
+Tutor response:
+
+Worked well:
+
+Needs improvement:
+
+Instruction to revise:
+
+Final tutor improvement:
+
+Lesson Check
+
+1. Why test with shortcut requests?
+
+2. What did your tutor do well?
+
+3. What instruction needs revision?
+
+Module 9 Quiz: AI Tutor Build Quiz
+
+1. What is the main job of your Learning Supercharger?
+
+A. Do homework
+
+B. Help you learn faster while keeping you as the thinker
+
+C. Replace school
+
+D. Write final answers
+
+2. What are custom instructions?
+
+A. Rules that tell the AI how to behave
+
+B. Random notes
+
+C. A finished essay
+
+D. A password
+
+3. What is a knowledge file?
+
+A. Organized information the AI can use
+
+B. A random pile of screenshots
+
+C. A copied homework file
+
+D. A private diary
+
+4. What is tutor personality?
+
+A. How the tutor feels and communicates
+
+B. The only thing that matters
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 85
+
+C. A quiz score
+
+D. A homework answer
+
+5. What is tutor function?
+
+A. What the tutor actually does
+
+B. Its favorite color
+
+C. A file name
+
+D. A badge
+
+6. Which rule should be inside tutor instructions?
+
+A. Do my homework.
+
+B. Give full answers immediately.
+
+C. Use hints before answers.
+
+D. Ignore mistakes.
+
+7. What should your tutor do if you ask it to cheat?
+
+A. Help you copy
+
+B. Redirect you into learning support
+
+C. End all learning
+
+D. Make the answer longer
+
+8. Which is a strong knowledge file?
+
+A. Organized Mistake Bank
+
+B. Random unlabeled screenshots
+
+C. Private passwords
+
+D. Finished copied answers
+
+9. Why test your tutor?
+
+A. To find what works and improve it
+
+B. To prove it is perfect immediately
+
+C. To skip building
+
+D. To avoid review
+
+10. Write one tutor instruction that protects integrity.
+
+11. Write one knowledge file your tutor should use and why.
+
+12. Rewrite this weak tutor rule:
+
+Always give me the answer.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 86
+
+Boss Battle: Build and Refine Your Tutor
+
+Mission Setup
+
+Build your first Learning Supercharger.
+
+You must create custom instructions, choose knowledge files, test the tutor, and revise it.
+
+Steps
+
+1. Create Tutor Profile.
+
+2. Write Tutor Instruction Sheet.
+
+3. Choose at least 3 knowledge files.
+
+4. Build Tutor Knowledge File Pack.
+
+5. Run 3 test scenarios.
+
+6. Include one cheating or shortcut test.
+
+7. Revise instructions.
+
+8. Submit test and revision log.
+
+Success Criteria
+
+You pass when:
+
+- tutor purpose is clear
+
+- instructions include teaching rules
+
+- instructions include integrity rules
+
+- knowledge files are organized
+
+- tutor is tested
+
+- shortcut request is handled correctly
+
+- revision is documented
+
+- tutor helps learning without replacing thinking
+
+Final numeric thresholds should be configured later.
+
+Proof Artifacts
+
+My Tutor Instruction Sheet
+
+Use the template from Lesson 9.3.
+
+My Tutor Knowledge File Pack
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 87
+
+List included files:
+
+1.
+
+2.
+
+3.
+
+4.
+
+5.
+
+For each file:
+
+- purpose
+
+- what it helps the tutor do
+
+- what should not be used from it
+
+Tutor Test and Revision Log
+
+Use the template from Lesson 9.6.
+
+Completion Reflection
+
+1. What kind of tutor did you build?
+
+2. What instructions matter most?
+
+3. Which knowledge file will help most?
+
+4. How did your tutor handle shortcut behavior?
+
+5. What will you improve next?
+
+What You Unlock
+
+After Module 9, you unlock:
+
+- your personal Learning Supercharger
+
+- beginner custom instruction skill
+
+- knowledge-file organization skill
+
+- tutor testing and refinement
+
+- stronger independence as a learner
+
+Parent Snapshot
+
+The student built a personalized AI tutor designed to help them learn without doing the work for them.
+
+Parent-visible proof:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 88
+
+- Tutor Instruction Sheet
+
+- Tutor Knowledge File Pack
+
+- Tutor Test and Revision Log
+
+Parent prompt:
+
+Show me what your tutor is allowed to do and what it is not allowed to do.
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- preferred tutor behavior
+
+- instruction clarity
+
+- knowledge file quality
+
+- shortcut handling
+
+- test performance
+
+- refinement quality
+
+- learning preference alignment
+
+- dependency risk
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 89
+
+Module 10: Build Your AI Assistant
+
+Assistant Forge Tree | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 90
+
+Module 10: Build Your AI Assistant
+
+Skill Tree: Assistant Forge Tree
+
+Engine: Assistant Build Engine
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student builds a useful AI assistant for themselves and one other person, such as a parent, using
+beginner custom instructions and knowledge files.
+
+Module Promise
+
+In this module, you will build a useful AI assistant.
+
+This is different from your Learning Supercharger.
+
+Your Learning Supercharger is for learning.
+
+An assistant is for helping with a real task.
+
+You will build:
+
+1. a simple assistant for yourself
+
+2. a helpful assistant for a parent or chosen person
+
+You will learn how to define purpose, set boundaries, write custom instructions, choose knowledge files, test the
+assistant, and improve it.
+
+What You Will Learn
+
+By the end of this module, you will be able to:
+
+1. Explain what makes a good AI assistant.
+
+2. Choose a useful assistant purpose.
+
+3. Set safe boundaries.
+
+4. Write custom instructions for a real task.
+
+5. Organize knowledge files for the assistant.
+
+6. Interview another person about what they need.
+
+7. Build and test an assistant for them.
+
+8. Create an Assistant Test and Improvement Report.
+
+Why This Matters
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 91
+
+AI is more powerful when you know how to shape it.
+
+Most people use AI by asking random questions.
+
+Builders think differently.
+
+A builder asks:
+
+- Who is this for?
+
+- What problem should it solve?
+
+- What should it never do?
+
+- What information does it need?
+
+- How will we test if it works?
+
+- How will we improve it?
+
+This module turns you from a passive AI user into a beginner AI builder.
+
+Before You Start
+
+Choose two assistant ideas.
+
+One for yourself.
+
+One for someone else.
+
+Possible assistant ideas:
+
+- homework planner
+
+- meal planning helper
+
+- workout planning helper
+
+- family schedule helper
+
+- chore checklist helper
+
+- study routine helper
+
+- packing list helper
+
+- email draft helper for a parent, with review required
+
+- content idea organizer
+
+- project checklist helper
+
+Do not build assistants for:
+
+- private medical decisions
+
+- legal advice
+
+- financial decisions
+
+- secret monitoring
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 92
+
+- impersonation
+
+- cheating
+
+- anything that uses private information without permission
+
+Lesson 10.1: What Makes a Good AI Assistant
+
+Big Idea
+
+A good assistant has a clear job.
+
+A weak assistant tries to do everything.
+
+The clearer the purpose, the more useful the assistant.
+
+Assistant Purpose Formula
+
+This assistant helps [user] do [task] by [support method], while avoiding [boundary].
+
+Example:
+
+This assistant helps my parent plan weekly meals by organizing preferences, grocery ideas, and simple recipes,
+while avoiding medical or diet advice.
+
+Activity: Assistant Purpose Draft
+
+My assistant for myself
+
+User:
+
+Task:
+
+Support method:
+
+Boundary:
+
+Purpose sentence:
+
+My assistant for someone else
+
+User:
+
+Task:
+
+Support method:
+
+Boundary:
+
+Purpose sentence:
+
+Lesson Check
+
+1. Why should an assistant have one clear purpose?
+
+2. What makes an assistant too broad?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 93
+
+3. What is one assistant boundary you need?
+
+Lesson 10.2: Assistant Purpose and Boundaries
+
+Big Idea
+
+Boundaries protect the user.
+
+Boundaries tell the assistant what not to do.
+
+This matters more when building for someone else.
+
+Boundary Types
+
+Privacy boundary: Do not ask for or store sensitive private information.
+
+Permission boundary: Only use information the person agreed to share.
+
+Decision boundary: Do not make major decisions for the user.
+
+Safety boundary: Do not give unsafe, illegal, or harmful instructions.
+
+Accuracy boundary: Ask the user to verify important information.
+
+Prompt to Use
+
+Help me create safe boundaries for an assistant that helps with [task]. Ask me who the assistant is for, what
+information it needs, what it must not do, and what should be verified by a human.
+
+Activity: Boundary Card
+
+Assistant purpose:
+
+Privacy boundary:
+
+Permission boundary:
+
+Decision boundary:
+
+Safety boundary:
+
+Accuracy boundary:
+
+What the assistant should say when asked to cross a boundary:
+
+Lesson Check
+
+1. Why do assistants need boundaries?
+
+2. Which boundary matters most for your assistant?
+
+3. What should your assistant refuse?
+
+Lesson 10.3: Custom Instructions for Real Tasks
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 94
+
+Big Idea
+
+Assistant custom instructions should be task-specific.
+
+They tell the assistant:
+
+- who it helps
+
+- what problem it solves
+
+- what information it uses
+
+- what format to use
+
+- what tone to use
+
+- what boundaries to follow
+
+- when to ask questions
+
+- when to tell the user to verify
+
+Assistant Instructions Template
+
+Assistant Role:
+
+You are a helpful assistant for [user] that helps with [task].
+
+Goal:
+
+Your job is to help [user] get [outcome].
+
+User Context:
+
+The user prefers [style]. The user wants help with [specific need].
+
+What To Do:
+
+- Ask clarifying questions when needed.
+
+- Organize information clearly.
+
+- Use simple steps.
+
+- Give options when useful.
+
+- Keep responses practical.
+
+What Not To Do:
+
+- Do not make major decisions for the user.
+
+- Do not request sensitive private information.
+
+- Do not pretend to know something if unsure.
+
+- Do not cross the assistant's purpose.
+
+- Do not replace human judgment.
+
+Output Format:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 95
+
+Use [checklist, table, step list, short plan, script, or other].
+
+Verification Rule:
+
+For important information, remind the user to verify.
+
+Activity: Assistant Custom Instructions
+
+Assistant name:
+
+Assistant role:
+
+Goal:
+
+User context:
+
+What to do:
+
+What not to do:
+
+Output format:
+
+Verification rule:
+
+Lesson Check
+
+1. What are assistant custom instructions?
+
+2. Why should instructions include what not to do?
+
+3. What output format fits your assistant?
+
+Lesson 10.4: Knowledge Files for Useful Support
+
+Big Idea
+
+Knowledge files make assistants more useful.
+
+But they must be safe, organized, and relevant.
+
+Good Assistant Knowledge Files
+
+- preferences the user agrees to share
+
+- task checklists
+
+- schedules without sensitive details
+
+- templates
+
+- examples
+
+- style preferences
+
+- frequently asked questions
+
+- safe instructions
+
+- household rules if approved
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 96
+
+Bad Assistant Knowledge Files
+
+- private passwords
+
+- financial account information
+
+- medical records
+
+- secrets from another person
+
+- private messages without permission
+
+- giant messy files
+
+- anything the user did not approve
+
+Activity: Knowledge File Plan
+
+Assistant purpose:
+
+Knowledge file 1
+
+Name:
+
+What it includes:
+
+Why it helps:
+
+Permission confirmed: yes or no
+
+Knowledge file 2
+
+Name:
+
+What it includes:
+
+Why it helps:
+
+Permission confirmed: yes or no
+
+Knowledge file 3
+
+Name:
+
+What it includes:
+
+Why it helps:
+
+Permission confirmed: yes or no
+
+Lesson Check
+
+1. What makes a safe knowledge file?
+
+2. What should never go into a knowledge file?
+
+3. What file would make your assistant most useful?
+
+Lesson 10.5: Build an Assistant for Yourself
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 97
+
+Big Idea
+
+Start with a simple assistant for yourself.
+
+Do not overbuild.
+
+Pick one real problem.
+
+Examples:
+
+- study schedule assistant
+
+- habit tracker assistant
+
+- sports practice planner
+
+- project checklist assistant
+
+- reading tracker
+
+- weekly planning assistant
+
+Activity: Personal Assistant Build Sheet
+
+Assistant name:
+
+Problem it solves:
+
+Who it helps: me
+
+Main task:
+
+Custom instructions:
+
+Knowledge files used:
+
+Boundaries:
+
+Test scenario 1:
+
+Test scenario 2:
+
+What worked:
+
+What needs improvement:
+
+Lesson Check
+
+1. What problem does your assistant solve?
+
+2. What did your test show?
+
+3. What should you revise?
+
+Lesson 10.6: Build an Assistant for Someone Else
+
+Big Idea
+
+Building for someone else requires empathy.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 98
+
+You cannot just guess.
+
+You need to ask what they need.
+
+Mini User Interview
+
+Ask your chosen person:
+
+1. What task would you like help with?
+
+2. What makes that task annoying or time-consuming?
+
+3. What kind of help would actually be useful?
+
+4. What should the assistant avoid?
+
+5. What information are you comfortable sharing?
+
+6. What format would be easiest to use?
+
+Activity: Real-User Assistant Build Sheet
+
+Chosen user:
+
+Task they want help with:
+
+Main frustration:
+
+Useful support:
+
+Boundaries:
+
+Information they approved:
+
+Preferred format:
+
+Assistant purpose sentence:
+
+Custom instructions:
+
+Knowledge files:
+
+Test scenario:
+
+User feedback:
+
+Revision made:
+
+Lesson Check
+
+1. What did your chosen person actually need?
+
+2. What assumption did you avoid?
+
+3. How did user feedback improve the assistant?
+
+Lesson 10.7: Ethics, Privacy, and Boundaries
+
+Big Idea
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 99
+
+Building assistants gives you power.
+
+Power requires responsibility.
+
+Your assistant should be:
+
+- useful
+
+- respectful
+
+- permission-based
+
+- clear about limits
+
+- safe
+
+- easy to correct
+
+Assistant Builder Responsibility Check
+
+Before sharing or using the assistant, ask:
+
+1. Did the user agree to the purpose?
+
+2. Did the user approve the information?
+
+3. Are private details protected?
+
+4. Are boundaries clear?
+
+5. Does the assistant ask the human to verify important things?
+
+6. Can the assistant be improved after feedback?
+
+Activity: Final Responsibility Check
+
+Purpose approved: yes or no
+
+Information approved: yes or no
+
+Private information removed: yes or no
+
+Boundaries included: yes or no
+
+Verification reminders included: yes or no
+
+Feedback collected: yes or no
+
+Revision made: yes or no
+
+Lesson Check
+
+1. Why is permission important?
+
+2. Why should private information be protected?
+
+3. What boundary makes your assistant safer?
+
+Module 10 Quiz: AI Assistant Build Quiz
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 100
+
+1. What is the main difference between a tutor and an assistant?
+
+A. A tutor helps learning, an assistant helps a task
+
+B. They are always the same
+
+C. An assistant should do homework
+
+D. A tutor never teaches
+
+2. What makes a good assistant?
+
+A. Clear purpose
+
+B. No boundaries
+
+C. Random knowledge
+
+D. Secret data
+
+3. Why interview the user?
+
+A. To understand their real need
+
+B. To avoid building
+
+C. To collect private secrets
+
+D. To make it complicated
+
+4. What should assistant boundaries protect?
+
+A. Privacy, permission, safety, accuracy, and judgment
+
+B. Only style
+
+C. Only speed
+
+D. Nothing
+
+5. Which file should not be used?
+
+A. Approved checklist
+
+B. User-approved preferences
+
+C. Private passwords
+
+D. Safe template
+
+6. Which instruction is strong?
+
+A. Help with anything.
+
+B. Help my parent organize grocery ideas using approved preferences and avoid medical advice.
+
+C. Make all decisions.
+
+D. Ask for private account details.
+
+7. What should an assistant do when unsure?
+
+A. Admit uncertainty and ask the user to verify
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 101
+
+B. Pretend
+
+C. Guess confidently
+
+D. Ignore the problem
+
+8. Why test an assistant?
+
+A. To see if it works and improve it
+
+B. To prove it is perfect
+
+C. To skip feedback
+
+D. To hide errors
+
+9. Why does building for someone else require empathy?
+
+A. Because you need to understand their need
+
+B. Because you should guess
+
+C. Because you should use private info
+
+D. Because feedback does not matter
+
+10. Write one safe assistant purpose sentence.
+
+11. Write one boundary for your assistant.
+
+12. Rewrite this weak instruction:
+
+Help my mom with everything.
+
+Boss Battle: Build a Real Helpful Assistant
+
+Mission Setup
+
+Build one assistant for yourself and one assistant for a parent or chosen person.
+
+Test both.
+
+Improve at least one based on feedback.
+
+Steps
+
+1. Build personal assistant purpose.
+
+2. Write custom instructions.
+
+3. Choose safe knowledge files.
+
+4. Test the personal assistant.
+
+5. Interview chosen person.
+
+6. Build real-user assistant purpose.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 102
+
+7. Write custom instructions.
+
+8. Choose approved knowledge files.
+
+9. Test with user scenario.
+
+10. Collect feedback.
+
+11. Revise.
+
+12. Submit proof.
+
+Success Criteria
+
+You pass when:
+
+- both assistants have clear purposes
+
+- custom instructions are complete
+
+- boundaries are included
+
+- knowledge files are safe and approved
+
+- user interview is complete
+
+- testing is documented
+
+- revision is made
+
+- assistant is useful without crossing boundaries
+
+Final numeric thresholds should be configured later.
+
+Proof Artifacts
+
+Personal Assistant Build Sheet
+
+Use Lesson 10.5 template.
+
+Parent or Real-User Assistant Build Sheet
+
+Use Lesson 10.6 template.
+
+Assistant Test and Improvement Report
+
+Assistant tested:
+
+Test scenario:
+
+Original response:
+
+What worked:
+
+What failed or was weak:
+
+User feedback:
+
+Revision made:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 103
+
+Improved response:
+
+Final usefulness score: ___ / 5
+
+Completion Reflection
+
+1. What assistant did you build for yourself?
+
+2. What assistant did you build for someone else?
+
+3. What did the user actually need?
+
+4. What boundary mattered most?
+
+5. What did you improve after testing?
+
+6. What did this teach you about building AI tools?
+
+What You Unlock
+
+After Module 10, you unlock:
+
+- beginner assistant building
+
+- custom instructions for real tasks
+
+- safe knowledge file planning
+
+- user interview skill
+
+- testing and improvement skill
+
+- proof that you can build useful AI tools
+
+Parent Snapshot
+
+The student built a useful assistant for themselves and one real user while practicing privacy, permission, boundaries,
+and testing.
+
+Parent-visible proof:
+
+- Personal Assistant Build Sheet
+
+- Parent or Real-User Assistant Build Sheet
+
+- Assistant Test and Improvement Report
+
+Parent prompt:
+
+Show me what assistant you built, what it is allowed to do, and how you improved it after testing.
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 104
+
+- build clarity
+
+- use-case understanding
+
+- user empathy
+
+- ethical judgment
+
+- instruction clarity
+
+- boundary quality
+
+- knowledge file safety
+
+- testing quality
+
+- revision quality
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 105
+
+Capstone: Master Trial
+
+Genius Showcase | Human Review Draft
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 106
+
+Capstone: Master Trial
+
+Skill Tree: Genius Showcase
+
+Engine: Cross-System Mastery Trial
+
+Tier Path: Apprentice to Strategist to Architect to Mastermind
+
+Draft Status: Human review draft
+
+Primary Outcome: Student demonstrates independent learning, tutor-building, and assistant-building across the full
+system.
+
+Capstone Promise
+
+This is the final proof project.
+
+You will show that you can use the full PlayIQ system:
+
+- pre-learn a real school unit
+
+- rescue confusion
+
+- compress hard concepts
+
+- self-test and improve
+
+- build a final study guide
+
+- use your Learning Supercharger
+
+- build or refine a useful assistant
+
+- teach back what you learned
+
+- submit parent-visible proof
+
+This is not about finishing pages.
+
+This is about proving capability.
+
+What You Will Prove
+
+By the end of the Master Trial, you will prove that you can:
+
+1. Choose a real upcoming school unit.
+
+2. Use the Pre-Learn System.
+
+3. Use Lesson Rescue Mode.
+
+4. Compress hard ideas.
+
+5. Track mistakes and improve.
+
+6. Create a Capstone Study Guide.
+
+7. Finalize your Learning Supercharger for the subject.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 107
+
+8. Build or refine one useful assistant.
+
+9. Complete a final assessment.
+
+10. Deliver a teach-back.
+
+11. Create a Parent Proof Packet.
+
+Why This Matters
+
+The final goal is independence.
+
+Not AI dependence.
+
+Not shortcut behavior.
+
+Not fake polish.
+
+Real independence means:
+
+- you know how to get started
+
+- you know how to get unstuck
+
+- you know how to test yourself
+
+- you know how to improve
+
+- you know how to shape AI into a useful tool
+
+- you can show proof of learning
+
+Capstone Flow
+
+C1: Choose an Upcoming School Unit
+
+Subject:
+
+Unit:
+
+Why I chose it:
+
+Current confidence: ___ / 5
+
+Goal:
+
+C2: Run Pre-Learn
+
+Complete:
+
+- Pre-Learn Map
+
+- Core Idea
+
+- 10-Line Summary
+
+- 5 Self-Test Questions
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 108
+
+Reflection:
+
+What did I understand before class or before deeper study?
+
+C3: Run Lesson Rescue
+
+Choose one confusing section.
+
+Complete:
+
+- Chunk Scan
+
+- Gap Diagnosis
+
+- Repair Card
+
+- Question Loop
+
+- Teach-Back Record
+
+Reflection:
+
+Where was I stuck and how did I fix it?
+
+C4: Run Compression Learning
+
+Complete:
+
+- 3 explanation styles
+
+- safe simplification
+
+- 1-Page Understanding Card
+
+- practice tracker
+
+Reflection:
+
+Which explanation style helped most?
+
+C5: Run Retrieval and Mistake Bank
+
+Complete:
+
+- Attempt 1 test
+
+- Mistake Bank Snapshot
+
+- Review Schedule
+
+- Attempt 2 test
+
+- Improvement Graph
+
+Reflection:
+
+What mistake pattern improved?
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 109
+
+C6: Build Final Study Guide
+
+Your Capstone Study Guide should include:
+
+1. Unit title
+
+2. Core idea
+
+3. 10-Line Summary
+
+4. Key terms
+
+5. Best examples
+
+6. Common mistakes
+
+7. Rescue summary
+
+8. 1-Page Understanding Card
+
+9. Mistake Bank
+
+10. Review plan
+
+11. Self-test questions
+
+12. Teach-back script
+
+C7: Finalize Your Learning Supercharger
+
+Update your tutor with:
+
+- current subject goal
+
+- preferred explanation style
+
+- mistake patterns
+
+- quiz rules
+
+- hint rules
+
+- integrity rules
+
+- verification rules
+
+- study guide file
+
+- rescue notes
+
+- review schedule
+
+Learning Supercharger Final Check
+
+Tutor name:
+
+Best use case:
+
+Knowledge files included:
+
+Custom instruction update made:
+
+Test scenario used:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 110
+
+What improved after revision:
+
+C8: Build or Refine One Useful Assistant
+
+Choose one:
+
+- improve your personal assistant
+
+- improve parent or real-user assistant
+
+- build a new simple assistant for a real need
+
+Complete:
+
+- assistant purpose
+
+- custom instructions
+
+- safe knowledge file plan
+
+- test scenario
+
+- user feedback if building for someone else
+
+- improvement report
+
+C9: Final Assessment
+
+Take a final adaptive assessment on your chosen unit.
+
+Record:
+
+Assessment type:
+
+Score:
+
+Strong areas:
+
+Weak areas:
+
+What changed from baseline:
+
+What still needs work:
+
+Official PDI formula should be applied later after final lock.
+
+C10: Recorded or Written Teach-Back
+
+Teach the unit in your own words.
+
+Required parts:
+
+1. main idea
+
+2. key terms
+
+3. example
+
+4. common mistake
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 111
+
+5. how you fixed confusion
+
+6. how you studied
+
+7. what your tutor helped with
+
+8. what you can do independently now
+
+Written teach-back length:
+
+8 to 12 sentences.
+
+Recorded teach-back length:
+
+2 to 4 minutes.
+
+Capstone Quiz: Master Trial Readiness Check
+
+1. What is the purpose of the Master Trial?
+
+A. To prove independent learning and AI-building skill
+
+B. To finish fast
+
+C. To let AI do the work
+
+D. To skip review
+
+2. What should come before final assessment?
+
+A. Pre-learn, rescue, compression, retrieval, review
+
+B. Copying
+
+C. Guessing
+
+D. Nothing
+
+3. What does a Capstone Study Guide prove?
+
+A. The student can organize learning into useful proof
+
+B. The student copied a document
+
+C. The student avoided effort
+
+D. The student replaced thinking
+
+4. What should your Learning Supercharger help with?
+
+A. Learning, hints, quizzes, rescue, verification
+
+B. Cheating
+
+C. Final homework completion
+
+D. Private data collection
+
+5. Why include an assistant build?
+
+A. To prove practical AI creation skill
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 112
+
+B. To replace all human help
+
+C. To avoid boundaries
+
+D. To copy tasks
+
+6. What does teach-back prove?
+
+A. You can explain the idea in your own words
+
+B. You clicked through
+
+C. You copied AI
+
+D. You avoided mistakes
+
+7. What should happen when your tutor gives weak help?
+
+A. Test and refine it
+
+B. Delete the whole project
+
+C. Ignore it
+
+D. Let it do homework
+
+8. Why should parent proof be visible?
+
+A. So parents can see real learning and responsible AI use
+
+B. So parents see only activity
+
+C. So proof is hidden
+
+D. So effort disappears
+
+9. What does independence mean in PlayIQ?
+
+A. AI helps me learn, but I stay the thinker
+
+B. AI replaces my brain
+
+C. I avoid checking
+
+D. I only use shortcuts
+
+10. What is one thing you can now do that you could not do before?
+
+11. What is one part of your Learning Supercharger that you improved?
+
+12. What is one boundary your assistant follows?
+
+Boss Battle: Master Trial
+
+Mission Setup
+
+Choose one upcoming or current school unit.
+
+Use the full PlayIQ system to learn it, prove it, and build AI tools around it.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 113
+
+Required Submissions
+
+1. Unit Choice
+
+2. Pre-Learn Proof
+
+3. Lesson Rescue Proof
+
+4. Compression Proof
+
+5. Retrieval and Mistake Bank Proof
+
+6. Capstone Study Guide
+
+7. Learning Supercharger Final Check
+
+8. Assistant Build or Refinement
+
+9. Final Assessment Record
+
+10. Teach-Back
+
+11. Parent Proof Packet
+
+Success Criteria
+
+You pass when:
+
+- the unit is real and school-related
+
+- each system is used correctly
+
+- proof artifacts are complete
+
+- improvement is visible
+
+- tutor is updated and tested
+
+- assistant is useful and bounded
+
+- final teach-back is in your own words
+
+- AI did not replace thinking
+
+- parent proof is clear
+
+Final numeric thresholds should be configured later.
+
+Final Proof Artifacts
+
+Capstone Study Guide
+
+Use C6 structure.
+
+Recorded or Written Teach-Back
+
+Use C10 structure.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 114
+
+Final Mastery Transcript
+
+Student:
+
+Unit:
+
+Baseline confidence:
+
+Final confidence:
+
+Attempt 1 score:
+
+Final assessment score:
+
+Main mistake pattern:
+
+Improvement shown:
+
+Tutor updated: yes or no
+
+Assistant built or refined: yes or no
+
+Proof artifacts complete: yes or no
+
+Tutor Build Summary
+
+Tutor name:
+
+Purpose:
+
+Top instructions:
+
+Knowledge files used:
+
+Best test result:
+
+Revision made:
+
+Integrity rule included:
+
+Assistant Build Summary
+
+Assistant name:
+
+User:
+
+Purpose:
+
+Boundaries:
+
+Knowledge files:
+
+Test result:
+
+Feedback:
+
+Revision:
+
+Parent Proof Packet
+
+1. Student Progress Snapshot
+
+2. What the Student Learned
+
+3. Proof Artifacts Completed
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 115
+
+4. Skill Growth Evidence
+
+5. Responsible AI Use
+
+6. Tutor Build Progress
+
+7. Assistant Build Progress
+
+8. Next Focus
+
+9. Parent Conversation Prompt
+
+Completion Reflection
+
+Answer in 4 to 6 sentences each.
+
+1. What was your biggest learning improvement?
+
+2. What system helped most?
+
+3. What mistake pattern did you fix?
+
+4. How did your Learning Supercharger help?
+
+5. What assistant did you build or improve?
+
+6. How are you more independent now?
+
+What You Unlock
+
+After the Master Trial, you unlock:
+
+- final Course 1 completion
+
+- Learning Supercharger proof
+
+- assistant builder proof
+
+- final Parent Proof Packet
+
+- mastery transcript
+
+- certificate or badge
+
+- next-level Skill Tree readiness
+
+Parent Snapshot
+
+The student demonstrated independent learning, responsible AI use, personalized tutor building, and practical
+assistant building.
+
+Parent-visible proof:
+
+- Capstone Study Guide
+
+- Teach-Back
+
+- Final Mastery Transcript
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 116
+
+- Tutor Build Summary
+
+- Assistant Build Summary
+
+- Parent Proof Packet
+
+Parent prompt:
+
+Show me what you learned, what your tutor does, and what assistant you built for someone else.
+
+Internal Builder Notes
+
+Fingerprint signals:
+
+- baseline to final confidence
+
+- baseline to final assessment
+
+- pre-learn sequence effectiveness
+
+- rescue gap type
+
+- compression style
+
+- retrieval improvement
+
+- mistake pattern change
+
+- tutor instruction clarity
+
+- assistant boundary quality
+
+- teach-back score
+
+- independence signals
+
+- dependency decay trend
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 117
+
+Human Review Scorecard
+
+PlayIQ V6 Module Drafts
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 118
+
+Human Review Scorecard
+
+Use this for every module.
+
+Score each item from 1 to 10.
+
+Module reviewed:
+
+Reviewer:
+
+Date:
+
+Strategic Alignment
+
+Course 1 focus:
+
+V6 alignment:
+
+AI as coach, not crutch:
+
+Student remains thinker:
+
+Mastery over completion:
+
+Tutor build thread:
+
+Assistant build thread:
+
+Proof engine:
+
+Parent trust:
+
+Student Experience
+
+Clarity for age 13 to 17:
+
+Reading load:
+
+Activity clarity:
+
+Answer format clarity:
+
+Overwhelm level:
+
+Motivation without fake hype:
+
+Game language balance:
+
+Practical school usefulness:
+
+Learning Design
+
+Lesson sequencing:
+
+Guided practice:
+
+Quiz quality:
+
+Boss battle clarity:
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 119
+
+Teach-back strength:
+
+Proof artifact strength:
+
+Daily mission usefulness:
+
+Cognitive Fingerprint signals:
+
+Integrity and Safety
+
+No answer-machine behavior:
+
+Homework shortcut prevention:
+
+Verification habit:
+
+Privacy and boundaries:
+
+Parent-safe framing:
+
+Build Readiness
+
+Standalone document readiness:
+
+Future LMS readiness:
+
+Data objects implied clearly:
+
+Thresholds configurable:
+
+No unapproved technical claims:
+
+No required hardware unless approved:
+
+Overall Verdict
+
+Choose one:
+
+- ACCEPT
+
+- ACCEPT WITH FIXES
+
+- REVISE
+
+- BLOCK
+
+Required Fixes
+
+1.
+
+2.
+
+3.
+
+Reviewer Notes
+
+Write notes here.
+
+PlayIQ V6 Module Drafts - Human Review
+
+Page 120
+
+
