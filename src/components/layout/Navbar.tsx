@@ -45,6 +45,9 @@ export function Navbar() {
     checkAuth();
   }, [pathname]);
 
+  // Hide public navbar on authenticated student pages — they have their own StudentNav
+  if (pathname.startsWith('/student')) return null;
+
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-[1400px]">
       <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00c8ff]">
