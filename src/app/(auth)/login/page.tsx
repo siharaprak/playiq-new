@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { loginAction } from '@/app/(auth)/actions';
 
 function SubmitButton() {
@@ -22,6 +22,7 @@ function SubmitButton() {
 
 export default function Login() {
   const [state, formAction] = useActionState(loginAction, null);
+  const [loginRole, setLoginRole] = useState<'student' | 'parent'>('student');
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-28 pb-12 px-6">
@@ -55,13 +56,37 @@ export default function Login() {
             <h1 className="font-display text-xl font-bold text-white uppercase tracking-wider text-glow-cyan">
               LOG IN
             </h1>
-            <p className="text-[#7b4fce] mt-2 font-display text-xs uppercase tracking-[0.2em]">
-              [STUDENT & PARENT ACCESS]
-            </p>
+          </div>
+
+          {/* Role Toggle */}
+          <div className="flex bg-black/50 border border-slate-700 p-1 mb-8">
+            <button
+              type="button"
+              onClick={() => setLoginRole('student')}
+              className={`flex-1 py-2 text-xs font-display tracking-widest uppercase transition-all ${
+                loginRole === 'student'
+                  ? 'bg-[#00c8ff] text-black font-bold shadow-[0_0_10px_#00c8ff]'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Student
+            </button>
+            <button
+              type="button"
+              onClick={() => setLoginRole('parent')}
+              className={`flex-1 py-2 text-xs font-display tracking-widest uppercase transition-all ${
+                loginRole === 'parent'
+                  ? 'bg-[#7b4fce] text-white font-bold shadow-[0_0_10px_#7b4fce]'
+                  : 'text-slate-400 hover:text-white'
+              }`}
+            >
+              Parent
+            </button>
           </div>
 
           {/* Form */}
           <form action={formAction} className="space-y-6">
+            <input type="hidden" name="role" value={loginRole} />
             {state?.error && (
               <div className="p-3 bg-[rgba(255,0,0,0.1)] border-l-4 border-red-500 text-red-400 font-display text-xs uppercase tracking-wider flex gap-2 items-center">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -70,21 +95,21 @@ export default function Login() {
             )}
 
             <div>
-              <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] mb-2 opacity-80">
-                &gt; USER_ID [EMAIL]
+              <label className={`block text-xs font-display uppercase tracking-[0.2em] mb-2 opacity-80 ${loginRole === 'student' ? 'text-[#00c8ff]' : 'text-[#7b4fce]'}`}>
+                &gt; {loginRole === 'student' ? 'LOGIN HANDLE [USERNAME]' : 'ACCOUNT EMAIL'}
               </label>
               <input
-                type="email"
-                name="email"
+                type={loginRole === 'student' ? 'text' : 'email'}
+                name="identifier"
                 required
-                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40"
-                placeholder="USER@DOMAIN.COM"
+                className={`neon-input !rounded-none !border-b-2 !border-b-slate-700 !bg-black/40 ${loginRole === 'student' ? 'focus:!border-b-[#00c8ff]' : 'focus:!border-b-[#7b4fce]'}`}
+                placeholder={loginRole === 'student' ? 'e.g. johnny_plays' : 'USER@DOMAIN.COM'}
               />
             </div>
 
             <div>
               <div className="flex justify-between items-center mb-2">
-                <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] opacity-80">
+                <label className={`block text-xs font-display uppercase tracking-[0.2em] opacity-80 ${loginRole === 'student' ? 'text-[#00c8ff]' : 'text-[#7b4fce]'}`}>
                   &gt; PASSKEY
                 </label>
                 <Link
@@ -94,11 +119,11 @@ export default function Login() {
                   RECOVER_KEY?
                 </Link>
               </div>
-              <input
+                <input
                 type="password"
                 name="password"
                 required
-                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce]"
+                className={`neon-input !rounded-none !border-b-2 !border-b-slate-700 !bg-black/40 font-mono tracking-widest text-white ${loginRole === 'student' ? 'focus:!border-b-[#00c8ff] selection:bg-[#00c8ff]' : 'focus:!border-b-[#7b4fce] selection:bg-[#7b4fce]'}`}
                 placeholder="********"
               />
             </div>

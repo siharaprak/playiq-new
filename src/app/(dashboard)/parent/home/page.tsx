@@ -1,5 +1,6 @@
 import { CheckCircle2, AlertCircle, BarChart3, UserPlus, Lock, BookOpen } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
+import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { MODULES } from '@/lib/constants';
@@ -23,7 +24,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
 
   if (!user) redirect('/login');
 
-  const supabaseAdmin = createClient(
+  const supabaseAdmin = createAdminClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
@@ -34,7 +35,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
     .select('student_id')
     .eq('parent_id', user.id);
 
-  const studentIds = links?.map(l => l.student_id) || [];
+  const studentIds = links?.map((l: any) => l.student_id) || [];
 
   let apprentices: { id: string; full_name: string; email: string }[] = [];
   if (studentIds.length > 0) {

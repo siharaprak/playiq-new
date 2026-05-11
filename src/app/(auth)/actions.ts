@@ -30,12 +30,18 @@ async function createSupabaseClient() {
 }
 
 export async function loginAction(prevState: any, formData: FormData) {
-  const email = formData.get('email') as string;
+  const identifier = formData.get('identifier') as string;
   const password = formData.get('password') as string;
+  const loginRole = formData.get('role') as string;
 
-  if (!email || !password) {
-    return { error: 'Both email and password are required' };
+  if (!identifier || !password) {
+    return { error: 'Both login handle and password are required' };
   }
+
+  // Resolve username to the fake student email if they selected student role and didn't provide an @
+  const email = (loginRole === 'student' && !identifier.includes('@')) 
+    ? `${identifier}@student.playiq.dev` 
+    : identifier;
 
   const supabase = await createSupabaseClient();
   const { data: authData, error } = await supabase.auth.signInWithPassword({
