@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import { logAttemptEvent, logCompletionEvent, logProofEvent, logModuleCompletedIdempotent } from '@/lib/events/learning-events';
 
 const MODULE_ID = MODULES.MODULE_3_ID;
 const MODULE_NUM = 2;
@@ -48,22 +49,41 @@ export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activi
   if (phase === 'activity') eventType = 'activity_completed';
   if (phase === 'mini-check') eventType = 'assessment_submitted';
 
-  await supabase.from('events_log').insert({
-    student_id: user.id,
-    event_type: eventType,
-    target_type: phase,
-    target_id: nodeId,
-  });
+
+
+  if (phase !== 'mini-check') {
+    await supabase.from('events_log').insert({
+      student_id: user.id,
+      event_type: eventType,
+      target_type: phase,
+      target_id: nodeId,
+    });
+  }
 
   if (phase === 'mini-check') {
-    await supabase.from('assessment_submissions').insert({
+    const { data: submission } = await supabase.from('assessment_submissions').insert({
       student_id: user.id,
       module_id: MODULE_ID,
       node_id: nodeId,
       assessment_type: 'mini_check',
       submission_payload: { status: 'passed' },
       pass_status: 'pass'
+    }).select().single();
+
+    if (submission) {
+      await logAttemptEvent({
+        studentId: user.id,
+        eventType: 'assessment_submitted',
+        submissionId: submission.id,
+        assessmentType: 'mini_check',
+      metadata: {
+          nodeId,
+          moduleId: MODULE_ID,
+          
+          source: 'advanceNodePhase'
+        }
     });
+    }
   }
 
   if (phase === 'lesson') redirect(`${BASE}/nodes/${nodeId}/activity`);
@@ -87,27 +107,49 @@ export async function submitTeachBackAction(nodeId: string, prompt: string, prev
     return { error: evaluation.feedback, submittedText: content };
   }
 
-  await supabase.from('assessment_submissions').insert({
+  const { data: submission } = await supabase.from('assessment_submissions').insert({
     student_id: user.id,
     module_id: MODULE_ID,
     node_id: nodeId,
     assessment_type: 'teach_back',
     submission_payload: { text: content, geminiFeedback: evaluation.feedback },
     pass_status: 'pass',
-  });
+  }).select().single();
 
-  await supabase.from('events_log').insert({
-    student_id: user.id,
-    event_type: 'assessment_submitted',
-    target_type: 'teach_back',
-    target_id: nodeId,
-    metadata: { passed: true, auto_graded: true }
-  });
+  if (submission) {
+    await logAttemptEvent({
+      studentId: user.id,
+      eventType: 'assessment_submitted',
+      submissionId: submission.id,
+      assessmentType: 'teach_back',
+      metadata: {
+        nodeId,
+        moduleId: MODULE_ID,
+        
+        passed: true,
+        auto_graded: true,
+        source: 'submitTeachBackAction'
+      }
+    });
+  }
 
-  await supabase.from('student_node_progress')
+  const { error: progressError } = await supabase.from('student_node_progress')
     .update({ teach_back_status: 'pass', node_mastered: true })
     .eq('student_id', user.id)
     .eq('node_id', nodeId);
+
+  if (!progressError) {
+    await logCompletionEvent({
+      studentId: user.id,
+      eventType: 'node_mastered',
+      targetType: 'student_node_progress',
+      metadata: {
+        nodeId,
+        moduleId: MODULE_ID,
+        source: 'submitTeachBackAction'
+      }
+    });
+  }
 
   redirect(`${BASE}/nodes/${nodeId}/completion`);
 }
@@ -136,14 +178,30 @@ export async function submitQuiz(formData: FormData) {
 
   const passStatus = score >= 80 ? 'pass' : 'revise';
 
-  await supabase.from('assessment_submissions').insert({
+  const { data: quizSub } = await supabase.from('assessment_submissions').insert({
     student_id: user.id,
     module_id: MODULE_ID,
     assessment_type: 'module_quiz',
     submission_payload: { q1, q2, q3, q4, q5, q6 },
     score_numeric: score,
     pass_status: passStatus
-  });
+  }).select().single();
+
+  if (quizSub) {
+    await logAttemptEvent({
+      studentId: user.id,
+      eventType: 'assessment_submitted',
+      submissionId: quizSub.id,
+      assessmentType: 'module_quiz',
+      metadata: {
+        moduleId: MODULE_ID,
+        
+        score,
+        passStatus,
+        source: 'submitQuiz'
+      }
+    });
+  }
 
   if (passStatus === 'pass') {
     redirect(`${BASE}/boss-battle`);
@@ -197,6 +255,22 @@ export async function submitBossBattleAction(prevState: unknown, formData: FormD
     await supabase.from('fingerprint_signals').insert(signals);
   }
 
+  if (bossSubmission) {
+    await logAttemptEvent({
+      studentId: user.id,
+      eventType: 'assessment_submitted',
+      submissionId: bossSubmission.id,
+      assessmentType: 'boss_battle',
+      metadata: {
+        moduleId: MODULE_ID,
+        
+        score: totalScore,
+        passed: totalScore >= 4,
+        source: 'submitBossBattleAction'
+      }
+    });
+  }
+
   redirect(`${BASE}/proof-artifacts`);
 }
 
@@ -234,7 +308,7 @@ export async function submitArtifacts(formData: FormData) {
     },
   };
 
-  await supabase.from('proof_artifact_submissions').insert([
+  const { error: artifactsError } = await supabase.from('proof_artifact_submissions').insert([
     {
       student_id: user.id,
       module_id: MODULE_ID,
@@ -248,6 +322,20 @@ export async function submitArtifacts(formData: FormData) {
       content_payload: boundariesPayload,
     },
   ]);
+
+  if (!artifactsError) {
+    await logProofEvent({
+      studentId: user.id,
+      eventType: 'proof_submitted',
+      metadata: {
+        moduleId: MODULE_ID,
+        artifactTypes: ['study_rules', 'error_review'],
+        source: 'submitArtifacts'
+      }
+    });
+
+    await logModuleCompletedIdempotent(user.id, MODULE_ID);
+  }
 
   redirect(`${BASE}/completion`);
 }

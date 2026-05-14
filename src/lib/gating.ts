@@ -1,5 +1,7 @@
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import type { MasteryRequirementConfig, PlaceholderRequirementKey, PlaceholderRequirementStatus } from '@/lib/mastery/types';
+import { inferRequirementDefaultsForNode, getRequirementSummary } from '@/lib/mastery/placeholders';
 
 // Module-agnostic node gating
 export async function enforceNodeGating(
@@ -119,4 +121,53 @@ export async function enforceModuleGating(
   }
 
   return { user };
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 3: Placeholder requirement helpers (non-breaking, no enforcement)
+// ---------------------------------------------------------------------------
+// These helpers query the mastery placeholder config for a node.
+// They do NOT enforce any gates or alter existing gating behavior.
+
+
+
+/**
+ * Returns the full placeholder mastery config for a node.
+ * Does not enforce anything.
+ */
+export function getPlaceholderRequirementsForNode(
+  nodeId: string,
+  moduleNumber: number,
+  nodeType?: string
+): MasteryRequirementConfig {
+  return inferRequirementDefaultsForNode(nodeId, moduleNumber, nodeType);
+}
+
+/**
+ * Checks if a specific placeholder requirement is required for a node.
+ * Does not enforce anything.
+ */
+export function hasPlaceholderRequirement(
+  nodeId: string,
+  moduleNumber: number,
+  requirement: PlaceholderRequirementKey,
+  nodeType?: string
+): boolean {
+  const config = inferRequirementDefaultsForNode(nodeId, moduleNumber, nodeType);
+  return config.requirements[requirement]?.required ?? false;
+}
+
+/**
+ * Returns a list of placeholder requirements that are marked as required
+ * but not yet fulfilled. Since enforcement is not active, this returns
+ * all required placeholders as "missing" for informational purposes.
+ * Does not enforce anything.
+ */
+export function describeMissingPlaceholderRequirements(
+  nodeId: string,
+  moduleNumber: number,
+  nodeType?: string
+): PlaceholderRequirementStatus[] {
+  const config = inferRequirementDefaultsForNode(nodeId, moduleNumber, nodeType);
+  return getRequirementSummary(config).filter((r) => r.required);
 }
