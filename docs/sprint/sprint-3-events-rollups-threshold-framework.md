@@ -171,3 +171,14 @@ All helpers:
 - [ ] Parent rollup returns only linked children
 - [ ] No emails exposed in rollups
 - [ ] Threshold defaults available and documented
+
+---
+
+## Sprint 3d Cross-References
+- **Beta configurable vs hard-coded decisions**: [sprint-3-beta-config-policy.md](./sprint-3-beta-config-policy.md)
+- **Threshold escalation policy**: [threshold-escalation-policy.md](./threshold-escalation-policy.md)
+- **Beta policy constants (TypeScript)**: `src/lib/mastery/beta-policy.ts`
+
+### Boss Battle Scoring Mismatch (Documented)
+Live `submitBossBattleAction()` passes at `totalScore >= 4` (integer out of ~9). The threshold framework stores `boss_battle_pass_percent: 80` as the aspirational target. These will diverge until a scoring overhaul converts Gemini evaluation to a 0–100 scale. Do not enforce `boss_battle_pass_percent` until the overhaul is complete.
+
