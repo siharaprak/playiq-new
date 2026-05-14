@@ -141,8 +141,7 @@ export async function POST(req: NextRequest) {
       },
       ...(history.length > 0 ? { history } : {}),
     });
-
-    const responseStream = await chat.sendMessageStream(lastMessage);
+    const responseStream = await chat.sendMessageStream({ message: lastMessage } as any);
 
     // Convert the SDK stream to a Web ReadableStream
     const stream = new ReadableStream({
