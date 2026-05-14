@@ -1,8 +1,9 @@
 import { NextRequest } from 'next/server';
 import { requireAuth, logAuditEvent } from '@/lib/auth/permissions';
 import { createReply, ReplySchema } from '@/lib/data/discussions';
-import { createApiSuccess, createApiValidationError, handleApiError } from '@/lib/server/responses';
+import { createApiSuccess, createApiError, createApiValidationError, handleApiError } from '@/lib/server/responses';
 import { assertCanCreateContent } from '@/lib/server/discussion-rules';
+import { moderateDiscussionContent } from '@/lib/server/content-moderation';
 
 export async function POST(request: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   try {
@@ -16,6 +17,23 @@ export async function POST(request: NextRequest, ctx: { params: Promise<{ id: st
 
     if (!parsed.success) {
       return createApiValidationError(parsed.error);
+    }
+
+    // Pre-submit content moderation — block before insert
+    const moderation = moderateDiscussionContent({
+      body: parsed.data.body,
+      actorRole: appUser.primary_role,
+    });
+
+    if (moderation.decision !== 'allow') {
+      await logAuditEvent({
+        userId: appUser.id,
+        action: 'content_moderation_blocked',
+        resourceType: 'discussion_replies',
+        resourceId: 'pre_insert',
+        metadata: { decision: moderation.decision, category: moderation.category ?? 'unknown', topicId: id },
+      });
+      return createApiError(moderation.message, 400);
     }
 
     const reply = await createReply({

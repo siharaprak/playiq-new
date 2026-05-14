@@ -34,6 +34,7 @@ export default function ApprenticeSetupPage() {
           <h1 className="text-3xl font-display font-black text-[var(--text-primary)] uppercase tracking-widest">Provision Apprentice</h1>
           <p className="text-slate-400 font-mono text-xs mt-3 leading-relaxed">
             Create a student account for your child. They will log in with these credentials and land directly on their module dashboard.
+            Your child will choose their own public PlayIQ username when they log in.
           </p>
         </div>
 
@@ -69,8 +70,11 @@ export default function ApprenticeSetupPage() {
                 className="neon-input w-full"
                 placeholder="e.g. johnny_plays  OR  child@email.com"
               />
+              <p className="font-mono text-[10px] text-slate-600 mt-1.5">
+                This is for login only — not the child&apos;s public display name.
+              </p>
               {username && !username.includes('@') && (
-                <p className="font-mono text-[10px] text-slate-500 mt-1.5">
+                <p className="font-mono text-[10px] text-slate-500 mt-1">
                   Login email will be: <span className="text-[#00c8ff]">{loginHandle}</span>
                 </p>
               )}

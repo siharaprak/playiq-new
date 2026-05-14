@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import Link from 'next/link';
 import RequestFeedbackButton from './RequestFeedbackButton';
+import StudentUsernameSetup from '@/components/profile/StudentUsernameSetup';
 
 // Module definitions
 const moduleList = [
@@ -26,9 +27,12 @@ export default async function StudentDashboard() {
 
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase.from('profiles').select('full_name, email').eq('id', user.id).single();
-  const name = profile?.full_name || profile?.email || 'Student';
+  const { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count').eq('id', user.id).single();
+  const name = (profile as any)?.username || profile?.full_name || 'Student';
   const initials = name.substring(0, 2).toUpperCase();
+  const currentUsername: string | null = (profile as any)?.username ?? null;
+  const usernameChangeCount: number = (profile as any)?.username_change_count ?? 0;
+  const canEditUsername = usernameChangeCount < 3;
 
   // Fetch all progress at once
   const { data: allProgress } = await supabase
@@ -119,6 +123,13 @@ export default async function StudentDashboard() {
           </div>
 
           <div className="space-y-6">
+            {/* Username Setup/Edit */}
+            <StudentUsernameSetup
+              currentUsername={currentUsername}
+              canEdit={canEditUsername}
+              changeCount={usernameChangeCount}
+            />
+
             {/* Engagement Board */}
             <Link href="/discussions" className="block p-6 rounded-2xl transition-all group" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-cyan)' }}>
               <div className="flex items-center gap-3 mb-3">

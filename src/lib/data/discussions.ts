@@ -52,7 +52,7 @@ export async function listTopics({ categoryId, page = 1, pageSize = 20 }: { cate
 
   const { data, error, count } = await supabaseAdmin
     .from('discussion_topics')
-    .select('*, author:profiles!author_id(full_name, role)', { count: 'exact' })
+    .select('*, author:profiles!author_id(full_name, role, username)', { count: 'exact' })
     .eq('category_id', categoryId)
     .in('status', ['active', 'edited', 'locked'])
     .order('is_pinned', { ascending: false, nullsFirst: false })
@@ -67,7 +67,7 @@ export async function listTopics({ categoryId, page = 1, pageSize = 20 }: { cate
 export async function getTopicWithReplies(topicId: string) {
   const { data: topic, error: topicError } = await supabaseAdmin
     .from('discussion_topics')
-    .select('*, author:profiles!author_id(full_name, role), category:discussion_categories!category_id(slug, title)')
+    .select('*, author:profiles!author_id(full_name, role, username), category:discussion_categories!category_id(slug, title)')
     .eq('id', topicId)
     .single();
 
@@ -75,7 +75,7 @@ export async function getTopicWithReplies(topicId: string) {
 
   const { data: replies, error: repliesError } = await supabaseAdmin
     .from('discussion_replies')
-    .select('*, author:profiles!author_id(full_name, role)')
+    .select('*, author:profiles!author_id(full_name, role, username)')
     .eq('topic_id', topicId)
     .order('created_at', { ascending: true });
 

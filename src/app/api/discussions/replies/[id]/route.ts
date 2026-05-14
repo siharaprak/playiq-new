@@ -1,7 +1,8 @@
 import { NextRequest } from 'next/server';
 import { requireAuth, logAuditEvent } from '@/lib/auth/permissions';
 import { updateOwnReply, softDeleteOwnReply, ReplySchema } from '@/lib/data/discussions';
-import { createApiSuccess, createApiValidationError, handleApiError } from '@/lib/server/responses';
+import { createApiSuccess, createApiError, createApiValidationError, handleApiError } from '@/lib/server/responses';
+import { moderateDiscussionContent } from '@/lib/server/content-moderation';
 
 export async function PATCH(request: NextRequest, ctx: { params: Promise<{ id: string }> }) {
   try {
@@ -13,6 +14,23 @@ export async function PATCH(request: NextRequest, ctx: { params: Promise<{ id: s
 
     if (!parsed.success) {
       return createApiValidationError(parsed.error);
+    }
+
+    // Pre-submit content moderation — block before update
+    const moderation = moderateDiscussionContent({
+      body: parsed.data.body,
+      actorRole: appUser.primary_role,
+    });
+
+    if (moderation.decision !== 'allow') {
+      await logAuditEvent({
+        userId: appUser.id,
+        action: 'content_moderation_blocked',
+        resourceType: 'discussion_replies',
+        resourceId: id,
+        metadata: { decision: moderation.decision, category: moderation.category ?? 'unknown' },
+      });
+      return createApiError(moderation.message, 400);
     }
 
     const reply = await updateOwnReply({
