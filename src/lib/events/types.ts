@@ -1,8 +1,10 @@
 /**
- * Sprint 3 Continued — Event Capture Framework
+ * Sprint 3 Continued + Sprint 4D — Event Capture Framework
  *
  * Zod schemas and TypeScript types for learning event payloads.
  * Used by the event capture helpers in learning-events.ts.
+ *
+ * Sprint 4D adds: Guided AI support event types and schemas.
  */
 
 import { z } from 'zod';
@@ -31,6 +33,16 @@ export const LearningEventType = z.enum([
   'assistant_profile_created',
   'assistant_profile_updated',
   'assistant_version_created',
+  // Sprint 4D — Guided AI support events
+  'guided_ai_used',
+  'guided_ai_refused',
+  'guided_ai_effort_required',
+  'guided_ai_hint_ladder_step',
+  'guided_ai_quiz_practice_generated',
+  'guided_ai_teachback_required',
+  'lesson_rescue_used',
+  'learn_your_way_updated',
+  'unsafe_assistance_routed',
 ]);
 
 export type LearningEventType = z.infer<typeof LearningEventType>;
@@ -54,6 +66,8 @@ export const EventTargetType = z.enum([
   'teach_back',
   'quiz',
   'boss_battle',
+  // Sprint 4D
+  'guided_ai',
 ]);
 
 export type EventTargetType = z.infer<typeof EventTargetType>;
@@ -144,6 +158,48 @@ export const AssistantUpdateEventInputSchema = z.object({
 });
 
 export type AssistantUpdateEventInput = z.infer<typeof AssistantUpdateEventInputSchema>;
+
+// ---------------------------------------------------------------------------
+// Sprint 4D — Guided AI Support Event schema
+// ---------------------------------------------------------------------------
+
+export const GuidedAiEventType = z.enum([
+  'guided_ai_used',
+  'guided_ai_refused',
+  'guided_ai_effort_required',
+  'guided_ai_hint_ladder_step',
+  'guided_ai_quiz_practice_generated',
+  'guided_ai_teachback_required',
+  'lesson_rescue_used',
+  'learn_your_way_updated',
+  'unsafe_assistance_routed',
+]);
+
+export type GuidedAiEventType = z.infer<typeof GuidedAiEventType>;
+
+/**
+ * Input schema for Guided AI support events.
+ * Safe metadata only — no raw prompts, responses, selectedText, or studentAttempt.
+ */
+export const GuidedAiSupportEventInputSchema = z.object({
+  studentId: z.string().uuid(),
+  eventType: GuidedAiEventType,
+  moduleNumber: z.number().int().min(1).max(11).optional(),
+  moduleId: z.string().optional(),
+  nodeId: z.string().max(20).optional(),
+  pageType: z.string().max(30).optional(),
+  mode: z.string().max(30),
+  integrityAction: z.enum(['allowed', 'refused', 'modified', 'flagged']).optional(),
+  refusalReason: z.string().max(100).optional(),
+  routingTarget: z.enum(['hint', 'explain', 'coach', 'lesson_rescue', 'blocked']).optional(),
+  hintLevel: z.union([z.literal(1), z.literal(2), z.literal(3)]).optional(),
+  retryCount: z.number().int().min(0).max(10).optional(),
+  effortRequired: z.boolean().optional(),
+  teachBackRequired: z.boolean().optional(),
+  confusionType: z.string().max(50).optional(),
+});
+
+export type GuidedAiSupportEventInput = z.infer<typeof GuidedAiSupportEventInputSchema>;
 
 // ---------------------------------------------------------------------------
 // Safe result type

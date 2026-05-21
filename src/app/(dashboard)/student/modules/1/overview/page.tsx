@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import { GuidedAIPanel } from '@/components/guided-ai/GuidedAIPanel';
 
 const MODULE_NODES = [
   { id: '1', title: 'What AI Is Good At vs Bad At' },
@@ -117,6 +118,11 @@ export default async function Module1OverviewPage() {
           })}
         </div>
       </section>
+
+      {/* Guided AI Coach */}
+      <div className="mb-8">
+        <GuidedAIPanel moduleNumber={1} pageType="overview" />
+      </div>
 
       {/* Assessments */}
       <section className="p-6 rounded-xl border" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-purple)' }}>

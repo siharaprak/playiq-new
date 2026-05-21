@@ -1,5 +1,5 @@
 /**
- * Sprint 3 Continued — Learning Event Capture Helpers
+ * Sprint 3 Continued + Sprint 4D — Learning Event Capture Helpers
  *
  * Server-only event logging layer around the existing events_log table.
  * Uses supabaseAdmin (service role) for privileged inserts.
@@ -9,6 +9,10 @@
  *   - Catch errors silently (non-blocking) unless security-critical
  *   - Return { ok, eventId?, error? }
  *   - Never expose service role to client
+ *
+ * Sprint 4D adds: Guided AI support event helpers.
+ *   - Safe metadata only — no raw prompts, responses, selectedText, or studentAttempt.
+ *   - Logging failures must never break the student experience.
  *
  * Integration status:
  *   - Tutor/assistant event helpers: CREATED but no CRUD flows exist yet.
@@ -29,6 +33,7 @@ import {
   ProofEventInputSchema,
   TutorUpdateEventInputSchema,
   AssistantUpdateEventInputSchema,
+  GuidedAiSupportEventInputSchema,
 } from './types';
 import type {
   LearningEventInput,
@@ -39,6 +44,7 @@ import type {
   ProofEventInput,
   TutorUpdateEventInput,
   AssistantUpdateEventInput,
+  GuidedAiSupportEventInput,
 } from './types';
 
 // ---------------------------------------------------------------------------
@@ -317,6 +323,203 @@ export async function logAssistantUpdateEvent(input: AssistantUpdateEventInput):
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     console.error('[logAssistantUpdateEvent] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sprint 4D — Guided AI Support Event Helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Builds safe-only metadata for Guided AI events.
+ * NEVER includes raw message, selectedText, studentAttempt, AI response, or personal info.
+ */
+function buildGuidedAiSafeMetadata(input: GuidedAiSupportEventInput): Record<string, unknown> {
+  const meta: Record<string, unknown> = {
+    mode: input.mode,
+    noPromptStored: true,
+    noResponseStored: true,
+    source: 'guided_ai',
+  };
+
+  if (input.moduleNumber !== undefined) meta.moduleNumber = input.moduleNumber;
+  if (input.nodeId) meta.nodeId = input.nodeId;
+  if (input.pageType) meta.pageType = input.pageType;
+  if (input.integrityAction) meta.integrityAction = input.integrityAction;
+  if (input.refusalReason) meta.refusalReason = input.refusalReason;
+  if (input.routingTarget) meta.routingTarget = input.routingTarget;
+  if (input.hintLevel !== undefined) meta.hintLevel = input.hintLevel;
+  if (input.retryCount !== undefined) meta.retryCount = input.retryCount;
+  if (input.effortRequired !== undefined) meta.effortRequired = input.effortRequired;
+  if (input.teachBackRequired !== undefined) meta.teachBackRequired = input.teachBackRequired;
+  if (input.confusionType) meta.confusionType = input.confusionType;
+
+  return meta;
+}
+
+/**
+ * Logs a successful Guided AI usage event.
+ * Non-blocking: catches errors and returns safe result.
+ */
+export async function logGuidedAiSupportEvent(input: GuidedAiSupportEventInput): Promise<EventResult> {
+  try {
+    const parsed = GuidedAiSupportEventInputSchema.parse(input);
+    return logLearningEvent({
+      studentId: parsed.studentId,
+      eventType: parsed.eventType,
+      targetType: 'guided_ai',
+      targetId: parsed.moduleId ?? undefined,
+      metadata: buildGuidedAiSafeMetadata(parsed),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[logGuidedAiSupportEvent] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+/**
+ * Logs a Guided AI refusal event.
+ * Used when integrity rules refuse a request.
+ */
+export async function logGuidedAiRefusalEvent(input: GuidedAiSupportEventInput): Promise<EventResult> {
+  try {
+    const parsed = GuidedAiSupportEventInputSchema.parse({
+      ...input,
+      eventType: 'guided_ai_refused',
+    });
+    return logLearningEvent({
+      studentId: parsed.studentId,
+      eventType: 'guided_ai_refused',
+      targetType: 'guided_ai',
+      targetId: parsed.moduleId ?? undefined,
+      metadata: buildGuidedAiSafeMetadata(parsed),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[logGuidedAiRefusalEvent] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+/**
+ * Logs a Guided AI effort-required event.
+ * Used when deeper help is blocked due to insufficient student effort.
+ */
+export async function logGuidedAiEffortRequiredEvent(input: GuidedAiSupportEventInput): Promise<EventResult> {
+  try {
+    const parsed = GuidedAiSupportEventInputSchema.parse({
+      ...input,
+      eventType: 'guided_ai_effort_required',
+    });
+    return logLearningEvent({
+      studentId: parsed.studentId,
+      eventType: 'guided_ai_effort_required',
+      targetType: 'guided_ai',
+      targetId: parsed.moduleId ?? undefined,
+      metadata: buildGuidedAiSafeMetadata(parsed),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[logGuidedAiEffortRequiredEvent] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+/**
+ * Logs a hint ladder step event.
+ * Captures hintLevel only — no raw content.
+ */
+export async function logGuidedAiHintLadderEvent(input: GuidedAiSupportEventInput): Promise<EventResult> {
+  try {
+    const parsed = GuidedAiSupportEventInputSchema.parse({
+      ...input,
+      eventType: 'guided_ai_hint_ladder_step',
+    });
+    return logLearningEvent({
+      studentId: parsed.studentId,
+      eventType: 'guided_ai_hint_ladder_step',
+      targetType: 'guided_ai',
+      targetId: parsed.moduleId ?? undefined,
+      metadata: buildGuidedAiSafeMetadata(parsed),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[logGuidedAiHintLadderEvent] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+/**
+ * Logs a Lesson Rescue usage event.
+ * Captures bounded confusionType only.
+ */
+export async function logLessonRescueUsedEvent(input: GuidedAiSupportEventInput): Promise<EventResult> {
+  try {
+    const parsed = GuidedAiSupportEventInputSchema.parse({
+      ...input,
+      eventType: 'lesson_rescue_used',
+    });
+    return logLearningEvent({
+      studentId: parsed.studentId,
+      eventType: 'lesson_rescue_used',
+      targetType: 'guided_ai',
+      targetId: parsed.moduleId ?? undefined,
+      metadata: buildGuidedAiSafeMetadata(parsed),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[logLessonRescueUsedEvent] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+/**
+ * Logs a Learn Your Way preference update event.
+ * Captures bounded preference signals only.
+ */
+export async function logLearnYourWayUpdatedEvent(input: GuidedAiSupportEventInput): Promise<EventResult> {
+  try {
+    const parsed = GuidedAiSupportEventInputSchema.parse({
+      ...input,
+      eventType: 'learn_your_way_updated',
+    });
+    return logLearningEvent({
+      studentId: parsed.studentId,
+      eventType: 'learn_your_way_updated',
+      targetType: 'guided_ai',
+      targetId: parsed.moduleId ?? undefined,
+      metadata: buildGuidedAiSafeMetadata(parsed),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[logLearnYourWayUpdatedEvent] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+/**
+ * Logs an unsafe assistance routing event.
+ * Used only when routing actually occurs (not for normal safe requests).
+ * Captures classification category and routing target only — never raw content.
+ */
+export async function logUnsafeAssistanceRoutedEvent(input: GuidedAiSupportEventInput): Promise<EventResult> {
+  try {
+    const parsed = GuidedAiSupportEventInputSchema.parse({
+      ...input,
+      eventType: 'unsafe_assistance_routed',
+    });
+    return logLearningEvent({
+      studentId: parsed.studentId,
+      eventType: 'unsafe_assistance_routed',
+      targetType: 'guided_ai',
+      targetId: parsed.moduleId ?? undefined,
+      metadata: buildGuidedAiSafeMetadata(parsed),
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[logUnsafeAssistanceRoutedEvent] error:', message);
     return { ok: false, error: message };
   }
 }
