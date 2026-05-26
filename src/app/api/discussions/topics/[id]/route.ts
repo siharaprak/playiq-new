@@ -28,7 +28,7 @@ export async function PATCH(request: NextRequest, ctx: { params: Promise<{ id: s
     }
 
     // Pre-submit content moderation — block before update
-    const moderation = moderateDiscussionContent({
+    const moderation = await moderateDiscussionContent({
       title: parsed.data.title,
       body: parsed.data.body,
       actorRole: appUser.primary_role,

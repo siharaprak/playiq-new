@@ -20,6 +20,7 @@ import {
   DEFAULT_BLOCK_MESSAGE,
   type BlockedTermCategory,
 } from './blocked-terms';
+import { moderateContentWithGemini } from './ai-moderation';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -32,7 +33,7 @@ export interface ModerationResult {
   /** Safe, user-facing message. Never contains raw offensive content. */
   message: string;
   /** Category of violation (for server-side logging). Never exposed to client in detail. */
-  category?: BlockedTermCategory;
+  category?: BlockedTermCategory | 'academic' | 'safety';
 }
 
 export interface ModerationInput {
@@ -140,7 +141,7 @@ export function checkUnsafePersonalInfo(
  * - needs_review: treated as block for beta (no pending_review in DB)
  * - allow: clean content
  */
-export function moderateDiscussionContent(input: ModerationInput): ModerationResult {
+export async function moderateDiscussionContent(input: ModerationInput): Promise<ModerationResult> {
   const combinedText = [input.title, input.body].filter(Boolean).join(' ');
 
   // Check blocked terms first
@@ -165,12 +166,22 @@ export function moderateDiscussionContent(input: ModerationInput): ModerationRes
     };
   }
 
+  // Check semantic AI moderation
+  const aiResult = await moderateContentWithGemini(input.body, input.title);
+  if (aiResult.flagged) {
+    return {
+      decision: 'block',
+      message: aiResult.feedback || 'Your post was flagged by our safety or academic integrity coach. Please focus your queries conceptually.',
+      category: aiResult.category === 'clean' ? undefined : aiResult.category,
+    };
+  }
+
   return { decision: 'allow', message: '' };
 }
 
 /**
  * Convenience wrapper that returns the moderation decision.
  */
-export function getModerationDecision(input: ModerationInput): ModerationResult {
+export async function getModerationDecision(input: ModerationInput): Promise<ModerationResult> {
   return moderateDiscussionContent(input);
 }
