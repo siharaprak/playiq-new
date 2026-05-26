@@ -70,7 +70,6 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
     }
   }
 
-
   const handleModeSelect = (mode: GuidedAiModeId) => {
     setActiveMode(mode);
     setResponse(null);

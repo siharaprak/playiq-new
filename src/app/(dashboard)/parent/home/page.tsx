@@ -49,7 +49,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
   }
 
   // Fetch real progress for ALL linked students
-  let progressByStudent: Record<string, Record<string, number>> = {};
+  const progressByStudent: Record<string, Record<string, number>> = {};
 
   if (studentIds.length > 0) {
     const { data: allProgress } = await supabaseAdmin
