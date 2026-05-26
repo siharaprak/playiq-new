@@ -1,19 +1,23 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { ChevronDown, ChevronUp, Sparkles, Loader2, AlertCircle } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import { ChevronDown, ChevronUp, Sparkles, Loader2, AlertCircle, MessageSquare, X } from 'lucide-react';
 import { ModeSelector } from './ModeSelector';
 import { GuidedAiResponse } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
 
 interface GuidedAIPanelProps {
-  moduleNumber: number;
+  moduleNumber?: number;
   nodeId?: string;
   pageType?: string;
+  isFloating?: boolean;
 }
 
-export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelProps) {
+export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = false }: GuidedAIPanelProps) {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [activeMode, setActiveMode] = useState<GuidedAiModeId | null>(null);
   const [message, setMessage] = useState('');
   const [studentAttempt, setStudentAttempt] = useState('');
@@ -25,6 +29,34 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelP
   const [showSelectedTextField, setShowSelectedTextField] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // Extract parameters dynamically if floating
+  let activeModuleNumber = moduleNumber ?? 1;
+  let activeNodeId = nodeId;
+  let activePageType = pageType;
+
+  if (isFloating) {
+    const match = pathname?.match(/\/student\/modules\/(\d+)/);
+    if (!match) return null;
+    activeModuleNumber = parseInt(match[1]);
+
+    const nodeMatch = pathname?.match(/\/nodes\/([^/]+)/);
+    if (nodeMatch) {
+      activeNodeId = nodeMatch[1];
+    }
+
+    if (pathname?.includes('/lesson')) {
+      activePageType = 'lesson';
+    } else if (pathname?.includes('/activity')) {
+      activePageType = 'activity';
+    } else if (pathname?.includes('/boss-battle')) {
+      activePageType = 'boss_battle';
+    } else if (pathname?.includes('/overview')) {
+      activePageType = 'overview';
+    } else {
+      activePageType = 'lesson';
+    }
+  }
 
   // Sprint 4C: ephemeral local state for hint ladder + retry + teach-back
   const [hintLevel, setHintLevel] = useState<1 | 2 | 3>(1);
@@ -68,12 +100,12 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelP
     try {
       const body: Record<string, unknown> = {
         mode: activeMode,
-        moduleNumber,
+        moduleNumber: activeModuleNumber,
         message: message.trim(),
-        pageType: pageType || 'lesson',
+        pageType: activePageType || 'lesson',
       };
 
-      if (nodeId) body.nodeId = nodeId;
+      if (activeNodeId) body.nodeId = activeNodeId;
       if (studentAttempt.trim()) body.studentAttempt = studentAttempt.trim();
       if (selectedText.trim()) body.selectedText = selectedText.trim();
 
@@ -161,6 +193,364 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelP
     3: { name: 'Micro-example', color: 'var(--neon-purple)' },
   };
 
+  const renderPanelContents = () => {
+    return (
+      <>
+        {/* Mode selector */}
+        <div>
+          <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>
+            Choose how you want the AI to help you:
+          </p>
+          <ModeSelector
+            activeMode={activeMode}
+            onSelectMode={handleModeSelect}
+            disabled={isLoading}
+          />
+        </div>
+
+        {/* Sprint 4C: Hint level indicator */}
+        {activeMode === 'hint' && (
+          <div className="flex items-center gap-3">
+            {([1, 2, 3] as const).map(level => {
+              const meta = HINT_LEVEL_LABELS[level];
+              const isActive = hintLevel === level;
+              const isPast = hintLevel > level;
+              return (
+                <div
+                  key={level}
+                  className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider"
+                  style={{
+                    color: isActive ? meta.color : isPast ? 'var(--text-muted)' : 'var(--glass-border)',
+                    opacity: isActive ? 1 : isPast ? 0.6 : 0.3,
+                  }}
+                >
+                  <span
+                    className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] border"
+                    style={{
+                      borderColor: isActive ? meta.color : 'var(--glass-border)',
+                      background: isActive ? `${meta.color}20` : 'transparent',
+                    }}
+                  >
+                    {level}
+                  </span>
+                  <span className="hidden sm:inline">{meta.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Input form */}
+        {activeMode && (
+          <form id="guided-ai-form" onSubmit={handleSubmit} className="space-y-3">
+            {/* Learn Your Way preference selectors */}
+            {activeMode === 'learn_your_way' && (
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
+                    Explain with
+                  </label>
+                  <select
+                    value={lywPrefs.explanation_style || ''}
+                    onChange={(e) => setLywPrefs(p => ({ ...p, explanation_style: e.target.value as LearnYourWayPreferences['explanation_style'] || undefined }))}
+                    className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
+                    style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
+                  >
+                    <option value="">Choose...</option>
+                    <option value="examples">Examples</option>
+                    <option value="steps">Step-by-step</option>
+                    <option value="analogy">Analogies</option>
+                    <option value="plain">Plain text</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
+                    Pace
+                  </label>
+                  <select
+                    value={lywPrefs.pace_preference || ''}
+                    onChange={(e) => setLywPrefs(p => ({ ...p, pace_preference: e.target.value as LearnYourWayPreferences['pace_preference'] || undefined }))}
+                    className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
+                    style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
+                  >
+                    <option value="">Choose...</option>
+                    <option value="fast">Fast</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="slow">Slow</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
+                    Support style
+                  </label>
+                  <select
+                    value={lywPrefs.support_preference || ''}
+                    onChange={(e) => setLywPrefs(p => ({ ...p, support_preference: e.target.value as LearnYourWayPreferences['support_preference'] || undefined }))}
+                    className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
+                    style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
+                  >
+                    <option value="">Choose...</option>
+                    <option value="visual_analogy">Visual analogies</option>
+                    <option value="plain_explanation">Plain explanations</option>
+                    <option value="worked_examples">Worked examples</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
+                    Start with
+                  </label>
+                  <select
+                    value={lywPrefs.practice_preference || ''}
+                    onChange={(e) => setLywPrefs(p => ({ ...p, practice_preference: e.target.value as LearnYourWayPreferences['practice_preference'] || undefined }))}
+                    className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
+                    style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
+                  >
+                    <option value="">Choose...</option>
+                    <option value="practice_first">Practice first</option>
+                    <option value="explanation_first">Explanation first</option>
+                  </select>
+                </div>
+              </div>
+            )}
+
+            {/* Selected text field (Lesson Rescue mode) */}
+            {showSelectedTextField && (
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--neon-cyan)' }}>
+                  Paste the confusing sentence
+                </label>
+                <p className="text-[10px] mb-1.5" style={{ color: 'var(--text-muted)' }}>
+                  Copy a sentence or paragraph from the lesson that feels confusing.
+                </p>
+                <textarea
+                  value={selectedText}
+                  onChange={(e) => setSelectedText(e.target.value)}
+                  placeholder="Paste the confusing part of the lesson here..."
+                  rows={3}
+                  maxLength={1000}
+                  className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:border-[var(--neon-cyan)] focus:shadow-[0_0_8px_rgba(0,200,255,0.15)] transition-all"
+                  style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
+                />
+              </div>
+            )}
+
+            {/* Student attempt field (Hint / Quiz / Lesson Rescue modes) */}
+            {showAttemptField && (
+              <div>
+                <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
+                  {response?.effortRequired ? '✏️ Your attempt (required for deeper help)' : 'Your attempt (optional)'}
+                </label>
+                <textarea
+                  value={studentAttempt}
+                  onChange={(e) => setStudentAttempt(e.target.value)}
+                  placeholder={response?.effortRequired
+                    ? 'Share what you\'ve tried — this unlocks deeper help...'
+                    : 'Share what you\'ve tried so far...'
+                  }
+                  rows={2}
+                  maxLength={2000}
+                  className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 text-sm resize-none focus:outline-none transition-all"
+                  style={{
+                    borderColor: response?.effortRequired ? 'var(--neon-cyan)' : 'var(--glass-border)',
+                    color: 'var(--text-primary)',
+                    boxShadow: response?.effortRequired ? '0 0 8px rgba(0,200,255,0.15)' : 'none',
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Main message input */}
+            <div className="relative">
+              <textarea
+                ref={inputRef}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder={getPlaceholder(activeMode)}
+                rows={2}
+                maxLength={2000}
+                disabled={isLoading}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleSubmit(e);
+                  }
+                }}
+                className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 pr-20 text-sm resize-none focus:outline-none focus:border-[var(--neon-cyan)] focus:shadow-[0_0_8px_rgba(0,200,255,0.15)] transition-all placeholder:text-[var(--text-muted)]"
+                style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
+              />
+              <button
+                type="submit"
+                disabled={!message.trim() || isLoading}
+                className="absolute right-2 bottom-2 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                style={{
+                  background: message.trim() && !isLoading ? 'var(--neon-cyan)' : 'var(--glass-bg)',
+                  color: message.trim() && !isLoading ? 'var(--space-deep)' : 'var(--text-muted)',
+                }}
+              >
+                {isLoading ? (
+                  <Loader2 className="w-3 h-3 animate-spin" />
+                ) : (
+                  'Ask'
+                )}
+              </button>
+            </div>
+          </form>
+        )}
+
+        {/* Loading state */}
+        {isLoading && (
+          <div className="flex items-center gap-2 p-3" style={{ color: 'var(--neon-purple)' }}>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-xs font-bold uppercase tracking-wider">Thinking...</span>
+          </div>
+        )}
+
+        {/* Error state */}
+        {error && (
+          <div
+            className="flex items-start gap-2 p-3 rounded-lg border text-sm"
+            style={{ background: 'rgba(255,100,100,0.05)', borderColor: 'rgba(255,100,100,0.3)', color: '#ff6464' }}
+          >
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* Response */}
+        {response && !isLoading && (
+          <GuidedAiResponse data={response} />
+        )}
+
+        {/* Sprint 4C: Teach-back card (separate from main input — correction #2) */}
+        {teachBackActive && response?.teachBackPrompt && !isLoading && (
+          <div
+            className="p-4 rounded-xl border space-y-3"
+            style={{
+              background: 'rgba(123,79,206,0.06)',
+              borderColor: 'var(--neon-purple)',
+            }}
+          >
+            <p className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
+              🎓 Teach it back
+            </p>
+            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+              {response.teachBackPrompt}
+            </p>
+            <textarea
+              value={teachBackInput}
+              onChange={(e) => setTeachBackInput(e.target.value)}
+              placeholder="Explain this concept in your own words..."
+              rows={3}
+              maxLength={2000}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleTeachBackSubmit();
+                }
+              }}
+              className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:border-[var(--neon-purple)] focus:shadow-[0_0_8px_rgba(123,79,206,0.2)] transition-all"
+              style={{ borderColor: 'rgba(123,79,206,0.3)', color: 'var(--text-primary)' }}
+            />
+            <button
+              type="button"
+              onClick={handleTeachBackSubmit}
+              disabled={!teachBackInput.trim() || isLoading}
+              className="px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                background: teachBackInput.trim() ? 'var(--neon-purple)' : 'var(--glass-bg)',
+                color: teachBackInput.trim() ? '#fff' : 'var(--text-muted)',
+              }}
+            >
+              Submit
+            </button>
+          </div>
+        )}
+
+        {/* Sprint 4C: Next Hint button */}
+        {activeMode === 'hint' && response && response.nextHintAvailable && !isLoading && !teachBackActive && (
+          <button
+            type="button"
+            onClick={handleNextHint}
+            className="w-full py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border"
+            style={{
+              borderColor: 'var(--neon-cyan)',
+              color: 'var(--neon-cyan)',
+              background: 'rgba(0,200,255,0.05)',
+            }}
+          >
+            ➡️ Next Hint: {HINT_LEVEL_LABELS[Math.min(3, hintLevel + 1) as 1 | 2 | 3].name}
+          </button>
+        )}
+
+        {/* Footer */}
+        <div className="text-center pt-1">
+          <span className="text-[9px] uppercase tracking-widest font-display" style={{ color: 'var(--text-muted)' }}>
+            Agent PiQ · Not an answer machine
+          </span>
+        </div>
+      </>
+    );
+  };
+
+  if (isFloating) {
+    return (
+      <>
+        {/* Floating Toggle Button */}
+        {!isOpen && (
+          <button
+            type="button"
+            onClick={() => setIsOpen(true)}
+            className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-[#020617] border-2 border-[var(--neon-cyan)] text-[var(--neon-cyan)] shadow-[0_0_15px_rgba(0,200,255,0.3)] hover:shadow-[0_0_25px_rgba(0,200,255,0.6)] hover:bg-[rgba(0,200,255,0.1)] transition-all duration-300 group"
+            aria-label="Open Agent PiQ Chat"
+          >
+            <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
+          </button>
+        )}
+
+        {/* Expanded Chat Panel */}
+        {isOpen && (
+          <div className={`!fixed bottom-6 right-6 z-50 w-[350px] sm:w-[400px] h-[550px] max-h-[85vh] flex flex-col glass-card rounded-xl overflow-hidden shadow-2xl ${isClosing ? 'animate-fade-out-down' : 'animate-fade-in-up'} border border-[var(--neon-cyan)]/40`}>
+            
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-[var(--neon-cyan)]/20 bg-[#020617]/80">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-full bg-[#020617] border border-[var(--neon-purple)] flex items-center justify-center text-[var(--neon-purple)] shadow-[0_0_10px_rgba(123,79,206,0.3)]">
+                  <Sparkles size={18} />
+                </div>
+                <div>
+                  <h3 className="font-display font-bold text-sm tracking-wider text-[#e2e8f0]">AGENT <span className="text-[var(--neon-cyan)]">PIQ</span></h3>
+                  <div className="flex items-center gap-1.5">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#39ff14] shadow-[0_0_5px_#39ff14]"></div>
+                    <span className="text-[10px] text-muted-foreground uppercase tracking-widest">Online</span>
+                  </div>
+                </div>
+              </div>
+              <button 
+                type="button"
+                onClick={() => {
+                  setIsClosing(true);
+                  setTimeout(() => {
+                    setIsOpen(false);
+                    setIsClosing(false);
+                  }, 400);
+                }}
+                className="text-slate-400 hover:text-[var(--neon-purple)] transition-colors p-1"
+                aria-label="Close Chat"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            {/* Scrollable Body Container */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-[#0b1120]/60 custom-scrollbar">
+              {renderPanelContents()}
+            </div>
+          </div>
+        )}
+      </>
+    );
+  }
+
   return (
     <div
       className="rounded-xl border overflow-hidden transition-all duration-300"
@@ -193,298 +583,7 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelP
       {/* Panel content */}
       {isOpen && (
         <div id="guided-ai-panel-content" className="px-4 pb-4 space-y-4">
-          {/* Mode selector */}
-          <div>
-            <p className="text-xs mb-2" style={{ color: 'var(--text-muted)' }}>
-              Choose how you want the AI to help you:
-            </p>
-            <ModeSelector
-              activeMode={activeMode}
-              onSelectMode={handleModeSelect}
-              disabled={isLoading}
-            />
-          </div>
-
-          {/* Sprint 4C: Hint level indicator */}
-          {activeMode === 'hint' && (
-            <div className="flex items-center gap-3">
-              {([1, 2, 3] as const).map(level => {
-                const meta = HINT_LEVEL_LABELS[level];
-                const isActive = hintLevel === level;
-                const isPast = hintLevel > level;
-                return (
-                  <div
-                    key={level}
-                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider"
-                    style={{
-                      color: isActive ? meta.color : isPast ? 'var(--text-muted)' : 'var(--glass-border)',
-                      opacity: isActive ? 1 : isPast ? 0.6 : 0.3,
-                    }}
-                  >
-                    <span
-                      className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] border"
-                      style={{
-                        borderColor: isActive ? meta.color : 'var(--glass-border)',
-                        background: isActive ? `${meta.color}20` : 'transparent',
-                      }}
-                    >
-                      {level}
-                    </span>
-                    <span className="hidden sm:inline">{meta.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Input form */}
-          {activeMode && (
-            <form id="guided-ai-form" onSubmit={handleSubmit} className="space-y-3">
-              {/* Learn Your Way preference selectors */}
-              {activeMode === 'learn_your_way' && (
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
-                      Explain with
-                    </label>
-                    <select
-                      value={lywPrefs.explanation_style || ''}
-                      onChange={(e) => setLywPrefs(p => ({ ...p, explanation_style: e.target.value as LearnYourWayPreferences['explanation_style'] || undefined }))}
-                      className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
-                      style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
-                    >
-                      <option value="">Choose...</option>
-                      <option value="examples">Examples</option>
-                      <option value="steps">Step-by-step</option>
-                      <option value="analogy">Analogies</option>
-                      <option value="plain">Plain text</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
-                      Pace
-                    </label>
-                    <select
-                      value={lywPrefs.pace_preference || ''}
-                      onChange={(e) => setLywPrefs(p => ({ ...p, pace_preference: e.target.value as LearnYourWayPreferences['pace_preference'] || undefined }))}
-                      className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
-                      style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
-                    >
-                      <option value="">Choose...</option>
-                      <option value="fast">Fast</option>
-                      <option value="moderate">Moderate</option>
-                      <option value="slow">Slow</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
-                      Support style
-                    </label>
-                    <select
-                      value={lywPrefs.support_preference || ''}
-                      onChange={(e) => setLywPrefs(p => ({ ...p, support_preference: e.target.value as LearnYourWayPreferences['support_preference'] || undefined }))}
-                      className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
-                      style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
-                    >
-                      <option value="">Choose...</option>
-                      <option value="visual_analogy">Visual analogies</option>
-                      <option value="plain_explanation">Plain explanations</option>
-                      <option value="worked_examples">Worked examples</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
-                      Start with
-                    </label>
-                    <select
-                      value={lywPrefs.practice_preference || ''}
-                      onChange={(e) => setLywPrefs(p => ({ ...p, practice_preference: e.target.value as LearnYourWayPreferences['practice_preference'] || undefined }))}
-                      className="w-full bg-[var(--space-mid)] border rounded px-2 py-1.5 text-xs"
-                      style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
-                    >
-                      <option value="">Choose...</option>
-                      <option value="practice_first">Practice first</option>
-                      <option value="explanation_first">Explanation first</option>
-                    </select>
-                  </div>
-                </div>
-              )}
-
-              {/* Selected text field (Lesson Rescue mode) */}
-              {showSelectedTextField && (
-                <div>
-                  <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--neon-cyan)' }}>
-                    Paste the confusing sentence
-                  </label>
-                  <p className="text-[10px] mb-1.5" style={{ color: 'var(--text-muted)' }}>
-                    Copy a sentence or paragraph from the lesson that feels confusing.
-                  </p>
-                  <textarea
-                    value={selectedText}
-                    onChange={(e) => setSelectedText(e.target.value)}
-                    placeholder="Paste the confusing part of the lesson here..."
-                    rows={3}
-                    maxLength={1000}
-                    className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:border-[var(--neon-cyan)] focus:shadow-[0_0_8px_rgba(0,200,255,0.15)] transition-all"
-                    style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
-                  />
-                </div>
-              )}
-
-              {/* Student attempt field (Hint / Quiz / Lesson Rescue modes) */}
-              {showAttemptField && (
-                <div>
-                  <label className="text-[10px] font-bold uppercase tracking-wider block mb-1" style={{ color: 'var(--text-muted)' }}>
-                    {response?.effortRequired ? '✏️ Your attempt (required for deeper help)' : 'Your attempt (optional)'}
-                  </label>
-                  <textarea
-                    value={studentAttempt}
-                    onChange={(e) => setStudentAttempt(e.target.value)}
-                    placeholder={response?.effortRequired
-                      ? 'Share what you\'ve tried — this unlocks deeper help...'
-                      : 'Share what you\'ve tried so far...'
-                    }
-                    rows={2}
-                    maxLength={2000}
-                    className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 text-sm resize-none focus:outline-none transition-all"
-                    style={{
-                      borderColor: response?.effortRequired ? 'var(--neon-cyan)' : 'var(--glass-border)',
-                      color: 'var(--text-primary)',
-                      boxShadow: response?.effortRequired ? '0 0 8px rgba(0,200,255,0.15)' : 'none',
-                    }}
-                  />
-                </div>
-              )}
-
-              {/* Main message input */}
-              <div className="relative">
-                <textarea
-                  ref={inputRef}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder={getPlaceholder(activeMode)}
-                  rows={2}
-                  maxLength={2000}
-                  disabled={isLoading}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSubmit(e);
-                    }
-                  }}
-                  className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 pr-20 text-sm resize-none focus:outline-none focus:border-[var(--neon-cyan)] focus:shadow-[0_0_8px_rgba(0,200,255,0.15)] transition-all placeholder:text-[var(--text-muted)]"
-                  style={{ borderColor: 'var(--glass-border)', color: 'var(--text-primary)' }}
-                />
-                <button
-                  type="submit"
-                  disabled={!message.trim() || isLoading}
-                  className="absolute right-2 bottom-2 px-3 py-1 rounded-md text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                  style={{
-                    background: message.trim() && !isLoading ? 'var(--neon-cyan)' : 'var(--glass-bg)',
-                    color: message.trim() && !isLoading ? 'var(--space-deep)' : 'var(--text-muted)',
-                  }}
-                >
-                  {isLoading ? (
-                    <Loader2 className="w-3 h-3 animate-spin" />
-                  ) : (
-                    'Ask'
-                  )}
-                </button>
-              </div>
-            </form>
-          )}
-
-          {/* Loading state */}
-          {isLoading && (
-            <div className="flex items-center gap-2 p-3" style={{ color: 'var(--neon-purple)' }}>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              <span className="text-xs font-bold uppercase tracking-wider">Thinking...</span>
-            </div>
-          )}
-
-          {/* Error state */}
-          {error && (
-            <div
-              className="flex items-start gap-2 p-3 rounded-lg border text-sm"
-              style={{ background: 'rgba(255,100,100,0.05)', borderColor: 'rgba(255,100,100,0.3)', color: '#ff6464' }}
-            >
-              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
-              <span>{error}</span>
-            </div>
-          )}
-
-          {/* Response */}
-          {response && !isLoading && (
-            <GuidedAiResponse data={response} />
-          )}
-
-          {/* Sprint 4C: Teach-back card (separate from main input — correction #2) */}
-          {teachBackActive && response?.teachBackPrompt && !isLoading && (
-            <div
-              className="p-4 rounded-xl border space-y-3"
-              style={{
-                background: 'rgba(123,79,206,0.06)',
-                borderColor: 'var(--neon-purple)',
-              }}
-            >
-              <p className="text-xs font-bold uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
-                🎓 Teach it back
-              </p>
-              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                {response.teachBackPrompt}
-              </p>
-              <textarea
-                value={teachBackInput}
-                onChange={(e) => setTeachBackInput(e.target.value)}
-                placeholder="Explain this concept in your own words..."
-                rows={3}
-                maxLength={2000}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    handleTeachBackSubmit();
-                  }
-                }}
-                className="w-full bg-[var(--space-mid)] border rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:border-[var(--neon-purple)] focus:shadow-[0_0_8px_rgba(123,79,206,0.2)] transition-all"
-                style={{ borderColor: 'rgba(123,79,206,0.3)', color: 'var(--text-primary)' }}
-              />
-              <button
-                type="button"
-                onClick={handleTeachBackSubmit}
-                disabled={!teachBackInput.trim() || isLoading}
-                className="px-4 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider transition-all disabled:opacity-40 disabled:cursor-not-allowed"
-                style={{
-                  background: teachBackInput.trim() ? 'var(--neon-purple)' : 'var(--glass-bg)',
-                  color: teachBackInput.trim() ? '#fff' : 'var(--text-muted)',
-                }}
-              >
-                Submit
-              </button>
-            </div>
-          )}
-
-          {/* Sprint 4C: Next Hint button */}
-          {activeMode === 'hint' && response && response.nextHintAvailable && !isLoading && !teachBackActive && (
-            <button
-              type="button"
-              onClick={handleNextHint}
-              className="w-full py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border"
-              style={{
-                borderColor: 'var(--neon-cyan)',
-                color: 'var(--neon-cyan)',
-                background: 'rgba(0,200,255,0.05)',
-              }}
-            >
-              ➡️ Next Hint: {HINT_LEVEL_LABELS[Math.min(3, hintLevel + 1) as 1 | 2 | 3].name}
-            </button>
-          )}
-
-          {/* Footer */}
-          <div className="text-center pt-1">
-            <span className="text-[9px] uppercase tracking-widest font-display" style={{ color: 'var(--text-muted)' }}>
-              Agent PiQ · Not an answer machine
-            </span>
-          </div>
+          {renderPanelContents()}
         </div>
       )}
     </div>
