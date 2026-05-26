@@ -182,16 +182,6 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelP
           <span className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--text-primary)' }}>
             Guided AI Coach
           </span>
-          <span
-            className="text-[8px] px-1.5 py-0.5 rounded-full uppercase tracking-widest font-bold"
-            style={{
-              color: 'var(--neon-purple)',
-              border: '1px solid var(--neon-purple)',
-              background: 'rgba(123,79,206,0.1)',
-            }}
-          >
-            Sprint 4
-          </span>
         </div>
         {isOpen ? (
           <ChevronUp className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
