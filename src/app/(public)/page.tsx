@@ -46,12 +46,12 @@ export default function Home() {
                 <span className="text-[#00c8ff] text-glow-cyan text-[1.2em]">Reality</span>
               </h2>
               <p className="mt-8 text-sm md:text-lg text-slate-300 font-bold max-w-2xl mx-auto uppercase tracking-wide">
-                Where physical building blocks meet digital dominance. 
+                Where physical engineering meets digital dominance. 
               </p>
               
               <div className="mt-12 flex flex-col items-center justify-center gap-6">
                 <p className="font-display text-sm md:text-base text-white tracking-[0.1em] uppercase">
-                  Do you want <span className="text-[#7b4fce]">physical hands-on play</span> OR <span className="text-[#00c8ff]">digital learning</span> OR the best of both worlds?
+                  Do you want <span className="text-[#7b4fce]">hands-on physical engineering</span> OR <span className="text-[#00c8ff]">digital learning</span> OR the best of both worlds?
                 </p>
                 <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
                   <button 
@@ -61,7 +61,7 @@ export default function Home() {
                     }}
                     className={`font-display uppercase font-bold text-sm tracking-[0.1em] px-6 py-4 transition-all border-2 ${selectedPath === 'physical' ? 'bg-[#7b4fce] text-white border-[#7b4fce] shadow-[0_0_20px_#7b4fce]' : 'bg-transparent text-white border-white/30 hover:border-[#7b4fce] hover:text-[#7b4fce]'}`}
                   >
-                    Physical Play
+                    Physical Engineering
                   </button>
                   <button 
                     onClick={() => {
@@ -102,7 +102,7 @@ export default function Home() {
             <div className="circle-frame animate-float" style={{ animationDelay: '0.5s' }}>
               <Image
                 src="/images/playiq-amz-product.jpg"
-                alt="181-Piece Magnetic Building Blocks"
+                alt="181-Piece Magnetic Engineering Set"
                 width={220}
                 height={220}
               />
@@ -110,10 +110,10 @@ export default function Home() {
             <div className="text-left flex-1">
               <h2 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">
                 181-Piece Magnetic{' '}
-                <span className="text-[#7b4fce] text-glow-magenta">Building Blocks Set</span>
+                <span className="text-[#7b4fce] text-glow-magenta">Engineering Kit</span>
               </h2>
               <p className="mt-3 text-slate-400 text-sm md:text-base">
-                STEM Toys for Kids Ages 3+ | Educational Space-Themed Magnetic Construction Kit with LED Light-Up Cubes
+                Advanced Space-Themed Magnetic Construction Set with LED Light-Up Cubes | Perfect for Teen Physics and Structural Engineering Challenges
               </p>
               <div className="mt-5 flex gap-4">
                 <Link href="#get-started" className="btn-neon-cyan">
@@ -160,7 +160,7 @@ export default function Home() {
               },
               {
                 title: 'Real-World Skills',
-                desc: 'Learning physics, structural design, and logic through hands-on play that lives in the physical world.',
+                desc: 'Learning physics, structural design, and logic through hands-on engineering that lives in the physical world.',
                 icon: '🚀',
               },
             ].map((item, i) => (
