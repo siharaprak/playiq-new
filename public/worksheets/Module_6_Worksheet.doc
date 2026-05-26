@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Module 6 Worksheet</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 0 20px;
+    background-color: #ffffff;
+  }
+  h1 {
+    font-size: 26px;
+    color: #0f172a;
+    border-bottom: 3px solid #7b4fce;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  h2, h3 {
+    font-size: 18px;
+    color: #7b4fce;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-left: 4px solid #00c8ff;
+    padding-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #334155;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 5px;
+    margin-bottom: 18px;
+  }
+  li {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .checkbox {
+    font-size: 18px;
+    font-family: monospace;
+    color: #94a3b8;
+    margin-right: 10px;
+    user-select: none;
+  }
+  .instructions {
+    background-color: #f8fafc;
+    border-left: 4px solid #7b4fce;
+    padding: 15px;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #475569;
+    font-style: italic;
+  }
+  .question {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-top: 25px;
+    margin-bottom: 8px;
+  }
+  .response-box {
+    background-color: #f8fafc;
+    border: 1px dashed #7b4fce;
+    border-left: 4px solid #7b4fce;
+    padding: 15px 20px;
+    margin: 10px 0 25px 0;
+    border-radius: 4px;
+    color: #475569;
+  }
+  .response-label {
+    margin: 0 0 6px 0;
+    font-size: 10px;
+    font-weight: bold;
+    color: #7b4fce;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: monospace;
+  }
+  .response-placeholder {
+    margin: 0;
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<h1>PlayIQ Module 6 Worksheet: Retrieval and Correction</h1>
+<div class="instructions"><strong>Instructions:</strong> Complete this worksheet thoughtfully. Remember, PlayIQ is about using AI as a coach, not a crutch. Your goal is to become an independent learner!</div>
+<hr>
+<h3>Part 1: Why Rereading Fails</h3>
+<div class="question">1. (Short Response) Why does rereading your textbook often trick you into thinking you are ready for a test?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">2. (Multiple Choice) What is "retrieval practice"?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> Reading a paragraph three times.</li>
+<li><span class="checkbox">&#9744;</span> Highlighting the most important words in a text.</li>
+<li><span class="checkbox">&#9744;</span> Pulling the answer from your brain without looking at the notes.</li>
+<li><span class="checkbox">&#9744;</span> Asking AI for the summary.</li>
+</ul>
+<div class="question">3. (Prompt Improvement) You want to study a science chapter. Instead of rereading it, you decide to use AI. Write a prompt asking the AI to create a quick retrieval practice test, making sure it does *not* give you the answers right away.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">4. (Teach-Back) Explain to a friend why taking a blank piece of paper and trying to write out what you remember is a stronger study method than reading a chapter three times.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 2: Retrieval Practice System</h3>
+<div class="question">5. (Short Response) A good self-test is not just random questions. What are the different *types* of questions a good retrieval test should include?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">6. (Classification) An AI asks you: "What year did the Civil War end?" Is this an easy recall question, an understanding question, or an application question?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">7. (Classification) An AI asks you: "If you were a general in the Civil War, how would you use the telegraph to win a battle?" Is this an easy recall question, an understanding question, or an application question?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">8. (Scenario) You took a 6-question retrieval test. You got both "easy recall" questions right, but missed the "application" question. What does this tell you about how you need to study next?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 3: Mistake Bank Patterns</h3>
+<div class="question">9. (Short Response) Why is it helpful to treat a mistake as "data" instead of feeling bad about it?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">10. (Multiple Choice) You missed a math question because you wrote 5 x 4 = 15 instead of 20. What type of mistake is this?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> Knowledge Gap</li>
+<li><span class="checkbox">&#9744;</span> Word Gap</li>
+<li><span class="checkbox">&#9744;</span> Careless Error</li>
+<li><span class="checkbox">&#9744;</span> Confidence Error</li>
+</ul>
+<div class="question">11. (Classification) You missed a science question because you didn't know what the word "mitosis" meant. Is this a Step Error, a Word Gap, or a Careless Error?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">12. (Scenario) You log three mistakes into your Mistake Bank. You notice a pattern: they are all "Step Errors" (you forget the middle step of long division). How does knowing this pattern help you study better?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">13. (Teach-Back) Teach someone else how classifying mistakes (like "Step Error" or "Word Gap") makes studying less frustrating.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 4: Progressive Correction</h3>
+<div class="question">14. (Short Response) What does "Progressive Correction" mean? Why isn't it enough to just look at the right answer once and move on?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">15. (Multiple Choice) When you review the mistakes from your Mistake Bank, what should the AI do?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> Give you the exact same questions so you can get a 100%.</li>
+<li><span class="checkbox">&#9744;</span> Give you questions similar to the ones you missed, but change the examples or numbers.</li>
+<li><span class="checkbox">&#9744;</span> Move on to a completely new topic.</li>
+<li><span class="checkbox">&#9744;</span> Give you the final answers so you can memorize them.</li>
+</ul>
+<div class="question">16. (Prompt Improvement) You want to review a mistake you made on a fractions quiz yesterday. Write a prompt asking the AI to re-test you, but asking it to change the numbers so you can't just memorize the answer.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">17. (Scenario) You get the new, changed question wrong again. Are you failing, or is the system working? Explain your answer.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">18. (Reflection) Think about how you usually handle getting a bad grade on a quiz. Do you usually practice "Progressive Correction," or do you just shove the paper in your backpack and ignore it? How will you change this habit?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">19. (Teach-Back) Explain the concept of Progressive Correction. Why must you prove you can answer the missed question correctly *after* some time has passed?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">20. (Reflection) What feels easier now compared to the first time you tested yourself on a difficult topic using this method?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+</body>
+</html>

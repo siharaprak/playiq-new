@@ -79,19 +79,42 @@ export async function enforceModuleGating(
     }
   }
 
-  // Fetch assessments and artifacts
-  const { data: assessments } = await supabase
+  // Fetch the module ID for moduleNumber
+  const { data: currentModule } = await supabase
+    .from('modules')
+    .select('id')
+    .eq('order_num', moduleNumber)
+    .single();
+
+  const moduleId = currentModule?.id;
+
+  // Fetch assessments and artifacts for this specific module, ordered by newest first
+  let assessmentQuery = supabase
     .from('assessment_submissions')
     .select('*')
-    .eq('student_id', user.id);
+    .eq('student_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (moduleId) {
+    assessmentQuery = assessmentQuery.eq('module_id', moduleId);
+  }
+
+  const { data: assessments } = await assessmentQuery;
 
   const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
   const bossBattle = assessments?.find(a => a.assessment_type === 'boss_battle');
 
-  const { data: artifacts } = await supabase
+  let artifactQuery = supabase
     .from('proof_artifact_submissions')
     .select('*')
-    .eq('student_id', user.id);
+    .eq('student_id', user.id)
+    .order('created_at', { ascending: false });
+
+  if (moduleId) {
+    artifactQuery = artifactQuery.eq('module_id', moduleId);
+  }
+
+  const { data: artifacts } = await artifactQuery;
 
   const studyRules = artifacts?.find(
     a => a.artifact_type === 'study_rules' && a.status !== 'draft' && a.status !== 'revise'

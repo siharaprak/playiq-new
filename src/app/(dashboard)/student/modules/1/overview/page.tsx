@@ -28,12 +28,13 @@ export default async function Module1OverviewPage() {
     progressData?.filter(p => p.node_mastered).map(p => p.node_id) ?? []
   );
 
-  // Fetch assessments and check their scores/states
+  // Fetch assessments and check their scores/states, ordered by newest first
   const { data: assessments } = await supabase
     .from('assessment_submissions')
     .select('*')
     .eq('student_id', user.id)
-    .eq('module_id', MODULES.MODULE_1_ID);
+    .eq('module_id', MODULES.MODULE_1_ID)
+    .order('created_at', { ascending: false });
 
   const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
   const bossBattle = assessments?.find(a => a.assessment_type === 'boss_battle');

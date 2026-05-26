@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Module 3 Worksheet</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 0 20px;
+    background-color: #ffffff;
+  }
+  h1 {
+    font-size: 26px;
+    color: #0f172a;
+    border-bottom: 3px solid #7b4fce;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  h2, h3 {
+    font-size: 18px;
+    color: #7b4fce;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-left: 4px solid #00c8ff;
+    padding-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #334155;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 5px;
+    margin-bottom: 18px;
+  }
+  li {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .checkbox {
+    font-size: 18px;
+    font-family: monospace;
+    color: #94a3b8;
+    margin-right: 10px;
+    user-select: none;
+  }
+  .instructions {
+    background-color: #f8fafc;
+    border-left: 4px solid #7b4fce;
+    padding: 15px;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #475569;
+    font-style: italic;
+  }
+  .question {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-top: 25px;
+    margin-bottom: 8px;
+  }
+  .response-box {
+    background-color: #f8fafc;
+    border: 1px dashed #7b4fce;
+    border-left: 4px solid #7b4fce;
+    padding: 15px 20px;
+    margin: 10px 0 25px 0;
+    border-radius: 4px;
+    color: #475569;
+  }
+  .response-label {
+    margin: 0 0 6px 0;
+    font-size: 10px;
+    font-weight: bold;
+    color: #7b4fce;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: monospace;
+  }
+  .response-placeholder {
+    margin: 0;
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<h1>PlayIQ Module 3 Worksheet: Maps, Principles, and Self-Testing</h1>
+<div class="instructions"><strong>Instructions:</strong> Complete this worksheet thoughtfully. Remember, PlayIQ is about using AI as a coach, not a crutch. Your goal is to become an independent learner!</div>
+<hr>
+<h3>Part 1: Topic Mapping</h3>
+<div class="question">1. (Short Response) Why is asking AI to "explain everything at once" a bad strategy when starting a new topic?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">2. (Multiple Choice) What is the purpose of a "learning map"?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> To do your homework for you.</li>
+<li><span class="checkbox">&#9744;</span> To show the main parts of a topic so your brain knows where to start.</li>
+<li><span class="checkbox">&#9744;</span> To write a final essay.</li>
+<li><span class="checkbox">&#9744;</span> To prove you already know the answer.</li>
+</ul>
+<div class="question">3. (Prompt Improvement) You want to learn about the solar system. You type: "Tell me about the solar system." Upgrade this prompt to ask the AI for a 5-part "Pre-Learn Map."</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">4. (Scenario) You asked AI for a map of the Water Cycle. Part 3 is "Evaporation," which you understand, but Part 4 is "Transpiration," which sounds confusing. What should your next question to the AI be?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">5. (Teach-Back) Explain to a friend why mapping out a topic *before* diving into the details makes learning faster.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 2: First Principles</h3>
+<div class="question">6. (Short Response) What is a "first principle" or a "core idea"?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">7. (Multiple Choice) If you understand the core idea of a topic, what happens to the details?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> They become harder to remember.</li>
+<li><span class="checkbox">&#9744;</span> They become completely useless.</li>
+<li><span class="checkbox">&#9744;</span> They become easier to understand and remember.</li>
+<li><span class="checkbox">&#9744;</span> They disappear from the textbook.</li>
+</ul>
+<div class="question">8. (Classification) You ask AI for the core idea of "Gravity." It gives you a 10-page essay full of complicated equations. Did the AI give you a core idea or did it overwhelm you? What should you tell the AI to do?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">9. (Scenario) You asked AI to explain a topic in three levels: 1. simple, 2. normal school version, 3. slightly deeper. Which level should you focus on if you are just starting and feeling totally lost? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">10. (Teach-Back) Explain the core idea of "photosynthesis" (or another topic you know well) using the simplest words possible.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 3: Example-First Learning</h3>
+<div class="question">11. (Short Response) Why do examples help your brain understand a new idea better than just reading a definition?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">12. (Scenario) You are learning about the concept of a "metaphor." The AI gives you the example: "The classroom was a zoo." Then it gives you a non-example: "His voice was like thunder." Why is seeing a *non-example* helpful?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">13. (Prompt Improvement) You want examples of a "chemical reaction." Write a prompt that asks the AI for 2 simple examples and 1 non-example.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">14. (Classification) Is the following statement an Example or a Non-Example of a mammal? "A shark, because it swims in the ocean." Explain why.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">15. (Teach-Back) Teach someone what a non-example is and why using one helps you understand the real idea faster.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 4: Self-Test Loop</h3>
+<div class="question">16. (Short Response) Why does rereading your notes often "trick" you into thinking you know the material?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">17. (Multiple Choice) How do you *prove* you know something?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> By recognizing it when you see it on a page.</li>
+<li><span class="checkbox">&#9744;</span> By answering questions, fixing mistakes, and explaining it in your own words.</li>
+<li><span class="checkbox">&#9744;</span> By highlighting it in yellow.</li>
+<li><span class="checkbox">&#9744;</span> By asking the AI to read it to you.</li>
+</ul>
+<div class="question">18. (Scenario) You are using the Self-Test Loop. You ask the AI to quiz you one question at a time. You get the first question wrong. What should you ask the AI to do next instead of just giving you the answer?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">19. (Reflection) Think about the last time you took a test and didn't do as well as you hoped. Did you study by rereading, or did you study by self-testing? How might self-testing change your next grade?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">20. (Teach-Back) Explain why a self-test is more powerful than rereading. What does testing prove that rereading does not?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+</body>
+</html>

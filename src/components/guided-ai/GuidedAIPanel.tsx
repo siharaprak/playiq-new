@@ -180,7 +180,7 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelP
         <div className="flex items-center gap-2">
           <Sparkles className="w-4 h-4" style={{ color: 'var(--neon-purple)' }} />
           <span className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--text-primary)' }}>
-            Guided AI Coach
+            Agent PiQ
           </span>
         </div>
         {isOpen ? (
@@ -482,7 +482,7 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType }: GuidedAIPanelP
           {/* Footer */}
           <div className="text-center pt-1">
             <span className="text-[9px] uppercase tracking-widest font-display" style={{ color: 'var(--text-muted)' }}>
-              Guided AI Coach · Not an answer machine
+              Agent PiQ · Not an answer machine
             </span>
           </div>
         </div>

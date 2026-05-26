@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Module 9 Worksheet</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 0 20px;
+    background-color: #ffffff;
+  }
+  h1 {
+    font-size: 26px;
+    color: #0f172a;
+    border-bottom: 3px solid #7b4fce;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  h2, h3 {
+    font-size: 18px;
+    color: #7b4fce;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-left: 4px solid #00c8ff;
+    padding-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #334155;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 5px;
+    margin-bottom: 18px;
+  }
+  li {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .checkbox {
+    font-size: 18px;
+    font-family: monospace;
+    color: #94a3b8;
+    margin-right: 10px;
+    user-select: none;
+  }
+  .instructions {
+    background-color: #f8fafc;
+    border-left: 4px solid #7b4fce;
+    padding: 15px;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #475569;
+    font-style: italic;
+  }
+  .question {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-top: 25px;
+    margin-bottom: 8px;
+  }
+  .response-box {
+    background-color: #f8fafc;
+    border: 1px dashed #7b4fce;
+    border-left: 4px solid #7b4fce;
+    padding: 15px 20px;
+    margin: 10px 0 25px 0;
+    border-radius: 4px;
+    color: #475569;
+  }
+  .response-label {
+    margin: 0 0 6px 0;
+    font-size: 10px;
+    font-weight: bold;
+    color: #7b4fce;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: monospace;
+  }
+  .response-placeholder {
+    margin: 0;
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<h1>PlayIQ Module 9 Worksheet: Building Your AI Tutor</h1>
+<div class="instructions"><strong>Instructions:</strong> Complete this worksheet thoughtfully. Remember, PlayIQ is about using AI as a coach, not a crutch. Your goal is to become an independent learner!</div>
+<hr>
+<h3>Part 1: What Makes a Good AI Tutor</h3>
+<div class="question">1. (Short Response) Why is an AI that gives you full answers immediately considered a "bad tutor"?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">2. (Multiple Choice) A good AI tutor does all of the following EXCEPT:</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> Asks you what you tried first.</li>
+<li><span class="checkbox">&#9744;</span> Gives a hint instead of the answer.</li>
+<li><span class="checkbox">&#9744;</span> Writes your homework for you.</li>
+<li><span class="checkbox">&#9744;</span> Checks your understanding before moving on.</li>
+</ul>
+<div class="question">3. (Classification) An AI says, "Here is the completed essay you asked for." Is this acting as an Answer Machine or a Learning Coach? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">4. (Teach-Back) Explain to a parent the difference between using AI as an "Answer Machine" versus using it as a "Learning Coach."</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 2: Tutor Personality vs Tutor Function</h3>
+<div class="question">5. (Short Response) What is the difference between a tutor's "personality" and a tutor's "function"?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">6. (Multiple Choice) Which matters more for actually learning the material?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> The tutor's personality (how it sounds).</li>
+<li><span class="checkbox">&#9744;</span> The tutor's function (what it does, like quizzing or hinting).</li>
+<li><span class="checkbox">&#9744;</span> Neither matter.</li>
+<li><span class="checkbox">&#9744;</span> The tutor's name.</li>
+</ul>
+<div class="question">7. (Scenario) You program an AI tutor to sound like a pirate (personality), but you forget to tell it to give hints instead of answers (function). What will happen when you ask it for help on a math problem?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">8. (Teach-Back) Explain why a funny tutor that gives away answers is worse than a boring tutor that forces you to think.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 3: Beginner Custom Instructions</h3>
+<div class="question">9. (Short Response) What are "custom instructions"?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">10. (Multiple Choice) Custom instructions should include all of the following EXCEPT:</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> The tutor's role.</li>
+<li><span class="checkbox">&#9744;</span> Teaching rules (how it teaches).</li>
+<li><span class="checkbox">&#9744;</span> Integrity rules (what it must not do).</li>
+<li><span class="checkbox">&#9744;</span> Your bank account password.</li>
+</ul>
+<div class="question">11. (Classification) You write a custom instruction: "Never write my essays for me. If I ask you to write an essay, instead ask me for an outline." Is this a Teaching Rule or an Integrity Rule?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">12. (Teach-Back) Explain what custom instructions are to someone who has never heard of them.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 4: Choosing What Your Tutor Should Know</h3>
+<div class="question">13. (Short Response) Why do messy knowledge files (like giant document dumps) create messy AI help?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">14. (Classification) You upload a file called "Mistake Bank: Math Quarter 1" to your AI tutor. Is this a Good Knowledge File or a Bad Knowledge File? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">15. (Classification) You accidentally upload a file containing private text messages with your friends. Is this a Good Knowledge File or a Bad Knowledge File? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">16. (Teach-Back) Explain why giving AI your exact "Mistake Bank" is better than just telling AI "I am bad at math."</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 5: Testing and Refinement</h3>
+<div class="question">17. (Short Response) Why must you test your AI tutor after you build it?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">18. (Scenario) You build an AI tutor and test it by saying: "Write my homework." The tutor writes the homework perfectly. Did your tutor pass or fail the test? What do you need to change in its custom instructions?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">19. (Multiple Choice) Building an AI tutor is an ongoing process. This means:</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> A first version is not final. You test, notice problems, revise, and test again.</li>
+<li><span class="checkbox">&#9744;</span> You build it once and never touch it again.</li>
+<li><span class="checkbox">&#9744;</span> It is perfect on the very first try.</li>
+<li><span class="checkbox">&#9744;</span> You have to buy a new AI every week.</li>
+</ul>
+<div class="question">20. (Teach-Back) Teach someone why building an AI tutor is an ongoing process of testing and refining, not just a one-time setup.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Module 2 Worksheet</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 0 20px;
+    background-color: #ffffff;
+  }
+  h1 {
+    font-size: 26px;
+    color: #0f172a;
+    border-bottom: 3px solid #7b4fce;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  h2, h3 {
+    font-size: 18px;
+    color: #7b4fce;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-left: 4px solid #00c8ff;
+    padding-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #334155;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 5px;
+    margin-bottom: 18px;
+  }
+  li {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .checkbox {
+    font-size: 18px;
+    font-family: monospace;
+    color: #94a3b8;
+    margin-right: 10px;
+    user-select: none;
+  }
+  .instructions {
+    background-color: #f8fafc;
+    border-left: 4px solid #7b4fce;
+    padding: 15px;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #475569;
+    font-style: italic;
+  }
+  .question {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-top: 25px;
+    margin-bottom: 8px;
+  }
+  .response-box {
+    background-color: #f8fafc;
+    border: 1px dashed #7b4fce;
+    border-left: 4px solid #7b4fce;
+    padding: 15px 20px;
+    margin: 10px 0 25px 0;
+    border-radius: 4px;
+    color: #475569;
+  }
+  .response-label {
+    margin: 0 0 6px 0;
+    font-size: 10px;
+    font-weight: bold;
+    color: #7b4fce;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: monospace;
+  }
+  .response-placeholder {
+    margin: 0;
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<h1>PlayIQ Module 2 Worksheet: Power and Responsibility</h1>
+<div class="instructions"><strong>Instructions:</strong> Complete this worksheet thoughtfully. Remember, PlayIQ is about using AI as a coach, not a crutch. Your goal is to become an independent learner!</div>
+<hr>
+<h3>Part 1: The Power Tool Principle</h3>
+<div class="question">1. (Classification) "I use AI to explain difficult science ideas in simpler words." Is this using AI as a Superpower or a Superweapon Against You? Explain why.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">2. (Classification) "I use AI to write my full answer so I don't have to think." Is this using AI as a Superpower or a Superweapon Against You? Explain why.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">3. (Short Response) What does it mean when we say "Technology is a multiplier"?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">4. (Teach-Back) Explain the Power Tool Principle to a younger student. Why does it matter *how* you use AI, not just whether you use it?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 2: Truth, Trust, and Misinformation</h3>
+<div class="question">5. (Multiple Choice) Which of the following statements about online information is TRUE?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> If it sounds smart, it's usually correct.</li>
+<li><span class="checkbox">&#9744;</span> If a lot of people repeat it, it must be true.</li>
+<li><span class="checkbox">&#9744;</span> Confidence from an AI is not the same as proof.</li>
+<li><span class="checkbox">&#9744;</span> If it uses big words, you can trust it without checking.</li>
+</ul>
+<div class="question">6. (Classification - Spot the Problem) You read an online article that says, "The moon gives off its own light." Is this Reliable, Needs Checking, or Likely False? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">7. (Short Response) What is one way you can compare information with a "trusted source" to see if an AI's answer is correct?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">8. (Scenario) You ask AI for a summary of the Civil War, and it gives you a highly confident 3-sentence summary. When you read your textbook, you notice the AI left out a major battle. Which part of the Truth Filter does this relate to?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 3: Attention, Distraction, and Algorithm Traps</h3>
+<div class="question">9. (Classification - Rest vs Escape) You've been studying for an hour, so you set a 15-minute timer to watch a funny video and let your brain reset before continuing. Is this Rest or Escape? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">10. (Classification - Rest vs Escape) You feel stressed about an essay you haven't started, so you scroll through videos for three hours to avoid thinking about it. Is this Rest or Escape? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">11. (Short Response) Why is your attention considered valuable? Who else wants it besides you?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">12. (Scenario - Trap Audit) Name one common "Attention Trap" you fall into (e.g., getting stuck watching short videos). What is one boundary you can set to stop it from pulling you off track?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 4: Human Responsibility and the Highest Path</h3>
+<div class="question">13. (Multiple Choice) Which of the following is one of the Highest Path Test questions?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> Does this save me the most time right now?</li>
+<li><span class="checkbox">&#9744;</span> Does this make me stronger or weaker?</li>
+<li><span class="checkbox">&#9744;</span> Does this sound like something a smart person would say?</li>
+<li><span class="checkbox">&#9744;</span> How many people are doing this?</li>
+</ul>
+<div class="question">14. (Scenario) You are confused about a history topic. Option A: Copy an AI answer and move on. Option B: Ask AI to explain it simply, then quiz you. Which is the Highest Path, and why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">15. (Scenario) You want to impress your teacher. Option A: Turn in polished AI writing you don't understand. Option B: Learn the idea well, then write it in your own words. Which is the Highest Path, and why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">16. (Teach-Back) Explain why the "highest path" is not always the easiest choice, but why it's the most important one.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 5: Applied Ethics and Social Impact</h3>
+<div class="question">17. (Multiple Choice) When applying the "Pause Before Share" rule, what should you ask yourself?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> Could this hurt someone if I'm wrong?</li>
+<li><span class="checkbox">&#9744;</span> Is this going to go viral?</li>
+<li><span class="checkbox">&#9744;</span> Did someone else post it first?</li>
+<li><span class="checkbox">&#9744;</span> Is this funny enough to share immediately?</li>
+</ul>
+<div class="question">18. (Scenario) A classmate sends you an AI-generated image that looks real and makes fun of another student. What is the smartest action to take based on the Pause Before Share rule?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">19. (Short Response) What does it mean to be "digitally smart"?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">20. (Reflection) Think of a time you or someone you know shared something too quickly online. Based on what you've learned in this module, how would you handle that situation differently now?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+</body>
+</html>
