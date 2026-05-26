@@ -20,7 +20,7 @@ const MODES: { id: GuidedAiModeId; label: string; icon: string; beta?: boolean; 
 
 export function ModeSelector({ activeMode, onSelectMode, disabled }: ModeSelectorProps) {
   return (
-    <div className="flex flex-wrap gap-2" role="group" aria-label="Guided AI Modes">
+    <div className="flex flex-wrap gap-2" role="group" aria-label="Agent PiQ Modes">
       {MODES.map((mode) => {
         const isActive = activeMode === mode.id;
         const isDisabled = disabled || mode.scaffold;
