@@ -276,15 +276,23 @@ export async function runGuidedMode(
   try {
     const ai = getGeminiClient();
 
-    const response = await ai.models.generateContent({
+    // Timeout wrapper: 15 seconds
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      setTimeout(() => reject(new Error('Gemini API timeout')), 15000);
+    });
+
+    const geminiCall = ai.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: userPrompt,
       config: {
         systemInstruction: systemPrompt,
         responseMimeType: 'application/json',
         temperature: 0.4,
+        maxOutputTokens: 1000,
       },
     });
+
+    const response = await Promise.race([geminiCall, timeoutPromise]);
 
     if (!response.text) {
       console.error('[runGuidedMode] Empty response from Gemini');

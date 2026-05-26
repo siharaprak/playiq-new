@@ -113,7 +113,7 @@ Collapsible panel placed after lesson content but before the primary "Begin Acti
 ## Related Sprint Documents
 
 - [Sprint 4B — Lesson Rescue](./sprint-4b-lesson-rescue.md)
-- [Sprint 4C — Integrity Hardening](./sprint-4c-guided-ai-integrity-hardening.md)
-- [Sprint 4D — AI Support Events + Safety Routing](./sprint-4d-ai-support-events-safety-routing.md)
-- [Sprint 4E — UX Policy & Integrity Trends](./sprint-4e-guided-ai-ux-answer-policy-integrity-trends.md)
-
+- [Sprint 4C: Depth Gating & Hint Ladders](./sprint-4c-guided-ai-integrity-hardening.md)
+- [Sprint 4D: AI Support Events & Safety Routing](./sprint-4d-ai-support-events-safety-routing.md)
+- [Sprint 4E: Guided AI UX, Answer Policy, & Integrity Trends](./sprint-4e-guided-ai-ux-answer-policy-integrity-trends.md)
+- [Sprint 4F: Guided AI Security, Cost, and Abuse Hardening](./sprint-4f-guided-ai-security-cost-abuse-hardening.md)

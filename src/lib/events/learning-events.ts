@@ -46,6 +46,7 @@ import type {
   AssistantUpdateEventInput,
   GuidedAiSupportEventInput,
 } from './types';
+import { sanitizeAiEventMetadata } from './metadata-safety';
 
 // ---------------------------------------------------------------------------
 // Base event logger
@@ -65,8 +66,8 @@ export async function logLearningEvent(input: LearningEventInput): Promise<Event
         student_id: parsed.studentId,
         event_type: parsed.eventType,
         target_type: parsed.targetType,
-        target_id: parsed.targetId ?? null,
-        metadata: parsed.metadata ?? null,
+        target_id: parsed.targetId || undefined,
+        metadata: parsed.targetType === 'guided_ai' ? sanitizeAiEventMetadata(parsed.metadata) : (parsed.metadata || {}),
       })
       .select('id')
       .single();
@@ -244,15 +245,26 @@ export async function logProofEvent(input: ProofEventInput): Promise<EventResult
   try {
     const parsed = ProofEventInputSchema.parse(input);
 
+    // Strip forbidden keys explicitly
+    const rawMetadata = parsed.metadata || {};
+    const safeMetadata: Record<string, any> = {
+      artifact_type: parsed.artifactType,
+    };
+    
+    const forbiddenKeys = ['signedUrl', 'publicUrl', 'storagePath', 'fileUrl', 'fileContent', 'email', 'fullName', 'reviewNotes'];
+    
+    for (const key of Object.keys(rawMetadata)) {
+      if (!forbiddenKeys.includes(key)) {
+        safeMetadata[key] = rawMetadata[key];
+      }
+    }
+
     return logLearningEvent({
       studentId: parsed.studentId,
       eventType: parsed.eventType,
       targetType: 'proof_artifact_submission',
       targetId: parsed.submissionId,
-      metadata: {
-        artifact_type: parsed.artifactType,
-        ...parsed.metadata,
-      },
+      metadata: safeMetadata,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';

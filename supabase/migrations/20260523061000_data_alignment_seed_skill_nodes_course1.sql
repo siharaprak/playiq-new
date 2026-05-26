@@ -1,0 +1,57 @@
+-- Data Alignment Sprint 1: Seed Skill Nodes
+-- This migration inserts skill_nodes for Modules 1-10 based on static curriculum.
+-- IDs are deterministically generated so re-running this migration is safe.
+--
+-- DO NOT modify student progress or rule-engine behavior.
+
+INSERT INTO skill_nodes (id, module_id, title, mastery_threshold_placeholder)
+VALUES
+  ('0da2aa8b-a580-7e8d-955c-a7bc3699e092', 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', 'What AI Is Good At vs Bad At', 80),
+  ('82696891-f7f0-427a-98ab-7effb256b521', 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', 'Choosing the Right AI Mode', 80),
+  ('b746b130-5196-4e3b-ae5b-cc4f5cffdd15', 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', 'Ask Better Questions', 80),
+  ('024d3244-d5a8-05e1-f589-8569d9b718f0', 'a0b94091-62d9-4ac9-8f0a-86c2e3650228', 'Verify Before You Believe', 80),
+  ('0dacaee2-94de-586d-2fcd-ef3e51b8393a', '1d711232-e906-468c-9f32-ef8d0c7aa0b9', 'The Power Tool Principle', 80),
+  ('48b8d79a-af32-5ff4-1568-ac7941566d17', '1d711232-e906-468c-9f32-ef8d0c7aa0b9', 'Truth, Trust, and Misinformation', 80),
+  ('dd5694e6-81e4-7929-e237-67ba8d62e4c2', '1d711232-e906-468c-9f32-ef8d0c7aa0b9', 'Attention, Distraction, and Algorithm Traps', 80),
+  ('7674b7f9-d695-6f07-2045-8c9c8e72964e', '1d711232-e906-468c-9f32-ef8d0c7aa0b9', 'Human Responsibility and the Highest Path', 80),
+  ('7cb17f7e-d549-3ddb-177d-9aa7abf3edac', '1d711232-e906-468c-9f32-ef8d0c7aa0b9', 'Integrity and Identity', 80),
+  ('ea49f6fd-4600-d4d7-2219-a46cfff4f692', '1d711232-e906-468c-9f32-ef8d0c7aa0b9', 'Social Impact: Privacy, Respect, and Digital Power', 80),
+  ('0bb31a53-b410-3492-ed22-97d8f01d0182', 'fe87ea18-8042-43e6-9cc3-da9117590809', 'Topic Mapping', 80),
+  ('e07ea036-80dc-dde0-b246-bd5464db19fc', 'fe87ea18-8042-43e6-9cc3-da9117590809', 'First Principles', 80),
+  ('6e4a7479-47c4-86b6-6c09-099e8110389b', 'fe87ea18-8042-43e6-9cc3-da9117590809', 'Example-First Learning', 80),
+  ('17eac4ac-7229-252b-5e75-965ebf1ae819', 'fe87ea18-8042-43e6-9cc3-da9117590809', 'Self-Test Loop', 80),
+  ('6b5f80d9-1260-86ea-faad-78f1500a044b', 'aeaf7949-9bc3-44a1-b481-2d1c02106708', 'Paste, Chunk, Scan', 80),
+  ('e53f0af6-c97b-2c82-2cad-a14fec9c1859', 'aeaf7949-9bc3-44a1-b481-2d1c02106708', 'Identify Gap Type', 80),
+  ('ca1d5b04-213d-3b90-6895-8846d33f7ebd', 'aeaf7949-9bc3-44a1-b481-2d1c02106708', 'Remediate in Personal Style', 80),
+  ('846c14a4-ef34-5899-858c-9a1ef7b1de1b', 'aeaf7949-9bc3-44a1-b481-2d1c02106708', 'Adaptive Questioning Loop', 80),
+  ('0c6815e9-2f48-9fbd-a2a7-b3f44b51ed7c', 'aeaf7949-9bc3-44a1-b481-2d1c02106708', 'Teach-Back Unlock', 80),
+  ('6990d660-f658-dea9-0d52-da2edbed76da', 'ab18311b-17d7-49af-918a-4a6d7723ced6', 'The 3-Ways Rule', 80),
+  ('74f3abc4-1588-f46b-8ea2-b279e4e986aa', 'ab18311b-17d7-49af-918a-4a6d7723ced6', 'Safe Simplification', 80),
+  ('357542c2-1190-5e25-d34f-cd524cc88b6c', 'ab18311b-17d7-49af-918a-4a6d7723ced6', 'Build a 1-Page Understanding Card', 80),
+  ('39c773f4-a585-69d3-eaf3-f55ddc6fc253', 'ab18311b-17d7-49af-918a-4a6d7723ced6', 'Practice Without Spoon-Feeding', 80),
+  ('a626b0d6-5ffa-9f2a-fda0-c7e63f5cac17', '03fd0323-1ddd-4f9e-8bb0-8b92d662921c', 'Why Rereading Fails', 80),
+  ('75028501-a941-5d31-af56-bc61e557e35e', '03fd0323-1ddd-4f9e-8bb0-8b92d662921c', 'Retrieval Practice System', 80),
+  ('2d4c8e10-e2ac-0978-706c-ff5fb5a2640c', '03fd0323-1ddd-4f9e-8bb0-8b92d662921c', 'Mistake Bank Patterns', 80),
+  ('115d0f23-3bd7-0bbd-91d1-9f7e0591ac08', '03fd0323-1ddd-4f9e-8bb0-8b92d662921c', 'Progressive Correction', 80),
+  ('c5c78018-8c35-15c4-6675-c7450bfd24a1', 'cdc1916e-cc2f-42b1-b90a-2d07182408cb', '10-Line Summary System', 80),
+  ('d740a52c-9f25-7a5f-6ff4-00a614fe2ff7', 'cdc1916e-cc2f-42b1-b90a-2d07182408cb', 'Turn Notes Into Questions', 80),
+  ('56b79091-4d61-e21a-62d9-2b1eb052a5e6', 'cdc1916e-cc2f-42b1-b90a-2d07182408cb', 'Find Missing Links', 80),
+  ('56802079-b587-e481-2215-c14e433631a7', 'cdc1916e-cc2f-42b1-b90a-2d07182408cb', 'Precision Prompting', 80),
+  ('bc106dd7-7724-1053-d7e1-995e210c0d53', 'b097c132-f521-441c-83b7-2824b7a37622', 'Claim, Evidence, Reasoning', 80),
+  ('9b5d2155-61a2-01d0-33fb-7328a0347e98', 'b097c132-f521-441c-83b7-2824b7a37622', 'Outline First', 80),
+  ('f98fea41-32eb-3c71-4e45-bdad6991be6b', 'b097c132-f521-441c-83b7-2824b7a37622', 'Feedback Prompt System', 80),
+  ('271a0b93-a4b0-f248-3e1b-658398939089', 'b097c132-f521-441c-83b7-2824b7a37622', 'Revision Loop', 80),
+  ('dab76e28-2294-239a-955e-ff205fc3ac5c', '7ce93ee8-20ef-4531-a516-8fae1b705a09', 'What Makes a Good AI Tutor', 80),
+  ('a1a41c28-00cf-4404-eaa2-e7e6b478d3da', '7ce93ee8-20ef-4531-a516-8fae1b705a09', 'Tutor Personality vs Tutor Function', 80),
+  ('05c0a676-4a71-3207-0352-5a84aa250cb5', '7ce93ee8-20ef-4531-a516-8fae1b705a09', 'Beginner Custom Instructions', 80),
+  ('7e0a8ae8-9d13-165c-cc22-7a5a8cd6b6d9', '7ce93ee8-20ef-4531-a516-8fae1b705a09', 'Choosing What Your Tutor Should Know', 80),
+  ('51b38d76-d3aa-12b7-c1f5-6274401303c4', '7ce93ee8-20ef-4531-a516-8fae1b705a09', 'Using Knowledge Files to Improve Teaching', 80),
+  ('3f51060c-dc27-80c5-abf8-dc0ad3624e77', '7ce93ee8-20ef-4531-a516-8fae1b705a09', 'Tutor Testing and Refinement', 80),
+  ('c3567b9b-9613-b4d2-2eb5-0ce9219315b3', '93217a54-63f1-4ce4-b955-16eb86e2f84c', 'What Makes a Good AI Assistant', 80),
+  ('b1f330ce-39d3-0328-39a2-2a67e5c9a22d', '93217a54-63f1-4ce4-b955-16eb86e2f84c', 'Assistant Purpose and Boundaries', 80),
+  ('f2649cdf-9659-e098-6d30-61a8f07b3869', '93217a54-63f1-4ce4-b955-16eb86e2f84c', 'Custom Instructions for Real Tasks', 80),
+  ('fb7fe06f-ec9d-0749-6451-bc99c19ccb2a', '93217a54-63f1-4ce4-b955-16eb86e2f84c', 'Knowledge Files for Useful Support', 80),
+  ('6504efe5-3113-3afa-b2ea-a20b716e4457', '93217a54-63f1-4ce4-b955-16eb86e2f84c', 'Build an Assistant for Yourself', 80),
+  ('2ff624ad-513d-adec-d986-9e1e35c6ae4f', '93217a54-63f1-4ce4-b955-16eb86e2f84c', 'Build an Assistant for Someone Else', 80),
+  ('72f4469c-f877-7da5-7395-dd2f57f7610a', '93217a54-63f1-4ce4-b955-16eb86e2f84c', 'Ethics, Privacy, and Boundaries', 80)
+ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title;

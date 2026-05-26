@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { MODULES } from '@/lib/constants';
 import { getSignedDownloadUrl } from '@/lib/artifacts/storage';
 import ParentProofInspect from '@/components/parent/ParentProofInspect';
+import { getParentProofSummary } from '@/lib/data/proof-artifacts';
+import { ParentProofSummaryCard } from '@/components/proof-artifacts/ParentProofSummaryCard';
 
 const MODULE_LIST = [
   { id: MODULES.MODULE_1_ID, num: 1, title: 'AI Learning Code', totalNodes: 4 },
@@ -102,6 +104,15 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
   const totalMastered = Object.values(primaryProgress).reduce((a, b) => a + b, 0);
   const overallPct = totalNodesPossible > 0 ? Math.round((totalMastered / totalNodesPossible) * 100) : 0;
 
+  let proofSummary = null;
+  if (primaryStudentId) {
+    try {
+      proofSummary = await getParentProofSummary(user.id, primaryStudentId);
+    } catch (err) {
+      console.warn("Failed to fetch proof summary:", err);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] p-6 md:p-12 star-field">
       <div className="max-w-6xl mx-auto relative z-10">
@@ -171,6 +182,8 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
           </div>
 
           <div className="space-y-6">
+
+            {proofSummary && <ParentProofSummaryCard summary={proofSummary} />}
 
             {/* Apprentice Roster */}
             <div className="glass-card p-6 !rounded-none border border-[#7b4fce]/30">
