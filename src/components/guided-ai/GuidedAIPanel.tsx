@@ -36,9 +36,15 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
   let activePageType = pageType;
 
   if (isFloating) {
+    // Only render on student dashboard pages
+    if (!pathname?.startsWith('/student')) return null;
+
     const match = pathname?.match(/\/student\/modules\/(\d+)/);
-    if (!match) return null;
-    activeModuleNumber = parseInt(match[1]);
+    if (match) {
+      activeModuleNumber = parseInt(match[1]);
+    } else {
+      activeModuleNumber = 1; // Fallback for student dashboard home
+    }
 
     const nodeMatch = pathname?.match(/\/nodes\/([^/]+)/);
     if (nodeMatch) {
