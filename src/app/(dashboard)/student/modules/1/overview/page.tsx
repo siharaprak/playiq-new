@@ -28,6 +28,24 @@ export default async function Module1OverviewPage() {
     progressData?.filter(p => p.node_mastered).map(p => p.node_id) ?? []
   );
 
+  // Fetch assessments and check their scores/states
+  const { data: assessments } = await supabase
+    .from('assessment_submissions')
+    .select('*')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULES.MODULE_1_ID);
+
+  const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
+  const bossBattle = assessments?.find(a => a.assessment_type === 'boss_battle');
+
+  const quizUnlocked = masteredNodeIds.size >= 4;
+  const quizPassed = quiz && quiz.score_numeric >= 80;
+
+  const bossBattleUnlocked = quizPassed;
+  const bossBattlePassed = bossBattle && bossBattle.score_numeric >= 4;
+
+  const artifactsUnlocked = bossBattlePassed;
+
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
 
@@ -130,15 +148,51 @@ export default async function Module1OverviewPage() {
           Module Assessments
         </h2>
         <div className="flex flex-col gap-3">
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 4 Nodes Mastered</span>
-          </div>
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>
-          </div>
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Proof Artifacts — Requires Boss Battle</span>
-          </div>
+          {/* Module Quiz */}
+          {quizUnlocked ? (
+            <Link href="/student/modules/1/quiz" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(0,200,255,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">Module Quiz — 1Q AI Learning Code Quiz</span>
+              {quizPassed ? (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>PASSED ({quiz.score_numeric}%)</span>
+              ) : quiz ? (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>FAILED ({quiz.score_numeric}%) - RETRY</span>
+              ) : (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>START</span>
+              )}
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 4 Nodes Mastered</span>
+            </div>
+          )}
+
+          {/* Boss Battle */}
+          {bossBattleUnlocked ? (
+            <Link href="/student/modules/1/boss-battle" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-purple)' }}>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors">Boss Battle — 1B AI Learning Code Challenge</span>
+              {bossBattlePassed ? (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>COMPLETED</span>
+              ) : (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-purple)', color: 'var(--neon-purple)' }}>START</span>
+              )}
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>
+            </div>
+          )}
+
+          {/* Proof Artifacts */}
+          {artifactsUnlocked ? (
+            <Link href="/student/modules/1/proof-artifacts" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid #7b4fce' }}>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[#7b4fce] transition-colors">Proof Artifacts — Submit Warrior Code</span>
+              <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid #7b4fce', color: '#7b4fce' }}>OPEN</span>
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Proof Artifacts — Requires Boss Battle</span>
+            </div>
+          )}
         </div>
       </section>
     </div>

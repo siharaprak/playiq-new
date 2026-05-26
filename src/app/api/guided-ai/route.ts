@@ -52,8 +52,8 @@ export async function POST(req: NextRequest) {
     // 5. Return structured response
     return createApiSuccess(result);
   } catch (error: unknown) {
-    if (error instanceof Error && error.message === 'Unauthorized') {
-      return createApiError('Authentication required', 401);
+    if (error instanceof Error && error.message.includes('Unauthorized')) {
+      return createApiError(error.message || 'Authentication required', 401);
     }
     if (error instanceof Error && error.message.startsWith('Forbidden')) {
       return createApiError(error.message, 403);
