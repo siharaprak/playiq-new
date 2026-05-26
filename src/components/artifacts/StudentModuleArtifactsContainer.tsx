@@ -371,7 +371,7 @@ export default function StudentModuleArtifactsContainer({
               📥 MODULE {moduleNum} OFFICIAL WORKSHEET TEMPLATE
             </h3>
             <p className="text-slate-400 font-mono text-[11px] leading-relaxed">
-              Open the Markdown template in any editor, type in your answers under the ✍️ **[ YOUR RESPONSE ]** blocks, and save your completed file.
+              Open the Word/Google Docs template, double-click to type your responses inside the dedicated response boxes, and save.
             </p>
             
             {/* Scrollable Preview panel */}
@@ -383,14 +383,23 @@ export default function StudentModuleArtifactsContainer({
             </div>
           </div>
           
-          <div className="flex flex-col items-center justify-center">
-            <a
-              href={`/worksheets/Module_${moduleNum}_Worksheet.md`}
-              download
-              className="w-full text-center bg-transparent border border-[#00c8ff] hover:bg-[#00c8ff]/10 text-[#00c8ff] font-display font-bold py-3.5 px-6 text-xs transition-all uppercase tracking-widest shadow-[0_0_10px_rgba(0,200,255,0.05)]"
-            >
-              Download Template (.md)
-            </a>
+          <div className="flex flex-col items-center justify-center w-full">
+            <div className="flex flex-col gap-2 w-full">
+              <a
+                href={`/worksheets/Module_${moduleNum}_Worksheet.doc`}
+                download
+                className="w-full text-center bg-transparent border border-[#00c8ff] hover:bg-[#00c8ff]/15 text-[#00c8ff] font-display font-bold py-3 px-4 text-[10px] transition-all uppercase tracking-widest shadow-[0_0_12px_rgba(0,200,255,0.1)] hover:shadow-[0_0_20px_rgba(0,200,255,0.3)]"
+              >
+                Download Word (.doc)
+              </a>
+              <a
+                href={`/worksheets/Module_${moduleNum}_Worksheet.md`}
+                download
+                className="w-full text-center bg-transparent border border-slate-700 hover:bg-slate-800/40 text-slate-400 font-display font-bold py-2 px-4 text-[9px] transition-all uppercase tracking-wider"
+              >
+                Download Markdown (.md)
+              </a>
+            </div>
           </div>
         </div>
       )}

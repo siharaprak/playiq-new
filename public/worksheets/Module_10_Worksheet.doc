@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Module 10 Worksheet</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    line-height: 1.6;
+    margin: 40px auto;
+    max-width: 800px;
+    padding: 0 20px;
+    background-color: #ffffff;
+  }
+  h1 {
+    font-size: 26px;
+    color: #0f172a;
+    border-bottom: 3px solid #7b4fce;
+    padding-bottom: 12px;
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+  h2, h3 {
+    font-size: 18px;
+    color: #7b4fce;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    border-left: 4px solid #00c8ff;
+    padding-left: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  p {
+    font-size: 14px;
+    margin-bottom: 12px;
+    color: #334155;
+  }
+  ul {
+    list-style-type: none;
+    padding-left: 5px;
+    margin-bottom: 18px;
+  }
+  li {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+  }
+  .checkbox {
+    font-size: 18px;
+    font-family: monospace;
+    color: #94a3b8;
+    margin-right: 10px;
+    user-select: none;
+  }
+  .instructions {
+    background-color: #f8fafc;
+    border-left: 4px solid #7b4fce;
+    padding: 15px;
+    margin-bottom: 30px;
+    font-size: 13px;
+    color: #475569;
+    font-style: italic;
+  }
+  .question {
+    font-size: 14px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-top: 25px;
+    margin-bottom: 8px;
+  }
+  .response-box {
+    background-color: #f8fafc;
+    border: 1px dashed #7b4fce;
+    border-left: 4px solid #7b4fce;
+    padding: 15px 20px;
+    margin: 10px 0 25px 0;
+    border-radius: 4px;
+    color: #475569;
+  }
+  .response-label {
+    margin: 0 0 6px 0;
+    font-size: 10px;
+    font-weight: bold;
+    color: #7b4fce;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: monospace;
+  }
+  .response-placeholder {
+    margin: 0;
+    font-size: 13px;
+    color: #94a3b8;
+    font-style: italic;
+  }
+  hr {
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+    margin: 40px 0;
+  }
+</style>
+</head>
+<body>
+<h1>PlayIQ Module 10 Worksheet: Assistants, Empathy, and Ethics</h1>
+<div class="instructions"><strong>Instructions:</strong> Complete this worksheet thoughtfully. Remember, PlayIQ is about using AI as a coach, not a crutch. Your goal is to become an independent learner!</div>
+<hr>
+<h3>Part 1: Assistant Purpose and Boundaries</h3>
+<div class="question">1. (Short Response) Why is an AI assistant that "helps with everything" actually less useful than an assistant that has one specific, clear job?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">2. (Multiple Choice) Which of the following is an example of a clear Assistant Purpose?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> "This assistant does homework."</li>
+<li><span class="checkbox">&#9744;</span> "This assistant helps me plan weekly meals by organizing preferences, while avoiding diet advice."</li>
+<li><span class="checkbox">&#9744;</span> "This assistant makes me smarter."</li>
+<li><span class="checkbox">&#9744;</span> "This assistant is funny."</li>
+</ul>
+<div class="question">3. (Classification) You create an assistant to help you study history. You tell it: "Do not give me answers; only give me hints, and never write my essays." What kind of boundary is this? (Privacy, Permission, Decision, Safety, or Accuracy)</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">4. (Teach-Back) Explain the difference between a Privacy Boundary (what info it shouldn't know) and a Decision Boundary (what choices it shouldn't make for you).</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 2: Custom Instructions for Real Tasks</h3>
+<div class="question">5. (Short Response) Why should custom instructions include what the assistant should NOT do?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">6. (Multiple Choice) Which of the following is the best "Output Format" instruction for an AI assistant helping you organize your chores?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> "Write a 5-page essay about chores."</li>
+<li><span class="checkbox">&#9744;</span> "Just tell me what to do."</li>
+<li><span class="checkbox">&#9744;</span> "Provide a simple checklist with checkboxes."</li>
+<li><span class="checkbox">&#9744;</span> "Output in a confusing format."</li>
+</ul>
+<div class="question">7. (Prompt Improvement) Upgrade this weak assistant instruction: "Help me practice Spanish." Make it more specific by defining a role, goal, user context, and what NOT to do.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">8. (Teach-Back) Explain how writing custom instructions for a task makes an AI much better than just using generic ChatGPT.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 3: Knowledge Files for Useful Support</h3>
+<div class="question">9. (Short Response) What makes a knowledge file "safe" to upload to an AI assistant?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">10. (Classification) You are building a scheduling assistant. You want to upload your school class schedule and your personal passwords. Which of these is a Good File and which is a Bad File? Why?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">11. (Scenario) You upload a 500-page messy document dump to your assistant and ask it a question. The assistant gives you a confusing, wrong answer. Why did this happen?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">12. (Teach-Back) Explain why you need explicit permission before uploading someone else's schedule or set of preferences into an AI assistant you are building for them.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 4: Building for Someone Else</h3>
+<div class="question">13. (Short Response) When building an assistant for someone else, why is it important to interview them instead of just guessing what they want?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">14. (Scenario) You are building an assistant for your mom to help plan groceries. You interview her, and she says the most annoying part is "figuring out what we already have in the fridge." How does this change the purpose of the assistant you will build?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">15. (Multiple Choice) Which of the following is a good question to ask during a User Interview?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> "What task would you like help with?"</li>
+<li><span class="checkbox">&#9744;</span> "What makes that task annoying?"</li>
+<li><span class="checkbox">&#9744;</span> "What information are you comfortable sharing?"</li>
+<li><span class="checkbox">&#9744;</span> All of the above.</li>
+</ul>
+<div class="question">16. (Teach-Back) Explain why empathy (understanding someone else's feelings and needs) is the most important skill when building tools for other people.</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<hr>
+<h3>Part 5: Ethics, Privacy, and Boundaries</h3>
+<div class="question">17. (Short Response) "Building assistants gives you power. Power requires responsibility." What does it mean to be a "responsible" AI Builder?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">18. (Multiple Choice) The "Assistant Builder Responsibility Check" includes which of the following questions?</div>
+<ul>
+<li><span class="checkbox">&#9744;</span> Did the user agree to the purpose?</li>
+<li><span class="checkbox">&#9744;</span> Are private details protected?</li>
+<li><span class="checkbox">&#9744;</span> Are boundaries clear?</li>
+<li><span class="checkbox">&#9744;</span> All of the above.</li>
+</ul>
+<div class="question">19. (Scenario) You build an assistant for a friend that automatically emails their teachers. However, you didn't include a rule that says "ask the human to verify the email before sending." Why is this a dangerous missing boundary?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="question">20. (Reflection) Look back at all 10 modules. What is the single most important rule you have learned about using AI as a student and an independent learner?</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+<div class="response-box">
+  <p class="response-label">✍️ Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your conceptual answer or explanation here... ]</p>
+</div>
+</body>
+</html>
