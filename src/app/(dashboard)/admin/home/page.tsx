@@ -1,4 +1,4 @@
-import { Users, Truck, Activity, Filter, UserCog } from 'lucide-react';
+import { Users, Truck, Activity, Filter, UserCog, FileCheck } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -90,27 +90,38 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
         </div>
 
         {/* Navigation Section */}
-        <div className="grid md:grid-cols-2 gap-4 mb-12">
+        <div className="grid md:grid-cols-3 gap-4 mb-12">
           <Link href="/admin/users" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
             <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all">
               <UserCog className="w-6 h-6" />
             </div>
             <div>
-              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Student Roster &amp; Progress</p>
-              <p className="font-mono text-xs text-slate-500 mt-1">View all enrolled students, module progress, delete or suspend accounts</p>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Student Roster</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Check progress and edit student account authorizations</p>
             </div>
             <span className="ml-auto text-slate-600 group-hover:text-[#7b4fce] transition-colors">→</span>
           </Link>
 
-          <Link href="/admin/home" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#00c8ff]/60 transition-all group flex items-center gap-4">
+          <Link href="/admin/artifacts" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#00c8ff]/60 transition-all group flex items-center gap-4">
             <div className="w-12 h-12 flex items-center justify-center border border-[#00c8ff]/40 bg-[#00c8ff]/10 text-[#00c8ff] group-hover:shadow-[0_0_15px_rgba(0,200,255,0.4)] transition-all">
+              <FileCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Artifact Reviews</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Evaluate student warrior codes, boundaries plans, and files</p>
+            </div>
+            <span className="ml-auto text-slate-600 group-hover:text-[#00c8ff] transition-colors">→</span>
+          </Link>
+
+          <Link href="/admin/home" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all">
               <Users className="w-6 h-6" />
             </div>
             <div>
-              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Beta Applications</p>
-              <p className="font-mono text-xs text-slate-500 mt-1">View all beta applicants, payment status, and pipeline</p>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Beta Intake</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">View beta applicants, payment status, and registration logs</p>
             </div>
-            <span className="ml-auto text-slate-600 group-hover:text-[#00c8ff] transition-colors">→</span>
+            <span className="ml-auto text-slate-600 group-hover:text-[#7b4fce] transition-colors">→</span>
           </Link>
         </div>
 

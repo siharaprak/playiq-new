@@ -93,8 +93,12 @@ export async function enforceModuleGating(
     .select('*')
     .eq('student_id', user.id);
 
-  const studyRules = artifacts?.find(a => a.artifact_type === 'study_rules');
-  const errorReview = artifacts?.find(a => a.artifact_type === 'error_review');
+  const studyRules = artifacts?.find(
+    a => a.artifact_type === 'study_rules' && a.status !== 'draft' && a.status !== 'revise'
+  );
+  const errorReview = artifacts?.find(
+    a => a.artifact_type === 'error_review' && a.status !== 'draft' && a.status !== 'revise'
+  );
 
   switch (phase) {
     case 'boss-battle':

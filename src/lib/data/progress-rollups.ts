@@ -235,11 +235,12 @@ export async function getStudentModuleRollups(
     .select('module_id, assessment_type, pass_status, score_numeric')
     .eq('student_id', studentId);
 
-  // Proof artifacts
+  // Proof artifacts (only count if they are actually submitted or approved - i.e., not draft or revise)
   const { data: proofs } = await supabaseAdmin
     .from('proof_artifact_submissions')
     .select('module_id')
-    .eq('student_id', studentId);
+    .eq('student_id', studentId)
+    .not('status', 'in', '("draft","revise")');
 
   return modules
     .filter((m) => m.order_num >= 1 && m.order_num <= 10)

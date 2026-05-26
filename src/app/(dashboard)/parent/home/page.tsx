@@ -4,6 +4,8 @@ import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { MODULES } from '@/lib/constants';
+import { getSignedDownloadUrl } from '@/lib/artifacts/storage';
+import ParentProofInspect from '@/components/parent/ParentProofInspect';
 
 const MODULE_LIST = [
   { id: MODULES.MODULE_1_ID, num: 1, title: 'AI Learning Code', totalNodes: 4 },
@@ -63,6 +65,34 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
     }
   }
 
+  // Fetch real-time proof artifact submissions for linked children
+  let submissions: any[] = [];
+  if (studentIds.length > 0) {
+    const { data } = await supabaseAdmin
+      .from('proof_artifact_submissions')
+      .select('*')
+      .in('student_id', studentIds)
+      .order('created_at', { ascending: false });
+    submissions = data || [];
+  }
+
+  // Pre-generate temporary signed URL credentials safely on the server
+  const submissionsWithUrls = [];
+  for (const sub of submissions) {
+    let previewUrl: string | null = null;
+    if (sub.file_path) {
+      try {
+        previewUrl = await getSignedDownloadUrl(sub.file_path);
+      } catch (err) {
+        console.error('Parent dashboard URL generation failed for:', sub.file_path, err);
+      }
+    }
+    submissionsWithUrls.push({
+      ...sub,
+      previewUrl
+    });
+  }
+
   // For the main progress display, use the first linked student (or empty if none)
   const primaryStudentId = studentIds[0];
   const primaryProgress = primaryStudentId ? (progressByStudent[primaryStudentId] || {}) : {};
@@ -110,20 +140,11 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
             <div className="glass-card p-8 !rounded-none border border-slate-800">
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <h2 className="text-xl font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">Latest Proof Packet</h2>
+                  <h2 className="text-xl font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">Latest Proof Packets</h2>
                   <p className="text-xs text-slate-500 uppercase tracking-widest mt-1 font-mono">
-                    {apprentices.length === 0
-                      ? 'No apprentices linked yet'
-                      : totalMastered === 0
-                      ? 'No submissions yet — student hasn\'t started'
-                      : `${totalMastered} node${totalMastered > 1 ? 's' : ''} mastered so far`}
+                    Secure operational inspect panels for link credentials
                   </p>
                 </div>
-                {totalMastered > 0 && (
-                  <span className="bg-[#39ff14]/10 border border-[#39ff14]/30 text-[#39ff14] text-xs font-bold px-3 py-1 flex items-center gap-2 tracking-widest uppercase">
-                    <CheckCircle2 className="w-4 h-4" /> Active
-                  </span>
-                )}
               </div>
 
               {apprentices.length === 0 ? (
@@ -132,39 +153,18 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
                   <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">No apprentice linked to this account.</p>
                   <p className="text-slate-600 font-mono text-xs mt-2">Use the panel on the right to provision an apprentice account.</p>
                 </div>
-              ) : totalMastered === 0 ? (
+              ) : submissionsWithUrls.length === 0 ? (
                 <div className="bg-black/40 border border-dashed border-slate-700 rounded-none p-12 text-center">
                   <Lock className="w-8 h-8 text-slate-600 mx-auto mb-3" />
                   <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">Student hasn't begun yet.</p>
-                  <p className="text-slate-600 font-mono text-xs mt-2">Proof packets will appear here once Module 1 is underway.</p>
+                  <p className="text-slate-600 font-mono text-xs mt-2">Proof packets will appear here once module uploads are saved or submitted.</p>
                 </div>
               ) : (
-                <div className="space-y-4">
-                  {MODULE_LIST.filter(m => (primaryProgress[m.id] || 0) > 0).map(mod => {
-                    const mastered = primaryProgress[mod.id] || 0;
-                    const pct = Math.round((mastered / mod.totalNodes) * 100);
-                    const complete = mastered >= mod.totalNodes;
-                    return (
-                      <div key={mod.id} className="bg-black/40 border border-slate-800 p-4">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-mono text-xs text-slate-400 uppercase tracking-widest">
-                            Module {mod.num} — {mod.title}
-                          </span>
-                          <span className={`font-bold text-xs ${complete ? 'text-[#39ff14]' : 'text-[#7b4fce]'}`}>
-                            {pct}%
-                          </span>
-                        </div>
-                        <div className="w-full bg-slate-800 h-1.5 overflow-hidden">
-                          <div
-                            className={`h-full transition-all ${complete ? 'bg-[#39ff14] shadow-[0_0_8px_rgba(57,255,20,0.4)]' : 'bg-[#7b4fce] shadow-[0_0_8px_rgba(123,79,206,0.4)]'}`}
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
-                        <p className="text-[10px] text-slate-600 font-mono mt-1">{mastered} / {mod.totalNodes} nodes mastered</p>
-                      </div>
-                    );
-                  })}
-                </div>
+                <ParentProofInspect
+                  apprentices={apprentices}
+                  submissions={submissionsWithUrls}
+                  modulesList={MODULE_LIST}
+                />
               )}
             </div>
 
