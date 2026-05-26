@@ -4,8 +4,6 @@ import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { MODULES } from '@/lib/constants';
-import { getSignedDownloadUrl } from '@/lib/artifacts/storage';
-import ParentProofInspect from '@/components/parent/ParentProofInspect';
 import { getParentProofSummary } from '@/lib/data/proof-artifacts';
 import { ParentProofSummaryCard } from '@/components/proof-artifacts/ParentProofSummaryCard';
 
@@ -67,33 +65,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
     }
   }
 
-  // Fetch real-time proof artifact submissions for linked children
-  let submissions: any[] = [];
-  if (studentIds.length > 0) {
-    const { data } = await supabaseAdmin
-      .from('proof_artifact_submissions')
-      .select('*')
-      .in('student_id', studentIds)
-      .order('created_at', { ascending: false });
-    submissions = data || [];
-  }
 
-  // Pre-generate temporary signed URL credentials safely on the server
-  const submissionsWithUrls = [];
-  for (const sub of submissions) {
-    let previewUrl: string | null = null;
-    if (sub.file_path) {
-      try {
-        previewUrl = await getSignedDownloadUrl(sub.file_path);
-      } catch (err) {
-        console.error('Parent dashboard URL generation failed for:', sub.file_path, err);
-      }
-    }
-    submissionsWithUrls.push({
-      ...sub,
-      previewUrl
-    });
-  }
 
   // For the main progress display, use the first linked student (or empty if none)
   const primaryStudentId = studentIds[0];
@@ -164,18 +136,12 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
                   <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">No apprentice linked to this account.</p>
                   <p className="text-slate-600 font-mono text-xs mt-2">Use the panel on the right to provision an apprentice account.</p>
                 </div>
-              ) : submissionsWithUrls.length === 0 ? (
+              ) : (
                 <div className="bg-black/40 border border-dashed border-slate-700 rounded-none p-12 text-center">
                   <Lock className="w-8 h-8 text-slate-600 mx-auto mb-3" />
-                  <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">Student hasn't begun yet.</p>
-                  <p className="text-slate-600 font-mono text-xs mt-2">Proof packets will appear here once module uploads are saved or submitted.</p>
+                  <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">Student Active</p>
+                  <p className="text-slate-600 font-mono text-xs mt-2">See summary panel for artifact status. Detailed review is restricted during beta.</p>
                 </div>
-              ) : (
-                <ParentProofInspect
-                  apprentices={apprentices}
-                  submissions={submissionsWithUrls}
-                  modulesList={MODULE_LIST}
-                />
               )}
             </div>
 
