@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
+import { submitBossBattleDirectAction } from '../actions';
 
 const SCENARIOS = [
   {
@@ -63,7 +64,7 @@ export default async function Module1BossBattlePage() {
         </ul>
       </div>
 
-      <form className="space-y-8">
+      <form action={submitBossBattleDirectAction} className="space-y-8">
         {SCENARIOS.map(scenario => (
           <div
             key={scenario.id}

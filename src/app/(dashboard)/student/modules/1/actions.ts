@@ -210,6 +210,10 @@ export async function submitQuiz(formData: FormData) {
   }
 }
 
+export async function submitBossBattleDirectAction(formData: FormData) {
+  await submitBossBattleAction(null, formData);
+}
+
 export async function submitBossBattleAction(prevState: unknown, formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
