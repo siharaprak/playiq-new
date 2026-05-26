@@ -30,6 +30,12 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
   const [selectedText, setSelectedText] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
+  // Sprint 4C: ephemeral local state for hint ladder + retry + teach-back
+  const [hintLevel, setHintLevel] = useState<1 | 2 | 3>(1);
+  const [retryCount, setRetryCount] = useState(0);
+  const [teachBackActive, setTeachBackActive] = useState(false);
+  const [teachBackInput, setTeachBackInput] = useState('');
+
   // Extract parameters dynamically if floating
   let activeModuleNumber = moduleNumber ?? 1;
   let activeNodeId = nodeId;
@@ -64,11 +70,6 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
     }
   }
 
-  // Sprint 4C: ephemeral local state for hint ladder + retry + teach-back
-  const [hintLevel, setHintLevel] = useState<1 | 2 | 3>(1);
-  const [retryCount, setRetryCount] = useState(0);
-  const [teachBackActive, setTeachBackActive] = useState(false);
-  const [teachBackInput, setTeachBackInput] = useState('');
 
   const handleModeSelect = (mode: GuidedAiModeId) => {
     setActiveMode(mode);
