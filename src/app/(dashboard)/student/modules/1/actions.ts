@@ -7,7 +7,7 @@ import { MODULES } from '@/lib/constants';
 import { logAttemptEvent, logCompletionEvent, logProofEvent, logModuleCompletedIdempotent } from '@/lib/events/learning-events';
 
 const MODULE_ID = MODULES.MODULE_1_ID;
-const MODULE_NUM = 2;
+const MODULE_NUM = 1;
 const BASE = `/student/modules/${MODULE_NUM}`;
 
 export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') {
@@ -208,6 +208,10 @@ export async function submitQuiz(formData: FormData) {
   } else {
     redirect(`${BASE}/quiz`);
   }
+}
+
+export async function submitBossBattleDirectAction(formData: FormData) {
+  await submitBossBattleAction(null, formData);
 }
 
 export async function submitBossBattleAction(prevState: unknown, formData: FormData) {

@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
+import { submitQuiz } from '../actions';
 
-export default async function Module2QuizPage() {
-  await enforceModuleGating('quiz', 2, 6);
+export default async function Module1QuizPage() {
+  await enforceModuleGating('quiz', 1, 4);
 
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
@@ -12,14 +13,14 @@ export default async function Module2QuizPage() {
       </div>
 
       <h1 className="text-4xl font-bold tracking-tight mb-8 text-[var(--text-primary)] font-display uppercase">
-        2Q Digital Smarts Quiz
+        1Q AI Learning Code Quiz
       </h1>
 
       <p className="text-slate-400 font-mono text-sm leading-relaxed mb-10">
         This quiz evaluates your mastery of digital responsibility and highest-path thinking. Achieve 80%+ to unlock the Boss Battle.
       </p>
 
-      <form className="space-y-10">
+      <form action={submitQuiz} className="space-y-10">
 
         {/* Part A: Power and Truth */}
         <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">

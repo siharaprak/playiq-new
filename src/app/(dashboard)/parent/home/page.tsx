@@ -19,10 +19,10 @@ import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { MODULES } from '@/lib/constants';
-import { getSignedDownloadUrl } from '@/lib/artifacts/storage';
 import { getParentChildrenRollups, type ParentChildSummary } from '@/lib/data/progress-rollups';
-import ParentProofInspect from '@/components/parent/ParentProofInspect';
 import ParentIntegrityPanel from '@/components/parent/ParentIntegrityPanel';
+import { getParentProofSummary } from '@/lib/data/proof-artifacts';
+import { ParentProofSummaryCard } from '@/components/proof-artifacts/ParentProofSummaryCard';
 
 export const dynamic = 'force-dynamic';
 
@@ -142,39 +142,16 @@ export default async function ParentDashboard({
     apprentices = profiles || [];
   }
 
-  // Fetch proof artifact submissions with signed URLs
-  let submissions: any[] = [];
-  if (studentIds.length > 0) {
-    const { data } = await supabaseAdmin
-      .from('proof_artifact_submissions')
-      .select('*')
-      .in('student_id', studentIds)
-      .order('created_at', { ascending: false });
-    submissions = data || [];
-  }
+  // Fetch real progress for ALL linked students
+  const progressByStudent: Record<string, Record<string, number>> = {};
 
-  const submissionsWithUrls = [];
-  for (const sub of submissions) {
-    let previewUrl: string | null = null;
-    if (sub.file_path) {
-      try {
-        previewUrl = await getSignedDownloadUrl(sub.file_path);
-      } catch (err) {
-        console.error('Parent dashboard URL generation failed for:', sub.file_path, err);
-      }
-    }
-    submissionsWithUrls.push({ ...sub, previewUrl });
-  }
-
-  // Fetch node progress for fleet progress bars (per-student per-module)
-  let progressByStudent: Record<string, Record<string, number>> = {};
   if (studentIds.length > 0) {
     const { data: allProgress } = await supabaseAdmin
       .from('student_node_progress')
       .select('student_id, module_id, node_mastered')
       .in('student_id', studentIds);
 
-    for (const row of allProgress || []) {
+    for (const row of (allProgress || [])) {
       if (!row.node_mastered) continue;
       if (!progressByStudent[row.student_id]) progressByStudent[row.student_id] = {};
       progressByStudent[row.student_id][row.module_id] =
@@ -198,6 +175,15 @@ export default async function ParentDashboard({
   const primaryProgress = primaryStudentId ? (progressByStudent[primaryStudentId] || {}) : {};
   const totalMastered = Object.values(primaryProgress).reduce((a, b) => a + b, 0);
   const overallPct = TOTAL_NODES > 0 ? Math.round((totalMastered / TOTAL_NODES) * 100) : 0;
+
+  let proofSummary = null;
+  if (primaryStudentId) {
+    try {
+      proofSummary = await getParentProofSummary(user.id, primaryStudentId);
+    } catch (err) {
+      console.warn("Failed to fetch proof summary:", err);
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] p-6 md:p-12 star-field">
@@ -404,18 +390,12 @@ export default async function ParentDashboard({
                   <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">No apprentice linked to this account.</p>
                   <p className="text-slate-600 font-mono text-xs mt-2">Use the panel on the right to provision an apprentice account.</p>
                 </div>
-              ) : submissionsWithUrls.length === 0 ? (
+              ) : (
                 <div className="bg-black/40 border border-dashed border-slate-700 rounded-none p-12 text-center">
                   <Lock className="w-8 h-8 text-slate-600 mx-auto mb-3" />
-                  <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">Student hasn&apos;t begun yet.</p>
-                  <p className="text-slate-600 font-mono text-xs mt-2">Proof packets will appear here once module uploads are saved or submitted.</p>
+                  <p className="text-slate-500 font-mono text-sm tracking-widest uppercase">Student Active</p>
+                  <p className="text-slate-600 font-mono text-xs mt-2">See summary panel for artifact status. Detailed review is restricted during beta.</p>
                 </div>
-              ) : (
-                <ParentProofInspect
-                  apprentices={apprentices}
-                  submissions={submissionsWithUrls}
-                  modulesList={MODULE_LIST}
-                />
               )}
             </div>
 
@@ -428,6 +408,8 @@ export default async function ParentDashboard({
           {/* SIDEBAR                                                        */}
           {/* ============================================================== */}
           <div className="space-y-6">
+
+            {proofSummary && <ParentProofSummaryCard summary={proofSummary} />}
 
             {/* Apprentice Roster */}
             <div className="glass-card p-6 !rounded-none border border-[#7b4fce]/30">

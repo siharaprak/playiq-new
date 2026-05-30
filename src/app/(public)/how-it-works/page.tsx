@@ -24,7 +24,7 @@ export default function HowItWorks() {
               <div className="absolute left-0 top-1.5 w-4 h-4 border-2 border-[#00c8ff] bg-[#020617] rotate-45 shadow-[0_0_10px_#00c8ff]"></div>
               <h3 className="text-[#00c8ff] text-xl font-display font-bold uppercase tracking-[0.2em] mb-2">[01] GET YOUR MISSION</h3>
               <p className="text-slate-400 text-sm leading-relaxed uppercase opacity-80">
-                The app presents your challenge. Example: "Build a bridge that holds weight." Then put the screen away and start building with real blocks.
+                The app presents your engineering challenge. Example: "Build a truss bridge that supports maximum structural load." Then put the screen away and start building with the physical kit.
               </p>
             </div>
 

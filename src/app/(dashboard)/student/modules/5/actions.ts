@@ -7,7 +7,7 @@ import { MODULES } from '@/lib/constants';
 import { logAttemptEvent, logCompletionEvent, logProofEvent, logModuleCompletedIdempotent } from '@/lib/events/learning-events';
 
 const MODULE_ID = MODULES.MODULE_5_ID;
-const MODULE_NUM = 2;
+const MODULE_NUM = 5;
 const BASE = `/student/modules/${MODULE_NUM}`;
 
 export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') {

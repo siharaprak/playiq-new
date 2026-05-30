@@ -33,15 +33,17 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   const pendingCount = allApps?.filter(a => a.status === 'pending').length || 0;
   const totalCount = allApps?.length || 0;
 
-  // Operational telemetry queries
+  // Operational telemetry queries and discussion reports
   const [
     { count: openTicketsCount },
     { count: totalTutorsCount },
-    { count: totalAssistantsCount }
+    { count: totalAssistantsCount },
+    { count: reportsCount }
   ] = await Promise.all([
     supabase.from('support_issues').select('*', { count: 'exact', head: true }).eq('status', 'open'),
     supabase.from('tutor_profiles').select('*', { count: 'exact', head: true }),
     supabase.from('assistant_profiles').select('*', { count: 'exact', head: true }),
+    supabase.from('discussion_reports').select('id', { count: 'exact', head: true }),
   ]);
 
   return (
@@ -113,8 +115,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
         )}
 
         {/* Navigation Section */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
-          {/* Card 1: Student Roster */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-12">
           <Link href="/admin/users" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
             <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all flex-shrink-0">
               <UserCog className="w-6 h-6" />
@@ -133,7 +134,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             </div>
             <div>
               <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Artifact Reviews</p>
-              <p className="font-mono text-[10px] text-slate-500 mt-1">Evaluate student warrior codes, boundaries plans, and files</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Evaluate student codes, boundaries plans, and files</p>
             </div>
             <span className="ml-auto text-slate-600 group-hover:text-[#00c8ff] transition-colors">→</span>
           </Link>
@@ -181,7 +182,22 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             <span className="ml-auto text-slate-600 group-hover:text-[#f5c518] transition-colors">→</span>
           </Link>
 
-          {/* Card 6: Beta Intake */}
+          {/* Card 6: Moderation */}
+          <Link href="/admin/moderation" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-red-500/60 transition-all group flex items-center gap-4">
+            <div className="w-12 h-12 flex items-center justify-center border border-red-500/40 bg-red-500/10 text-red-500 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all">
+              <span className="font-bold font-mono text-lg font-black">!</span>
+            </div>
+            <div>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm flex items-center gap-2">
+                Moderation
+                {reportsCount !== null && reportsCount > 0 ? (
+                  <span className="text-[10px] px-1.5 py-0.5 bg-red-500 text-black font-bold animate-pulse shadow-[0_0_8px_#ef4444] font-mono">{reportsCount}</span>
+                ) : null}
+              </p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Review flagged topics and comments reported by community members</p>
+            </div>
+            <span className="ml-auto text-slate-600 group-hover:text-red-500 transition-colors">→</span>
+          </Link>
           <Link href="/admin/home" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
             <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all flex-shrink-0">
               <Users className="w-6 h-6" />

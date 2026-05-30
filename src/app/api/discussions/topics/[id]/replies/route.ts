@@ -20,7 +20,7 @@ export async function POST(request: NextRequest, ctx: { params: Promise<{ id: st
     }
 
     // Pre-submit content moderation — block before insert
-    const moderation = moderateDiscussionContent({
+    const moderation = await moderateDiscussionContent({
       body: parsed.data.body,
       actorRole: appUser.primary_role,
     });

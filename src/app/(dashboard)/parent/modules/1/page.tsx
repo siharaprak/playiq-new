@@ -28,8 +28,8 @@ export default async function ParentModule1View() {
   if (studentId) {
     const [progRes, assmRes, artRes, sigRes] = await Promise.all([
       supabase.from('student_node_progress').select('*').eq('student_id', studentId).eq('module_id', MODULES.MODULE_1_ID),
-      supabase.from('assessment_submissions').select('*').eq('student_id', studentId).eq('module_id', MODULES.MODULE_1_ID),
-      supabase.from('proof_artifact_submissions').select('*').eq('student_id', studentId).eq('module_id', MODULES.MODULE_1_ID),
+      supabase.from('assessment_submissions').select('*').eq('student_id', studentId).eq('module_id', MODULES.MODULE_1_ID).order('created_at', { ascending: false }),
+      supabase.from('proof_artifact_submissions').select('*').eq('student_id', studentId).eq('module_id', MODULES.MODULE_1_ID).order('created_at', { ascending: false }),
       supabase.from('fingerprint_signals').select('*').eq('student_id', studentId).eq('module_id', MODULES.MODULE_1_ID)
     ]);
     progress = progRes.data || [];

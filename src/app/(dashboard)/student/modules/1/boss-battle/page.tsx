@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
+import { submitBossBattleDirectAction } from '../actions';
 
 const SCENARIOS = [
   {
@@ -29,8 +30,8 @@ const SCENARIOS = [
   },
 ];
 
-export default async function Module2BossBattlePage() {
-  await enforceModuleGating('boss-battle', 2, 6);
+export default async function Module1BossBattlePage() {
+  await enforceModuleGating('boss-battle', 1, 4);
 
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
@@ -50,7 +51,7 @@ export default async function Module2BossBattlePage() {
           filter: 'drop-shadow(0 0 15px rgba(123,79,206,0.4))',
         }}
       >
-        2B Superpower vs Superweapon Challenge
+        1B AI Learning Code Challenge
       </h1>
 
       <div className="bg-slate-900 border border-[#7b4fce]/50 p-6 rounded-xl shadow-[0_0_20px_rgba(123,79,206,0.15)] font-mono text-sm text-slate-300 mb-10">
@@ -63,7 +64,7 @@ export default async function Module2BossBattlePage() {
         </ul>
       </div>
 
-      <form className="space-y-8">
+      <form action={submitBossBattleDirectAction} className="space-y-8">
         {SCENARIOS.map(scenario => (
           <div
             key={scenario.id}
