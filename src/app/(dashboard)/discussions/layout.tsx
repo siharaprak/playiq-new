@@ -6,6 +6,8 @@ import { requireAuth } from '@/lib/auth/permissions';
 import { headers } from 'next/headers';
 import { RoleBadge } from '@/components/discussions/UserAvatar';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Discussion Board | PlayIQ',
   description: 'Connect and discuss with the PlayIQ community.',

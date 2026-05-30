@@ -19,9 +19,18 @@ export default async function Module9OverviewPage() {
     .eq('student_id', user.id)
     .eq('module_id', MODULES.MODULE_9_ID);
 
+  // Fetch tutor profile status
+  const { data: tutorProfile } = await supabase
+    .from('tutor_profiles')
+    .select('id, status')
+    .eq('student_id', user.id)
+    .maybeSingle();
+
   const masteredNodeIds = new Set(
     progressData?.filter(p => p.node_mastered).map(p => p.node_id) ?? []
   );
+
+  const allNodesMastered = ['1', '2', '3', '4', '5', '6'].every(id => masteredNodeIds.has(id));
 
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
@@ -119,6 +128,27 @@ export default async function Module9OverviewPage() {
           Module Assessments
         </h2>
         <div className="flex flex-col gap-3">
+          {/* Tutor Builder card */}
+          {allNodesMastered ? (
+            <Link
+              href="/student/modules/9/tutor-builder/"
+              className="p-4 rounded-lg flex items-center gap-3 transition-all group hover:bg-[rgba(0,200,255,0.05)]"
+              style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}
+            >
+              <span>{tutorProfile?.status === 'active' || tutorProfile?.status === 'published' ? '✓' : '🚀'}</span>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">
+                {!tutorProfile
+                  ? 'Tutor Builder — Ready to Build!'
+                  : tutorProfile.status === 'draft'
+                    ? 'Tutor Builder — Draft in Progress'
+                    : 'Tutor Builder — Complete'}
+              </span>
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>🔒 Tutor Builder — Requires 6 Nodes Mastered</span>
+            </div>
+          )}
           <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
             <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 6 Nodes Mastered</span>
           </div>

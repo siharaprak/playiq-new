@@ -19,9 +19,18 @@ export default async function Module10OverviewPage() {
     .eq('student_id', user.id)
     .eq('module_id', MODULES.MODULE_10_ID);
 
+  // Fetch assistant profile status
+  const { data: assistantProfile } = await supabase
+    .from('assistant_profiles')
+    .select('id, status')
+    .eq('student_id', user.id)
+    .maybeSingle();
+
   const masteredNodeIds = new Set(
     progressData?.filter(p => p.node_mastered).map(p => p.node_id) ?? []
   );
+
+  const allNodesMastered = ['1', '2', '3', '4', '5', '6', '7'].every(id => masteredNodeIds.has(id));
 
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
@@ -119,8 +128,30 @@ export default async function Module10OverviewPage() {
           Module Assessments
         </h2>
         <div className="flex flex-col gap-3">
+          {/* Assistant Builder card */}
+          {allNodesMastered ? (
+            <Link
+              href="/student/modules/10/assistant-builder/"
+              className="p-4 rounded-lg flex items-center gap-3 transition-all group hover:bg-[rgba(123,79,206,0.05)]"
+              style={{ background: 'transparent', border: '1px solid var(--neon-purple)' }}
+            >
+              <span>{assistantProfile?.status === 'active' || assistantProfile?.status === 'published' ? '✓' : '🚀'}</span>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors">
+                {!assistantProfile
+                  ? 'Assistant Builder — Ready to Build!'
+                  : assistantProfile.status === 'draft'
+                    ? 'Assistant Builder — Draft in Progress'
+                    : 'Assistant Builder — Complete'}
+              </span>
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>🔒 Assistant Builder — Requires 7 Nodes Mastered</span>
+            </div>
+          )}
+
           <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 6 Nodes Mastered</span>
+            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 7 Nodes Mastered</span>
           </div>
           <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
             <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>

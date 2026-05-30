@@ -2,8 +2,8 @@ import { createClient } from '@/utils/supabase/server';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Users, Trash2, ShieldOff, ChevronRight, CheckCircle2, Circle, Lock } from 'lucide-react';
-import { deleteUser, suspendUser } from './actions';
+import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock } from 'lucide-react';
+import { deleteUser, suspendUser, restoreUser } from './actions';
 import { MODULES } from '@/lib/constants';
 
 const MODULE_LIST = [
@@ -20,7 +20,15 @@ const MODULE_LIST = [
   { id: MODULES.CAPSTONE_ID, num: 11, title: 'Capstone', totalNodes: 1 },
 ];
 
-export default async function AdminUsersPage() {
+export default async function AdminUsersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string; filter?: string }>;
+}) {
+  const params = await searchParams;
+  const searchTerm = params?.search || '';
+  const filterType = params?.filter || 'all';
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
@@ -32,7 +40,7 @@ export default async function AdminUsersPage() {
   const { data: students } = await supabase
     .from('profiles')
     .select('id, full_name, email, role, created_at')
-    .eq('role', 'student')
+    .in('role', ['student', 'suspended'])
     .order('created_at', { ascending: false });
 
   // Fetch all node progress across all students in one query
@@ -53,6 +61,26 @@ export default async function AdminUsersPage() {
     const prog = progressMap[s.id];
     return prog && Object.values(prog).some(n => n > 0);
   }).length || 0;
+  const suspendedStudents = students?.filter(s => s.role === 'suspended').length || 0;
+
+  // Filter students based on search term and active/inactive status
+  const filteredStudents = (students || []).filter(student => {
+    const matchesSearch = searchTerm
+      ? student.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        student.email?.toLowerCase().includes(searchTerm.toLowerCase())
+      : true;
+
+    const studentProgress = progressMap[student.id] || {};
+    const totalMastered = Object.values(studentProgress).reduce((a, b) => a + b, 0);
+    const isActive = totalMastered > 0;
+
+    let matchesFilter = true;
+    if (filterType === 'active') matchesFilter = isActive && student.role !== 'suspended';
+    if (filterType === 'inactive') matchesFilter = !isActive && student.role !== 'suspended';
+    if (filterType === 'suspended') matchesFilter = student.role === 'suspended';
+
+    return matchesSearch && matchesFilter;
+  });
 
   return (
     <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)]">
@@ -83,13 +111,82 @@ export default async function AdminUsersPage() {
               <p className="text-2xl font-display font-black text-[#7b4fce]">{activeStudents}</p>
               <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Active</p>
             </div>
+            {suspendedStudents > 0 && (
+              <div className="glass-card px-6 py-3 border-l-2 border-amber-500 text-center !rounded-none">
+                <p className="text-2xl font-display font-black text-amber-400">{suspendedStudents}</p>
+                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Suspended</p>
+              </div>
+            )}
           </div>
         </header>
 
+        {/* Search & Filter Bar */}
+        <div className="mb-8 flex flex-col sm:flex-row gap-4 bg-slate-900/40 p-4 border border-slate-800 backdrop-blur-md font-mono">
+          <form method="GET" className="flex-1 flex gap-2">
+            <input
+              type="text"
+              name="search"
+              defaultValue={searchTerm}
+              placeholder="Search student name or email..."
+              className="flex-1 bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded px-3 py-2 text-xs font-mono text-slate-100 outline-none transition-colors"
+            />
+            {filterType !== 'all' && <input type="hidden" name="filter" value={filterType} />}
+            <button
+              type="submit"
+              className="px-4 py-2 bg-[#00c8ff] hover:bg-[#00c8ff]/90 text-slate-950 font-bold uppercase rounded text-xs transition-colors"
+            >
+              Search
+            </button>
+          </form>
+          
+          <div className="flex gap-2">
+            <Link
+              href={`/admin/users?filter=all${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`}
+              className={`px-4 py-2.5 rounded text-xs font-bold uppercase transition-all border ${
+                filterType === 'all'
+                  ? 'border-[#00c8ff] bg-[#00c8ff]/10 text-[#00c8ff]'
+                  : 'border-slate-800 bg-black/30 text-slate-400 hover:border-slate-700'
+              }`}
+            >
+              All
+            </Link>
+            <Link
+              href={`/admin/users?filter=active${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`}
+              className={`px-4 py-2.5 rounded text-xs font-bold uppercase transition-all border ${
+                filterType === 'active'
+                  ? 'border-[#00c8ff] bg-[#00c8ff]/10 text-[#00c8ff]'
+                  : 'border-slate-800 bg-black/30 text-slate-400 hover:border-slate-700'
+              }`}
+            >
+              Active
+            </Link>
+            <Link
+              href={`/admin/users?filter=inactive${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`}
+              className={`px-4 py-2.5 rounded text-xs font-bold uppercase transition-all border ${
+                filterType === 'inactive'
+                  ? 'border-[#00c8ff] bg-[#00c8ff]/10 text-[#00c8ff]'
+                  : 'border-slate-800 bg-black/30 text-slate-400 hover:border-slate-700'
+              }`}
+            >
+              Inactive
+            </Link>
+            <Link
+              href={`/admin/users?filter=suspended${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`}
+              className={`px-4 py-2.5 rounded text-xs font-bold uppercase transition-all border ${
+                filterType === 'suspended'
+                  ? 'border-amber-500 bg-amber-500/10 text-amber-400'
+                  : 'border-slate-800 bg-black/30 text-slate-400 hover:border-slate-700'
+              }`}
+            >
+              Suspended
+            </Link>
+          </div>
+        </div>
+
         {/* Student Cards */}
-        {students && students.length > 0 ? (
+        {filteredStudents && filteredStudents.length > 0 ? (
           <div className="space-y-6">
-            {students.map((student) => {
+            {filteredStudents.map((student) => {
               const studentProgress = progressMap[student.id] || {};
               const totalMastered = Object.values(studentProgress).reduce((a, b) => a + b, 0);
               const totalNodes = MODULE_LIST.reduce((a, m) => a + m.totalNodes, 0);
@@ -113,8 +210,13 @@ export default async function AdminUsersPage() {
                         {(student.full_name || student.email || 'ST').substring(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-display font-bold text-[var(--text-primary)] tracking-wide">
+                        <p className="font-display font-bold text-[var(--text-primary)] tracking-wide flex items-center gap-2">
                           {student.full_name || '—'}
+                          {student.role === 'suspended' && (
+                            <span className="text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              Suspended
+                            </span>
+                          )}
                         </p>
                         <p className="text-xs font-mono text-slate-400">{student.email}</p>
                       </div>
@@ -137,19 +239,35 @@ export default async function AdminUsersPage() {
                       </span>
 
                       {/* Actions */}
-                      <form action={suspendUser}>
-                        <input type="hidden" name="userId" value={student.id} />
-                        <button
-                          type="submit"
-                          title="Suspend User"
-                          className="p-2 border border-amber-500/40 text-amber-400 hover:bg-amber-400/10 transition-colors"
-                          onClick={(e) => {
-                            if (!confirm(`Suspend ${student.email}? They will lose dashboard access.`)) e.preventDefault();
-                          }}
-                        >
-                          <ShieldOff className="w-4 h-4" />
-                        </button>
-                      </form>
+                      {student.role === 'suspended' ? (
+                        <form action={restoreUser}>
+                          <input type="hidden" name="userId" value={student.id} />
+                          <button
+                            type="submit"
+                            title="Restore User"
+                            className="p-2 border border-[#39ff14]/30 text-[#39ff14] bg-[#39ff14]/20 hover:bg-[#39ff14]/30 transition-colors"
+                            onClick={(e) => {
+                              if (!confirm('Restore this user to active student status?')) e.preventDefault();
+                            }}
+                          >
+                            <ShieldCheck className="w-4 h-4" />
+                          </button>
+                        </form>
+                      ) : (
+                        <form action={suspendUser}>
+                          <input type="hidden" name="userId" value={student.id} />
+                          <button
+                            type="submit"
+                            title="Suspend User"
+                            className="p-2 border border-amber-500/40 text-amber-400 hover:bg-amber-400/10 transition-colors"
+                            onClick={(e) => {
+                              if (!confirm(`Suspend ${student.email}? They will lose dashboard access.`)) e.preventDefault();
+                            }}
+                          >
+                            <ShieldOff className="w-4 h-4" />
+                          </button>
+                        </form>
+                      )}
                       <form action={deleteUser}>
                         <input type="hidden" name="userId" value={student.id} />
                         <button

@@ -9,6 +9,8 @@ import { headers } from 'next/headers';
 import { UserAvatar, RoleBadge } from '@/components/discussions/UserAvatar';
 import TimeAgo from '@/components/discussions/TimeAgo';
 
+export const dynamic = 'force-dynamic';
+
 export default async function TopicPage(props: { params: Promise<{ id: string }> }) {
   const appUser = await requireAuth().catch(() => null);
   

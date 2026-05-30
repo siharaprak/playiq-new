@@ -8,6 +8,8 @@ import { headers } from 'next/headers';
 import { UserAvatar, RoleBadge } from '@/components/discussions/UserAvatar';
 import TimeAgo from '@/components/discussions/TimeAgo';
 
+export const dynamic = 'force-dynamic';
+
 export default async function CategoryPage(props: { params: Promise<{ categorySlug: string }>; searchParams: Promise<{ q?: string }> }) {
   const params = await props.params;
   const searchParams = await props.searchParams;
