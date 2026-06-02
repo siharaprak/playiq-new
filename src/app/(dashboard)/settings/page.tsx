@@ -17,8 +17,19 @@ export default function SecuritySettings() {
   const supabase = createClient();
 
   useEffect(() => {
-    loadFactors();
-  }, []);
+    const sync = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          await supabase.auth.refreshSession();
+        }
+      } catch (e) {
+        console.error('Settings session sync error:', e);
+      }
+      await loadFactors();
+    };
+    sync();
+  }, [supabase]);
 
   const loadFactors = async () => {
     setIsLoading(true);

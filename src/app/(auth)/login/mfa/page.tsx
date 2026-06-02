@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ShieldCheck, AlertCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
@@ -12,6 +12,20 @@ export default function MfaVerificationPage() {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const supabase = createClient();
+
+  useEffect(() => {
+    const syncSession = async () => {
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (!session) {
+          await supabase.auth.refreshSession();
+        }
+      } catch (e) {
+        console.error('MFA session sync error:', e);
+      }
+    };
+    syncSession();
+  }, [supabase]);
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
