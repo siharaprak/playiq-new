@@ -3,23 +3,30 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const requestUrl = new URL(request.url);
-  const supabase = await createClient();
-
-  // Sign out from Supabase
-  await supabase.auth.signOut();
+  
+  try {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+  } catch (e) {
+    // Even if signOut fails, we still want to redirect to logout page
+    console.error('Sign out error:', e);
+  }
 
   // Redirect to logout page
   return NextResponse.redirect(new URL('/logout', requestUrl.origin), {
-    status: 303, // 303 See Other is better for redirecting after a POST
+    status: 303,
   });
 }
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
-  const supabase = await createClient();
-
-  // Sign out from Supabase
-  await supabase.auth.signOut();
+  
+  try {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+  } catch (e) {
+    console.error('Sign out error:', e);
+  }
 
   return NextResponse.redirect(new URL('/logout', requestUrl.origin));
 }
