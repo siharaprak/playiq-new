@@ -107,12 +107,22 @@ export function Navbar() {
           <ThemeToggle />
 
           {!isLoading && (
-            <Link
-              href={userRole ? `/${userRole}/home` : '/login'}
-              className={`hidden sm:block font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00c8ff] transition-colors whitespace-nowrap ${userRole ? 'text-[#7b4fce]' : 'text-slate-400'}`}
-            >
-              &gt; {userRole ? 'DASHBOARD' : 'LOG IN'}
-            </Link>
+            <div className="hidden sm:flex items-center gap-4">
+              <Link
+                href={userRole ? `/${userRole}/home` : '/login'}
+                className={`font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00c8ff] transition-colors whitespace-nowrap ${userRole ? 'text-[#7b4fce]' : 'text-slate-400'}`}
+              >
+                &gt; {userRole ? 'DASHBOARD' : 'LOG IN'}
+              </Link>
+              {userRole && (
+                <Link
+                  href="/auth/signout"
+                  className="font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-red-400 text-slate-400 transition-colors whitespace-nowrap"
+                >
+                  &gt; LOG OUT
+                </Link>
+              )}
+            </div>
           )}
 
           <button
@@ -167,10 +177,18 @@ export function Navbar() {
             ))}
 
             {!isLoading && (
-              <Link href={userRole ? `/${userRole}/home` : '/login'} onClick={() => setMobileOpen(false)}
-                className={`font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 border-t border-[rgba(123,79,206,0.2)] mt-2 ${userRole ? 'text-[#00c8ff]' : 'text-[#7b4fce]'}`}>
-                &gt; {userRole ? 'DASHBOARD' : 'LOG IN'}
-              </Link>
+              <>
+                <Link href={userRole ? `/${userRole}/home` : '/login'} onClick={() => setMobileOpen(false)}
+                  className={`font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 border-t border-[rgba(123,79,206,0.2)] mt-2 ${userRole ? 'text-[#00c8ff]' : 'text-[#7b4fce]'}`}>
+                  &gt; {userRole ? 'DASHBOARD' : 'LOG IN'}
+                </Link>
+                {userRole && (
+                  <Link href="/auth/signout" onClick={() => setMobileOpen(false)}
+                    className="font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 text-red-400 hover:text-white transition-colors">
+                    &gt; LOG OUT
+                  </Link>
+                )}
+              </>
             )}
           </div>
         </div>

@@ -204,6 +204,9 @@ export default async function ParentDashboard({
               <Link href="/settings" className="text-[#00c8ff] hover:text-white transition-colors flex items-center gap-1 ml-2 border border-[#00c8ff]/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-[#00c8ff]/10">
                 <Settings className="w-3.5 h-3.5" /> 2FA Shield
               </Link>
+              <Link href="/auth/signout" className="text-red-400 hover:text-white transition-colors flex items-center gap-1 ml-2 border border-red-500/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-red-500/10">
+                Logout
+              </Link>
             </p>
           </div>
           <div className="hidden md:flex items-center gap-4">
