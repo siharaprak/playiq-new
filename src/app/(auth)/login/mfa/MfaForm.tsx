@@ -14,6 +14,7 @@ interface MfaFormProps {
 export default function MfaForm({ accessToken, refreshToken }: MfaFormProps) {
   const [code, setCode] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [sessionReady, setSessionReady] = useState(false);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
   const supabase = createClient();
@@ -21,12 +22,34 @@ export default function MfaForm({ accessToken, refreshToken }: MfaFormProps) {
   useEffect(() => {
     const init = async () => {
       try {
-        await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        });
+        // First try to use the tokens passed from the server component
+        if (accessToken && refreshToken) {
+          await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+          setSessionReady(true);
+          return;
+        }
+
+        // Fallback: the browser client may already have a session via cookies
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          setSessionReady(true);
+          return;
+        }
+
+        // Last resort: try getUser() to see if auth cookies exist
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          setSessionReady(true);
+          return;
+        }
+
+        setError('Auth session missing!');
       } catch (err) {
-        console.error('Failed to set client session:', err);
+        console.error('Failed to initialize client session:', err);
+        setError('Auth session missing!');
       }
     };
     init();
@@ -43,12 +66,6 @@ export default function MfaForm({ accessToken, refreshToken }: MfaFormProps) {
 
     startTransition(async () => {
       try {
-        // Ensure session is active on client-side
-        await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: refreshToken,
-        });
-
         // 1. Retrieve the list of active factors
         const { data: factorsData, error: factorsError } = await supabase.auth.mfa.listFactors();
         if (factorsError) throw factorsError;
@@ -139,7 +156,7 @@ export default function MfaForm({ accessToken, refreshToken }: MfaFormProps) {
 
             <button
               type="submit"
-              disabled={isPending || code.length !== 6}
+              disabled={isPending || code.length !== 6 || !sessionReady}
               className="btn-neon-filled w-full !rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending ? 'Shield Verifying...' : 'Verify Code'}

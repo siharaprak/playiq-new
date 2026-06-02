@@ -73,9 +73,11 @@ export default async function StudentDashboard() {
             <Link href="/settings" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>
               <Settings className="w-3.5 h-3.5" /> 2FA Shield
             </Link>
-            <Link href="/auth/signout" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>
-              Logout
-            </Link>
+            <form action="/auth/signout" method="post" className="inline">
+              <button type="submit" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer hover:bg-red-500/10" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>
+                Logout
+              </button>
+            </form>
             <span className="text-sm px-3 py-1 rounded-full" style={{ background: 'var(--space-card)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>Phase 1: Foundations</span>
             <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm" style={{ background: 'var(--neon-purple)', color: '#fff' }} title={name}>{initials}</div>
           </div>
