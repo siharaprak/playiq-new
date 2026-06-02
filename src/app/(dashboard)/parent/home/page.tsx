@@ -1,11 +1,31 @@
-import { CheckCircle2, AlertCircle, BarChart3, UserPlus, Lock, BookOpen, Settings } from 'lucide-react';
+import {
+  CheckCircle2,
+  AlertCircle,
+  BarChart3,
+  UserPlus,
+  Lock,
+  BookOpen,
+  Bot,
+  Cpu,
+  Activity,
+  MessageSquare,
+  FileCheck2,
+  Flag,
+  Clock,
+  Shield,
+  Settings,
+} from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { MODULES } from '@/lib/constants';
+import { getParentChildrenRollups, type ParentChildSummary } from '@/lib/data/progress-rollups';
+import ParentIntegrityPanel from '@/components/parent/ParentIntegrityPanel';
 import { getParentProofSummary } from '@/lib/data/proof-artifacts';
 import { ParentProofSummaryCard } from '@/components/proof-artifacts/ParentProofSummaryCard';
+
+export const dynamic = 'force-dynamic';
 
 const MODULE_LIST = [
   { id: MODULES.MODULE_1_ID, num: 1, title: 'AI Learning Code', totalNodes: 4 },
@@ -20,25 +40,100 @@ const MODULE_LIST = [
   { id: MODULES.MODULE_10_ID, num: 10, title: 'Build Your AI Assistant', totalNodes: 7 },
 ];
 
-export default async function ParentDashboard({ searchParams }: { searchParams: { provisioned?: string } }) {
+const TOTAL_NODES = 52;
+
+// ---------------------------------------------------------------------------
+// Helper: format relative time
+// ---------------------------------------------------------------------------
+function formatRelativeTime(dateStr: string | null): string {
+  if (!dateStr) return 'Never';
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'Just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days}d ago`;
+  return new Date(dateStr).toLocaleDateString();
+}
+
+// ---------------------------------------------------------------------------
+// Helper: AI build status badge
+// ---------------------------------------------------------------------------
+function BuildStatusBadge({
+  status,
+  label,
+  icon: Icon,
+}: {
+  status: 'none' | 'started' | 'has_version';
+  label: string;
+  icon: typeof Bot;
+}) {
+  const config = {
+    none: {
+      text: 'NOT STARTED',
+      color: 'text-slate-500',
+      border: 'border-slate-700',
+      bg: 'bg-slate-900/40',
+      glow: '',
+    },
+    started: {
+      text: 'IN PROGRESS',
+      color: 'text-[#f5c518]',
+      border: 'border-[#f5c518]/30',
+      bg: 'bg-[#f5c518]/5',
+      glow: 'shadow-[0_0_6px_rgba(245,197,24,0.15)]',
+    },
+    has_version: {
+      text: 'DEPLOYED',
+      color: 'text-[#39ff14]',
+      border: 'border-[#39ff14]/30',
+      bg: 'bg-[#39ff14]/5',
+      glow: 'shadow-[0_0_8px_rgba(57,255,20,0.2)]',
+    },
+  }[status];
+
+  return (
+    <div className={`flex items-center gap-2 px-3 py-2 border ${config.border} ${config.bg} ${config.glow}`}>
+      <Icon className={`w-4 h-4 ${config.color}`} />
+      <div>
+        <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">{label}</p>
+        <p className={`text-[10px] font-mono font-bold uppercase tracking-wider ${config.color}`}>
+          {config.text}
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main page component
+// ---------------------------------------------------------------------------
+export default async function ParentDashboard({
+  searchParams,
+}: {
+  searchParams: Promise<{ provisioned?: string }>;
+}) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
   if (!user) redirect('/login');
 
+  const params = await searchParams;
+
+  // ---- Rollup data layer ----
+  const rollups: ParentChildSummary[] = await getParentChildrenRollups(user.id);
+
+  // ---- Raw queries for proof inspector + fleet progress (not covered by rollup) ----
   const supabaseAdmin = createAdminClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  // Fetch linked apprentices
-  const { data: links } = await supabaseAdmin
-    .from('parent_child_links')
-    .select('student_id')
-    .eq('parent_id', user.id);
+  const studentIds = rollups.map((r) => r.student_id);
 
-  const studentIds = links?.map((l: any) => l.student_id) || [];
-
+  // Fetch apprentice profiles (with email) for proof inspector
   let apprentices: { id: string; full_name: string; email: string }[] = [];
   if (studentIds.length > 0) {
     const { data: profiles } = await supabaseAdmin
@@ -65,16 +160,22 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
     }
   }
 
+  // Fetch open support issues for these apprentices
+  let openTicketCount = 0;
+  if (studentIds.length > 0) {
+    const { count } = await supabaseAdmin
+      .from('support_issues')
+      .select('*', { count: 'exact', head: true })
+      .in('student_id', studentIds)
+      .eq('status', 'open');
+    openTicketCount = count || 0;
+  }
 
-
-  // For the main progress display, use the first linked student (or empty if none)
+  // Use primary student for Fleet Progress sidebar
   const primaryStudentId = studentIds[0];
   const primaryProgress = primaryStudentId ? (progressByStudent[primaryStudentId] || {}) : {};
-
-  // Compute overall fleet stats
-  const totalNodesPossible = MODULE_LIST.reduce((a, m) => a + m.totalNodes, 0);
   const totalMastered = Object.values(primaryProgress).reduce((a, b) => a + b, 0);
-  const overallPct = totalNodesPossible > 0 ? Math.round((totalMastered / totalNodesPossible) * 100) : 0;
+  const overallPct = TOTAL_NODES > 0 ? Math.round((totalMastered / TOTAL_NODES) * 100) : 0;
 
   let proofSummary = null;
   if (primaryStudentId) {
@@ -88,6 +189,10 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
   return (
     <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] p-6 md:p-12 star-field">
       <div className="max-w-6xl mx-auto relative z-10">
+
+        {/* ================================================================ */}
+        {/* HEADER                                                           */}
+        {/* ================================================================ */}
         <header className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
           <div>
             <p className="font-mono text-[#00c8ff] text-[0.6rem] uppercase tracking-[0.3em] mb-1">&gt; PARENT GATEWAY</p>
@@ -102,7 +207,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
             </p>
           </div>
           <div className="hidden md:flex items-center gap-4">
-            {apprentices.length > 0 && (
+            {rollups.length > 0 && (
               <div className="glass-card px-4 py-2 border-l-2 border-[#00c8ff] text-center !rounded-none">
                 <p className="text-xl font-display font-black text-[#00c8ff]">{overallPct}%</p>
                 <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Overall Progress</p>
@@ -111,7 +216,10 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
           </div>
         </header>
 
-        {searchParams?.provisioned === '1' && (
+        {/* ================================================================ */}
+        {/* SUCCESS BANNER                                                   */}
+        {/* ================================================================ */}
+        {params?.provisioned === '1' && (
           <div className="mb-8 p-4 bg-[#39ff14]/10 border border-[#39ff14]/30 flex items-start gap-3">
             <CheckCircle2 className="w-5 h-5 text-[#39ff14] flex-shrink-0 mt-0.5" />
             <div>
@@ -121,10 +229,157 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
           </div>
         )}
 
+        {/* ================================================================ */}
+        {/* APPRENTICE SUMMARY CARDS (rollup-powered)                        */}
+        {/* ================================================================ */}
+        {rollups.length > 0 && (
+          <section className="mb-10">
+            <div className="flex items-center gap-3 mb-6">
+              <Shield className="w-5 h-5 text-[#7b4fce]" />
+              <h2 className="text-lg font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">
+                Apprentice Intel
+              </h2>
+              <span className="text-[10px] bg-[#7b4fce]/10 border border-[#7b4fce]/30 px-2 py-0.5 text-[#7b4fce] font-mono font-bold uppercase tracking-wider">
+                {rollups.length} Active
+              </span>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {rollups.map((child) => {
+                const nodesMastered = totalMastered; // we'll compute per-student below
+                const studentProgress = progressByStudent[child.student_id] || {};
+                const studentMastered = Object.values(studentProgress).reduce((a, b) => a + b, 0);
+                const studentPct = Math.round((studentMastered / TOTAL_NODES) * 100);
+
+                return (
+                  <div
+                    key={child.student_id}
+                    className="glass-card !rounded-none border border-slate-800 hover:border-[#7b4fce]/40 transition-colors p-6 space-y-5"
+                  >
+                    {/* Name + Module */}
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <h3 className="text-base font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">
+                          {child.display_name}
+                        </h3>
+                        <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mt-0.5">
+                          {child.current_module_title
+                            ? `Currently: ${child.current_module_title}`
+                            : 'All modules completed'}
+                        </p>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-2xl font-display font-black text-[#00c8ff]">{studentPct}%</p>
+                        <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">Progress</p>
+                      </div>
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="w-full bg-slate-800 h-2 overflow-hidden">
+                      <div
+                        className={`h-full transition-all ${studentPct >= 100 ? 'bg-[#39ff14] shadow-[0_0_10px_rgba(57,255,20,0.4)]' : 'bg-[#00c8ff] shadow-[0_0_10px_rgba(0,200,255,0.3)]'}`}
+                        style={{ width: `${Math.min(studentPct, 100)}%` }}
+                      />
+                    </div>
+
+                    {/* Stats grid */}
+                    <div className="grid grid-cols-3 gap-3">
+                      {/* Nodes mastered */}
+                      <div className="bg-black/40 border border-slate-800 p-3 text-center">
+                        <p className="text-lg font-display font-black text-[var(--text-primary)]">
+                          {studentMastered}<span className="text-slate-600 text-xs">/{TOTAL_NODES}</span>
+                        </p>
+                        <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Nodes Mastered</p>
+                      </div>
+
+                      {/* Modules completed */}
+                      <div className="bg-black/40 border border-slate-800 p-3 text-center">
+                        <p className="text-lg font-display font-black text-[#39ff14]">
+                          {child.modules_completed}<span className="text-slate-600 text-xs">/10</span>
+                        </p>
+                        <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Modules Done</p>
+                      </div>
+
+                      {/* Latest activity */}
+                      <div className="bg-black/40 border border-slate-800 p-3 text-center">
+                        <div className="flex items-center justify-center gap-1 mb-0.5">
+                          <Clock className="w-3 h-3 text-[#f5c518]" />
+                        </div>
+                        <p className="text-[10px] font-mono font-bold text-[#f5c518]">
+                          {formatRelativeTime(child.latest_activity_at)}
+                        </p>
+                        <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Last Active</p>
+                      </div>
+                    </div>
+
+                    {/* Proof + Discussion row */}
+                    <div className="grid grid-cols-2 gap-3">
+                      <div className="flex items-center gap-2 bg-black/40 border border-slate-800 p-3">
+                        <FileCheck2 className="w-4 h-4 text-[#00c8ff]" />
+                        <div>
+                          <p className="text-xs font-mono font-bold text-[var(--text-primary)]">
+                            {child.proof_approved_total}/{child.proof_submissions_total}
+                          </p>
+                          <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Proofs Approved</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 bg-black/40 border border-slate-800 p-3">
+                        <MessageSquare className="w-4 h-4 text-[#7b4fce]" />
+                        <div>
+                          <p className="text-xs font-mono font-bold text-[var(--text-primary)]">
+                            {child.discussion_activity_count}
+                          </p>
+                          <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">Discussion Posts</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* AI Builds section */}
+                    <div>
+                      <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1.5">
+                        <Activity className="w-3 h-3" /> AI Build Status
+                      </p>
+                      <div className="grid grid-cols-2 gap-3">
+                        <BuildStatusBadge
+                          status={child.tutor_build_status}
+                          label="AI Tutor"
+                          icon={Bot}
+                        />
+                        <BuildStatusBadge
+                          status={child.assistant_build_status}
+                          label="AI Assistant"
+                          icon={Cpu}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Flags */}
+                    {child.flags.length > 0 && (
+                      <div className="flex flex-wrap gap-2">
+                        {child.flags.map((flag) => (
+                          <span
+                            key={flag}
+                            className="flex items-center gap-1 text-[9px] font-mono font-bold uppercase tracking-widest text-red-400 bg-red-950/20 border border-red-500/20 px-2 py-1"
+                          >
+                            <Flag className="w-3 h-3" /> {flag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {/* ================================================================ */}
+        {/* MAIN GRID: Proof Inspector + Sidebar                             */}
+        {/* ================================================================ */}
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
 
-            {/* Latest Activity / Proof Packet */}
+            {/* Latest Proof Packets */}
             <div className="glass-card p-8 !rounded-none border border-slate-800">
               <div className="flex justify-between items-start mb-6">
                 <div>
@@ -150,8 +405,14 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
               )}
             </div>
 
+            {/* Integrity & Support Panel */}
+            <ParentIntegrityPanel openTicketCount={openTicketCount} />
+
           </div>
 
+          {/* ============================================================== */}
+          {/* SIDEBAR                                                        */}
+          {/* ============================================================== */}
           <div className="space-y-6">
 
             {proofSummary && <ParentProofSummaryCard summary={proofSummary} />}
@@ -231,7 +492,7 @@ export default async function ParentDashboard({ searchParams }: { searchParams: 
                           />
                         </div>
                         {complete && (
-                          <Link href={`/parent/modules/1`} className="block text-center w-full bg-[#00c8ff]/10 hover:bg-[#00c8ff]/20 text-[#00c8ff] border border-[#00c8ff]/30 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors font-mono mt-2">
+                          <Link href={`/parent/modules/${mod.num}`} className="block text-center w-full bg-[#00c8ff]/10 hover:bg-[#00c8ff]/20 text-[#00c8ff] border border-[#00c8ff]/30 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors font-mono mt-2">
                             VIEW MODULE REPORT →
                           </Link>
                         )}

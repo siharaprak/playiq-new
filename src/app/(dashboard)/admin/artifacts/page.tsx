@@ -64,8 +64,8 @@ export default async function AdminArtifactsPage() {
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 border-b border-slate-800 pb-6 font-sans">
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <Link href="/admin/users" className="text-slate-500 hover:text-[#00c8ff] font-mono text-xs uppercase tracking-widest transition-colors">
-                ← Student Roster
+              <Link href="/admin/home" className="text-slate-500 hover:text-[#00c8ff] font-mono text-xs uppercase tracking-widest transition-colors">
+                ← Dashboard
               </Link>
               <span className="text-slate-700">/</span>
               <span className="text-[#00c8ff] font-mono text-xs uppercase tracking-widest">Artifacts</span>

@@ -5,6 +5,8 @@ import { MODULES } from '@/lib/constants';
 import Link from 'next/link';
 import RequestFeedbackButton from './RequestFeedbackButton';
 import StudentUsernameSetup from '@/components/profile/StudentUsernameSetup';
+import WelcomeOrientation from '@/components/dashboard/WelcomeOrientation';
+import SupportIssueForm from '@/components/support/SupportIssueForm';
 
 // Module definitions
 const moduleList = [
@@ -78,6 +80,9 @@ export default async function StudentDashboard() {
 
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-6">
+            {(!allProgress || allProgress.length === 0) && (
+              <WelcomeOrientation studentName={name} />
+            )}
 
             {modulesWithProgress.map((mod, index) => {
               if (mod.isUnlocked) {
@@ -151,6 +156,7 @@ export default async function StudentDashboard() {
               </div>
               <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>The guide requires you to explain your attempted approach before providing secondary hints.</p>
               <RequestFeedbackButton />
+              <SupportIssueForm />
             </div>
 
             {/* Overall Progress */}

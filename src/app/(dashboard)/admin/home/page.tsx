@@ -1,4 +1,4 @@
-import { Users, Truck, Activity, Filter, UserCog, FileCheck } from 'lucide-react';
+import { Users, Truck, Activity, Filter, UserCog, FileCheck, UserCheck, MessageSquare, Cpu } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -33,10 +33,18 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   const pendingCount = allApps?.filter(a => a.status === 'pending').length || 0;
   const totalCount = allApps?.length || 0;
 
-  // Fetch open discussion reports count
-  const { count: reportsCount } = await supabase
-    .from('discussion_reports')
-    .select('id', { count: 'exact', head: true });
+  // Operational telemetry queries and discussion reports
+  const [
+    { count: openTicketsCount },
+    { count: totalTutorsCount },
+    { count: totalAssistantsCount },
+    { count: reportsCount }
+  ] = await Promise.all([
+    supabase.from('support_issues').select('*', { count: 'exact', head: true }).eq('status', 'open'),
+    supabase.from('tutor_profiles').select('*', { count: 'exact', head: true }),
+    supabase.from('assistant_profiles').select('*', { count: 'exact', head: true }),
+    supabase.from('discussion_reports').select('id', { count: 'exact', head: true }),
+  ]);
 
   return (
     <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] p-6 md:p-12">
@@ -94,10 +102,22 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
            </div>
         </div>
 
+        {/* Telemetry Alert Bar */}
+        {((openTicketsCount ?? 0) > 0) && (
+          <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded flex items-center justify-between text-xs font-mono">
+            <span className="text-amber-400 font-bold uppercase tracking-wider flex items-center gap-1.5 animate-pulse">
+              ⚠ SYSTEM ALERT: {openTicketsCount} OPEN SUPPORT TICKETS PENDING REVIEW
+            </span>
+            <Link href="/admin/support" className="text-[#f5c518] hover:underline font-bold">
+              OPEN SUPPORT QUEUE &rarr;
+            </Link>
+          </div>
+        )}
+
         {/* Navigation Section */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-12">
           <Link href="/admin/users" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
-            <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all flex-shrink-0">
               <UserCog className="w-6 h-6" />
             </div>
             <div>
@@ -107,8 +127,9 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             <span className="ml-auto text-slate-600 group-hover:text-[#7b4fce] transition-colors">→</span>
           </Link>
 
+          {/* Card 2: Artifact Reviews */}
           <Link href="/admin/artifacts" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#00c8ff]/60 transition-all group flex items-center gap-4">
-            <div className="w-12 h-12 flex items-center justify-center border border-[#00c8ff]/40 bg-[#00c8ff]/10 text-[#00c8ff] group-hover:shadow-[0_0_15px_rgba(0,200,255,0.4)] transition-all">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#00c8ff]/40 bg-[#00c8ff]/10 text-[#00c8ff] group-hover:shadow-[0_0_15px_rgba(0,200,255,0.4)] transition-all flex-shrink-0">
               <FileCheck className="w-6 h-6" />
             </div>
             <div>
@@ -118,6 +139,50 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             <span className="ml-auto text-slate-600 group-hover:text-[#00c8ff] transition-colors">→</span>
           </Link>
 
+          {/* Card 3: Enrollment Overrides */}
+          <Link href="/admin/enrollments" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#00c8ff]/60 transition-all group flex items-center gap-4">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#00c8ff]/40 bg-[#00c8ff]/10 text-[#00c8ff] group-hover:shadow-[0_0_15px_rgba(0,200,255,0.4)] transition-all flex-shrink-0">
+              <UserCheck className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Enrollment Manual Overrides</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Manually enroll students, suspend links, or reactivate course access</p>
+            </div>
+            <span className="ml-auto text-slate-600 group-hover:text-[#00c8ff] transition-colors">→</span>
+          </Link>
+
+          {/* Card 4: AI Agents Lookup */}
+          <Link href="/admin/agents" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all flex-shrink-0">
+              <Cpu className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Agent Lookup Console</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Audit student AI Tutors (M9) and AI Assistants (M10)</p>
+            </div>
+            <span className="ml-auto text-slate-600 group-hover:text-[#7b4fce] transition-colors">→</span>
+          </Link>
+
+          {/* Card 5: Support Tickets */}
+          <Link href="/admin/support" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#f5c518]/60 transition-all group flex items-center gap-4 relative">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#f5c518]/45 bg-[#f5c518]/10 text-[#f5c518] group-hover:shadow-[0_0_15px_rgba(245,197,24,0.4)] transition-all flex-shrink-0">
+              <MessageSquare className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm flex items-center gap-2">
+                Support Tickets
+                {((openTicketsCount ?? 0) > 0) && (
+                  <span className="bg-[#f5c518] text-slate-950 font-mono text-[9px] font-black px-1.5 py-0.5 rounded animate-pulse">
+                    {openTicketsCount}
+                  </span>
+                )}
+              </p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Review student issues, resolve questions, and clear queues</p>
+            </div>
+            <span className="ml-auto text-slate-600 group-hover:text-[#f5c518] transition-colors">→</span>
+          </Link>
+
+          {/* Card 6: Moderation */}
           <Link href="/admin/moderation" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-red-500/60 transition-all group flex items-center gap-4">
             <div className="w-12 h-12 flex items-center justify-center border border-red-500/40 bg-red-500/10 text-red-500 group-hover:shadow-[0_0_15px_rgba(239,68,68,0.4)] transition-all">
               <span className="font-bold font-mono text-lg font-black">!</span>
@@ -133,13 +198,12 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             </div>
             <span className="ml-auto text-slate-600 group-hover:text-red-500 transition-colors">→</span>
           </Link>
-
           <Link href="/admin/home" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
-            <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all flex-shrink-0">
               <Users className="w-6 h-6" />
             </div>
             <div>
-              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Beta Intake</p>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Beta Intake Roster</p>
               <p className="font-mono text-[10px] text-slate-500 mt-1">View beta applicants, payment status, and registration logs</p>
             </div>
             <span className="ml-auto text-slate-600 group-hover:text-[#7b4fce] transition-colors">→</span>

@@ -2,6 +2,8 @@ import { listDiscussionCategories } from '@/lib/data/discussions';
 import Link from 'next/link';
 import { Hash, ChevronRight, TrendingUp } from 'lucide-react';
 
+export const dynamic = 'force-dynamic';
+
 export default async function DiscussionsIndex() {
   const categories = await listDiscussionCategories();
 
