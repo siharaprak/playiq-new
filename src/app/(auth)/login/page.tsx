@@ -4,7 +4,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, AlertCircle } from 'lucide-react';
 import { useFormStatus } from 'react-dom';
-import { useActionState, useState } from 'react';
+import { useActionState, useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { loginAction } from '@/app/(auth)/actions';
 
 function SubmitButton() {
@@ -23,6 +24,15 @@ function SubmitButton() {
 export default function Login() {
   const [state, formAction] = useActionState(loginAction, null);
   const [loginRole, setLoginRole] = useState<'student' | 'parent'>('student');
+  const router = useRouter();
+
+  // When the server action returns mfaRequired, the response includes Set-Cookie headers
+  // with the session. Navigate client-side so the browser has the cookies before the MFA page loads.
+  useEffect(() => {
+    if (state?.mfaRequired) {
+      router.push('/login/mfa');
+    }
+  }, [state, router]);
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-28 pb-12 px-6">

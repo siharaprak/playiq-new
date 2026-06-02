@@ -65,7 +65,10 @@ export async function loginAction(prevState: any, formData: FormData) {
   // Check if MFA is required
   const { data: mfaData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   if (mfaData && mfaData.nextLevel === 'aal2' && mfaData.currentLevel === 'aal1') {
-    redirect('/login/mfa');
+    // DON'T redirect here — redirect() throws before Set-Cookie headers reach the browser,
+    // which means the MFA page won't have the session. Return a flag instead and let the
+    // client-side handle navigation after cookies are properly received.
+    return { mfaRequired: true };
   }
 
   redirect(`/${role}/home`);
