@@ -23,8 +23,8 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "PlayIQ | Imagine. Build. Grow.",
   description:
-    "PlayIQ is a hybrid digital and physical Learning Operating System. Future-proof learning with AI-powered STEM education, magnetic building kits, and guided digital experiences.",
-  keywords: ["STEM", "education", "magnetic blocks", "AI learning", "PlayIQ"],
+    "PlayIQ is a next-generation Digital Learning Operating System. Future-proof learning with AI-powered STEM education, interactive study modules, and guided digital experiences.",
+  keywords: ["STEM", "education", "AI learning", "PlayIQ", "study coaching"],
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;

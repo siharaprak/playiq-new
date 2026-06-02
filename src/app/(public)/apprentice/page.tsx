@@ -22,7 +22,7 @@ export default function Apprentice() {
             THE APPRENTICE
           </h1>
           <p className="font-mono text-sm md:text-lg text-slate-400 max-w-2xl mx-auto border-l-2 border-[#00c8ff] pl-4 text-left">
-            HARDWARE INCLUDED. A SCREEN-FREE ENGINEERING CHALLENGE FOR TEENS.
+            A DIGITALLY GUIDED AI LEARNING AND LOGIC CHALLENGE FOR TEENS.
           </p>
         </section>
 
@@ -45,8 +45,8 @@ export default function Apprentice() {
               <li className="flex gap-4">
                 <span className="text-[#00c8ff]">&gt;&gt;</span>
                 <div>
-                  <h3 className="text-[#00c8ff] uppercase font-bold mb-1">MAGNETIC BLOCKS</h3>
-                  <p className="opacity-70">Physical construction nodes shipped straight to your door.</p>
+                  <h3 className="text-[#00c8ff] uppercase font-bold mb-1">AI LEARNING PATHWAY</h3>
+                  <p className="opacity-70">Interactive study and logic pathways calibrated to your pace.</p>
                 </div>
               </li>
               <li className="flex gap-4">
@@ -60,7 +60,7 @@ export default function Apprentice() {
                 <span className="text-[#00c8ff]">&gt;&gt;</span>
                 <div>
                   <h3 className="text-[#00c8ff] uppercase font-bold mb-1">PARENT PROOF PACKET</h3>
-                  <p className="opacity-70">Over-the-shoulder transmission of verified structures.</p>
+                  <p className="opacity-70">Over-the-shoulder transmission of verified study progress.</p>
                 </div>
               </li>
             </ul>
@@ -76,16 +76,16 @@ export default function Apprentice() {
           
           <div className="grid md:grid-cols-3 gap-6 font-mono">
             <div className="border border-[rgba(0,200,255,0.2)] bg-black/40 p-6">
-              <h3 className="text-[#00c8ff] mb-2 uppercase text-sm">01. OFFLINE_EXEC</h3>
-              <p className="text-xs text-slate-400 uppercase leading-relaxed">App provides blueprint. Execution is physical. Screen logic suspended.</p>
+              <h3 className="text-[#00c8ff] mb-2 uppercase text-sm">01. GUIDED_COACHING</h3>
+              <p className="text-xs text-slate-400 uppercase leading-relaxed">System guides learner with interactive prompts. Active retrieval reinforced.</p>
             </div>
             <div className="border border-[rgba(0,200,255,0.2)] bg-black/40 p-6">
               <h3 className="text-[#00c8ff] mb-2 uppercase text-sm">02. SMART_HINTING</h3>
               <p className="text-xs text-slate-400 uppercase leading-relaxed">Direct answers = false. Demanding user effort = true.</p>
             </div>
             <div className="border border-[rgba(0,200,255,0.2)] bg-black/40 p-6">
-              <h3 className="text-[#00c8ff] mb-2 uppercase text-sm">03. VISUAL_PROOF</h3>
-              <p className="text-xs text-slate-400 uppercase leading-relaxed">Upload physical structure image array for verification.</p>
+              <h3 className="text-[#00c8ff] mb-2 uppercase text-sm">03. CONCEPT_PROOF</h3>
+              <p className="text-xs text-slate-400 uppercase leading-relaxed">Upload completed worksheet files and portfolios for verification.</p>
             </div>
           </div>
         </section>

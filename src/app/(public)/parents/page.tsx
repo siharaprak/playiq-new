@@ -19,7 +19,7 @@ export default function Parents() {
           </h1>
           <p className="font-mono text-sm uppercase text-slate-400 max-w-2xl mx-auto leading-relaxed tracking-wider border-r-2 border-[#7b4fce] pr-4">
             Don't just trust that they are learning. 
-            See actual photos of what they build with the Parent Proof Packet.
+            See actual proof of their conceptual understanding and worksheets in the Parent Proof Packet.
           </p>
         </section>
 
@@ -36,7 +36,7 @@ export default function Parents() {
                 Passive learning apps give false progress (e.g. "100% COMPLETE") when kids just click buttons. Guesses look like success.
               </p>
               <p className="opacity-80">
-                PlayIQ forces real-world effort. Kids must physically build the solution and snap a photo. We send that photo straight to you.
+                PlayIQ forces real learning effort. Kids must explain concepts in their own words and complete active recall worksheets. We log that proof straight for you.
               </p>
             </div>
           </div>
@@ -49,11 +49,11 @@ export default function Parents() {
           <div className="grid md:grid-cols-3 gap-6 font-mono text-left">
             <div className="glass-card p-6 !rounded-none">
                <h3 className="text-[#00c8ff] text-sm uppercase font-bold mb-3">01. VISUAL PROOF</h3>
-               <p className="text-xs text-slate-400 uppercase leading-relaxed">See photos of the real structures they build offline.</p>
+               <p className="text-xs text-slate-400 uppercase leading-relaxed">See completed worksheets and proof portfolios of their learning.</p>
             </div>
             <div className="glass-card p-6 !rounded-none">
                <h3 className="text-[#00c8ff] text-sm uppercase font-bold mb-3">02. EFFORT TRACKING</h3>
-               <p className="text-xs text-slate-400 uppercase leading-relaxed">See how long they spent building vs how often they asked for hints.</p>
+               <p className="text-xs text-slate-400 uppercase leading-relaxed">See how long they spent studying vs how often they asked for hints.</p>
             </div>
             <div className="glass-card p-6 !rounded-none">
                <h3 className="text-[#00c8ff] text-sm uppercase font-bold mb-3">03. SKILL_GATES</h3>

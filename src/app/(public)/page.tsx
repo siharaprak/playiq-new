@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { PlayIQLogo } from '@/components/layout/PlayIQLogo';
 
 export default function Home() {
-  const [selectedPath, setSelectedPath] = useState<'none' | 'physical' | 'digital' | 'both'>('none');
+  const [selectedPath, setSelectedPath] = useState<'none' | 'physical' | 'digital' | 'both'>('digital');
 
   return (
     <main className="w-full">
@@ -42,50 +42,28 @@ export default function Home() {
 
             <div className="text-center animate-fade-in-up w-full" style={{ animationDelay: '0.4s' }}>
               <h2 className="text-2xl md:text-5xl font-extrabold text-white leading-tight uppercase font-display tracking-widest drop-shadow-[2px_2px_0_#7b4fce]">
-                Engineer Your <br/>
-                <span className="text-[#00c8ff] text-glow-cyan text-[1.2em]">Reality</span>
+                Master Your <br/>
+                <span className="text-[#00c8ff] text-glow-cyan text-[1.2em]">Learning</span>
               </h2>
               <p className="mt-8 text-sm md:text-lg text-slate-300 font-bold max-w-2xl mx-auto uppercase tracking-wide">
-                Where physical engineering meets digital dominance. 
+                Where advanced cognitive strategy meets AI-powered mentorship.
               </p>
               
               <div className="mt-12 flex flex-col items-center justify-center gap-6">
-                <p className="font-display text-sm md:text-base text-white tracking-[0.1em] uppercase">
-                  Do you want <span className="text-[#7b4fce]">hands-on physical engineering</span> OR <span className="text-[#00c8ff]">digital learning</span> OR the best of both worlds?
-                </p>
                 <div className="flex flex-col md:flex-row gap-4 w-full justify-center">
-                  <button 
-                    onClick={() => {
-                        setSelectedPath('physical');
-                        setTimeout(() => document.getElementById('content-start')?.scrollIntoView({ behavior: 'smooth' }), 100);
-                    }}
-                    className={`font-display uppercase font-bold text-sm tracking-[0.1em] px-6 py-4 transition-all border-2 ${selectedPath === 'physical' ? 'bg-[#7b4fce] text-white border-[#7b4fce] shadow-[0_0_20px_#7b4fce]' : 'bg-transparent text-white border-white/30 hover:border-[#7b4fce] hover:text-[#7b4fce]'}`}
+                  <Link 
+                    href="/beta"
+                    className="font-display uppercase font-bold text-sm tracking-[0.1em] px-8 py-4 transition-all border-2 bg-[#00c8ff] text-[#020617] border-[#00c8ff] shadow-[0_0_20px_#00c8ff] hover:bg-white hover:border-white hover:text-black"
                   >
-                    Physical Engineering
-                  </button>
-                  <button 
-                    onClick={() => {
-                        setSelectedPath('digital');
-                        setTimeout(() => document.getElementById('content-start')?.scrollIntoView({ behavior: 'smooth' }), 100);
-                    }}
-                    className={`font-display uppercase font-bold text-sm tracking-[0.1em] px-6 py-4 transition-all border-2 ${selectedPath === 'digital' ? 'bg-[#00c8ff] text-[#020617] border-[#00c8ff] shadow-[0_0_20px_#00c8ff]' : 'bg-transparent text-white border-white/30 hover:border-[#00c8ff] hover:text-[#00c8ff]'}`}
+                    Join Early Access
+                  </Link>
+                  <Link 
+                    href="/how-it-works"
+                    className="font-display uppercase font-bold text-sm tracking-[0.1em] px-8 py-4 transition-all border-2 bg-transparent text-white border-white/30 hover:border-[#7b4fce] hover:shadow-[0_0_15px_#7b4fce]"
                   >
-                    Digital Learning
-                  </button>
-                  <button 
-                    onClick={() => {
-                        setSelectedPath('both');
-                        setTimeout(() => document.getElementById('content-start')?.scrollIntoView({ behavior: 'smooth' }), 100);
-                    }}
-                    className={`font-display uppercase font-bold text-sm tracking-[0.1em] px-6 py-4 transition-all border-2 ${selectedPath === 'both' ? 'bg-gradient-to-r from-[#00c8ff] to-[#7b4fce] text-white border-transparent shadow-[0_0_20px_rgba(123,79,206,0.5)]' : 'bg-transparent text-white border-white/30 hover:border-[#7b4fce] hover:shadow-[0_0_15px_#7b4fce]'}`}
-                  >
-                    Best of Both Worlds
-                  </button>
+                    See How It Works
+                  </Link>
                 </div>
-
-                <Link href="/how-it-works" className="mt-4 font-display uppercase font-bold text-xs tracking-[0.2em] text-white/70 underline hover:text-white transition-colors">
-                  OR SEE HOW IT WORKS &gt;
-                </Link>
               </div>
             </div>
           </div>
@@ -94,37 +72,7 @@ export default function Home() {
 
       <div id="content-start" className="scroll-mt-10" />
 
-      {/* ═══════════ 2. PRODUCT — Magnetic Building Set ═══════════ */}
-      {(selectedPath === 'physical' || selectedPath === 'both') && (
-      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden animate-fade-in-up">
-        <div className="relative z-10 mx-auto max-w-4xl">
-          <div className="glass-card glass-card-hover p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8 glow-border-cyan">
-            <div className="circle-frame animate-float" style={{ animationDelay: '0.5s' }}>
-              <Image
-                src="/images/playiq-amz-product.jpg"
-                alt="181-Piece Magnetic Engineering Set"
-                width={220}
-                height={220}
-              />
-            </div>
-            <div className="text-left flex-1">
-              <h2 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">
-                181-Piece Magnetic{' '}
-                <span className="text-[#7b4fce] text-glow-magenta">Engineering Kit</span>
-              </h2>
-              <p className="mt-3 text-slate-400 text-sm md:text-base">
-                Advanced Space-Themed Magnetic Construction Set with LED Light-Up Cubes | Perfect for Teen Physics and Structural Engineering Challenges
-              </p>
-              <div className="mt-5 flex gap-4">
-                <Link href="#get-started" className="btn-neon-cyan">
-                  LEARN MORE ↗
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      )}
+
 
       {/* ═══════════ 3. FEATURES — Why Teens Stick ═══════════ */}
       {(selectedPath === 'digital' || selectedPath === 'both') && (
@@ -148,22 +96,22 @@ export default function Home() {
 
           <div className="grid sm:grid-cols-3 gap-6">
             {[
-              {
-                title: 'Earned Progress',
-                desc: 'Lock-and-key mechanics mean they stay engaged trying to solve the puzzle, building resilience.',
-                icon: '🔓',
-              },
-              {
-                title: 'Guided Mentorship',
-                desc: 'If they get stuck, the app provides smart hints, ensuring they do the thinking, not the software.',
-                icon: '🧠',
-              },
-              {
-                title: 'Real-World Skills',
-                desc: 'Learning physics, structural design, and logic through hands-on engineering that lives in the physical world.',
-                icon: '🚀',
-              },
-            ].map((item, i) => (
+                {
+                  title: 'Earned Progress',
+                  desc: 'Lock-and-key mechanics mean they stay engaged trying to solve the puzzle, building resilience.',
+                  icon: '🔓',
+                },
+                {
+                  title: 'Guided Mentorship',
+                  desc: 'If they get stuck, the app provides smart hints, ensuring they do the thinking, not the software.',
+                  icon: '🧠',
+                },
+                {
+                  title: 'Cognitive Strategy',
+                  desc: 'Mastering active recall, AI prompting, and logical reasoning through structured challenge paths.',
+                  icon: '🚀',
+                },
+              ].map((item, i) => (
               <div
                 key={item.title}
                 className="glass-card glass-card-hover p-7 text-center"
@@ -188,8 +136,8 @@ export default function Home() {
           <div className="glass-card glass-card-hover p-6 md:p-8 flex flex-col md:flex-row items-center gap-6 md:gap-8 glow-border-cyan">
             <div className="circle-frame animate-float" style={{ animationDelay: '1s' }}>
               <Image
-                src="/images/playiq-branding/CONTENT, BRAND ASSETS & GUIDELINES/REFERENCE - MAGNETIC BLOCK PRODUCT IMAGES/Blocks in Space 1.jpg"
-                alt="Blocks in Space — Your First Character"
+                src="/images/tier3-teen-creative-build.png"
+                alt="Teens building creative digital systems"
                 width={220}
                 height={220}
               />
@@ -197,10 +145,10 @@ export default function Home() {
             <div className="text-left flex-1">
               <h2 className="text-2xl md:text-3xl font-extrabold text-white leading-tight">
                 Your First{' '}
-                <span className="text-[#00c8ff] text-glow-cyan">Adventure Awaits</span>
+                <span className="text-[#00c8ff] text-glow-cyan">Module Awaits</span>
               </h2>
               <p className="mt-3 text-slate-400 text-sm md:text-base">
-                Explore immersive space worlds built with your own hands. Each course unlocks new challenges, characters, and engineering feats.
+                Explore immersive study modules designed to upgrade how you learn. Each module unlocks new challenges, tutor engines, and mastery trials.
               </p>
               <div className="mt-5">
                 <Link href="/apprentice" className="btn-neon-cyan">
@@ -225,8 +173,8 @@ export default function Home() {
             <div className="w-full md:w-1/2 flex justify-center">
               <div className="glass-card p-3 rounded-2xl glow-border-cyan overflow-hidden animate-float" style={{ animationDelay: '1.5s' }}>
                 <Image
-                  src="/images/playiq-branding/CONTENT, BRAND ASSETS & GUIDELINES/REFERENCE - MAGNETIC BLOCK PRODUCT IMAGES/Family playIQ time.jpg"
-                  alt="Family PlayIQ Time"
+                  src="/images/tier2-parent-proof-packet.png"
+                  alt="Parent Proof Packet Dashboard"
                   width={520}
                   height={360}
                   className="rounded-xl w-full h-auto object-cover"
@@ -240,18 +188,18 @@ export default function Home() {
                 Parent Proof Packet
               </h2>
               <h3 className="text-3xl md:text-4xl font-extrabold text-white leading-tight">
-                Total visibility into their{' '}
-                <span className="text-[#7b4fce] text-glow-magenta">learning.</span>
+                Visibility into their{' '}
+                <span className="text-[#7b4fce] text-glow-magenta">competency.</span>
               </h3>
               <p className="mt-5 text-slate-400 leading-relaxed">
-                You shouldn&apos;t have to guess if an educational tool is working. With PlayIQ, you receive a continuous Parent Proof Packet.
+                Stop guessing if your teen is actually learning. PlayIQ provides a continuous Parent Proof Packet, giving you direct insight into their intellectual growth.
               </p>
               <p className="mt-3 text-slate-400 leading-relaxed">
-                Instead of a generic screen saying &ldquo;100% complete,&rdquo; you see the actual photos of the structures they engineered, proving they grasped the concept.
+                Instead of empty completion bars, you gain access to their portfolio of completed complex problem sets and analytical thought logs, verifying genuine mastery.
               </p>
               <div className="mt-6">
                 <Link href="/parents" className="btn-neon-magenta">
-                  See How We Verify &rarr;
+                  Review Methodology &rarr;
                 </Link>
               </div>
             </div>
@@ -260,31 +208,7 @@ export default function Home() {
       </section>
       )}
 
-      {/* ═══════════ 6. REPLAYABILITY ═══════════ */}
-      {(selectedPath === 'physical' || selectedPath === 'both') && (
-      <section className="relative px-6 py-20 md:py-28 bg-space-gradient star-field overflow-hidden animate-fade-in-up">
-        <div className="relative z-10 mx-auto max-w-5xl text-center">
-          <h2 className="font-display text-xs uppercase tracking-[0.25em] text-[#00c8ff] text-glow-cyan mb-4">
-            Infinite Replay
-          </h2>
-          <h3 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
-            More ways to <span className="text-[#7b4fce] text-glow-magenta">build.</span>
-          </h3>
-          <p className="text-slate-400 mb-10 max-w-2xl mx-auto">
-            The physical kit doesn&apos;t end when the course does. The hardware is a lifelong platform for invention.
-          </p>
-          <div className="glass-card p-3 rounded-2xl glow-border-cyan overflow-hidden">
-            <Image
-              src="/images/playiq-branding/CONTENT, BRAND ASSETS & GUIDELINES/REFERENCE - MAGNETIC BLOCK PRODUCT IMAGES/Blocks in Space 2.jpg"
-              alt="Blocks in Space Creative Build"
-              width={900}
-              height={400}
-              className="rounded-xl w-full h-[320px] md:h-[420px] object-cover"
-            />
-          </div>
-        </div>
-      </section>
-      )}
+
 
       {/* ═══════════ 7. FAQ & FINAL CTA ═══════════ */}
       {selectedPath !== 'none' && (
@@ -317,9 +241,9 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <h5 className="font-semibold text-white text-lg">Do they need their own tablet?</h5>
+                <h5 className="font-semibold text-white text-lg">Do they need their own device?</h5>
                 <p className="text-slate-400 mt-2 text-sm leading-relaxed">
-                  A screen is used briefly to receive missions and snap photos of their builds. The heavy lifting happens strictly offline on the desk.
+                  A device is used to access study missions, complete worksheets, and build custom AI coaches. The heavy lifting happens through active thinking and retrieval.
                 </p>
               </div>
             </div>

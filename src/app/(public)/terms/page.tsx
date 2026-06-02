@@ -29,7 +29,7 @@ export default function TermsPage() {
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">1. Acceptance of Terms</h2>
-            <p>By accessing or using PlayIQ Learning ("PlayIQ," "we," "our," or "us") — including the website, mobile application, digital learning platform, and associated physical products — you agree to be bound by these Terms of Service. If you are a parent or guardian registering on behalf of a minor, you accept these terms on their behalf.</p>
+            <p>By accessing or using PlayIQ Learning ("PlayIQ," "we," "our," or "us") — including the website, mobile application, digital learning platform, and associated services — you agree to be bound by these Terms of Service. If you are a parent or guardian registering on behalf of a minor, you accept these terms on their behalf.</p>
             <p className="mt-3">If you do not agree to these terms, do not use PlayIQ.</p>
           </div>
 
@@ -48,8 +48,7 @@ export default function TermsPage() {
             <p>PlayIQ offers subscription-based access to digital learning content. By subscribing, you authorize us to charge your payment method on a recurring basis at the selected billing interval.</p>
             <h3 className="text-white font-semibold mt-4 mb-2">Cancellation</h3>
             <p>You may cancel your subscription at any time from your account settings. Cancellation takes effect at the end of the current billing period. We do not provide refunds for unused portions of a subscription period.</p>
-            <h3 className="text-white font-semibold mt-4 mb-2">Physical Products</h3>
-            <p>Physical product orders (e.g., Magnetic Building Kits) are subject to separate return and refund policies per Amazon marketplace policies where applicable.</p>
+
           </div>
 
           <div className="glass-card p-8">
@@ -66,7 +65,7 @@ export default function TermsPage() {
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">6. Intellectual Property</h2>
-            <p>All PlayIQ content — including course materials, AI-generated hints, characters, branding, and software — is owned by PlayIQ Learning and protected by copyright and intellectual property laws. User-generated content (e.g., build photos submitted for Parent Proof Packets) remains yours; however, you grant us a limited license to display and process it within the platform.</p>
+            <p>All PlayIQ content — including course materials, AI-generated hints, characters, branding, and software — is owned by PlayIQ Learning and protected by copyright and intellectual property laws. User-generated content (e.g., completed worksheets submitted for Parent Proof Packets) remains yours; however, you grant us a limited license to display and process it within the platform.</p>
           </div>
 
           <div className="glass-card p-8">

@@ -24,7 +24,7 @@ export default function HowItWorks() {
               <div className="absolute left-0 top-1.5 w-4 h-4 border-2 border-[#00c8ff] bg-[#020617] rotate-45 shadow-[0_0_10px_#00c8ff]"></div>
               <h3 className="text-[#00c8ff] text-xl font-display font-bold uppercase tracking-[0.2em] mb-2">[01] GET YOUR MISSION</h3>
               <p className="text-slate-400 text-sm leading-relaxed uppercase opacity-80">
-                The app presents your engineering challenge. Example: "Build a truss bridge that supports maximum structural load." Then put the screen away and start building with the physical kit.
+                The app presents your study challenge. Example: "Explain the Socratic method and set up your study rules." Start learning through active retrieval and coach-guided tasks.
               </p>
             </div>
 
@@ -38,9 +38,9 @@ export default function HowItWorks() {
 
             <div className="relative pl-8 md:pl-12">
               <div className="absolute left-0 top-1.5 w-4 h-4 border-2 border-[#00c8ff] bg-[#020617] rotate-45 shadow-[0_0_10px_#00c8ff]"></div>
-              <h3 className="text-[#00c8ff] text-xl font-display font-bold uppercase tracking-[0.2em] mb-2">[03] SNAP A PICTURE</h3>
+              <h3 className="text-[#00c8ff] text-xl font-display font-bold uppercase tracking-[0.2em] mb-2">[03] COMPLETE WORKSHEETS</h3>
               <p className="text-slate-400 text-sm leading-relaxed uppercase opacity-80">
-                Mission complete. Use your camera to capture your build. The app checks your structure against the goals.
+                Mission complete. Complete your active retrieval decks and worksheets. The app validates your inputs against the modules.
               </p>
             </div>
 
@@ -48,7 +48,7 @@ export default function HowItWorks() {
               <div className="absolute left-0 top-1.5 w-4 h-4 border-2 border-[#7b4fce] bg-[#020617] rotate-45 shadow-[0_0_10px_#7b4fce]"></div>
               <h3 className="text-[#7b4fce] text-xl font-display font-bold uppercase tracking-[0.2em] mb-2">[04] LEVEL UP</h3>
               <p className="text-slate-400 text-sm leading-relaxed uppercase opacity-80">
-                Proof of your build is sent to your parents. You unlock the next level and get ready for a harder challenge.
+                Proof of your progress is logged for parent overview. You unlock the next level and get ready for a harder challenge.
               </p>
             </div>
 

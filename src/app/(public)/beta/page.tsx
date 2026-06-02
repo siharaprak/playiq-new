@@ -21,10 +21,10 @@ export default function Beta() {
           
           <div className="glass-card p-8 !rounded-none border-t-4 border-t-[#00c8ff]">
              <h2 className="font-display text-2xl font-bold text-white mb-6 uppercase tracking-[0.2em]">&gt; WHAT YOU GET</h2>
-             <ul className="space-y-6 mb-8 font-mono text-xs text-slate-300 uppercase tracking-widest">
+             <ul className="space-y-6 mb-8 font-mono text-xs text-[#b4c6ef] uppercase tracking-widest">
                <li className="flex items-start">
                  <span className="text-[#00c8ff] text-lg mr-3 shadow-[0_0_5px_#00c8ff] leading-none">[+]</span> 
-                 <p className="opacity-80 mt-1">Full physical hardware kit shipped immediately.</p>
+                 <p className="opacity-80 mt-1">Instant activation of the digital study and AI coaching platform.</p>
                </li>
                <li className="flex items-start">
                  <span className="text-[#00c8ff] text-lg mr-3 shadow-[0_0_5px_#00c8ff] leading-none">[+]</span> 
@@ -42,7 +42,7 @@ export default function Beta() {
              
              <div className="p-6 bg-[rgba(0,200,255,0.05)] border border-[#00c8ff] font-mono text-xs text-white">
                <h3 className="font-bold text-[#00c8ff] uppercase tracking-widest mb-2">&gt; PRICING</h3>
-               <p className="opacity-80 leading-relaxed uppercase"><strong>[PRICING OVERRIDE]</strong> Includes all hardware and software license. Dropship executes in 3-5 standard cycles.</p>
+               <p className="opacity-80 leading-relaxed uppercase"><strong>[PRICING OVERRIDE]</strong> Includes full software license. Account setup is instant upon acceptance.</p>
              </div>
           </div>
 

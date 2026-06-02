@@ -39,7 +39,7 @@ export default function PrivacyPage() {
             <p>
               PlayIQ Learning ("we," "our," or "us") is committed to protecting your privacy and the privacy of your
               children. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when
-              you use our platform, including the PlayIQ app, website, and associated physical learning kits.
+              you use our platform, including the PlayIQ app, website, and associated services.
             </p>
             <p className="mt-3">
               By using PlayIQ, you agree to the data practices described in this policy. If you do not agree, please
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
             <h3 className="text-white font-semibold mt-5 mb-2">Student & Child Data</h3>
             <p>
               For minor users (under 18), we collect only the data necessary to deliver the learning experience —
-              course progress, mission completions, build photo submissions, and achievement records. We do not
+              course progress, mission completions, portfolio submissions, and achievement records. We do not
               knowingly collect personal data from children under 13 without verifiable parental consent.
             </p>
             <h3 className="text-white font-semibold mt-5 mb-2">Usage Information</h3>
