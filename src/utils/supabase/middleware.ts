@@ -37,10 +37,13 @@ export async function updateSession(request: NextRequest) {
 
   const isProtectedRoute = request.nextUrl.pathname.startsWith('/student') || 
                            request.nextUrl.pathname.startsWith('/parent') ||
-                           request.nextUrl.pathname.startsWith('/admin')
+                           request.nextUrl.pathname.startsWith('/admin') ||
+                           request.nextUrl.pathname.startsWith('/settings')
 
   const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || 
                       request.nextUrl.pathname.startsWith('/signup')
+
+  const isMfaRoute = request.nextUrl.pathname.startsWith('/login/mfa')
 
   if (!user && isProtectedRoute) {
     // no user, potentially respond by redirecting the user to the login page
@@ -56,25 +59,51 @@ export async function updateSession(request: NextRequest) {
     return redirectResponse
   }
 
-  if (user && isAuthRoute) {
-    // Resolve the user's actual role from profiles to redirect to the correct dashboard.
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', user.id)
-      .single();
+  if (user) {
+    // Check if user has MFA enrolled and needs to verify
+    let needsMfa = false
+    try {
+      const { data: mfaData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel()
+      if (mfaData) {
+        needsMfa = mfaData.nextLevel === 'aal2' && mfaData.currentLevel === 'aal1'
+      }
+    } catch (e) {
+      console.error('MFA assurance level check error:', e)
+    }
 
-    const role = profile?.role || 'parent';
-    const url = request.nextUrl.clone();
-    url.pathname = `/${role}/home`;
-    const redirectResponse = NextResponse.redirect(url)
-    
-    // Crucial: preserve any cookies that were updated by the createServerClient
-    supabaseResponse.cookies.getAll().forEach((cookie) => {
-      redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
-    })
-    
-    return redirectResponse
+    if (needsMfa) {
+      // If they need MFA and aren't on the verification route, redirect them
+      if (!isMfaRoute && (isProtectedRoute || isAuthRoute)) {
+        const url = request.nextUrl.clone()
+        url.pathname = '/login/mfa'
+        const redirectResponse = NextResponse.redirect(url)
+        
+        supabaseResponse.cookies.getAll().forEach((cookie) => {
+          redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+        })
+        return redirectResponse
+      }
+    } else {
+      // If they don't need MFA, and are trying to access auth/MFA routes, redirect to dashboard
+      if (isAuthRoute || isMfaRoute) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single();
+
+        const role = profile?.role || 'parent';
+        const url = request.nextUrl.clone();
+        url.pathname = `/${role}/home`;
+        const redirectResponse = NextResponse.redirect(url)
+        
+        supabaseResponse.cookies.getAll().forEach((cookie) => {
+          redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+        })
+        
+        return redirectResponse
+      }
+    }
   }
 
   // To properly gate /admin, we would inspect the profiles table, but since middleware 

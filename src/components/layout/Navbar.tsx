@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, MessageSquare, LayoutDashboard, BookOpen } from 'lucide-react';
+import { Menu, X, MessageSquare, LayoutDashboard, BookOpen, Settings } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
 import { PlayIQLogo } from './PlayIQLogo';
@@ -84,14 +84,19 @@ export function Navbar() {
             );
           })}
 
-          {/* Student-only nav */}
+          {/* Authenticated user nav */}
           {!isLoading && userRole && (
             <>
-              <Link href="/student/home" className={`${baseLinkClass} ${pathname.startsWith('/student/home') || pathname.startsWith('/student/modules') ? activeLinkClass : inactiveLinkClass}`}>
-                MODULES
-              </Link>
+              {(userRole === 'student' || userRole === 'admin') && (
+                <Link href="/student/home" className={`${baseLinkClass} ${pathname.startsWith('/student/home') || pathname.startsWith('/student/modules') ? activeLinkClass : inactiveLinkClass}`}>
+                  MODULES
+                </Link>
+              )}
               <Link href="/discussions" className={`${baseLinkClass} ${pathname.startsWith('/discussions') ? activeLinkClass : inactiveLinkClass}`}>
                 DISCUSSIONS
+              </Link>
+              <Link href="/settings" className={`${baseLinkClass} ${pathname.startsWith('/settings') ? activeLinkClass : inactiveLinkClass}`}>
+                SETTINGS
               </Link>
             </>
           )}
@@ -144,6 +149,13 @@ export function Navbar() {
                   <MessageSquare className="w-3.5 h-3.5" /> Discussions
                 </Link>
               </>
+            )}
+
+            {!isLoading && userRole && (
+              <Link href="/settings" onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] rounded-lg mb-2">
+                <Settings className="w-3.5 h-3.5" /> Settings
+              </Link>
             )}
 
             {/* Public mobile nav always shown */}

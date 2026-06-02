@@ -1,4 +1,4 @@
-import { Layers, HelpCircle, UploadCloud, Lock, CheckCircle2 } from 'lucide-react';
+import { Layers, HelpCircle, UploadCloud, Lock, CheckCircle2, Settings } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
@@ -68,6 +68,9 @@ export default async function StudentDashboard() {
         <header className="flex justify-between items-center mb-12 pb-6" style={{ borderBottom: '1px solid rgba(123,79,206,0.2)' }}>
           <h1 className="text-2xl font-bold font-display">PlayIQ <span style={{ color: 'var(--neon-cyan)' }}>Guide</span></h1>
           <div className="flex items-center gap-4">
+            <Link href="/settings" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>
+              <Settings className="w-3.5 h-3.5" /> 2FA Shield
+            </Link>
             <span className="text-sm px-3 py-1 rounded-full" style={{ background: 'var(--space-card)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>Phase 1: Foundations</span>
             <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm" style={{ background: 'var(--neon-purple)', color: '#fff' }} title={name}>{initials}</div>
           </div>

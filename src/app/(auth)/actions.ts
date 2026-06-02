@@ -61,6 +61,13 @@ export async function loginAction(prevState: any, formData: FormData) {
     .single();
 
   const role = profile?.role || 'parent'; // fail-safe fallback, but logs indicate missing profile
+
+  // Check if MFA is required
+  const { data: mfaData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  if (mfaData && mfaData.nextLevel === 'aal2' && mfaData.currentLevel === 'aal1') {
+    redirect('/login/mfa');
+  }
+
   redirect(`/${role}/home`);
 }
 
