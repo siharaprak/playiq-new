@@ -65,7 +65,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-[1400px]">
-      <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00c8ff]">
+      <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00c8ff] overflow-hidden">
 
         {/* Logo */}
         <Link href={isStudentLoggedIn ? '/student/home' : '/'} className="flex items-center gap-2 flex-shrink-0 group" aria-label="PlayIQ Home">
@@ -73,7 +73,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-4 flex-shrink-0">
+        <div className="hidden lg:flex items-center gap-2 xl:gap-4 min-w-0 overflow-x-auto scrollbar-hide">
           {/* Public links */}
           {publicNavLinks.map((link) => {
             const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
@@ -103,7 +103,7 @@ export function Navbar() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4 xl:gap-6 flex-shrink-0 min-w-[80px] justify-end ml-4">
+        <div className="flex items-center gap-3 xl:gap-5 flex-shrink-0 justify-end ml-4">
           <ThemeToggle />
 
           {!isLoading && (
@@ -115,12 +115,11 @@ export function Navbar() {
                 &gt; {userRole ? 'DASHBOARD' : 'LOG IN'}
               </Link>
               {userRole && (
-                <Link
-                  href="/auth/signout"
-                  className="font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-red-400 text-slate-400 transition-colors whitespace-nowrap"
-                >
-                  &gt; LOG OUT
-                </Link>
+                <form action="/auth/signout" method="post" className="inline">
+                  <button type="submit" className="font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-red-400 text-slate-400 transition-colors whitespace-nowrap cursor-pointer">
+                    &gt; LOG OUT
+                  </button>
+                </form>
               )}
             </div>
           )}
@@ -183,10 +182,11 @@ export function Navbar() {
                   &gt; {userRole ? 'DASHBOARD' : 'LOG IN'}
                 </Link>
                 {userRole && (
-                  <Link href="/auth/signout" onClick={() => setMobileOpen(false)}
-                    className="font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 text-red-400 hover:text-white transition-colors">
-                    &gt; LOG OUT
-                  </Link>
+                  <form action="/auth/signout" method="post">
+                    <button type="submit" className="font-display text-xs font-bold uppercase tracking-[0.2em] py-2 px-3 text-red-400 hover:text-white transition-colors cursor-pointer w-full text-left">
+                      &gt; LOG OUT
+                    </button>
+                  </form>
                 )}
               </>
             )}
