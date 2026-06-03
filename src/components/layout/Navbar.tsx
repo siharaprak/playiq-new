@@ -26,7 +26,7 @@ const studentModuleLinks = [
   { href: '/student/modules/8/overview', label: 'Module 8', sub: 'Writing and Answer Clarity' },
   { href: '/student/modules/9/overview', label: 'Module 9', sub: 'Build Your AI Tutor' },
   { href: '/student/modules/10/overview', label: 'Module 10', sub: 'Build Your AI Assistant' },
-  { href: '/student/modules/capstone/overview', label: 'Capstone', sub: 'Master Trial' },
+  { href: '/student/modules/11/overview', label: 'Capstone', sub: 'Master Trial' },
 ];
 
 export function Navbar() {
