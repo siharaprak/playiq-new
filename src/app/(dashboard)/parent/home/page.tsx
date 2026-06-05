@@ -1,4 +1,5 @@
 import {
+  FileText,
   CheckCircle2,
   AlertCircle,
   BarChart3,
@@ -412,6 +413,27 @@ export default async function ParentDashboard({
 
             {/* Integrity & Support Panel */}
             <ParentIntegrityPanel openTicketCount={openTicketCount} />
+
+            {/* Weekly Digest Preview CTA */}
+            <Link
+              href="/parent/digest"
+              className="group flex items-center gap-4 glass-card !rounded-none border border-[#7b4fce]/30 hover:border-[#7b4fce]/60 p-5 transition-all"
+            >
+              <div className="flex-shrink-0 w-10 h-10 flex items-center justify-center bg-[#7b4fce]/10 border border-[#7b4fce]/30 group-hover:bg-[#7b4fce]/20 transition-colors">
+                <FileText className="w-5 h-5 text-[#7b4fce]" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-display font-bold text-sm text-[var(--text-primary)] uppercase tracking-wider group-hover:text-[#7b4fce] transition-colors">
+                  Weekly Digest Preview
+                </p>
+                <p className="font-mono text-[10px] text-slate-500 uppercase tracking-widest mt-0.5">
+                  Preview the learner summary format. Automated email delivery is coming later.
+                </p>
+              </div>
+              <span className="font-mono text-[10px] text-[#7b4fce] font-bold uppercase tracking-widest flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+                View →
+              </span>
+            </Link>
 
           </div>
 
