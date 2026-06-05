@@ -32,7 +32,12 @@
     "verify:knowledge-files": "npx tsx scripts/verify-knowledge-files.ts",
     "verify:tutor-version-history": "npx tsx scripts/verify-tutor-version-history.ts",
     "verify:knowledge-file-ui": "npx tsx scripts/verify-knowledge-file-ui-flow.ts",
-    "verify:tutor-test-safety": "npx tsx scripts/verify-tutor-test-safety.ts"
+    "verify:tutor-test-safety": "npx tsx scripts/verify-tutor-test-safety.ts",
+    "qa:assistant-build-policy": "npx tsx scripts/qa-assistant-build-policy.ts",
+    "verify:assistant-access": "npx tsx scripts/verify-assistant-access.ts",
+    "verify:assistant-events": "npx tsx scripts/verify-assistant-events.ts",
+    "verify:assistant-version-history": "npx tsx scripts/verify-assistant-version-history.ts",
+    "verify:assistant-test-safety": "npx tsx scripts/verify-assistant-test-safety.ts"
   },
   "dependencies": {
     "@google/genai": "^1.50.1",

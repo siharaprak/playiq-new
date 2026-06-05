@@ -13,7 +13,8 @@ export const ALLOWED_AI_METADATA_KEYS = new Set([
   'noPromptStored',
   'noResponseStored',
   'source',
-  'noFileContentStoredInEvent'
+  'noFileContentStoredInEvent',
+  'integrityAction'
 ]);
 
 export function hasForbiddenAiMetadataKeys(metadata: Record<string, unknown> | null | undefined): boolean {

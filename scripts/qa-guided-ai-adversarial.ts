@@ -37,7 +37,7 @@ function testEffortGating() {
   const cases = [
     { input: undefined, expected: "no_attempt" },
     { input: "idk", expected: "weak_attempt" },
-    { input: "I think the answer is C because of gravity", expected: "sufficient" },
+    { input: "I think the answer is C because of gravity", expected: "has_attempt" },
   ];
 
   let failed = 0;
