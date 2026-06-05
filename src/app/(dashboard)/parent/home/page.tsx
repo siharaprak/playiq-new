@@ -166,7 +166,7 @@ export default async function ParentDashboard({
     const { count } = await supabaseAdmin
       .from('support_issues')
       .select('*', { count: 'exact', head: true })
-      .in('student_id', studentIds)
+      .in('reporter_id', studentIds)
       .eq('status', 'open');
     openTicketCount = count || 0;
   }

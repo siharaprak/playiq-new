@@ -188,12 +188,29 @@ export async function getStudentProgressRollup(
     masteredByModule[n.module_id] = (masteredByModule[n.module_id] || 0) + 1;
   }
 
+  // Count modules where mastered nodes >= expected node count (Modules 1-10)
+  const { data: allModules } = await supabaseAdmin
+    .from('modules')
+    .select('id, order_num')
+    .gte('order_num', 1)
+    .lte('order_num', 10);
+
+  let modulesCompleted = 0;
+  if (allModules) {
+    for (const mod of allModules) {
+      const expected = KNOWN_MODULE_NODE_COUNTS[mod.order_num];
+      if (expected && (masteredByModule[mod.id] ?? 0) >= expected) {
+        modulesCompleted++;
+      }
+    }
+  }
+
   return {
     student_id: studentId,
     display_name: profile.full_name || 'Student',
     modules_total: TOTAL_MODULES,
     modules_started: moduleIds.size,
-    modules_completed: 0, // Would need module-total-nodes cross-reference to compute accurately
+    modules_completed: modulesCompleted,
     nodes_total_or_known: TOTAL_KNOWN_NODES,
     nodes_mastered: mastered.length,
     assessments_submitted: assessmentCount ?? 0,
@@ -527,10 +544,24 @@ export async function getParentChildSummary(
     ? 'started'
     : 'none';
 
+  // Count modules where mastered nodes >= expected node count (Modules 1-10)
+  // Reuses currentModules already fetched above for current_module_title
+  let modulesCompleted = 0;
+  if (currentModules) {
+    for (const mod of currentModules) {
+      if (mod.order_num >= 1 && mod.order_num <= 10) {
+        const expected = KNOWN_MODULE_NODE_COUNTS[mod.order_num];
+        if (expected && (masteredByModule[mod.id] ?? 0) >= expected) {
+          modulesCompleted++;
+        }
+      }
+    }
+  }
+
   return {
     student_id: studentId,
     display_name: profile?.full_name || 'Student',
-    modules_completed: 0, // Requires full module completion check
+    modules_completed: modulesCompleted,
     current_module_title: currentModuleTitle,
     latest_activity_at: latestEvent?.created_at ?? null,
     proof_submissions_total: proofs?.length ?? 0,
