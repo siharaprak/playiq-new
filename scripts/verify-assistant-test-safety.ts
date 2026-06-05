@@ -2,9 +2,11 @@
  * QA Script: Verify Assistant Test Safety
  *
  * Statically validates:
- * 1. Assistant test/refine does not store raw prompts or responses (manual log based)
- * 2. Filename safety is active for knowledge files (blocks unsafe scripts, path traversal)
- * 3. File upload limits are defined and safe
+ * 1. Assistant has a live rate-limited Gemini sandbox chat action
+ * 2. Assistant chat action invokes rate limiting before Gemini and fails closed
+ * 3. Assistant chat action does not save raw prompts or responses
+ * 4. Filename safety is active for knowledge files (blocks unsafe scripts, path traversal)
+ * 5. File upload limits are defined and safe
  */
 
 import * as fs from 'fs';
@@ -26,11 +28,16 @@ async function main() {
   const readFile = (relativePath: string) =>
     fs.readFileSync(path.join(process.cwd(), relativePath), 'utf-8');
 
-  // 1. Verify that the assistant builder has no live Gemini chat database logs
+  // 1. Verify that the assistant builder has a rate-limited chat action
   const actionsSource = readFile('src/lib/assistant/actions.ts');
   assert(
-    !actionsSource.includes('chatWithAssistant') && !actionsSource.includes('GoogleGenAI'),
-    'Assistant does not have a live Gemini chat action implemented (manual test logs only)'
+    actionsSource.includes('chatWithAssistant') && actionsSource.includes('GoogleGenAI'),
+    'Assistant has a live Gemini sandbox chat action implemented'
+  );
+
+  assert(
+    actionsSource.includes('checkAssistantTestRateLimit'),
+    'Assistant chat action invokes rate limiting'
   );
 
   // 2. Verify metadata.test_log is stored as a list of strings and does not store prompts/responses

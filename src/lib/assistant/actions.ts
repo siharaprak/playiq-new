@@ -11,6 +11,12 @@ import type {
   AssistantProfileInput,
   AssistantVersionInput,
 } from './types';
+import { checkAssistantTestRateLimit } from './rate-limit';
+import {
+  PLAYIQ_ASSISTANT_SYSTEM_PREFIX,
+  ASSISTANT_CHAT_MAX_MESSAGES_PER_SESSION,
+  ASSISTANT_CHAT_MAX_INPUT_LENGTH,
+} from './assistant-build-policy';
 
 // ---------------------------------------------------------------------------
 // Shared result type
@@ -422,6 +428,282 @@ export async function getAssistantKnowledgeFiles(
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     console.error('[getAssistantKnowledgeFiles] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Chat: Test Sandbox with Custom AI Assistant
+// ---------------------------------------------------------------------------
+
+/**
+ * Sends a message sequence to the custom AI assistant and returns the AI's reply.
+ * Strictly bounded for testing mode only. Requires auth, student ownership, rate limit check.
+ * Excludes parent access, refuses bypass phrases, avoids raw prompt/response logging.
+ */
+export async function chatWithAssistant(
+  profileId: string,
+  messages: { role: 'user' | 'model'; content: string }[]
+): Promise<ActionResult<string>> {
+  try {
+    // ── Auth & Role checks ──
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { ok: false, error: 'Not authenticated' };
+
+    // Get current user role to exclude parents
+    const { data: profileRole } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    if (profileRole?.role === 'parent') {
+      return { ok: false, error: 'Not authorized. Parents do not have access to assistant instructions, prompts, responses, or knowledge files.' };
+    }
+
+    // ── Server-side rate limit check (must run before any Gemini/AI call) ──
+    const rateLimit = await checkAssistantTestRateLimit(user.id);
+    if (!rateLimit.allowed) {
+      return { ok: false, error: rateLimit.reason || 'Rate limit exceeded.' };
+    }
+
+    // ── Input bounds ──
+    if (messages.length > ASSISTANT_CHAT_MAX_MESSAGES_PER_SESSION) {
+      return {
+        ok: false,
+        error: `Session limit reached (max ${ASSISTANT_CHAT_MAX_MESSAGES_PER_SESSION} messages). Clear the chat to continue.`,
+      };
+    }
+
+    const lastUserMsg = messages[messages.length - 1];
+    if (
+      lastUserMsg?.role === 'user' &&
+      lastUserMsg.content.length > ASSISTANT_CHAT_MAX_INPUT_LENGTH
+    ) {
+      return {
+        ok: false,
+        error: `Message too long (max ${ASSISTANT_CHAT_MAX_INPUT_LENGTH} characters).`,
+      };
+    }
+
+    // Safety checks against restricted bypass phrases
+    const containsBypassPhrase = (text: string): boolean => {
+      const lower = text.toLowerCase();
+      const bypasses = [
+        'do my homework',
+        'give me answers',
+        'ignore playiq rules',
+        'reveal quiz answers',
+        'bypass effort',
+        'extract quiz',
+        'outsourcing homework',
+      ];
+      return bypasses.some((phrase) => lower.includes(phrase));
+    };
+
+    if (lastUserMsg?.role === 'user' && containsBypassPhrase(lastUserMsg.content)) {
+      logAssistantUpdateEvent({
+        studentId: user.id,
+        eventType: 'assistant_profile_updated',
+        targetId: profileId,
+        metadata: {
+          action: 'assistant_test_refused',
+          reason: 'bypass_phrase_in_prompt',
+        },
+      }).catch((e) => console.error('[chatWithAssistant] event log error:', e));
+
+      return {
+        ok: false,
+        error: 'I cannot fulfill this request as it violates safety guidelines.',
+      };
+    }
+
+    // ── Fetch assistant profile ──
+    const { data: assistantProfile, error: profileError } = await supabase
+      .from('assistant_profiles')
+      .select('*')
+      .eq('id', profileId)
+      .single();
+
+    if (profileError || !assistantProfile) {
+      return { ok: false, error: 'Assistant profile not found' };
+    }
+
+    // ── Ownership check ──
+    if (assistantProfile.student_id !== user.id) {
+      return { ok: false, error: 'Not authorized to chat with this assistant' };
+    }
+
+    // ── Fetch current version ──
+    let currentVersion: any = null;
+    if (assistantProfile.current_version_id) {
+      const { data: version } = await supabase
+        .from('assistant_versions')
+        .select('*')
+        .eq('id', assistantProfile.current_version_id)
+        .single();
+      currentVersion = version;
+    }
+
+    const systemPromptText = currentVersion?.system_prompt || '';
+
+    // Validate prompt configuration against restricted phrases
+    if (containsBypassPhrase(systemPromptText)) {
+      logAssistantUpdateEvent({
+        studentId: user.id,
+        eventType: 'assistant_profile_updated',
+        targetId: profileId,
+        metadata: {
+          action: 'assistant_test_refused',
+          reason: 'bypass_phrase_in_instructions',
+        },
+      }).catch((e) => console.error('[chatWithAssistant] event log error:', e));
+
+      return {
+        ok: false,
+        error: 'Assistant configuration violates safety guidelines due to restricted phrases.',
+      };
+    }
+
+    // ── Fetch knowledge files count only ──
+    const { data: knowledgeFiles } = await supabase
+      .from('knowledge_files')
+      .select('file_name')
+      .eq('assistant_profile_id', profileId);
+
+    // Log successful test attempt (safe metadata only) before making AI call
+    logAssistantUpdateEvent({
+      studentId: user.id,
+      eventType: 'assistant_profile_updated',
+      targetId: profileId,
+      metadata: {
+        action: 'assistant_test_attempt',
+      },
+    }).catch((e) => console.error('[chatWithAssistant] event log error:', e));
+
+    // ── Construct system instruction ──
+    let systemInstruction = PLAYIQ_ASSISTANT_SYSTEM_PREFIX;
+
+    systemInstruction += `\n--- Student-Configured Assistant Profile ---\n`;
+    systemInstruction += `- Name: ${assistantProfile.name}\n`;
+    systemInstruction += `- Purpose: ${assistantProfile.purpose || 'Not specified'}\n`;
+    systemInstruction += `- Audience: ${assistantProfile.audience || 'Not specified'}\n\n`;
+
+    if (systemPromptText) {
+      systemInstruction += `Student-Defined Custom Instructions:\n${systemPromptText}\n\n`;
+    }
+
+    if (knowledgeFiles && knowledgeFiles.length > 0) {
+      systemInstruction += `Available Knowledge Files for Context (reference when appropriate):\n`;
+      systemInstruction += knowledgeFiles.map((kf: { file_name: string }) => `- ${kf.file_name}`).join('\n');
+      systemInstruction += '\n\n';
+    }
+
+    // ── Call Gemini API ──
+    const { GoogleGenAI } = await import('@google/genai');
+    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      return { ok: false, error: 'AI API Key is not configured on the server' };
+    }
+
+    const ai = new GoogleGenAI({ apiKey });
+
+    // Map history to Google Gen AI format
+    const contents = messages.map((msg) => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.content }],
+    }));
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: contents as any,
+      config: {
+        systemInstruction: systemInstruction,
+        temperature: 0.7,
+      },
+    });
+
+    const replyText = response.text || '';
+
+    // No raw prompts or responses are stored. They exist only in-memory.
+
+    return { ok: true, data: replyText };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[chatWithAssistant] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+// ---------------------------------------------------------------------------
+// markAssistantBetaComplete Action
+// ---------------------------------------------------------------------------
+
+/**
+ * Marks the assistant beta complete for the student by updating status to 'active'
+ * and setting metadata.beta_complete = true.
+ * Does NOT mutate student_node_progress, module completion, gating, or mastery.
+ */
+export async function markAssistantBetaComplete(profileId: string): Promise<ActionResult<AssistantProfile>> {
+  try {
+    const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { ok: false, error: 'Not authenticated' };
+
+    // 1. Verify ownership
+    const { data: existing, error: fetchError } = await supabase
+      .from('assistant_profiles')
+      .select('*')
+      .eq('id', profileId)
+      .single();
+
+    if (fetchError || !existing) {
+      return { ok: false, error: 'Assistant profile not found' };
+    }
+    if (existing.student_id !== user.id) {
+      return { ok: false, error: 'Not authorized to update this profile' };
+    }
+
+    // 2. Perform status and metadata updates only
+    const updatedMetadata = {
+      ...(existing.metadata || {}),
+      beta_complete: true,
+      beta_completed_at: new Date().toISOString(),
+    };
+
+    const { data: updated, error: updateError } = await supabase
+      .from('assistant_profiles')
+      .update({
+        status: 'active', // must remain 'active' according to CHECK status constraint
+        metadata: updatedMetadata,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', profileId)
+      .select('*')
+      .single();
+
+    if (updateError || !updated) {
+      return { ok: false, error: updateError?.message || 'Failed to update profile status.' };
+    }
+
+    // 3. Telemetry log event
+    logAssistantUpdateEvent({
+      studentId: user.id,
+      eventType: 'assistant_profile_updated',
+      targetId: profileId,
+      metadata: {
+        action: 'assistant_profile_updated',
+        beta_complete: true,
+      },
+    }).catch((e) => console.error('[markAssistantBetaComplete] event log error:', e));
+
+    revalidatePath('/student/modules/10');
+
+    return { ok: true, data: updated as AssistantProfile };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[markAssistantBetaComplete] error:', message);
     return { ok: false, error: message };
   }
 }

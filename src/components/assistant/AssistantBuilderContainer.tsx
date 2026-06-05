@@ -25,6 +25,7 @@ import AssistantPersonaForm from './AssistantPersonaForm';
 import AssistantInstructionsEditor from './AssistantInstructionsEditor';
 import AssistantTestLog from './AssistantTestLog';
 import AssistantVersionHistory from './AssistantVersionHistory';
+import AssistantTestPanel from './AssistantTestPanel';
 
 interface AssistantBuilderContainerProps {
   studentId: string;
@@ -395,10 +396,20 @@ export default function AssistantBuilderContainer({
 
           {/* TAB 3: TEST SCENARIOS */}
           {activeTab === 'testLog' && profile && (
-            <div className="space-y-6">
+            <div className="grid md:grid-cols-2 gap-8">
               <AssistantTestLog
                 testLog={testLog}
                 onChange={handleTestLogChange}
+                disabled={isLocked}
+              />
+              <AssistantTestPanel
+                profile={profile}
+                versions={versions}
+                knowledgeFiles={knowledgeFiles}
+                onProfileUpdate={(updated) => {
+                  setProfile(updated);
+                  setSuccessMsg('Assistant Beta Complete updated successfully.');
+                }}
                 disabled={isLocked}
               />
             </div>

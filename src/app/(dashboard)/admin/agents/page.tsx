@@ -2,7 +2,7 @@ import React from 'react';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Cpu, Search, FileText, ChevronRight, User } from 'lucide-react';
+import { Cpu, Search, FileText, ChevronRight, User, ShieldCheck, HelpCircle } from 'lucide-react';
 
 export default async function AdminAgentsPage({
   searchParams,
@@ -19,10 +19,10 @@ export default async function AdminAgentsPage({
   const params = await searchParams;
   const searchTerm = params?.search || '';
 
-  // 1. Fetch Tutors and Assistants profiles
+  // 1. Fetch Tutors and Assistants profiles (select safe columns only, no raw prompts/instructions)
   const [{ data: tutorsList }, { data: assistantsList }] = await Promise.all([
-    supabase.from('tutor_profiles').select('*'),
-    supabase.from('assistant_profiles').select('*'),
+    supabase.from('tutor_profiles').select('id, student_id, name, status, updated_at, current_version_id, metadata'),
+    supabase.from('assistant_profiles').select('id, student_id, name, status, updated_at, current_version_id, metadata'),
   ]);
 
   // Fetch all unique student IDs to get emails/names
@@ -40,50 +40,66 @@ export default async function AdminAgentsPage({
     return acc;
   }, {} as Record<string, any>);
 
-  // 2. Fetch versions to extract the prompts/instructions
-  const tutorVersionIds = (tutorsList || []).map((t) => t.current_version_id).filter(Boolean);
-  const assistantVersionIds = (assistantsList || []).map((a) => a.current_version_id).filter(Boolean);
-
+  // 2. Fetch versions count only (no instructions/system_prompts fetched)
   const [{ data: tutorVersions }, { data: assistantVersions }] = await Promise.all([
-    supabase.from('tutor_versions').select('id, instructions, version_number').in('id', tutorVersionIds),
-    supabase.from('assistant_versions').select('id, system_prompt, version_number').in('id', assistantVersionIds),
+    supabase.from('tutor_versions').select('id, tutor_profile_id'),
+    supabase.from('assistant_versions').select('id, assistant_profile_id'),
   ]);
 
-  const tutorVersionMap = (tutorVersions || []).reduce((acc, v) => {
-    acc[v.id] = v;
+  const tutorVersionCountMap = (tutorVersions || []).reduce((acc, v) => {
+    acc[v.tutor_profile_id] = (acc[v.tutor_profile_id] || 0) + 1;
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, number>);
 
-  const assistantVersionMap = (assistantVersions || []).reduce((acc, v) => {
-    acc[v.id] = v;
+  const assistantVersionCountMap = (assistantVersions || []).reduce((acc, v) => {
+    acc[v.assistant_profile_id] = (acc[v.assistant_profile_id] || 0) + 1;
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, number>);
 
-  // 3. Fetch knowledge files
+  // 3. Fetch knowledge files count only (no urls, names, or file_url/storage_path fetched)
   const [{ data: tutorFiles }, { data: assistantFiles }] = await Promise.all([
-    supabase.from('knowledge_files').select('id, file_name, tutor_profile_id').not('tutor_profile_id', 'is', null),
-    supabase.from('knowledge_files').select('id, file_name, assistant_profile_id').not('assistant_profile_id', 'is', null),
+    supabase.from('knowledge_files').select('id, tutor_profile_id').not('tutor_profile_id', 'is', null),
+    supabase.from('knowledge_files').select('id, assistant_profile_id').not('assistant_profile_id', 'is', null),
   ]);
 
-  const tutorFilesMap = (tutorFiles || []).reduce((acc, f) => {
-    if (!acc[f.tutor_profile_id]) acc[f.tutor_profile_id] = [];
-    acc[f.tutor_profile_id].push(f.file_name);
+  const tutorFilesCountMap = (tutorFiles || []).reduce((acc, f) => {
+    acc[f.tutor_profile_id!] = (acc[f.tutor_profile_id!] || 0) + 1;
     return acc;
-  }, {} as Record<string, string[]>);
+  }, {} as Record<string, number>);
 
-  const assistantFilesMap = (assistantFiles || []).reduce((acc, f) => {
-    if (!acc[f.assistant_profile_id]) acc[f.assistant_profile_id] = [];
-    acc[f.assistant_profile_id].push(f.file_name);
+  const assistantFilesCountMap = (assistantFiles || []).reduce((acc, f) => {
+    acc[f.assistant_profile_id!] = (acc[f.assistant_profile_id!] || 0) + 1;
     return acc;
-  }, {} as Record<string, string[]>);
+  }, {} as Record<string, number>);
 
-  // 4. Map entities with joined values
+  // 4. Fetch test status events counts (no raw prompt/response logged or fetched)
+  const { data: testEvents } = await supabase
+    .from('events_log')
+    .select('student_id, event_type, metadata')
+    .in('event_type', ['assistant_profile_updated', 'tutor_profile_updated']);
+
+  const testEventMap = (testEvents || []).reduce((acc, event) => {
+    const studentId = event.student_id;
+    if (!acc[studentId]) {
+      acc[studentId] = { attempts: 0, refusals: 0 };
+    }
+    const action = event.metadata?.action;
+    if (action === 'assistant_test_attempt' || action === 'tutor_test_attempt') {
+      acc[studentId].attempts++;
+    } else if (action === 'assistant_test_refused' || action === 'tutor_test_refused') {
+      acc[studentId].refusals++;
+    }
+    return acc;
+  }, {} as Record<string, { attempts: number; refusals: number }>);
+
+  // 5. Map entities with joined values
   const agents: any[] = [];
 
   for (const t of (tutorsList || [])) {
     const student = studentMap[t.student_id];
-    const version = t.current_version_id ? tutorVersionMap[t.current_version_id] : null;
-    const files = tutorFilesMap[t.id] || [];
+    const versionCount = tutorVersionCountMap[t.id] || 0;
+    const fileCount = tutorFilesCountMap[t.id] || 0;
+    const testStats = testEventMap[t.student_id] || { attempts: 0, refusals: 0 };
 
     agents.push({
       id: t.id,
@@ -93,22 +109,22 @@ export default async function AdminAgentsPage({
       status: t.status,
       studentName: student?.full_name || 'Apprentice',
       studentEmail: student?.email || '—',
-      versionNumber: version?.version_number || 1,
-      prompt: version?.instructions?.instruction_set || 'No instructions set.',
-      files,
-      config: {
-        'Purpose': t.doctrine_config?.purpose || 'Not specified',
-        'Teaching Style': t.doctrine_config?.teaching_style || 'Not specified',
-        'Explanation Prefs': t.doctrine_config?.explanation_preferences || 'Not specified',
-        'Subject Focus': t.doctrine_config?.subject_focus || 'Not specified',
-      },
+      versionCount,
+      hasCurrentVersion: !!t.current_version_id,
+      lastUpdated: t.updated_at ? new Date(t.updated_at).toLocaleString() : '—',
+      knowledgeFileCount: fileCount,
+      betaComplete: !!t.metadata?.beta_complete,
+      testStatus: testStats.attempts > 0 
+        ? `Tested (${testStats.attempts} attempts, ${testStats.refusals} safety blocks)`
+        : 'Not tested in sandbox',
     });
   }
 
   for (const a of (assistantsList || [])) {
     const student = studentMap[a.student_id];
-    const version = a.current_version_id ? assistantVersionMap[a.current_version_id] : null;
-    const files = assistantFilesMap[a.id] || [];
+    const versionCount = assistantVersionCountMap[a.id] || 0;
+    const fileCount = assistantFilesCountMap[a.id] || 0;
+    const testStats = testEventMap[a.student_id] || { attempts: 0, refusals: 0 };
 
     agents.push({
       id: a.id,
@@ -118,18 +134,18 @@ export default async function AdminAgentsPage({
       status: a.status,
       studentName: student?.full_name || 'Apprentice',
       studentEmail: student?.email || '—',
-      versionNumber: version?.version_number || 1,
-      prompt: version?.system_prompt || 'No prompt set.',
-      files,
-      config: {
-        'Purpose': a.persona_config?.purpose || 'Not specified',
-        'Target User': a.persona_config?.user_target || 'Not specified',
-        'Boundaries': a.persona_config?.boundaries || 'Not specified',
-      },
+      versionCount,
+      hasCurrentVersion: !!a.current_version_id,
+      lastUpdated: a.updated_at ? new Date(a.updated_at).toLocaleString() : '—',
+      knowledgeFileCount: fileCount,
+      betaComplete: !!a.metadata?.beta_complete,
+      testStatus: testStats.attempts > 0 
+        ? `Tested (${testStats.attempts} attempts, ${testStats.refusals} safety blocks)`
+        : 'Not tested in sandbox',
     });
   }
 
-  // 5. Apply Search query filter
+  // 6. Apply Search query filter
   const filteredAgents = agents.filter((agent) => {
     if (!searchTerm) return true;
     const s = searchTerm.toLowerCase();
@@ -142,7 +158,7 @@ export default async function AdminAgentsPage({
   });
 
   return (
-    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)]">
+    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] font-mono">
       <div className="max-w-screen-2xl mx-auto px-6 py-10 relative z-10">
         
         {/* Header */}
@@ -164,7 +180,7 @@ export default async function AdminAgentsPage({
         </header>
 
         {/* Search */}
-        <div className="mb-8 bg-slate-900/40 p-4 border border-slate-800 backdrop-blur-md font-mono">
+        <div className="mb-8 bg-slate-900/40 p-4 border border-slate-800 backdrop-blur-md">
           <form method="GET" className="flex gap-2">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
@@ -201,13 +217,13 @@ export default async function AdminAgentsPage({
                     <div>
                       <div className="flex items-center gap-2 mb-1">
                         <span className={`px-2 py-0.5 rounded font-mono text-[9px] font-bold uppercase tracking-wider border ${badgeCls}`}>
-                          {agent.type} v{agent.versionNumber}
+                          {agent.type}
                         </span>
                         <span className="font-mono text-[9px] text-slate-500 uppercase">
                           Status: {agent.status}
                         </span>
                       </div>
-                      <h3 className="text-lg font-display font-black text-slate-200 uppercase tracking-wide">
+                      <h3 className="text-base font-display font-black text-slate-200 uppercase tracking-wide">
                         {agent.name}
                       </h3>
                     </div>
@@ -220,41 +236,43 @@ export default async function AdminAgentsPage({
                     </div>
                   </div>
 
-                  {/* Personality Knobs */}
-                  <div className="grid grid-cols-2 gap-4 bg-black/40 border border-slate-850 p-4 font-mono text-[10px]">
-                    {Object.entries(agent.config).map(([key, val]) => (
-                      <div key={key} className="space-y-1">
-                        <span className="text-slate-500 font-bold uppercase tracking-wider">{key}</span>
-                        <p className="text-slate-350 line-clamp-2 leading-relaxed">{val as string}</p>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Prompt Instructions Block */}
-                  <div className="space-y-2">
-                    <h4 className="font-mono text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                      Active Instructions
-                    </h4>
-                    <div className="bg-black/60 border border-slate-900/60 rounded p-4 max-h-[140px] overflow-y-auto font-mono text-[11px] text-slate-400 leading-relaxed whitespace-pre-wrap select-text">
-                      {agent.prompt}
+                  {/* Safe Summary Metrics */}
+                  <div className="bg-black/40 border border-slate-800 p-4 space-y-3 text-xs leading-relaxed text-slate-300">
+                    <div className="flex justify-between border-b border-slate-900 pb-1.5">
+                      <span className="text-slate-500 uppercase text-[9px] font-bold">Version Count</span>
+                      <span className="font-bold text-slate-200">{agent.versionCount} snapshots</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-900 pb-1.5">
+                      <span className="text-slate-500 uppercase text-[9px] font-bold">Active Snapshot Presence</span>
+                      <span className={`font-bold ${agent.hasCurrentVersion ? 'text-green-400' : 'text-amber-500'}`}>
+                        {agent.hasCurrentVersion ? 'PRESENT' : 'MISSING'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-900 pb-1.5">
+                      <span className="text-slate-500 uppercase text-[9px] font-bold">Last Updated</span>
+                      <span className="text-slate-200">{agent.lastUpdated}</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-900 pb-1.5">
+                      <span className="text-slate-500 uppercase text-[9px] font-bold">Knowledge File Count</span>
+                      <span className="font-bold text-slate-200">{agent.knowledgeFileCount} files indexed</span>
+                    </div>
+                    <div className="flex justify-between border-b border-slate-900 pb-1.5">
+                      <span className="text-slate-500 uppercase text-[9px] font-bold">Beta Completion Status</span>
+                      <span className={`font-bold flex items-center gap-1 ${agent.betaComplete ? 'text-green-400' : 'text-slate-500'}`}>
+                        {agent.betaComplete ? (
+                          <>
+                            <ShieldCheck className="w-3.5 h-3.5" /> BETA COMPLETE
+                          </>
+                        ) : (
+                          'IN PROGRESS'
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex justify-between pt-0.5">
+                      <span className="text-slate-500 uppercase text-[9px] font-bold">Sandbox Test Status</span>
+                      <span className="font-bold text-slate-200 text-right">{agent.testStatus}</span>
                     </div>
                   </div>
-
-                  {/* Knowledge files links */}
-                  {agent.files.length > 0 && (
-                    <div className="space-y-1.5 font-mono">
-                      <h4 className="text-[9px] font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1">
-                        <FileText size={10} /> Attached Reference Files ({agent.files.length})
-                      </h4>
-                      <div className="flex flex-wrap gap-1.5">
-                        {agent.files.map((file: string, idx: number) => (
-                          <span key={idx} className="bg-slate-900 border border-slate-800 px-2 py-0.5 rounded text-[9px] text-slate-400 truncate max-w-[160px]">
-                            {file}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  )}
 
                 </div>
               );

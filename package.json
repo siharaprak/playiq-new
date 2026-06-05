@@ -37,7 +37,15 @@
     "verify:assistant-access": "npx tsx scripts/verify-assistant-access.ts",
     "verify:assistant-events": "npx tsx scripts/verify-assistant-events.ts",
     "verify:assistant-version-history": "npx tsx scripts/verify-assistant-version-history.ts",
-    "verify:assistant-test-safety": "npx tsx scripts/verify-assistant-test-safety.ts"
+    "verify:assistant-test-safety": "npx tsx scripts/verify-assistant-test-safety.ts",
+    "audit:beta-blockers": "npx tsx scripts/audit-beta-blockers.ts",
+    "verify:student-journey": "npx tsx scripts/verify-student-journey-map.ts",
+    "verify-admin-rbac": "npx tsx scripts/verify-admin-rbac.ts",
+    "verify-discussion-moderation": "npx tsx scripts/verify-discussion-moderation.ts",
+    "verify:support-schema": "npx tsx scripts/verify-support-issues-schema.ts",
+    "verify:enrollment-integrity": "npx tsx scripts/verify-enrollment-integrity.ts",
+    "verify:sprint8-blockers": "npx tsx scripts/verify-sprint8-blocker-registry.ts",
+    "verify:assistant-beta-completion": "npx tsx scripts/verify-assistant-beta-completion-safety.ts"
   },
   "dependencies": {
     "@google/genai": "^1.50.1",
