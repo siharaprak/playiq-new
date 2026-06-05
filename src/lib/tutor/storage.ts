@@ -119,7 +119,42 @@ export async function deleteKnowledgeFile(
       }
     }
 
-    // 4. Delete from Supabase storage
+    // 4. Verify version dependencies — if a version depends on the file, detach instead of delete
+    let shouldDetachOnly = false;
+    if (file.tutor_profile_id) {
+      const { data: versions, error: versionsError } = await supabase
+        .from('tutor_versions')
+        .select('id, knowledge_file_ids')
+        .eq('tutor_profile_id', file.tutor_profile_id);
+
+      if (versionsError) {
+        return { ok: false, error: `Failed to verify version dependencies: ${versionsError.message}` };
+      }
+
+      const isDependedOn = versions?.some((v: any) =>
+        Array.isArray(v.knowledge_file_ids) && v.knowledge_file_ids.includes(fileId)
+      );
+
+      if (isDependedOn) {
+        shouldDetachOnly = true;
+      }
+    }
+
+    if (shouldDetachOnly) {
+      // Detach: set tutor_profile_id to null so it is removed from current view
+      const { error: detachError } = await supabase
+        .from('knowledge_files')
+        .update({ tutor_profile_id: null })
+        .eq('id', fileId);
+
+      if (detachError) {
+        return { ok: false, error: `Failed to detach knowledge file: ${detachError.message}` };
+      }
+
+      return { ok: true, data: undefined };
+    }
+
+    // 5. Physical Delete (not referenced by any versions): delete from storage then DB
     const { error: storageError } = await supabaseAdmin
       .storage
       .from('knowledge-files')
@@ -129,7 +164,6 @@ export async function deleteKnowledgeFile(
       return { ok: false, error: `Failed to delete file from storage: ${storageError.message}` };
     }
 
-    // 5. Delete the DB record
     const { error: dbError } = await supabase
       .from('knowledge_files')
       .delete()

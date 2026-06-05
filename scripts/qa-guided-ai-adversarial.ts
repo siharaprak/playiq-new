@@ -55,13 +55,20 @@ function testEffortGating() {
 
   console.log('Running Guided AI Adversarial Smoke Tests...\n');
   const failCount = testSafetyRouting() + testEffortGating();
+
+  const exit = (code: number) => {
+    process.exitCode = code;
+    if (code !== 0) {
+      setTimeout(() => process.exit(code), 50);
+    }
+  };
   
   if (failCount > 0) {
     console.error(`\n❌ FAILED ${failCount} tests.`);
-    process.exit(1);
+    exit(1);
   } else {
     console.log('\n✅ ALL ADVERSARIAL QA SMOKE TESTS PASSED.');
-    process.exit(0);
+    exit(0);
   }
 }
 

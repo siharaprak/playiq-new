@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Upload, File, Trash2, FileText, Image, AlertCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { createKnowledgeFileRecord, deleteKnowledgeFile } from '@/lib/tutor/storage';
+import { isFilenameSafe } from '@/lib/tutor/tutor-build-policy';
 import type { KnowledgeFile } from '@/lib/tutor/types';
 
 interface KnowledgeFileUploadProps {
@@ -80,6 +81,9 @@ export default function KnowledgeFileUpload({
     }
     if (!ALLOWED_TYPES[file.type]) {
       return 'Unsupported file type. Allowed: PDF, TXT, MD, DOCX, PNG, JPEG.';
+    }
+    if (!isFilenameSafe(file.name)) {
+      return 'Unsafe filename detected. Rename your file and try again.';
     }
     return null;
   };

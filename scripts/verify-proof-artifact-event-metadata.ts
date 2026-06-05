@@ -5,9 +5,16 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+const exit = (code: number) => {
+  process.exitCode = code;
+  if (code !== 0) {
+    setTimeout(() => process.exit(code), 50);
+  }
+};
+
 if (!supabaseUrl || !supabaseKey) {
   console.error('Missing Supabase environment variables. Cannot run verifier.');
-  process.exit(1);
+  exit(1);
 }
 
 const supabaseAdmin = createClient(supabaseUrl, supabaseKey);
@@ -32,12 +39,14 @@ async function run() {
 
   if (error) {
     console.error('Failed to fetch proof events:', error);
-    process.exit(1);
+    exit(1);
+    return;
   }
 
   if (!events || events.length === 0) {
     console.log('No proof events found. Assuming safe.');
-    process.exit(0);
+    exit(0);
+    return;
   }
 
   let failed = 0;
@@ -52,11 +61,12 @@ async function run() {
 
   if (failed > 0) {
     console.error(`\n❌ FAILED: Found ${failed} unsafe proof events.`);
-    process.exit(1);
+    exit(1);
+    return;
   }
 
   console.log(`✅ PASSED: Checked ${events.length} proof events safely.`);
-  process.exit(0);
+  exit(0);
 }
 
 run();

@@ -6,9 +6,16 @@ import { hasForbiddenAiMetadataKeys } from '../src/lib/events/metadata-safety';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 
+const exit = (code: number) => {
+  process.exitCode = code;
+  if (code !== 0) {
+    setTimeout(() => process.exit(code), 50);
+  }
+};
+
 if (!supabaseUrl || !supabaseServiceKey) {
   console.error('Missing Supabase environment variables. Cannot run verifier.');
-  process.exit(1);
+  exit(1);
 }
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
@@ -25,12 +32,14 @@ async function verifyAiMetadata() {
 
   if (error) {
     console.error('Failed to fetch events:', error.message);
-    process.exit(1);
+    exit(1);
+    return;
   }
 
   if (!events || events.length === 0) {
     console.log('No Guided AI events found. Assuming safe.');
-    process.exit(0);
+    exit(0);
+    return;
   }
 
   let failedCount = 0;
@@ -50,10 +59,10 @@ async function verifyAiMetadata() {
 
   if (failedCount > 0) {
     console.error('❌ FAILED: Found unsafe metadata containing forbidden keys (raw prompts, responses, or PII).');
-    process.exit(1);
+    exit(1);
   } else {
     console.log('✅ PASSED: All checked events are safe.');
-    process.exit(0);
+    exit(0);
   }
 }
 

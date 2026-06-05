@@ -7,6 +7,13 @@ const originalRequire = Module.prototype.require;
   return originalRequire.apply(this, arguments as any);
 };
 
+const exit = (code: number) => {
+  process.exitCode = code;
+  if (code !== 0) {
+    setTimeout(() => process.exit(code), 50);
+  }
+};
+
 async function run() {
   const { getParentVisibleProofArtifacts } = await import('../src/lib/data/proof-artifacts');
 
@@ -21,14 +28,14 @@ async function run() {
     // Attempt with dummy UUIDs
     await getParentVisibleProofArtifacts('00000000-0000-0000-0000-000000000000', '11111111-1111-1111-1111-111111111111');
     console.error('❌ FAILED: Expected an error for unlinked parent-child, but got success.');
-    process.exit(1);
+    exit(1);
   } catch (error: any) {
     if (error.message.includes('Unauthorized or student not linked')) {
       console.log('✅ PASSED: getParentVisibleProofArtifacts enforces parent_child_links correctly.');
-      process.exit(0);
+      exit(0);
     } else {
       console.error('❌ FAILED with unexpected error:', error.message);
-      process.exit(1);
+      exit(1);
     }
   }
 }

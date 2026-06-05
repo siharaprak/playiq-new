@@ -58,9 +58,15 @@ export default function TutorInstructionsEditor({
           value={instructions.instruction_set}
           disabled={disabled}
           onChange={(e) => handleInstructionSetChange(e.target.value)}
+          maxLength={3000}
           placeholder="Write the core instructions for your AI tutor. What should it always do? What should it never do?"
           className={inputCls + ' resize-y min-h-[180px]'}
         />
+        <div className="flex justify-end mt-1">
+          <span className={`font-mono text-[10px] ${instructions.instruction_set.length >= 2800 ? 'text-amber-500' : 'text-slate-500'}`}>
+            {instructions.instruction_set.length}/3000 characters
+          </span>
+        </div>
       </div>
 
       {/* Rules Section */}

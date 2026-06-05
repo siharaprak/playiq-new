@@ -25,7 +25,14 @@
     "verify:runtime-source": "npx tsx scripts/verify-runtime-source-unchanged.ts",
     "verify:capstone-resolution": "npx tsx scripts/verify-capstone-resolution.ts",
     "verify:pre-sprint5": "npx tsx scripts/verify-pre-sprint5-readiness.ts",
-    "verify:proof-access-matrix": "npx tsx scripts/verify-proof-access-matrix.ts"
+    "verify:proof-access-matrix": "npx tsx scripts/verify-proof-access-matrix.ts",
+    "qa:tutor-build-policy": "npx tsx scripts/qa-tutor-build-policy.ts",
+    "verify:tutor-access": "npx tsx scripts/verify-tutor-access.ts",
+    "verify:tutor-events": "npx tsx scripts/verify-tutor-events.ts",
+    "verify:knowledge-files": "npx tsx scripts/verify-knowledge-files.ts",
+    "verify:tutor-version-history": "npx tsx scripts/verify-tutor-version-history.ts",
+    "verify:knowledge-file-ui": "npx tsx scripts/verify-knowledge-file-ui-flow.ts",
+    "verify:tutor-test-safety": "npx tsx scripts/verify-tutor-test-safety.ts"
   },
   "dependencies": {
     "@google/genai": "^1.50.1",

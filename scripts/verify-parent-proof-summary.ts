@@ -7,6 +7,13 @@ const originalRequire = Module.prototype.require;
   return originalRequire.apply(this, arguments as any);
 };
 
+const exit = (code: number) => {
+  process.exitCode = code;
+  if (code !== 0) {
+    setTimeout(() => process.exit(code), 50);
+  }
+};
+
 async function main() {
   const { supabaseAdmin } = await import('../src/lib/supabase/admin');
   const { getParentProofSummary } = await import('../src/lib/data/proof-artifacts');
@@ -22,6 +29,7 @@ async function main() {
 
   if (error || !link) {
     console.log('⚠️ No parent_child_links found. Skipping live query test.');
+    exit(0);
     return;
   }
 
@@ -41,30 +49,34 @@ async function main() {
       console.log('✅ PASSED: getParentProofSummary returns safe count-based structure.');
     } else {
       console.error('❌ FAILED: getParentProofSummary returned unexpected structure:', summary);
-      process.exit(1);
+      exit(1);
+      return;
     }
 
   } catch (err) {
     console.error('❌ FAILED: Error executing getParentProofSummary:', err);
-    process.exit(1);
+    exit(1);
+    return;
   }
 
   // 2. Test unauthorized (fake parent)
   try {
     await getParentProofSummary('00000000-0000-0000-0000-000000000000', link.student_id);
     console.error('❌ FAILED: getParentProofSummary did not reject invalid parent_id');
-    process.exit(1);
+    exit(1);
+    return;
   } catch (err: any) {
     if (err.message.includes('Unauthorized')) {
       console.log('✅ PASSED: getParentProofSummary rejected unauthorized parent access.');
     } else {
       console.error('❌ FAILED: getParentProofSummary rejected, but with wrong error:', err.message);
-      process.exit(1);
+      exit(1);
+      return;
     }
   }
 
   console.log('All Parent Summary QA passed.');
-  process.exit(0);
+  exit(0);
 }
 
 main();

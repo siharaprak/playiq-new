@@ -131,7 +131,7 @@ export default function TutorTestSandbox({
         <div className="flex items-center gap-2">
           <div className="w-2.5 h-2.5 rounded-full bg-[#00c8ff] animate-pulse" />
           <span className="font-mono text-xs uppercase tracking-widest text-[#00c8ff] font-bold">
-            Live Sandbox: {tutorName}
+            Test Your Tutor Style: {tutorName}
           </span>
         </div>
         <button
@@ -224,7 +224,7 @@ export default function TutorTestSandbox({
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder={disabled ? 'Tutor build is locked' : 'Test your AI Tutor...'}
+          placeholder={disabled ? 'Tutor build is locked' : 'Test your tutor style...'}
           disabled={loading || disabled}
           className="flex-1 bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded px-3 py-2 text-xs text-white placeholder:text-slate-600 font-mono outline-none transition-colors"
         />

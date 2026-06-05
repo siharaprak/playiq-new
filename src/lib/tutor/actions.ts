@@ -4,6 +4,14 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { logTutorUpdateEvent } from '@/lib/events/learning-events';
 import { TutorProfileInputSchema, TutorVersionInputSchema } from './schemas';
+import {
+  canActivateTutor,
+  canPublishTutor,
+  PLAYIQ_TUTOR_SYSTEM_PREFIX,
+  TUTOR_CHAT_MAX_MESSAGES_PER_SESSION,
+  TUTOR_CHAT_MAX_INPUT_LENGTH,
+} from './tutor-build-policy';
+import { checkTutorTestRateLimit } from './rate-limit';
 import type {
   TutorProfile,
   TutorVersion,
@@ -205,7 +213,11 @@ export async function createTutorProfile(
       studentId: user.id,
       eventType: 'tutor_profile_created',
       targetId: profile.id,
-      metadata: { name: parsed.name },
+      metadata: {
+        name: parsed.name,
+        noPromptStored: true,
+        noResponseStored: true,
+      },
     }).catch((e) => console.error('[createTutorProfile] event log error:', e));
 
     revalidatePath('/student/modules/9');
@@ -274,7 +286,11 @@ export async function updateTutorProfile(
       studentId: user.id,
       eventType: 'tutor_profile_updated',
       targetId: profileId,
-      metadata: { updatedFields: Object.keys(input) },
+      metadata: {
+        updatedFields: Object.keys(input),
+        noPromptStored: true,
+        noResponseStored: true,
+      },
     }).catch((e) => console.error('[updateTutorProfile] event log error:', e));
 
     revalidatePath('/student/modules/9');
@@ -376,6 +392,8 @@ export async function createTutorVersion(
         profileId,
         versionNumber: nextVersionNumber,
         changeSummary: parsed.change_summary,
+        noPromptStored: true,
+        noResponseStored: true,
       },
     }).catch((e) => console.error('[createTutorVersion] event log error:', e));
 
@@ -486,17 +504,7 @@ export async function activateTutorProfile(
       return { ok: false, error: 'Not authorized to activate this profile' };
     }
 
-    // 3. Validate completion criteria
-    if (!profile.name || profile.name.trim() === '') {
-      return { ok: false, error: 'Tutor must have a name before activation' };
-    }
-
-    const doctrine = profile.doctrine_config as TutorDoctrineConfig | null;
-    if (!doctrine?.purpose || doctrine.purpose.trim() === '') {
-      return { ok: false, error: 'Tutor must have a purpose defined in doctrine before activation' };
-    }
-
-    // 4. Check for at least 1 version
+    // 3. Fetch versions for policy check
     const { data: versions, error: versionsError } = await supabase
       .from('tutor_versions')
       .select('*')
@@ -507,18 +515,20 @@ export async function activateTutorProfile(
       return { ok: false, error: `Failed to fetch versions: ${versionsError.message}` };
     }
 
-    if (!versions || versions.length === 0) {
-      return { ok: false, error: 'Tutor must have at least 1 version before activation' };
+    // 4. Use tutor-build-policy to validate activation criteria
+    const gateResult = canActivateTutor(
+      profile as TutorProfile,
+      (versions ?? []) as TutorVersion[]
+    );
+
+    if (!gateResult.canActivate) {
+      return {
+        ok: false,
+        error: `Cannot activate: ${gateResult.blockers.join('; ')}`,
+      };
     }
 
-    // 5. Check the latest version has non-empty instructions
-    const latestVersion = versions[0];
-    const instructions = latestVersion.instructions as TutorInstructions | null;
-    if (!instructions?.instruction_set || instructions.instruction_set.trim() === '') {
-      return { ok: false, error: 'Latest version must have non-empty instructions before activation' };
-    }
-
-    // 6. Update status to 'active'
+    // 5. Update status to 'active'
     const { error: updateError } = await supabase
       .from('tutor_profiles')
       .update({ status: 'active', updated_at: new Date().toISOString() })
@@ -528,12 +538,16 @@ export async function activateTutorProfile(
       return { ok: false, error: `Failed to activate profile: ${updateError.message}` };
     }
 
-    // 7. Non-blocking event logging
+    // 6. Non-blocking event logging — safe metadata only
     logTutorUpdateEvent({
       studentId: user.id,
       eventType: 'tutor_profile_updated',
       targetId: profileId,
-      metadata: { action: 'activated' },
+      metadata: {
+        action: 'activated',
+        noPromptStored: true,
+        noResponseStored: true,
+      },
     }).catch((e) => console.error('[activateTutorProfile] event log error:', e));
 
     revalidatePath('/student/modules/9');
@@ -574,31 +588,35 @@ export async function publishTutorProfile(
       return { ok: false, error: 'Tutor profile not found' };
     }
 
-    // 2. Verify ownership AND active status
+    // 2. Verify ownership
     if (profile.student_id !== user.id) {
       return { ok: false, error: 'Not authorized to publish this profile' };
     }
 
-    if (profile.status !== 'active') {
-      return { ok: false, error: 'Profile must be active before it can be published' };
-    }
-
-    // 3. Check for at least 1 knowledge file
+    // 3. Fetch knowledge files for policy check
     const { data: knowledgeFiles, error: filesError } = await supabase
       .from('knowledge_files')
-      .select('id')
-      .eq('tutor_profile_id', profileId)
-      .limit(1);
+      .select('*')
+      .eq('tutor_profile_id', profileId);
 
     if (filesError) {
       return { ok: false, error: `Failed to check knowledge files: ${filesError.message}` };
     }
 
-    if (!knowledgeFiles || knowledgeFiles.length === 0) {
-      return { ok: false, error: 'Tutor must have at least 1 knowledge file before publishing' };
+    // 4. Use tutor-build-policy to validate publish criteria
+    const gateResult = canPublishTutor(
+      profile as TutorProfile,
+      (knowledgeFiles ?? []) as KnowledgeFile[]
+    );
+
+    if (!gateResult.canPublish) {
+      return {
+        ok: false,
+        error: `Cannot publish: ${gateResult.blockers.join('; ')}`,
+      };
     }
 
-    // 4. Update status to 'published'
+    // 5. Update status to 'published'
     const { error: updateError } = await supabase
       .from('tutor_profiles')
       .update({ status: 'published', updated_at: new Date().toISOString() })
@@ -608,12 +626,17 @@ export async function publishTutorProfile(
       return { ok: false, error: `Failed to publish profile: ${updateError.message}` };
     }
 
-    // 5. Non-blocking event logging
+    // 6. Non-blocking event logging — safe metadata only
     logTutorUpdateEvent({
       studentId: user.id,
       eventType: 'tutor_profile_updated',
       targetId: profileId,
-      metadata: { action: 'published' },
+      metadata: {
+        action: 'published',
+        hasKnowledgeFiles: (knowledgeFiles?.length ?? 0) > 0,
+        noPromptStored: true,
+        noResponseStored: true,
+      },
     }).catch((e) => console.error('[publishTutorProfile] event log error:', e));
 
     revalidatePath('/student/modules/9');
@@ -639,11 +662,70 @@ export async function chatWithTutor(
   messages: { role: 'user' | 'model'; content: string }[]
 ): Promise<ActionResult<string>> {
   try {
+    // ── Auth check ──
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { ok: false, error: 'Not authenticated' };
 
-    // 1. Fetch tutor profile
+    // ── Server-side rate limit check (must run before any Gemini/AI call) ──
+    const rateLimit = await checkTutorTestRateLimit(user.id);
+    if (!rateLimit.allowed) {
+      return { ok: false, error: rateLimit.reason || 'Rate limit exceeded.' };
+    }
+
+    // ── Input bounds (safety) ──
+    if (messages.length > TUTOR_CHAT_MAX_MESSAGES_PER_SESSION) {
+      return {
+        ok: false,
+        error: `Session limit reached (max ${TUTOR_CHAT_MAX_MESSAGES_PER_SESSION} messages). Clear the chat to continue.`,
+      };
+    }
+
+    const lastUserMsg = messages[messages.length - 1];
+    if (
+      lastUserMsg?.role === 'user' &&
+      lastUserMsg.content.length > TUTOR_CHAT_MAX_INPUT_LENGTH
+    ) {
+      return {
+        ok: false,
+        error: `Message too long (max ${TUTOR_CHAT_MAX_INPUT_LENGTH} characters).`,
+      };
+    }
+
+    // Helper for obvious bypass phrase validation
+    const containsBypassPhrase = (text: string): boolean => {
+      const lower = text.toLowerCase();
+      const bypasses = [
+        'do my homework',
+        'give me answers',
+        'ignore playiq rules',
+        'reveal quiz answers',
+        'bypass effort',
+      ];
+      return bypasses.some((phrase) => lower.includes(phrase));
+    };
+
+    // Validate prompt against restricted phrases
+    if (lastUserMsg?.role === 'user' && containsBypassPhrase(lastUserMsg.content)) {
+      logTutorUpdateEvent({
+        studentId: user.id,
+        eventType: 'tutor_profile_updated',
+        targetId: profileId,
+        metadata: {
+          action: 'tutor_test_refused',
+          reason: 'bypass_phrase_in_prompt',
+          noPromptStored: true,
+          noResponseStored: true,
+        },
+      }).catch((e) => console.error('[chatWithTutor] event log error:', e));
+
+      return {
+        ok: false,
+        error: 'I cannot fulfill this request as it violates safety guidelines.',
+      };
+    }
+
+    // ── Fetch tutor profile ──
     const { data: profile, error: profileError } = await supabase
       .from('tutor_profiles')
       .select('*')
@@ -654,11 +736,12 @@ export async function chatWithTutor(
       return { ok: false, error: 'Tutor profile not found' };
     }
 
+    // ── Ownership check ──
     if (profile.student_id !== user.id) {
       return { ok: false, error: 'Not authorized to chat with this tutor' };
     }
 
-    // 2. Fetch current version
+    // ── Fetch current version ──
     let currentVersion: any = null;
     if (profile.current_version_id) {
       const { data: version } = await supabase
@@ -669,48 +752,79 @@ export async function chatWithTutor(
       currentVersion = version;
     }
 
-    // 3. Fetch knowledge files
-    const { data: knowledgeFiles } = await supabase
-      .from('knowledge_files')
-      .select('*')
-      .eq('tutor_profile_id', profileId);
-
-    // 4. Construct system instruction
-    const doctrine = profile.doctrine_config || {};
     const instructions = currentVersion?.instructions || {};
 
-    let systemInstruction = `You are a custom AI Tutor designed by the student to help them learn.
-Here is your persona profile:
-- Name: ${profile.name}
-- Core Purpose: ${doctrine.purpose || 'Help me learn'}
-- Teaching Style: ${doctrine.teaching_style || 'Socratic'}
-- Explanation Preferences: ${doctrine.explanation_preferences || 'Explain with analogies'}
-- Subject Focus: ${doctrine.subject_focus || 'Curriculum concepts'}
+    // Validate instructions/rules against restricted phrases
+    const instructionSetUnsafe = instructions.instruction_set && containsBypassPhrase(instructions.instruction_set);
+    const rulesUnsafe = instructions.rules?.some((rule: string) => containsBypassPhrase(rule));
 
-`;
+    if (instructionSetUnsafe || rulesUnsafe) {
+      logTutorUpdateEvent({
+        studentId: user.id,
+        eventType: 'tutor_profile_updated',
+        targetId: profileId,
+        metadata: {
+          action: 'tutor_test_refused',
+          reason: 'bypass_phrase_in_instructions',
+          noPromptStored: true,
+          noResponseStored: true,
+        },
+      }).catch((e) => console.error('[chatWithTutor] event log error:', e));
+
+      return {
+        ok: false,
+        error: 'Tutor configuration violates safety guidelines due to restricted phrases.',
+      };
+    }
+
+    // ── Fetch knowledge file names only (not paths or URLs) ──
+    const { data: knowledgeFiles } = await supabase
+      .from('knowledge_files')
+      .select('file_name')
+      .eq('tutor_profile_id', profileId);
+
+    // Log the successful test attempt (safe metadata only) before making AI call
+    logTutorUpdateEvent({
+      studentId: user.id,
+      eventType: 'tutor_profile_updated',
+      targetId: profileId,
+      metadata: {
+        action: 'tutor_test_attempt',
+        noPromptStored: true,
+        noResponseStored: true,
+      },
+    }).catch((e) => console.error('[chatWithTutor] event log error:', e));
+
+    // ── Construct system instruction ──
+    // PlayIQ integrity baseline is ALWAYS prepended and cannot be overridden
+    const doctrine = profile.doctrine_config || {};
+
+    let systemInstruction = PLAYIQ_TUTOR_SYSTEM_PREFIX;
+
+    systemInstruction += `\n--- Student-Configured Tutor Profile ---\n`;
+    systemInstruction += `- Name: ${profile.name}\n`;
+    systemInstruction += `- Core Purpose: ${doctrine.purpose || 'Help me learn'}\n`;
+    systemInstruction += `- Teaching Style: ${doctrine.teaching_style || 'Socratic'}\n`;
+    systemInstruction += `- Explanation Preferences: ${doctrine.explanation_preferences || 'Explain with analogies'}\n`;
+    systemInstruction += `- Subject Focus: ${doctrine.subject_focus || 'Curriculum concepts'}\n\n`;
 
     if (instructions.instruction_set) {
-      systemInstruction += `Core Instructions:
-${instructions.instruction_set}
-
-`;
+      systemInstruction += `Student-Defined Core Instructions:\n${instructions.instruction_set}\n\n`;
     }
 
     if (instructions.rules && instructions.rules.length > 0) {
-      systemInstruction += `Boundaries & Rules:
-${instructions.rules.map((r: string, idx: number) => `${idx + 1}. ${r}`).join('\n')}
-
-`;
+      systemInstruction += `Student-Defined Boundaries & Rules:\n`;
+      systemInstruction += instructions.rules.map((r: string, idx: number) => `${idx + 1}. ${r}`).join('\n');
+      systemInstruction += '\n\n';
     }
 
     if (knowledgeFiles && knowledgeFiles.length > 0) {
-      systemInstruction += `Available Knowledge Files for Context (Reference these files when appropriate):
-${knowledgeFiles.map((kf: any) => `- ${kf.file_name}`).join('\n')}
-
-`;
+      systemInstruction += `Available Knowledge Files for Context (reference when appropriate):\n`;
+      systemInstruction += knowledgeFiles.map((kf: { file_name: string }) => `- ${kf.file_name}`).join('\n');
+      systemInstruction += '\n\n';
     }
 
-    // 5. Initialize Google Gen AI and call Gemini API
+    // ── Call Gemini API ──
     const { GoogleGenAI } = await import('@google/genai');
     const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
     if (!apiKey) {
@@ -735,6 +849,11 @@ ${knowledgeFiles.map((kf: any) => `- ${kf.file_name}`).join('\n')}
     });
 
     const replyText = response.text || '';
+
+    // ── SAFETY: No raw prompts or responses are stored ──
+    // Only safe metadata is logged (if at all). Prompts and responses
+    // exist only in-memory during this request and are not persisted.
+
     return { ok: true, data: replyText };
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';

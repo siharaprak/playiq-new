@@ -18,7 +18,26 @@ export const TutorDoctrineConfigSchema = z.object({
 // Instructions — validates the system prompt & rules
 // ---------------------------------------------------------------------------
 export const TutorInstructionsSchema = z.object({
-  instruction_set: z.string().min(1, 'Instruction set is required'),
+  instruction_set: z
+    .string()
+    .min(1, 'Instruction set is required')
+    .max(3000, 'Instruction set cannot exceed 3000 characters')
+    .refine(
+      (val) => {
+        const lower = val.toLowerCase();
+        const bypasses = [
+          'do my homework',
+          'give me answers',
+          'ignore playiq rules',
+          'reveal quiz answers',
+          'bypass effort',
+        ];
+        return !bypasses.some((phrase) => lower.includes(phrase));
+      },
+      {
+        message: 'Instruction set contains restricted phrases (e.g., bypass rules, homework completion, or quiz leaks).',
+      }
+    ),
   rules: z.array(z.string()).default([]),
 });
 

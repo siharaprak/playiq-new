@@ -550,7 +550,7 @@ export default function TutorBuilderContainer({
             <div className="border border-slate-800 bg-black/20 p-5 rounded flex flex-col justify-between">
               <div>
                 <h4 className="font-mono text-xs uppercase tracking-widest text-[#00c8ff] font-bold mb-2 flex items-center gap-1.5">
-                  <Sparkles size={12} /> Test Environment
+                  <Sparkles size={12} /> Test Your Tutor Style
                 </h4>
                 <p className="font-mono text-[10px] text-slate-400 leading-relaxed mb-4">
                   Run a live simulation to test your tutor&apos;s custom instructions and teaching rules before deploying it for daily learning.
@@ -561,7 +561,7 @@ export default function TutorBuilderContainer({
                 onClick={() => setShowSandbox(!showSandbox)}
                 className="w-full bg-[#7b4fce]/15 hover:bg-[#7b4fce]/25 border border-[#7b4fce]/40 text-[#7b4fce] py-2.5 rounded font-mono text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2"
               >
-                <Play size={10} /> {showSandbox ? 'Close Sandbox' : 'Test AI Tutor'}
+                <Play size={10} /> {showSandbox ? 'Close Sandbox' : 'Test Your Tutor Style'}
               </button>
             </div>
           </div>
