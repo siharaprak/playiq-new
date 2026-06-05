@@ -40,5 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# sprint-related audit/matrix dump files
-docs/sprint/
+# documentation files
+docs/
