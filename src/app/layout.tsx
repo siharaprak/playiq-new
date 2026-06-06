@@ -7,7 +7,6 @@ import { SocialSidebar } from "@/components/layout/SocialSidebar";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA4RouteTracker } from "@/components/analytics/GA4RouteTracker";
-import { GuidedAIPanel } from "@/components/guided-ai/GuidedAIPanel";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -66,7 +65,6 @@ export default function RootLayout({
           <Navbar />
           <SocialSidebar />
           <div className="flex-grow">{children}</div>
-          <GuidedAIPanel isFloating={true} />
           <Footer />
         </ThemeProvider>
       </body>

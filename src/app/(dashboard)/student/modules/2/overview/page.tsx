@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
-import { GuidedAIPanel } from '@/components/guided-ai/GuidedAIPanel';
 
 const MODULE_NODES = [
   { id: '1', title: 'The Power Tool Principle' },
@@ -121,10 +120,7 @@ export default async function Module2OverviewPage() {
         </div>
       </section>
 
-      {/* Guided AI Coach */}
-      <div className="mb-8">
-        <GuidedAIPanel moduleNumber={2} pageType="overview" />
-      </div>
+
 
       {/* Assessments */}
       <section className="p-6 rounded-xl border" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-purple)' }}>

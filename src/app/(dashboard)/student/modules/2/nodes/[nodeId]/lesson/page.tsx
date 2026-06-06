@@ -3,7 +3,6 @@ import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
 import { advanceNodePhase } from '../../../actions';
 import { module2Nodes } from '@/data/module2Content';
-import { GuidedAIPanel } from '@/components/guided-ai/GuidedAIPanel';
 
 export default async function NodeLessonPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
@@ -48,11 +47,6 @@ export default async function NodeLessonPage({ params }: { params: Promise<{ nod
             </div>
           ))}
         </div>
-      </div>
-
-      {/* Guided AI Coach — collapsible panel, does not bury CTA */}
-      <div className="mt-8">
-        <GuidedAIPanel moduleNumber={2} nodeId={nodeId} pageType="lesson" />
       </div>
 
       <div className="flex justify-end mt-8 border-t border-slate-800 pt-8">

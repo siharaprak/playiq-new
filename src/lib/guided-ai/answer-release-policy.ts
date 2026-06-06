@@ -36,6 +36,7 @@ export interface AnswerReleaseDecision {
     | 'coach'
     | 'lesson_rescue'
     | 'quiz_practice'
+    | 'chat'
     | 'none';
   message: string;
 }
@@ -141,6 +142,15 @@ export function getAnswerReleaseDecision(
       reason: 'allowed_conceptual_explanation',
       allowedSupport: 'explain',
       message: 'Conceptual explanation allowed, provided no direct answers are revealed.'
+    };
+  }
+
+  if (mode === 'chat') {
+    return {
+      allowed: true,
+      reason: 'allowed_conceptual_explanation',
+      allowedSupport: 'chat',
+      message: 'Conversational chat allowed, provided no direct answers are revealed.'
     };
   }
 

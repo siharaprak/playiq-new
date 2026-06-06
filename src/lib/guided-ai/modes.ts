@@ -12,6 +12,20 @@ import type { GuidedAiModeConfig, GuidedAiModeId } from './types';
 // ---------------------------------------------------------------------------
 
 export const GUIDED_AI_MODES: Record<GuidedAiModeId, GuidedAiModeConfig> = {
+  chat: {
+    id: 'chat',
+    label: 'Chat',
+    description: 'Chat freely with Orion about study concepts, logic, and coding.',
+    allowedInputs: ['message'],
+    integrityRules: [
+      'Must not complete homework or quiz answers directly',
+      'Must not reveal quiz/assessment answers directly',
+      'Must focus on educational, logical, and coding concepts',
+    ],
+    outputContract: 'Helpful conversation response + suggested next action',
+    betaStatus: 'active',
+  },
+
   explain: {
     id: 'explain',
     label: 'Explain',

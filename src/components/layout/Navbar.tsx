@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
-import { Menu, X, MessageSquare, LayoutDashboard, BookOpen, Settings } from 'lucide-react';
+import { Menu, X, MessageSquare, LayoutDashboard, BookOpen, Settings, ChevronDown } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from './ThemeToggle';
 import { PlayIQLogo } from './PlayIQLogo';
@@ -65,7 +65,7 @@ export function Navbar() {
 
   return (
     <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-[1400px]">
-      <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00c8ff] overflow-hidden">
+      <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00c8ff]">
 
         {/* Logo */}
         <Link href={isStudentLoggedIn ? '/student/home' : '/'} className="flex items-center gap-2 flex-shrink-0 group" aria-label="PlayIQ Home">
@@ -73,9 +73,9 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center gap-2 xl:gap-4 min-w-0 overflow-x-auto scrollbar-hide">
-          {/* Public links */}
-          {publicNavLinks.map((link) => {
+        <div className="hidden lg:flex items-center gap-3 xl:gap-6 justify-center flex-grow mx-4">
+          {/* Public links (only shown for guest users) */}
+          {!userRole && publicNavLinks.map((link) => {
             const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
             return (
               <Link key={link.href} href={link.href} className={`${baseLinkClass} ${isActive ? activeLinkClass : inactiveLinkClass}`}>
@@ -87,17 +87,35 @@ export function Navbar() {
           {/* Authenticated user nav */}
           {!isLoading && userRole && (
             <>
-              {(userRole === 'student' || userRole === 'admin') && (
-                <Link href="/student/home" className={`${baseLinkClass} ${pathname.startsWith('/student/home') || pathname.startsWith('/student/modules') ? activeLinkClass : inactiveLinkClass}`}>
-                  MODULES
-                </Link>
-              )}
+              <Link href={userRole === 'parent' ? '/parent/home' : userRole === 'admin' ? '/admin/home' : '/student/home'} className={`${baseLinkClass} ${pathname.startsWith('/parent/home') || pathname.startsWith('/admin/home') || pathname.startsWith('/student/home') || pathname.startsWith('/student/modules') ? activeLinkClass : inactiveLinkClass}`}>
+                {userRole === 'parent' || userRole === 'admin' ? 'DASHBOARD' : 'MODULES'}
+              </Link>
               <Link href="/discussions" className={`${baseLinkClass} ${pathname.startsWith('/discussions') ? activeLinkClass : inactiveLinkClass}`}>
                 DISCUSSIONS
               </Link>
               <Link href="/settings" className={`${baseLinkClass} ${pathname.startsWith('/settings') ? activeLinkClass : inactiveLinkClass}`}>
                 SETTINGS
               </Link>
+
+              {/* Hover dropdown for marketing pages when logged in */}
+              <div className="relative group/more inline-block">
+                <button className={`flex items-center gap-1 cursor-pointer bg-transparent border-none ${baseLinkClass} ${inactiveLinkClass}`}>
+                  MORE <ChevronDown size={10} className="w-2.5 h-2.5 group-hover/more:rotate-180 transition-transform duration-300 text-[#00c8ff]" />
+                </button>
+                <div className="absolute top-full right-0 mt-2 w-48 opacity-0 invisible group-hover/more:opacity-100 group-hover/more:visible transition-all duration-300 translate-y-2 group-hover/more:translate-y-0 z-50">
+                  <div className="glass-card border border-[var(--space-card-border)] p-2 rounded shadow-2xl flex flex-col gap-1.5 backdrop-blur-md" style={{ backgroundColor: 'var(--space-card)' }}>
+                    {publicNavLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className="block px-4 py-2 text-[0.65rem] font-bold tracking-[0.1em] text-[var(--text-secondary)] hover:text-[#00c8ff] hover:bg-[rgba(0,200,255,0.06)] transition-all duration-200 uppercase font-display border-l-2 border-transparent hover:border-[#00c8ff]"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </>
           )}
         </div>
@@ -138,15 +156,15 @@ export function Navbar() {
       {mobileOpen && (
         <div className="glass-card mt-2 p-4 lg:hidden border-l-[3px] border-l-[#7b4fce] border-r-0 border-b-0 border-t-0 rounded-none overflow-y-auto max-h-[80vh]">
           <div className="flex flex-col gap-1">
-            {isStudentLoggedIn && (
-              // Student mobile nav
+            {/* Authenticated user mobile menu */}
+            {!isLoading && userRole && (
               <>
                 <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-600 px-3 py-2">My Learning</p>
-                <Link href="/student/home" onClick={() => setMobileOpen(false)}
+                <Link href={userRole === 'parent' ? '/parent/home' : userRole === 'admin' ? '/admin/home' : '/student/home'} onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] rounded-lg">
                   <LayoutDashboard className="w-3.5 h-3.5" /> Dashboard
                 </Link>
-                {studentModuleLinks.map((mod) => (
+                {(userRole === 'student' || userRole === 'admin') && studentModuleLinks.map((mod) => (
                   <Link key={mod.href} href={mod.href} onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] rounded-lg">
                     <BookOpen className="w-3.5 h-3.5" /> {mod.label}
@@ -154,21 +172,27 @@ export function Navbar() {
                   </Link>
                 ))}
                 <Link href="/discussions" onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] rounded-lg mb-2">
+                  className="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] rounded-lg">
                   <MessageSquare className="w-3.5 h-3.5" /> Discussions
                 </Link>
+                <Link href="/settings" onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] rounded-lg mb-2">
+                  <Settings className="w-3.5 h-3.5" /> Settings
+                </Link>
+
+                {/* Secondary Site Links section for logged in mobile users */}
+                <p className="text-[9px] font-bold uppercase tracking-[0.2em] text-slate-600 px-3 py-2 border-t border-[rgba(123,79,206,0.15)] mt-2">Explore Site</p>
+                {publicNavLinks.map((link) => (
+                  <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
+                    className="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-400 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] border-l-2 border-transparent hover:border-[#00c8ff]">
+                    &gt; {link.label}
+                  </Link>
+                ))}
               </>
             )}
 
-            {!isLoading && userRole && (
-              <Link href="/settings" onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.08)] rounded-lg mb-2">
-                <Settings className="w-3.5 h-3.5" /> Settings
-              </Link>
-            )}
-
-            {/* Public mobile nav always shown */}
-            {publicNavLinks.map((link) => (
+            {/* Public mobile nav only shown for guests */}
+            {!userRole && publicNavLinks.map((link) => (
               <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)}
                 className="font-display text-xs font-bold uppercase tracking-[0.2em] text-slate-300 hover:text-[#00c8ff] transition-colors py-2 px-3 hover:bg-[rgba(0,200,255,0.1)] border-l-2 border-transparent hover:border-[#00c8ff]">
                 &gt; {link.label}

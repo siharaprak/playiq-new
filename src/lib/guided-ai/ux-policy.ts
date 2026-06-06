@@ -19,6 +19,20 @@ export interface GuidedAiUxPolicy {
 }
 
 export const GUIDED_AI_UX_MODES: Record<GuidedAiModeId, GuidedAiUxPolicy> = {
+  chat: {
+    mode: 'chat',
+    primaryPurpose: 'Open-ended educational chat with Orion about study concepts, logic, and coding.',
+    uxBehavior: [
+      'conversational support',
+      'educational and logical context focus',
+      'no direct assessment answers',
+      'must end with a check or follow-up question'
+    ],
+    studentFacingLanguage: 'I\'ll chat with you about study topics, coding, or logic.',
+    parentFacingLanguage: 'Engages your child in open-ended educational discussion to expand concepts.',
+    allowedDepth: 'full',
+    primaryUserIntent: 'help'
+  },
   hint: {
     mode: 'hint',
     primaryPurpose: 'Help student move one step forward without giving the answer.',

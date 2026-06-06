@@ -58,7 +58,7 @@ export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
-    { role: 'model', content: "Hello! I'm Agent PiQ, your PlayIQ AI Guide. How can I help you today?" }
+    { role: 'model', content: "Hello! I'm Orion, your PlayIQ AI Guide. How can I help you today?" }
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -174,7 +174,7 @@ export function ChatBot() {
         <button
           onClick={() => setIsOpen(true)}
           className="fixed bottom-6 right-6 z-50 p-4 rounded-full bg-[#020617] border-2 border-[#00c8ff] text-[#00c8ff] shadow-[0_0_15px_rgba(0,200,255,0.3)] hover:shadow-[0_0_25px_rgba(0,200,255,0.6)] hover:bg-[rgba(0,200,255,0.1)] transition-all duration-300 group animate-bounce-slow"
-          aria-label="Open Agent PiQ Chat"
+          aria-label="Open Orion Chat"
         >
           <MessageSquare className="w-6 h-6 group-hover:scale-110 transition-transform" />
         </button>
@@ -187,11 +187,11 @@ export function ChatBot() {
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-[#00c8ff]/20 bg-[#020617]/80">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full bg-[#020617] border border-[#7b4fce] flex items-center justify-center text-[#7b4fce] shadow-[0_0_10px_rgba(123,79,206,0.3)]">
-                <Bot size={18} />
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-[#7b4fce] flex items-center justify-center shadow-[0_0_10px_rgba(123,79,206,0.3)] bg-slate-950">
+                <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
               </div>
               <div>
-                <h3 className="font-display font-bold text-sm tracking-wider text-[#e2e8f0]">AGENT <span className="text-[#00c8ff]">PIQ</span></h3>
+                <h3 className="font-display font-bold text-sm tracking-wider text-[#e2e8f0]"><span className="text-[#00c8ff]">ORION</span></h3>
                 <div className="flex items-center gap-1.5">
                   <div className="w-1.5 h-1.5 rounded-full bg-[#39ff14] shadow-[0_0_5px_#39ff14]"></div>
                   <span className="text-[10px] text-muted-foreground uppercase tracking-widest">Online</span>
@@ -213,13 +213,15 @@ export function ChatBot() {
                 key={idx} 
                 className={`flex gap-3 max-w-[85%] ${msg.role === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
               >
-                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border ${
-                  msg.role === 'user' 
-                    ? 'bg-[#020617] border-[#00c8ff] text-[#00c8ff]' 
-                    : 'bg-[#020617] border-[#7b4fce] text-[#7b4fce]'
-                }`}>
-                  {msg.role === 'user' ? <User size={16} /> : <Bot size={16} />}
-                </div>
+                {msg.role === 'user' ? (
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border bg-[#020617] border-[#00c8ff] text-[#00c8ff]">
+                    <User size={16} />
+                  </div>
+                ) : (
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden border border-[#7b4fce] flex items-center justify-center bg-slate-950 animate-fade-in">
+                    <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
+                  </div>
+                )}
                 <div className={`p-3 rounded-xl text-sm leading-relaxed ${
                   msg.role === 'user'
                     ? 'bg-[#00c8ff]/10 border border-[#00c8ff]/30 text-white rounded-tr-none'
@@ -231,8 +233,8 @@ export function ChatBot() {
             ))}
             {isLoading && (
               <div className="flex gap-3 max-w-[85%]">
-                <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center border bg-[#020617] border-[#7b4fce] text-[#7b4fce]">
-                  <Bot size={16} />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden border border-[#7b4fce] flex items-center justify-center bg-slate-950">
+                  <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
                 </div>
                 <div className="p-3 rounded-xl bg-[#7b4fce]/10 border border-[#7b4fce]/30 text-slate-200 rounded-tl-none flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-[#7b4fce] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
@@ -251,7 +253,7 @@ export function ChatBot() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Ask Agent PiQ..."
+                placeholder="Ask Orion..."
                 className="w-full bg-[#0b1120] border border-[#00c8ff]/30 rounded-lg pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:border-[#00c8ff] focus:shadow-[0_0_10px_rgba(0,200,255,0.2)] transition-all placeholder:text-slate-500"
                 disabled={isLoading}
               />

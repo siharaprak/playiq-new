@@ -22,6 +22,7 @@ import { z } from 'zod';
 // ---------------------------------------------------------------------------
 
 export const GuidedAiModeId = z.enum([
+  'chat',
   'explain',
   'hint',
   'quiz',
