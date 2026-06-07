@@ -70,7 +70,13 @@ export async function checkGuidedAiRateLimit({
     .gte('created_at', globalStart);
 
   if (error) {
-    console.error('[checkGuidedAiRateLimit] DB query failed:', error.message);
+    const { ErrorReporter } = await import('@/lib/monitoring/error-reporter');
+    ErrorReporter.report({
+      error,
+      category: 'rate_limit_blocked',
+      feature: 'guided_ai',
+      action: 'check_rate_limit'
+    });
     // Safe fallback: If DB query fails, we block to protect API cost or we allow?
     // User requested: "if query fails because DB is unavailable, return a safe 503 or conservative 429"
     // "do not call Gemini blindly when rate-limit state cannot be checked"

@@ -83,7 +83,13 @@ export async function resolveSupportIssue(
     return { ok: true };
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
-    console.error('[resolveSupportIssue] Unexpected error:', message);
+    const { ErrorReporter } = await import('@/lib/monitoring/error-reporter');
+    ErrorReporter.report({
+      error: err,
+      category: 'support_issue_error',
+      feature: 'admin_support',
+      action: 'resolve_issue'
+    });
     return { ok: false, error: message };
   }
 }

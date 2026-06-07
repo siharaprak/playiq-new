@@ -29,7 +29,10 @@ export default async function StudentDashboard() {
 
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count').eq('id', user.id).single();
+  const { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role').eq('id', user.id).single();
+  if (profile?.role !== 'student') {
+    redirect(`/${profile?.role || 'parent'}/home`);
+  }
   const name = (profile as any)?.username || profile?.full_name || 'Student';
   const initials = name.substring(0, 2).toUpperCase();
   const currentUsername: string | null = (profile as any)?.username ?? null;

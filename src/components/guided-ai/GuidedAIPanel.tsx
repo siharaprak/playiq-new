@@ -71,9 +71,9 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
   let activeNodeId = nodeId;
   let activePageType = pageType;
 
-  if (isFloating) {
-    if (!pathname?.startsWith('/student')) return null;
+  const isStudentRoute = !isFloating || (pathname?.startsWith('/student') ?? false);
 
+  if (isFloating && pathname?.startsWith('/student')) {
     const match = pathname?.match(/\/student\/modules\/(\d+)/);
     if (match) {
       activeModuleNumber = parseInt(match[1]);
@@ -889,6 +889,8 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
       </>
     );
   }
+
+  if (!isStudentRoute) return null;
 
   // Non-floating layout
   return (

@@ -87,6 +87,119 @@ export async function deleteAssistantKnowledgeFile(
 }
 
 // ---------------------------------------------------------------------------
+// Request Upload Slot: Validate file parameters and return signed upload URL
+// ---------------------------------------------------------------------------
+
+/**
+ * Validates assistant knowledge file parameters on the server and issues a signed upload URL.
+ * Scopes file count check to the assistant profile (max 5 files).
+ */
+export async function requestAssistantUploadSlot(
+  assistantProfileId: string,
+  fileName: string,
+  fileSize: number,
+  mimeType: string
+): Promise<ActionResult<{ uploadUrl: string; token: string; filePath: string }>> {
+  try {
+    const supabase = await createClient();
+
+    // 1. Authenticate user
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { ok: false, error: 'Not authenticated' };
+
+    // 2. Server-side validations
+    const { isFilenameSafe } = await import('./assistant-build-policy');
+    if (!isFilenameSafe(fileName)) {
+      return { ok: false, error: 'Unsafe filename: dangerous patterns or extensions blocked' };
+    }
+
+    if (fileSize <= 0 || fileSize > 10 * 1024 * 1024) {
+      return { ok: false, error: 'File size exceeds maximum allowed limit (10MB)' };
+    }
+
+    const allowedMimes = [
+      'application/pdf',
+      'text/plain',
+      'text/markdown',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'image/png',
+      'image/jpeg'
+    ];
+    if (!allowedMimes.includes(mimeType)) {
+      return { ok: false, error: 'Unsupported file MIME type' };
+    }
+
+    // Additional upload abuse checks (MIME mismatch, null bytes, double extensions, path traversal)
+    const { classifyUploadAbuseRisk } = await import('@/lib/uploads/upload-abuse-policy');
+    const riskCheck = classifyUploadAbuseRisk({ fileName, fileSizeBytes: fileSize, mimeType });
+    if (!riskCheck.safe) {
+      return { ok: false, error: riskCheck.reason || 'Unsafe file' };
+    }
+
+    // Scoped file count check (max 5)
+    const { count, error: countError } = await supabase
+      .from('knowledge_files')
+      .select('id', { count: 'exact', head: true })
+      .eq('assistant_profile_id', assistantProfileId);
+
+    if (countError) {
+      return { ok: false, error: 'Failed to verify file count' };
+    }
+    if (count !== null && count >= 5) {
+      return { ok: false, error: 'Maximum 5 files allowed per assistant' };
+    }
+
+    // Verify assistant profile belongs to this user
+    const { data: profile, error: profileError } = await supabase
+      .from('assistant_profiles')
+      .select('id, student_id')
+      .eq('id', assistantProfileId)
+      .single();
+
+    if (profileError || !profile) {
+      return { ok: false, error: 'Assistant profile not found' };
+    }
+    if (profile.student_id !== user.id) {
+      return { ok: false, error: 'Not authorized to add files to this profile' };
+    }
+
+    // Build unique upload path: {studentId}/{assistantProfileId}/{timestamp}_{filename}
+    const safeNameClean = fileName.replace(/[<>:"/\\|?*\x00-\x1f]/g, '_');
+    const filePath = `${user.id}/${assistantProfileId}/${Date.now()}_${safeNameClean}`;
+
+    // Generate signed upload URL (Valid for 10 minutes)
+    const { data, error: uploadError } = await supabaseAdmin
+      .storage
+      .from('knowledge-files')
+      .createSignedUploadUrl(filePath);
+
+    if (uploadError || !data?.signedUrl) {
+      const { ErrorReporter } = await import('@/lib/monitoring/error-reporter');
+      ErrorReporter.report({
+        error: uploadError || new Error('Signed upload URL returned null data'),
+        category: 'storage_upload_error',
+        feature: 'assistant_knowledge_file',
+        action: 'request_upload_slot'
+      });
+      return { ok: false, error: `Failed to create signed upload URL: ${uploadError?.message || 'Unknown'}` };
+    }
+
+    return {
+      ok: true,
+      data: {
+        uploadUrl: data.signedUrl,
+        token: data.token,
+        filePath
+      }
+    };
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[requestAssistantUploadSlot] error:', message);
+    return { ok: false, error: message };
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Create: Insert a knowledge file record after client-side upload
 // ---------------------------------------------------------------------------
 /**
@@ -106,6 +219,52 @@ export async function createAssistantKnowledgeFileRecord(
     // 1. Authenticate user
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return { ok: false, error: 'Not authenticated' };
+
+    // Server-side validations
+    const { isFilenameSafe } = await import('./assistant-build-policy');
+    if (!isFilenameSafe(fileName)) {
+      return { ok: false, error: 'Unsafe filename: dangerous patterns or extensions blocked' };
+    }
+
+    if (filePath.includes('..') || filePath.includes('./') || filePath.includes('\\')) {
+      return { ok: false, error: 'Unsafe file path detected' };
+    }
+
+    if (fileSize <= 0 || fileSize > 10 * 1024 * 1024) {
+      return { ok: false, error: 'File size exceeds maximum allowed limit (10MB)' };
+    }
+
+    const allowedMimes = [
+      'application/pdf',
+      'text/plain',
+      'text/markdown',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      'image/png',
+      'image/jpeg'
+    ];
+    if (!allowedMimes.includes(mimeType)) {
+      return { ok: false, error: 'Unsupported file MIME type' };
+    }
+
+    // Additional upload abuse checks (MIME mismatch, null bytes, double extensions, path traversal)
+    const { classifyUploadAbuseRisk } = await import('@/lib/uploads/upload-abuse-policy');
+    const riskCheck = classifyUploadAbuseRisk({ fileName, fileSizeBytes: fileSize, mimeType });
+    if (!riskCheck.safe) {
+      return { ok: false, error: riskCheck.reason || 'Unsafe file' };
+    }
+
+    // Scoped file count check
+    const { count, error: countError } = await supabase
+      .from('knowledge_files')
+      .select('id', { count: 'exact', head: true })
+      .eq('assistant_profile_id', assistantProfileId);
+
+    if (countError) {
+      return { ok: false, error: 'Failed to verify file count' };
+    }
+    if (count !== null && count >= 5) {
+      return { ok: false, error: 'Maximum 5 files allowed per assistant' };
+    }
 
     // 2. Verify assistant profile belongs to this user
     const { data: profile, error: profileError } = await supabase

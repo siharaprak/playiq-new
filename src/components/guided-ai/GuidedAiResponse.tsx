@@ -66,7 +66,7 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
  * Renders basic markdown bold, italic, inline code, fenced code blocks and bullets, sanitizing HTML first.
  */
 function renderMarkdown(text: string) {
-  let sanitized = text
+  const sanitized = text
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 

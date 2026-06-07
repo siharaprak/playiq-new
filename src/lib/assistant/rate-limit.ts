@@ -42,7 +42,13 @@ export async function checkAssistantTestRateLimit(
       .gte('created_at', oneHourAgo);
 
     if (error) {
-      console.error('[checkAssistantTestRateLimit] DB query failed:', error.message);
+      const { ErrorReporter } = await import('@/lib/monitoring/error-reporter');
+      ErrorReporter.report({
+        error,
+        category: 'rate_limit_blocked',
+        feature: 'assistant_test',
+        action: 'check_rate_limit'
+      });
       // Fail closed (safety fallback)
       return {
         allowed: false,

@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, File, Trash2, FileText, Image, AlertCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
-import { createAssistantKnowledgeFileRecord, deleteAssistantKnowledgeFile } from '@/lib/assistant/storage';
+import { createAssistantKnowledgeFileRecord, deleteAssistantKnowledgeFile, requestAssistantUploadSlot } from '@/lib/assistant/storage';
+import { isFilenameSafe } from '@/lib/assistant/assistant-build-policy';
 import type { KnowledgeFile } from '@/lib/assistant/types';
 
 interface KnowledgeFileUploadProps {
@@ -80,6 +81,9 @@ export default function KnowledgeFileUpload({
     if (!ALLOWED_TYPES[file.type]) {
       return 'Unsupported file type. Allowed: PDF, TXT, MD, DOCX, PNG, JPEG.';
     }
+    if (!isFilenameSafe(file.name)) {
+      return 'Unsafe filename detected. Rename your file and try again.';
+    }
     return null;
   };
 
@@ -98,23 +102,42 @@ export default function KnowledgeFileUpload({
     setUploadStatusMsg('Connecting to secure storage...');
 
     try {
-      // Build upload path
-      const filePath = `${studentId}/${assistantProfileId}/${Date.now()}_${file.name}`;
+      // 1. Request upload slot (validates server-side before upload starts)
+      const slotResult = await requestAssistantUploadSlot(
+        assistantProfileId,
+        file.name,
+        file.size,
+        file.type
+      );
 
-      // Upload to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from('knowledge-files')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        });
+      if (!slotResult.ok) {
+        throw new Error(slotResult.error);
+      }
 
-      if (uploadError) throw new Error(uploadError.message);
+      const { uploadUrl, token, filePath } = slotResult.data;
+
+      setUploadProgress(40);
+      setUploadStatusMsg('Streaming knowledge data...');
+
+      // 2. Upload to Supabase Storage using signed upload URL
+      // Note: upsert: false is enforced by default on signed upload paths
+      const uploadRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': file.type || 'application/octet-stream',
+        },
+        body: file,
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error('Failed to upload file to storage');
+      }
 
       setUploadProgress(100);
       setUploadStatusMsg('Upload verified!');
 
-      // Create DB record via server action
+      // 3. Create DB record via server action
       const result = await createAssistantKnowledgeFileRecord(
         assistantProfileId,
         file.name,

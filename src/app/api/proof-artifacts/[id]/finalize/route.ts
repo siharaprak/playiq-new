@@ -32,6 +32,13 @@ export async function POST(request: NextRequest, ctx: { params: Promise<{ id: st
 
     return createApiSuccess({ status: artifact.status });
   } catch (error: unknown) {
+    const { ErrorReporter } = await import('@/lib/monitoring/error-reporter');
+    ErrorReporter.report({
+      error,
+      category: 'storage_finalize_error',
+      feature: 'proof_artifact',
+      action: 'finalize_upload'
+    });
     return handleApiError(error, 'Failed to finalize upload');
   }
 }

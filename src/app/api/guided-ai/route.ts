@@ -62,7 +62,13 @@ export async function POST(req: NextRequest) {
     if (error instanceof Error && error.message.startsWith('Forbidden')) {
       return createApiError(error.message, 403);
     }
-    console.error('[guided-ai] Unexpected error:', error);
+    const { ErrorReporter } = await import('@/lib/monitoring/error-reporter');
+    ErrorReporter.report({
+      error,
+      category: 'ai_provider_error',
+      feature: 'guided_ai',
+      action: 'post_request'
+    });
     return createApiError('Internal server error', 500);
   }
 }

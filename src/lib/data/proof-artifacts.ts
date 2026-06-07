@@ -171,7 +171,7 @@ export async function finalizeProofArtifactUpload(studentId: string, artifactId:
 export async function getStudentProofArtifacts(studentId: string, moduleId?: string) {
   let query = supabaseAdmin
     .from('proof_artifact_submissions')
-    .select('*')
+    .select('id, status, title, description, file_name, file_size_bytes, mime_type, media_kind, created_at, submitted_at, reviewed_at, module_id, artifact_type')
     .eq('student_id', studentId)
     .eq('artifact_type', 'supplemental_proof')
     .order('created_at', { ascending: false });
@@ -211,7 +211,18 @@ export async function getReviewQueue(filters?: { status?: string, moduleId?: str
   let query = supabaseAdmin
     .from('proof_artifact_submissions')
     .select(`
-      *,
+      id,
+      student_id,
+      module_id,
+      artifact_type,
+      title,
+      description,
+      file_name,
+      file_size_bytes,
+      media_kind,
+      status,
+      submitted_at,
+      reviewed_at,
       profiles:student_id (full_name)
     `)
     .eq('artifact_type', 'supplemental_proof')

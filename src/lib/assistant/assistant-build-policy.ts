@@ -280,8 +280,13 @@ export function isFilenameSafe(filename: string): boolean {
   if (!filename || filename.length === 0 || filename.length > 255) return false;
   if (UNSAFE_FILENAME_PATTERN.test(filename)) return false;
 
-  const ext = filename.slice(filename.lastIndexOf('.')).toLowerCase();
-  if ((BLOCKED_KNOWLEDGE_FILE_EXTENSIONS as readonly string[]).includes(ext)) return false;
+  const parts = filename.toLowerCase().split('.');
+  if (parts.length < 2) return false;
+
+  for (let i = 1; i < parts.length; i++) {
+    const ext = '.' + parts[i].trim();
+    if ((BLOCKED_KNOWLEDGE_FILE_EXTENSIONS as readonly string[]).includes(ext)) return false;
+  }
 
   return true;
 }

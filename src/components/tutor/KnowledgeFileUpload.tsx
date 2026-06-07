@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Upload, File, Trash2, FileText, Image, AlertCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
-import { createKnowledgeFileRecord, deleteKnowledgeFile } from '@/lib/tutor/storage';
+import { createKnowledgeFileRecord, deleteKnowledgeFile, requestTutorUploadSlot } from '@/lib/tutor/storage';
 import { isFilenameSafe } from '@/lib/tutor/tutor-build-policy';
 import type { KnowledgeFile } from '@/lib/tutor/types';
 
@@ -103,23 +103,42 @@ export default function KnowledgeFileUpload({
     setUploadStatusMsg('Connecting to secure storage...');
 
     try {
-      // Build upload path: {studentId}/{tutorProfileId}/{timestamp}_{filename}
-      const filePath = `${studentId}/${tutorProfileId}/${Date.now()}_${file.name}`;
+      // 1. Request upload slot (validates server-side before upload starts)
+      const slotResult = await requestTutorUploadSlot(
+        tutorProfileId,
+        file.name,
+        file.size,
+        file.type
+      );
 
-      // Upload to Supabase Storage
-      const { error: uploadError } = await supabase.storage
-        .from('knowledge-files')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-        });
+      if (!slotResult.ok) {
+        throw new Error(slotResult.error);
+      }
 
-      if (uploadError) throw new Error(uploadError.message);
+      const { uploadUrl, token, filePath } = slotResult.data;
+
+      setUploadProgress(40);
+      setUploadStatusMsg('Streaming knowledge data...');
+
+      // 2. Upload to Supabase Storage using signed upload URL
+      // Note: upsert: false is enforced by default on signed upload paths
+      const uploadRes = await fetch(uploadUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': file.type || 'application/octet-stream',
+        },
+        body: file,
+      });
+
+      if (!uploadRes.ok) {
+        throw new Error('Failed to upload file to storage');
+      }
 
       setUploadProgress(100);
       setUploadStatusMsg('Upload verified!');
 
-      // Create DB record via server action
+      // 3. Create DB record via server action
       const result = await createKnowledgeFileRecord(
         tutorProfileId,
         file.name,

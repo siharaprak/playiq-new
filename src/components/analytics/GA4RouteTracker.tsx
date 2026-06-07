@@ -1,7 +1,7 @@
 "use client";
 
-import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, Suspense } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, Suspense } from "react";
 
 declare global {
   interface Window {
@@ -11,20 +11,24 @@ declare global {
 
 function GA4RouteTrackerInner({ gaId }: { gaId: string }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
+  const isFirstMount = useRef(true);
 
   useEffect(() => {
     if (pathname && typeof window !== "undefined" && window.gtag) {
-      let url = pathname;
-      if (searchParams && searchParams.toString()) {
-        url += `?${searchParams.toString()}`;
+      // Prevent double page_view firing on initial mount.
+      // Next.js <GoogleAnalytics> automatically tracks the page view on script injection.
+      // Skip RouteTracker configuration on the first mount to avoid duplicates.
+      if (isFirstMount.current) {
+        isFirstMount.current = false;
+        return;
       }
-      
+
+      // Strip query strings entirely. Send pathname only.
       window.gtag("config", gaId, {
-        page_path: url,
+        page_path: pathname,
       });
     }
-  }, [pathname, searchParams, gaId]);
+  }, [pathname, gaId]);
 
   return null;
 }
@@ -36,3 +40,4 @@ export function GA4RouteTracker({ gaId }: { gaId: string }) {
     </Suspense>
   );
 }
+

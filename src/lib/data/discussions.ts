@@ -21,7 +21,8 @@ export async function listDiscussionCategories() {
     .from('discussion_categories')
     .select('*')
     .eq('is_active', true)
-    .order('sort_order', { ascending: true });
+    .order('sort_order', { ascending: true })
+    .limit(50);
 
   if (error) throw new Error(`Failed to list categories: ${error.message}`);
   return data;

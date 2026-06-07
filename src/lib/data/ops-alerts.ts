@@ -132,7 +132,13 @@ export async function getDynamicOpsAlerts(): Promise<DynamicAlert[]> {
       }
     }
   } catch (err) {
-    console.error('[getDynamicOpsAlerts] unexpected query error:', err);
+    const { ErrorReporter } = await import('@/lib/monitoring/error-reporter');
+    ErrorReporter.report({
+      error: err,
+      category: 'database_error',
+      feature: 'admin_ops_alerts',
+      action: 'get_dynamic_alerts'
+    });
   }
 
   return alerts;

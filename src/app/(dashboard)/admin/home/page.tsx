@@ -2,6 +2,7 @@ import { Users, Truck, Activity, Filter, UserCog, FileCheck, UserCheck, MessageS
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
+import { getDynamicOpsAlerts } from '@/lib/data/ops-alerts';
 
 export default async function AdminDashboard({ searchParams }: { searchParams: { status?: string } }) {
   const supabase = await createClient();
@@ -19,8 +20,8 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
     redirect(`/${profile?.role || 'parent'}/home`);
   }
 
-  // Fetch Beta Applications
-  let query = supabase.from('beta_applications').select('*');
+  // Fetch Beta Applications - optimize with limit and explicit fields
+  let query = supabase.from('beta_applications').select('id, parent_full_name, email, child_age_band, shipping_zip_code, status, created_at').limit(50);
   
   if (searchParams?.status && searchParams.status !== 'all') {
     query = query.eq('status', searchParams.status);
@@ -28,23 +29,26 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
 
   const { data: applications, error } = await query.order('created_at', { ascending: false });
 
-  // For metrics, fetch raw total pending (optional, using applications map for now)
+  // For metrics, fetch raw total pending status only
   const { data: allApps } = await supabase.from('beta_applications').select('status');
   const pendingCount = allApps?.filter(a => a.status === 'pending').length || 0;
   const totalCount = allApps?.length || 0;
 
-  // Operational telemetry queries and discussion reports
+  // Operational telemetry queries and discussion reports - optimize select fields for head counts
   const [
     { count: openTicketsCount },
     { count: totalTutorsCount },
     { count: totalAssistantsCount },
     { count: reportsCount }
   ] = await Promise.all([
-    supabase.from('support_issues').select('*', { count: 'exact', head: true }).eq('status', 'open'),
-    supabase.from('tutor_profiles').select('*', { count: 'exact', head: true }),
-    supabase.from('assistant_profiles').select('*', { count: 'exact', head: true }),
+    supabase.from('support_issues').select('id', { count: 'exact', head: true }).eq('status', 'open'),
+    supabase.from('tutor_profiles').select('id', { count: 'exact', head: true }),
+    supabase.from('assistant_profiles').select('id', { count: 'exact', head: true }),
     supabase.from('discussion_reports').select('id', { count: 'exact', head: true }),
   ]);
+
+  // Query dynamic derived alerts (no PII or custom prompts returned)
+  const dynamicAlerts = await getDynamicOpsAlerts();
 
   return (
     <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] p-6 md:p-12">
@@ -111,6 +115,30 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             <Link href="/admin/support" className="text-[#f5c518] hover:underline font-bold">
               OPEN SUPPORT QUEUE &rarr;
             </Link>
+          </div>
+        )}
+
+        {/* Dynamic Operational Alerts Banners (Safe, no PII, no prompt text, read-only) */}
+        {dynamicAlerts.length > 0 && (
+          <div className="mb-8 space-y-3 font-mono text-xs">
+            {dynamicAlerts.map((alert: any) => (
+              <div
+                key={alert.ruleCode}
+                className={`p-4 border flex items-center justify-between !rounded-none ${
+                  alert.severity === 'critical'
+                    ? 'bg-red-500/10 border-red-500/30 text-red-400'
+                    : alert.severity === 'warning'
+                    ? 'bg-amber-500/10 border-amber-500/30 text-amber-400'
+                    : 'bg-blue-500/10 border-blue-500/30 text-blue-400'
+                }`}
+              >
+                <span className="font-bold uppercase tracking-wider flex items-center gap-2">
+                  {alert.severity === 'critical' ? '🔴' : alert.severity === 'warning' ? '⚠️' : 'ℹ️'}{' '}
+                  [{alert.ruleCode}] {alert.title} ({alert.affectedCount} affected)
+                </span>
+                <span className="text-slate-500">{alert.description}</span>
+              </div>
+            ))}
           </div>
         )}
 

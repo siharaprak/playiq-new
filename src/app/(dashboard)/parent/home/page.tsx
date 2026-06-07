@@ -121,6 +121,11 @@ export default async function ParentDashboard({
 
   if (!user) redirect('/login');
 
+  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+  if (profile?.role !== 'parent') {
+    redirect(`/${profile?.role || 'student'}/home`);
+  }
+
   const params = await searchParams;
 
   // ---- Rollup data layer ----
