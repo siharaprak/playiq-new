@@ -73,7 +73,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop Links */}
-        <div className="hidden lg:flex items-center gap-3 xl:gap-6 justify-center flex-grow mx-4">
+        <div className="hidden lg:flex items-center gap-2 xl:gap-4 flex-shrink-0">
           {/* Public links (only shown for guest users) */}
           {!userRole && publicNavLinks.map((link) => {
             const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
@@ -121,7 +121,7 @@ export function Navbar() {
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-3 xl:gap-5 flex-shrink-0 justify-end ml-4">
+        <div className="flex items-center gap-4 xl:gap-6 flex-shrink-0 min-w-[80px] justify-end ml-4">
           <ThemeToggle />
 
           {!isLoading && (
