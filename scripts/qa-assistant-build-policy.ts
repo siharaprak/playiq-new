@@ -92,7 +92,7 @@ async function main() {
   // ═══════════════════════════════════════════════════════════════════
 
   assert(
-    ASSISTANT_BUILD_MIN_COMPLETE_STATUS !== 'draft',
+    (ASSISTANT_BUILD_MIN_COMPLETE_STATUS as string) !== 'draft',
     'ASSISTANT_BUILD_MIN_COMPLETE_STATUS is NOT draft'
   );
 
