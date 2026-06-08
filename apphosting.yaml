@@ -7,3 +7,6 @@ env:
     secret: SUPABASE_SERVICE_ROLE_KEY
   - variable: NEXT_PUBLIC_GA_MEASUREMENT_ID
     value: G-V72N2X8P69
+  - variable: GEMINI_API_KEY
+    secret: GEMINI_API_KEY
+
