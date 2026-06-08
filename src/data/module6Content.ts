@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module6Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-22.png',
     title: 'Why Rereading Fails',
     bigIdea: [
       'Rereading can help a little, but it often tricks you.',
@@ -42,6 +43,7 @@ export const module6Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-23.png',
     title: 'Retrieval Practice System',
     bigIdea: [
       'A good self-test is not random.',
@@ -83,6 +85,7 @@ export const module6Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-24.png',
     title: 'Mistake Bank Patterns',
     bigIdea: [
       'A mistake is data.',
@@ -124,6 +127,7 @@ export const module6Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-28.png',
     title: 'Progressive Correction',
     bigIdea: [
       'Mistakes should be corrected progressively, not just reviewed once.',

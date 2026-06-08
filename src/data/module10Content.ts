@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module10Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/playiq-image-02.png',
     title: 'What Makes a Good AI Assistant',
     bigIdea: [
       'A good assistant has a clear job.',
@@ -46,6 +47,7 @@ export const module10Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-08.png',
     title: 'Assistant Purpose and Boundaries',
     bigIdea: [
       'Boundaries protect the user. Boundaries tell the assistant what not to do.',
@@ -86,6 +88,7 @@ export const module10Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-15.png',
     title: 'Custom Instructions for Real Tasks',
     bigIdea: [
       'Assistant custom instructions should be task-specific.',
@@ -131,6 +134,7 @@ export const module10Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-36.png',
     title: 'Knowledge Files for Useful Support',
     bigIdea: [
       'Knowledge files make assistants more useful.',
@@ -176,6 +180,7 @@ export const module10Nodes: Record<string, NodeContent> = {
 
   '5': {
     id: '5',
+    imageUrl: '/images/modules/bright-mixed-playiq-38.png',
     title: 'Build an Assistant for Yourself',
     bigIdea: [
       'Start with a simple assistant for yourself. Do not overbuild. Pick one real problem.',
@@ -214,6 +219,7 @@ export const module10Nodes: Record<string, NodeContent> = {
 
   '6': {
     id: '6',
+    imageUrl: '/images/modules/bright-mixed-playiq-37.png',
     title: 'Build an Assistant for Someone Else',
     bigIdea: [
       'Building for someone else requires empathy. You cannot just guess. You need to ask what they need.',
@@ -257,6 +263,7 @@ export const module10Nodes: Record<string, NodeContent> = {
 
   '7': {
     id: '7',
+    imageUrl: '/images/modules/bright-mixed-playiq-35.png',
     title: 'Ethics, Privacy, and Boundaries',
     bigIdea: [
       'Building assistants gives you power. Power requires responsibility.',

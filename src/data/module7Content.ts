@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module7Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-25.png',
     title: '10-Line Summary System',
     bigIdea: [
       'A good summary is short, clear, and useful.',
@@ -48,6 +49,7 @@ export const module7Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-26.png',
     title: 'Turn Notes Into Questions',
     bigIdea: [
       'Notes are not finished until they can test you.',
@@ -88,6 +90,7 @@ export const module7Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-27.png',
     title: 'Find Missing Links',
     bigIdea: [
       'A missing link is the part between two ideas that you do not understand yet.',
@@ -128,6 +131,7 @@ export const module7Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-29.png',
     title: 'Precision Prompting',
     bigIdea: [
       'A vague prompt gives vague help.',

@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module2Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-05.png',
     title: 'The Power Tool Principle',
     bigIdea: [
       'Technology is a multiplier.',
@@ -65,6 +66,7 @@ export const module2Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-06.png',
     title: 'Truth, Trust, and Misinformation',
     bigIdea: [
       'Not everything that sounds smart is true.',
@@ -120,6 +122,7 @@ export const module2Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-07.png',
     title: 'Attention, Distraction, and Algorithm Traps',
     bigIdea: [
       'Your attention is valuable.',
@@ -172,6 +175,7 @@ export const module2Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-08.png',
     title: 'Human Responsibility and the Highest Path',
     bigIdea: [
       'You are responsible for what you do with power.',
@@ -228,6 +232,7 @@ export const module2Nodes: Record<string, NodeContent> = {
 
   '5': {
     id: '5',
+    imageUrl: '/images/modules/playiq-image-01.png',
     title: 'Integrity and Identity',
     bigIdea: [
       'Every time you use AI, you are building a habit.',
@@ -284,6 +289,7 @@ export const module2Nodes: Record<string, NodeContent> = {
 
   '6': {
     id: '6',
+    imageUrl: '/images/modules/bright-mixed-playiq-35.png',
     title: 'Social Impact: Privacy, Respect, and Digital Power',
     bigIdea: [
       'What you do online affects other people.',

@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module5Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-18.png',
     title: 'The 3-Ways Rule',
     bigIdea: [
       'A strong learner can explain one idea in more than one way.',
@@ -44,6 +45,7 @@ export const module5Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-19.png',
     title: 'Safe Simplification',
     bigIdea: [
       'A simple explanation is useful only if it stays accurate.',
@@ -85,6 +87,7 @@ export const module5Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-20.png',
     title: 'Build a 1-Page Understanding Card',
     bigIdea: [
       'A 1-Page Understanding Card is a small study asset that captures the most useful version of a topic.',
@@ -125,6 +128,7 @@ export const module5Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-21.png',
     title: 'Practice Without Spoon-Feeding',
     bigIdea: [
       'Practice is where understanding becomes skill.',

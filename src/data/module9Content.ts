@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module9Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-33.png',
     title: 'What Makes a Good AI Tutor',
     bigIdea: [
       'A good AI tutor does not just answer.',
@@ -41,6 +42,7 @@ export const module9Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-36.png',
     title: 'Tutor Personality vs Tutor Function',
     bigIdea: [
       'Personality is how your tutor feels. Function is what your tutor does.',
@@ -81,6 +83,7 @@ export const module9Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-38.png',
     title: 'Beginner Custom Instructions',
     bigIdea: [
       'Custom instructions tell your AI tutor how to behave.',
@@ -121,6 +124,7 @@ export const module9Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/playiq-image-02.png',
     title: 'Choosing What Your Tutor Should Know',
     bigIdea: [
       'Knowledge files give your tutor useful context.',
@@ -163,6 +167,7 @@ export const module9Nodes: Record<string, NodeContent> = {
 
   '5': {
     id: '5',
+    imageUrl: '/images/modules/bright-mixed-playiq-37.png',
     title: 'Using Knowledge Files to Improve Teaching',
     bigIdea: [
       'A knowledge file should make your tutor more useful.',
@@ -201,6 +206,7 @@ export const module9Nodes: Record<string, NodeContent> = {
 
   '6': {
     id: '6',
+    imageUrl: '/images/modules/bright-mixed-playiq-20.png',
     title: 'Tutor Testing and Refinement',
     bigIdea: [
       'You do not know if your tutor works until you test it.',

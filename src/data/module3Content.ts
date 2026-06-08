@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module3Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-09.png',
     title: 'Topic Mapping',
     bigIdea: [
       'Do not ask AI to explain everything at once.',
@@ -59,6 +60,7 @@ export const module3Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-10.png',
     title: 'First Principles',
     bigIdea: [
       'A first principle is the main truth underneath a topic.',
@@ -117,6 +119,7 @@ export const module3Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-11.png',
     title: 'Example-First Learning',
     bigIdea: [
       'Examples help your brain see how the idea works.',
@@ -170,6 +173,7 @@ export const module3Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-12.png',
     title: 'Self-Test Loop',
     bigIdea: [
       'You do not know something just because it sounds familiar.',

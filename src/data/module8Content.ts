@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module8Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-30.png',
     title: 'Claim, Evidence, Reasoning',
     bigIdea: [
       'Strong school answers often need three parts: Claim, Evidence, and Reasoning (CER).',
@@ -44,6 +45,7 @@ export const module8Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-31.png',
     title: 'Outline First',
     bigIdea: [
       'Outlining prevents messy writing.',
@@ -83,6 +85,7 @@ export const module8Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-32.png',
     title: 'Feedback Prompt System',
     bigIdea: [
       'Good AI feedback is specific. Bad feedback just says "Make this better."',
@@ -121,6 +124,7 @@ export const module8Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-34.png',
     title: 'Revision Loop',
     bigIdea: [
       'Revision means improving your own work. It does not mean letting AI replace your voice.',

@@ -1,6 +1,7 @@
 export type NodeContent = {
   id: string;
   title: string;
+  imageUrl?: string;
   bigIdea: string[];
   sections: { title?: string; content: string[] }[];
   activity: {
@@ -16,6 +17,7 @@ export type NodeContent = {
 export const module1Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-01.png',
     title: 'What AI Is Good At vs Bad At',
     bigIdea: [
       'AI is powerful, but it is not magic.',
@@ -87,6 +89,7 @@ export const module1Nodes: Record<string, NodeContent> = {
   },
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-02.png',
     title: 'Choosing the Right AI Mode',
     bigIdea: [
       'Different problems need different kinds of help.',
@@ -131,6 +134,7 @@ export const module1Nodes: Record<string, NodeContent> = {
   },
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-03.png',
     title: 'Ask Better Questions',
     bigIdea: [
       'The quality of your learning depends on the quality of your questions.',
@@ -180,6 +184,7 @@ export const module1Nodes: Record<string, NodeContent> = {
   },
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-04.png',
     title: 'Verify Before You Believe',
     bigIdea: [
       'Verifying is not extra work. Verifying is learning.',

@@ -29,6 +29,15 @@ export default async function NodeLessonPage({ params }: { params: Promise<{ nod
 
       <div className="prose dark:prose-invert max-w-none mb-12">
         <div className="space-y-8">
+          {lessonData.imageUrl && (
+            <div className="overflow-hidden rounded-xl border border-slate-700/50 shadow-lg">
+              <img 
+                src={lessonData.imageUrl} 
+                alt={lessonData.title} 
+                className="w-full h-auto object-cover max-h-[380px]"
+              />
+            </div>
+          )}
           <div className="bg-slate-900 border border-[#00c8ff]/30 p-6 rounded-xl shadow-inner font-mono text-sm text-slate-200">
             <p className="uppercase tracking-widest text-[#00c8ff] mb-2 font-bold">&gt; TRANSMISSION INCOMING: {lessonData.title}</p>
             {lessonData.bigIdea.map((para, i) => (

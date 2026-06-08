@@ -3,6 +3,7 @@ import type { NodeContent } from './module1Content';
 export const module4Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
+    imageUrl: '/images/modules/bright-mixed-playiq-13.png',
     title: 'Paste, Chunk, Scan',
     bigIdea: [
       'Confusing material feels harder when it is all smashed together.',
@@ -46,6 +47,7 @@ export const module4Nodes: Record<string, NodeContent> = {
 
   '2': {
     id: '2',
+    imageUrl: '/images/modules/bright-mixed-playiq-14.png',
     title: 'Identify Gap Type',
     bigIdea: [
       'Not all confusion is the same.',
@@ -87,6 +89,7 @@ export const module4Nodes: Record<string, NodeContent> = {
 
   '3': {
     id: '3',
+    imageUrl: '/images/modules/bright-mixed-playiq-15.png',
     title: 'Remediate in Personal Style',
     bigIdea: [
       'Once you find the gap, do not reteach everything.',
@@ -136,6 +139,7 @@ export const module4Nodes: Record<string, NodeContent> = {
 
   '4': {
     id: '4',
+    imageUrl: '/images/modules/bright-mixed-playiq-17.png',
     title: 'Adaptive Questioning Loop',
     bigIdea: [
       'You do not prove understanding by nodding.',
@@ -178,6 +182,7 @@ export const module4Nodes: Record<string, NodeContent> = {
 
   '5': {
     id: '5',
+    imageUrl: '/images/modules/bright-mixed-playiq-16.png',
     title: 'Teach-Back Unlock',
     bigIdea: [
       'You do not own the idea until you can explain it in your own words.',
