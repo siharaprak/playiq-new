@@ -67,7 +67,13 @@
     "verify:beta-env-readiness": "npx tsx scripts/verify-beta-env-readiness.ts",
     "verify:staging-smoke-checklist": "npx tsx scripts/verify-staging-smoke-checklist.ts",
     "verify:production-smoke-readiness": "npx tsx scripts/verify-production-smoke-readiness.ts",
-    "verify:beta-readiness": "npx tsx scripts/run-beta-readiness-checks.ts"
+    "verify:beta-readiness": "npx tsx scripts/run-beta-readiness-checks.ts",
+    "audit:sprint10-blockers": "npx tsx scripts/audit-sprint10-blockers.ts",
+    "verify:staging-to-production": "npx tsx scripts/verify-staging-to-production-readiness.ts",
+    "verify:backup-rollback-release": "npx tsx scripts/verify-backup-rollback-release.ts",
+    "verify:production-config-secrets": "npx tsx scripts/verify-production-config-secrets.ts",
+    "verify:uat-readiness": "npx tsx scripts/verify-uat-readiness.ts",
+    "verify:sprint10-readiness": "npx tsx scripts/run-sprint10-readiness-checks.ts"
   },
   "dependencies": {
     "@google/genai": "^1.50.1",
