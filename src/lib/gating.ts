@@ -141,7 +141,7 @@ export async function enforceModuleGating(
       if (!bossBattle || bossBattle.score_numeric < 4) {
         redirect(`${basePath}/boss-battle`);
       }
-      if (!studyRules || !errorReview) {
+      if (!studyRules || (moduleNumber <= 2 && !errorReview)) {
         redirect(`${basePath}/proof-artifacts`);
       }
       break;
