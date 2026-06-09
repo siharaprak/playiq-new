@@ -32,6 +32,7 @@ const staticNodesList = [
   { mod: 'MODULE_8_ID', nodes: module8Nodes },
   { mod: 'MODULE_9_ID', nodes: module9Nodes },
   { mod: 'MODULE_10_ID', nodes: module10Nodes },
+  { mod: 'CAPSTONE_ID', nodes: { 'e1f94091-62d9-4ac9-8f0a-86c2e3650238': { title: 'Genius Showcase Master Trial' } } },
 ];
 
 async function run() {

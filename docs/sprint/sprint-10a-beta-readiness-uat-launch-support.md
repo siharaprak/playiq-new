@@ -30,7 +30,7 @@ This document compiles the operational audits, verifier script results, backup c
 | **logging/monitoring visibility** | `src/lib/logging/safe-logger.ts` / monitoring config | PASS | Safety checks verify no raw secrets exposure. | None. | PASS |
 | **first-user support readiness** | `docs/runbooks/beta-first-user-support-protocol.md` | PASS | Support triage owner assigned. | None. | PASS |
 | **UAT coverage** | None | PASS | Student, parent, and admin critical journeys manual UAT checklists executed. | None. | PASS |
-| **production launch checklist status** | Verification runners | PASS | Ready for release. Master runner resolves to READY_FOR_TINY_BETA_BATCH. | None. | PASS |
+| **production launch checklist status** | Verification runners | PASS | Ready for release. Master runner resolves to READY_FOR_PRODUCTION_APPROVAL. | None. | PASS |
 
 ---
 
@@ -65,6 +65,6 @@ Manual student, parent, and admin dashboard verification checks are detailed in 
 ---
 
 ## 4. Current Launch Decisions
-- **Current Launch State**: **READY_FOR_TINY_BETA_BATCH**
-- **Production Deploy**: **APPROVED**
+- **Current Launch State**: **READY_FOR_PRODUCTION_APPROVAL**
+- **Production Deploy**: **HOLD**
 - **Reason**: All Sprint 10B launch blocker checkpoints (live preview deployment, live smoke testing, human owner assignments, verified database backup confirmation, stable Vercel rollback target ID, and production environment secrets proofs) are fully executed, verified, and passing cleanly.

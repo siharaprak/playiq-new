@@ -75,7 +75,7 @@ async function main() {
   // Verify missing files status
   const checklistPath = path.resolve(process.cwd(), 'docs/runbooks/staging-to-production-readiness-checklist.md');
   const proceduresPath = path.resolve(process.cwd(), 'docs/runbooks/beta-backup-rollback-release-procedures.md');
-  
+  let content = '';
   let hasStagingUrl = false;
   let hasSmokeResult = false;
   let hasBackupConfirmed = false;
@@ -83,12 +83,12 @@ async function main() {
   let hasOwners = false;
 
   if (fs.existsSync(checklistPath)) {
-    const content = fs.readFileSync(checklistPath, 'utf8');
+    content = fs.readFileSync(checklistPath, 'utf8');
     const placeholders = ['TODO', 'TBD', 'PENDING', '[User/Deploy Lead]'];
     
     const urlMatch = content.match(/-\s+\*\*Staging Deployment URL\*\*:\s*(.+)/);
-    const smokeMatch = content.match(/-\s+\*\*Staging Smoke Completed\*\*:\s*(.+)/);
-    const rollbackMatch = content.match(/-\s+\*\*Rollback Target Deployment ID\*\*:\s*(.+)/);
+    const smokeMatch = content.match(/-\s+\*\*Staging Smoke \(Live Vercel\)\*\*:\s*(.+)/);
+    const rollbackMatch = content.match(/-\s+\*\*Previous Stable Vercel Deployment ID\*\*:\s*(.+)/);
     const backupsMatch = content.match(/-\s+\*\*Supabase Backups Status\*\*:\s*(.+)/);
 
     hasStagingUrl = !!urlMatch && !placeholders.some(ph => urlMatch[1].trim().includes(ph));
@@ -102,14 +102,24 @@ async function main() {
   
   // Decide target readiness state
   if (uatPass && backupRollbackPass && stagingToProdPass && blockerAuditPass) {
-    // If all pass programmatically, evaluate TINY_BETA_BATCH requirements
-    // For TINY_BETA_BATCH, UAT/staging smoke must pass, backups confirmed, monitoring/support active
+    // If all pass programmatically, staging is fully validated.
+    // The state is READY_FOR_PRODUCTION_APPROVAL if staging is complete but production deploy is not yet performed.
+    // The state is READY_FOR_TINY_BETA_BATCH only after production deploy and production smoke pass.
     if (hasStagingUrl && hasSmokeResult && hasBackupConfirmed && hasRollbackTarget && hasOwners) {
-      console.log('FINAL READINESS STATE: [ READY_FOR_PRODUCTION_APPROVAL ]');
-      console.log('Status: All build compiles, secrets scan, and staging rehearsals pass.');
+      // Check if production deployment status is recorded as completed/smoke-tested in the checklist
+      const hasProdUrl = content.includes('Production Deployment URL') && !content.includes('Production Deployment URL**: PENDING') && !content.includes('Production Deployment URL**: TODO');
+      const hasProdSmoke = content.includes('Production Smoke') && content.includes('Production Smoke**: PASS');
+      
+      if (hasProdUrl && hasProdSmoke) {
+        console.log('FINAL READINESS STATE: [ READY_FOR_TINY_BETA_BATCH ]');
+        console.log('Status: Production deployment verified. Ready for invite-only beta.');
+      } else {
+        console.log('FINAL READINESS STATE: [ READY_FOR_PRODUCTION_APPROVAL ]');
+        console.log('Status: All build compiles, secrets scan, and staging rehearsals pass. Staging verified.');
+      }
     } else {
-      console.log('FINAL READINESS STATE: [ READY_FOR_TINY_BETA_BATCH ]');
-      console.log('Status: Production deployment verified. Ready for invite-only beta.');
+      console.log('FINAL READINESS STATE: [ READY_FOR_STAGING_REHEARSAL ]');
+      console.log('Status: Staging verifications incomplete or contains placeholders.');
     }
   } else {
     // If verifier scripts fail but the code builds cleanly and local security checks pass
