@@ -29,7 +29,7 @@ export default async function StudentDashboard() {
 
   if (!user) redirect('/login');
 
-  let { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role').eq('id', user.id).single();
+  let { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role, status').eq('id', user.id).single();
   
   if (!profile) {
     const healed = await ensureProfileExists(
@@ -39,12 +39,16 @@ export default async function StudentDashboard() {
       user.email?.endsWith('@student.playiq.dev') ? 'student' : 'parent'
     );
     if (healed) {
-      const { data: newProfile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role').eq('id', user.id).single();
+      const { data: newProfile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role, status').eq('id', user.id).single();
       profile = newProfile;
     }
   }
 
-  if (!profile || profile.role !== 'student') {
+  const isAuthorized = profile?.role === 'student' || profile?.role === 'admin';
+  if (!profile || !isAuthorized || profile.status === 'suspended') {
+    if (profile?.status === 'suspended') {
+      redirect('/login?error=suspended');
+    }
     if (profile?.role) {
       redirect(`/${profile.role}/home`);
     } else {

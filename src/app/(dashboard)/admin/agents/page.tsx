@@ -1,5 +1,6 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Cpu, Search, FileText, ChevronRight, User, ShieldCheck, HelpCircle } from 'lucide-react';
@@ -21,8 +22,8 @@ export default async function AdminAgentsPage({
 
   // 1. Fetch Tutors and Assistants profiles (select safe columns only, no raw prompts/instructions)
   const [{ data: tutorsList }, { data: assistantsList }] = await Promise.all([
-    supabase.from('tutor_profiles').select('id, student_id, name, status, updated_at, current_version_id, metadata'),
-    supabase.from('assistant_profiles').select('id, student_id, name, status, updated_at, current_version_id, metadata'),
+    supabaseAdmin.from('tutor_profiles').select('id, student_id, name, status, updated_at, current_version_id, metadata'),
+    supabaseAdmin.from('assistant_profiles').select('id, student_id, name, status, updated_at, current_version_id, metadata'),
   ]);
 
   // Fetch all unique student IDs to get emails/names
@@ -30,7 +31,7 @@ export default async function AdminAgentsPage({
   const assistantStudentIds = (assistantsList || []).map((a) => a.student_id);
   const uniqueStudentIds = Array.from(new Set([...tutorStudentIds, ...assistantStudentIds]));
 
-  const { data: studentProfiles } = await supabase
+  const { data: studentProfiles } = await supabaseAdmin
     .from('profiles')
     .select('id, full_name, email')
     .in('id', uniqueStudentIds);
@@ -42,8 +43,8 @@ export default async function AdminAgentsPage({
 
   // 2. Fetch versions count only (no instructions/system_prompts fetched)
   const [{ data: tutorVersions }, { data: assistantVersions }] = await Promise.all([
-    supabase.from('tutor_versions').select('id, tutor_profile_id'),
-    supabase.from('assistant_versions').select('id, assistant_profile_id'),
+    supabaseAdmin.from('tutor_versions').select('id, tutor_profile_id'),
+    supabaseAdmin.from('assistant_versions').select('id, assistant_profile_id'),
   ]);
 
   const tutorVersionCountMap = (tutorVersions || []).reduce((acc, v) => {
@@ -58,8 +59,8 @@ export default async function AdminAgentsPage({
 
   // 3. Fetch knowledge files count only (no urls, names, or file_url/storage_path fetched)
   const [{ data: tutorFiles }, { data: assistantFiles }] = await Promise.all([
-    supabase.from('knowledge_files').select('id, tutor_profile_id').not('tutor_profile_id', 'is', null),
-    supabase.from('knowledge_files').select('id, assistant_profile_id').not('assistant_profile_id', 'is', null),
+    supabaseAdmin.from('knowledge_files').select('id, tutor_profile_id').not('tutor_profile_id', 'is', null),
+    supabaseAdmin.from('knowledge_files').select('id, assistant_profile_id').not('assistant_profile_id', 'is', null),
   ]);
 
   const tutorFilesCountMap = (tutorFiles || []).reduce((acc, f) => {
@@ -73,7 +74,7 @@ export default async function AdminAgentsPage({
   }, {} as Record<string, number>);
 
   // 4. Fetch test status events counts (no raw prompt/response logged or fetched)
-  const { data: testEvents } = await supabase
+  const { data: testEvents } = await supabaseAdmin
     .from('events_log')
     .select('student_id, event_type, metadata')
     .in('event_type', ['assistant_profile_updated', 'tutor_profile_updated']);

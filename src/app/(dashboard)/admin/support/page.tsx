@@ -1,5 +1,6 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { HelpCircle, Check, Loader2, ClipboardCheck, AlertCircle, MessageSquare } from 'lucide-react';
@@ -21,7 +22,7 @@ export default async function AdminSupportPage({
   const filterStatus = params?.status || 'open'; // 'open' | 'resolved' | 'all'
 
   // 1. Fetch support issues
-  let query = supabase
+  let query = supabaseAdmin
     .from('support_issues')
     .select('id, reporter_id, issue_text, status, created_at')
     .order('created_at', { ascending: false });
@@ -35,7 +36,7 @@ export default async function AdminSupportPage({
   // 2. Resolve reporter profiles
   const reporterIds = Array.from(new Set((issuesData || []).map((i) => i.reporter_id).filter(Boolean)));
   
-  const { data: reporterProfiles } = await supabase
+  const { data: reporterProfiles } = await supabaseAdmin
     .from('profiles')
     .select('id, full_name, email')
     .in('id', reporterIds);

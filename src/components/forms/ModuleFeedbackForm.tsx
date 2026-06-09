@@ -13,9 +13,31 @@ interface ModuleFeedbackFormProps {
 }
 
 export default function ModuleFeedbackForm({ moduleId, initialFeedback }: ModuleFeedbackFormProps) {
+  // Parse initial feedback fields if serialized as JSON
+  let initialQ1 = '';
+  let initialQ2 = '';
+  let initialQ3 = '';
+
+  if (initialFeedback?.feedback_text) {
+    try {
+      const parsed = JSON.parse(initialFeedback.feedback_text);
+      if (parsed && typeof parsed === 'object') {
+        initialQ1 = parsed.q1 || '';
+        initialQ2 = parsed.q2 || '';
+        initialQ3 = parsed.q3 || '';
+      } else {
+        initialQ1 = initialFeedback.feedback_text;
+      }
+    } catch (e) {
+      initialQ1 = initialFeedback.feedback_text;
+    }
+  }
+
   const [rating, setRating] = useState<number>(initialFeedback?.rating ?? 0);
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
-  const [feedbackText, setFeedbackText] = useState<string>(initialFeedback?.feedback_text ?? '');
+  const [q1, setQ1] = useState<string>(initialQ1);
+  const [q2, setQ2] = useState<string>(initialQ2);
+  const [q3, setQ3] = useState<string>(initialQ3);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -26,10 +48,15 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
       setError('Please select a rating (1-5 stars).');
       return;
     }
+    if (!q1.trim() || !q2.trim() || !q3.trim()) {
+      setError('Please answer all three feedback questions.');
+      return;
+    }
 
     setError(null);
     startTransition(async () => {
-      const result = await submitModuleFeedback(moduleId, rating, feedbackText);
+      const serializedText = JSON.stringify({ q1, q2, q3 });
+      const result = await submitModuleFeedback(moduleId, rating, serializedText);
       if (result.error) {
         setError(result.error);
       } else {
@@ -41,7 +68,7 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
   if (success) {
     return (
       <div 
-        className="glass-card card-accent-green p-8 rounded-xl max-w-md w-full mb-10 text-center animate-fade-in-up"
+        className="glass-card card-accent-green p-8 rounded-xl max-w-2xl w-full mb-10 text-center animate-fade-in-up"
         style={{ background: 'rgba(17,24,39,0.85)' }}
       >
         <div className="flex justify-center mb-4 text-[var(--neon-green)]">
@@ -59,18 +86,18 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
 
   return (
     <div 
-      className="glass-card card-accent-purple p-8 rounded-xl max-w-md w-full mb-10 text-left relative overflow-hidden"
+      className="glass-card card-accent-purple p-8 rounded-xl max-w-2xl w-full mb-10 text-left relative overflow-hidden"
       style={{ background: 'rgba(17,24,39,0.85)' }}
     >
       <div className="absolute top-0 right-0 p-3 opacity-10 font-mono text-xs select-none">
-        FEEDBACK_PROTOCOL_v1.0
+        BETA_FEEDBACK_PROTOCOL_v1.1
       </div>
 
       <h3 className="text-lg font-bold uppercase tracking-wider mb-2 font-display text-glow-purple" style={{ color: 'var(--text-primary)' }}>
-        {initialFeedback ? 'Update Module Feedback' : 'Module Feedback'}
+        {initialFeedback ? 'Update Beta Feedback' : 'Beta Tester Feedback'}
       </h3>
       <p className="text-xs font-mono mb-6 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-        Rate this training module to help tune the AI tutor algorithms and content depth.
+        Complete this report to help tune the AI tutor algorithms and refine the educational experience.
       </p>
 
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -118,21 +145,57 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
           </div>
         </div>
 
-        {/* Written Comments */}
+        {/* Question 1 */}
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-widest block font-mono" style={{ color: 'var(--text-primary)' }}>
-            Qualitative Analysis
+          <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
+            1. Did this module teach you something meaningful, useful, or new about AI and learning? Why or why not?
           </label>
           <textarea
-            value={feedbackText}
-            onChange={(e) => setFeedbackText(e.target.value)}
+            value={q1}
+            onChange={(e) => setQ1(e.target.value)}
             disabled={isPending}
-            className="neon-input min-h-[100px] w-full bg-black/40 text-sm font-mono focus:border-[#7b4fce]"
-            placeholder="Provide suggestions, highlight outstanding concepts, or list points of friction..."
+            className="neon-input min-h-[80px] w-full bg-black/40 text-sm font-mono focus:border-[#7b4fce]"
+            placeholder="Type your answer here..."
             maxLength={1000}
           />
           <div className="text-right text-[10px] font-mono text-slate-500">
-            {feedbackText.length}/1000 CHARACTERS
+            {q1.length}/1000 CHARACTERS
+          </div>
+        </div>
+
+        {/* Question 2 */}
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
+            2. Did the lessons feel clear and connected, or were there parts that felt confusing or boring?
+          </label>
+          <textarea
+            value={q2}
+            onChange={(e) => setQ2(e.target.value)}
+            disabled={isPending}
+            className="neon-input min-h-[80px] w-full bg-black/40 text-sm font-mono focus:border-[#7b4fce]"
+            placeholder="Type your answer here..."
+            maxLength={1000}
+          />
+          <div className="text-right text-[10px] font-mono text-slate-500">
+            {q2.length}/1000 CHARACTERS
+          </div>
+        </div>
+
+        {/* Question 3 */}
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
+            3. After finishing this module, are you interested in continuing to the next one? Why or why not?
+          </label>
+          <textarea
+            value={q3}
+            onChange={(e) => setQ3(e.target.value)}
+            disabled={isPending}
+            className="neon-input min-h-[80px] w-full bg-black/40 text-sm font-mono focus:border-[#7b4fce]"
+            placeholder="Type your answer here..."
+            maxLength={1000}
+          />
+          <div className="text-right text-[10px] font-mono text-slate-500">
+            {q3.length}/1000 CHARACTERS
           </div>
         </div>
 

@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 
 type ActionResult<T> = { ok: true; data: T } | { ok: false; error: string };
@@ -29,7 +30,7 @@ export async function manuallyEnrollStudent(
     }
 
     // 2. Resolve student
-    const { data: student, error: studentError } = await supabase
+    const { data: student, error: studentError } = await supabaseAdmin
       .from('profiles')
       .select('id')
       .eq('email', studentEmail.trim().toLowerCase())
@@ -40,7 +41,7 @@ export async function manuallyEnrollStudent(
     }
 
     // 3. Check if enrollment already exists
-    const { data: existing } = await supabase
+    const { data: existing } = await supabaseAdmin
       .from('enrollments')
       .select('id')
       .eq('student_id', student.id)
@@ -52,7 +53,7 @@ export async function manuallyEnrollStudent(
     }
 
     // 4. Create enrollment
-    const { error: insertError } = await supabase
+    const { error: insertError } = await supabaseAdmin
       .from('enrollments')
       .insert({
         student_id: student.id,
@@ -85,7 +86,7 @@ export async function suspendEnrollment(enrollmentId: string): Promise<ActionRes
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
     if (profile?.role !== 'admin') return { ok: false, error: 'Not authorized' };
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('enrollments')
       .update({ status: 'suspended' })
       .eq('id', enrollmentId);
@@ -113,7 +114,7 @@ export async function reactivateEnrollment(enrollmentId: string): Promise<Action
     const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
     if (profile?.role !== 'admin') return { ok: false, error: 'Not authorized' };
 
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('enrollments')
       .update({ status: 'active' })
       .eq('id', enrollmentId);

@@ -35,21 +35,27 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isProtectedRoute = request.nextUrl.pathname.startsWith('/student') || 
-                           request.nextUrl.pathname.startsWith('/parent') ||
-                           request.nextUrl.pathname.startsWith('/admin') ||
-                           request.nextUrl.pathname.startsWith('/settings') ||
-                           request.nextUrl.pathname.startsWith('/login/mfa')
+  const isProtectedRoute = (request.nextUrl.pathname.startsWith('/student') || 
+                            request.nextUrl.pathname.startsWith('/parent') ||
+                            request.nextUrl.pathname.startsWith('/admin') ||
+                            request.nextUrl.pathname.startsWith('/settings') ||
+                            request.nextUrl.pathname.startsWith('/login/mfa')) &&
+                           !request.nextUrl.pathname.startsWith('/admin/login')
 
   const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || 
-                      request.nextUrl.pathname.startsWith('/signup')
+                      request.nextUrl.pathname.startsWith('/signup') ||
+                      request.nextUrl.pathname.startsWith('/admin/login')
 
   const isMfaRoute = request.nextUrl.pathname.startsWith('/login/mfa')
 
   if (!user && isProtectedRoute) {
     // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone()
-    url.pathname = '/login'
+    if (request.nextUrl.pathname.startsWith('/admin')) {
+      url.pathname = '/admin/login'
+    } else {
+      url.pathname = '/login'
+    }
     const redirectResponse = NextResponse.redirect(url)
     
     // Crucial: preserve any cookies that were updated by the createServerClient

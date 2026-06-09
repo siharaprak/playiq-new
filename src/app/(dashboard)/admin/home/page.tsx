@@ -1,5 +1,6 @@
 import { Users, Truck, Activity, Filter, UserCog, FileCheck, UserCheck, MessageSquare, Cpu } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getDynamicOpsAlerts } from '@/lib/data/ops-alerts';
@@ -21,7 +22,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   }
 
   // Fetch Beta Applications - optimize with limit and explicit fields
-  let query = supabase.from('beta_applications').select('id, parent_full_name, email, child_age_band, shipping_zip_code, status, created_at').limit(50);
+  let query = supabaseAdmin.from('beta_applications').select('id, parent_full_name, email, child_age_band, shipping_zip_code, status, created_at').limit(50);
   
   if (searchParams?.status && searchParams.status !== 'all') {
     query = query.eq('status', searchParams.status);
@@ -30,8 +31,8 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   const { data: applications, error } = await query.order('created_at', { ascending: false });
 
   // For metrics, fetch raw total pending status only
-  const { data: allApps } = await supabase.from('beta_applications').select('status');
-  const pendingCount = allApps?.filter(a => a.status === 'pending').length || 0;
+  const { data: allApps } = await supabaseAdmin.from('beta_applications').select('status');
+  const pendingCount = (allApps || []).filter((a: any) => a.status === 'pending').length;
   const totalCount = allApps?.length || 0;
 
   // Operational telemetry queries and discussion reports - optimize select fields for head counts
@@ -41,10 +42,10 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
     { count: totalAssistantsCount },
     { count: reportsCount }
   ] = await Promise.all([
-    supabase.from('support_issues').select('id', { count: 'exact', head: true }).eq('status', 'open'),
-    supabase.from('tutor_profiles').select('id', { count: 'exact', head: true }),
-    supabase.from('assistant_profiles').select('id', { count: 'exact', head: true }),
-    supabase.from('discussion_reports').select('id', { count: 'exact', head: true }),
+    supabaseAdmin.from('support_issues').select('id', { count: 'exact', head: true }).eq('status', 'open'),
+    supabaseAdmin.from('tutor_profiles').select('id', { count: 'exact', head: true }),
+    supabaseAdmin.from('assistant_profiles').select('id', { count: 'exact', head: true }),
+    supabaseAdmin.from('discussion_reports').select('id', { count: 'exact', head: true }),
   ]);
 
   // Query dynamic derived alerts (no PII or custom prompts returned)
@@ -85,7 +86,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Orders Pending Dispatch</p>
              </div>
              <div>
-               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{allApps?.filter(a => a.status === 'paid').length || 0}</p>
+               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{(allApps || []).filter((a: any) => a.status === 'paid').length}</p>
              </div>
            </div>
 
@@ -265,7 +266,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                   </tr>
                 </thead>
                 <tbody>
-                  {applications.map((app) => (
+                  {(applications || []).map((app: any) => (
                     <tr key={app.id} className="border-b border-slate-800 hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4 text-slate-200">{app.parent_full_name}</td>
                       <td className="px-6 py-4 text-slate-400 text-xs">{app.email}</td>

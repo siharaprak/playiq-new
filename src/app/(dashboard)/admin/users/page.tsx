@@ -1,10 +1,11 @@
 import { createClient } from '@/utils/supabase/server';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock } from 'lucide-react';
 import { deleteUser, suspendUser, restoreUser } from './actions';
 import { MODULES } from '@/lib/constants';
+import ConfirmButton from '@/components/admin/ConfirmButton';
 
 const MODULE_LIST = [
   { id: MODULES.MODULE_1_ID, num: 1, title: 'AI Learning Code', totalNodes: 4 },
@@ -37,16 +38,29 @@ export default async function AdminUsersPage({
   if (profile?.role !== 'admin') redirect('/student/home');
 
   // Fetch all student profiles
-  const { data: students } = await supabase
+  console.log('Admin Roster Debug - SUPABASE_SERVICE_ROLE_KEY present:', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
+  console.log('Admin Roster Debug - Key length:', process.env.SUPABASE_SERVICE_ROLE_KEY?.length);
+  
+  const { data: students, error: studentsError } = await supabaseAdmin
     .from('profiles')
-    .select('id, full_name, email, role, created_at')
-    .in('role', ['student', 'suspended'])
+    .select('id, full_name, email, role, status, created_at')
+    .eq('role', 'student')
     .order('created_at', { ascending: false });
 
+  if (studentsError) {
+    console.error('❌ Admin Roster Error (profiles):', studentsError);
+  } else {
+    console.log('✅ Admin Roster Success (profiles), count:', students?.length);
+  }
+
   // Fetch all node progress across all students in one query
-  const { data: allProgress } = await supabase
+  const { data: allProgress, error: progressError } = await supabaseAdmin
     .from('student_node_progress')
     .select('student_id, module_id, node_mastered');
+
+  if (progressError) {
+    console.error('❌ Admin Roster Error (progress):', progressError);
+  }
 
   // Group progress per student per module
   const progressMap: Record<string, Record<string, number>> = {};
@@ -57,27 +71,27 @@ export default async function AdminUsersPage({
   }
 
   const totalStudents = students?.length || 0;
-  const activeStudents = students?.filter(s => {
+  const activeStudents = (students || []).filter((s: any) => {
     const prog = progressMap[s.id];
-    return prog && Object.values(prog).some(n => n > 0);
-  }).length || 0;
-  const suspendedStudents = students?.filter(s => s.role === 'suspended').length || 0;
+    return prog && Object.values(prog).some((n: number) => n > 0);
+  }).length;
+  const suspendedStudents = (students || []).filter((s: any) => s.status === 'suspended').length;
 
   // Filter students based on search term and active/inactive status
-  const filteredStudents = (students || []).filter(student => {
+  const filteredStudents = (students || []).filter((student: any) => {
     const matchesSearch = searchTerm
       ? student.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         student.email?.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
 
     const studentProgress = progressMap[student.id] || {};
-    const totalMastered = Object.values(studentProgress).reduce((a, b) => a + b, 0);
+    const totalMastered = Object.values(studentProgress).reduce((a: number, b: number) => a + b, 0);
     const isActive = totalMastered > 0;
 
     let matchesFilter = true;
-    if (filterType === 'active') matchesFilter = isActive && student.role !== 'suspended';
-    if (filterType === 'inactive') matchesFilter = !isActive && student.role !== 'suspended';
-    if (filterType === 'suspended') matchesFilter = student.role === 'suspended';
+    if (filterType === 'active') matchesFilter = isActive && student.status !== 'suspended';
+    if (filterType === 'inactive') matchesFilter = !isActive && student.status !== 'suspended';
+    if (filterType === 'suspended') matchesFilter = student.status === 'suspended';
 
     return matchesSearch && matchesFilter;
   });
@@ -186,10 +200,10 @@ export default async function AdminUsersPage({
         {/* Student Cards */}
         {filteredStudents && filteredStudents.length > 0 ? (
           <div className="space-y-6">
-            {filteredStudents.map((student) => {
+            {filteredStudents.map((student: any) => {
               const studentProgress = progressMap[student.id] || {};
-              const totalMastered = Object.values(studentProgress).reduce((a, b) => a + b, 0);
-              const totalNodes = MODULE_LIST.reduce((a, m) => a + m.totalNodes, 0);
+              const totalMastered = Object.values(studentProgress).reduce((a: number, b: number) => a + b, 0);
+              const totalNodes = MODULE_LIST.reduce((a: number, m: any) => a + m.totalNodes, 0);
               const overallPct = Math.round((totalMastered / totalNodes) * 100);
               
               // Find furthest unlocked module
@@ -212,7 +226,7 @@ export default async function AdminUsersPage({
                       <div>
                         <p className="font-display font-bold text-[var(--text-primary)] tracking-wide flex items-center gap-2">
                           {student.full_name || '—'}
-                          {student.role === 'suspended' && (
+                          {student.status === 'suspended' && (
                             <span className="text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30">
                               Suspended
                             </span>
@@ -239,47 +253,41 @@ export default async function AdminUsersPage({
                       </span>
 
                       {/* Actions */}
-                      {student.role === 'suspended' ? (
+                      {student.status === 'suspended' ? (
                         <form action={restoreUser}>
                           <input type="hidden" name="userId" value={student.id} />
-                          <button
+                          <ConfirmButton
                             type="submit"
                             title="Restore User"
                             className="p-2 border border-[#39ff14]/30 text-[#39ff14] bg-[#39ff14]/20 hover:bg-[#39ff14]/30 transition-colors"
-                            onClick={(e) => {
-                              if (!confirm('Restore this user to active student status?')) e.preventDefault();
-                            }}
+                            confirmMessage="Restore this user to active student status?"
                           >
                             <ShieldCheck className="w-4 h-4" />
-                          </button>
+                          </ConfirmButton>
                         </form>
                       ) : (
                         <form action={suspendUser}>
                           <input type="hidden" name="userId" value={student.id} />
-                          <button
+                          <ConfirmButton
                             type="submit"
                             title="Suspend User"
-                            className="p-2 border border-amber-500/40 text-amber-400 hover:bg-amber-400/10 transition-colors"
-                            onClick={(e) => {
-                              if (!confirm(`Suspend ${student.email}? They will lose dashboard access.`)) e.preventDefault();
-                            }}
+                            className="p-2 border border-amber-500/40 text-amber-400 hover:bg-amber-450/10 transition-colors"
+                            confirmMessage={`Suspend ${student.email}? They will lose dashboard access.`}
                           >
                             <ShieldOff className="w-4 h-4" />
-                          </button>
+                          </ConfirmButton>
                         </form>
                       )}
                       <form action={deleteUser}>
                         <input type="hidden" name="userId" value={student.id} />
-                        <button
+                        <ConfirmButton
                           type="submit"
                           title="Delete User"
                           className="p-2 border border-red-500/40 text-red-400 hover:bg-red-400/10 transition-colors"
-                          onClick={(e) => {
-                            if (!confirm(`Permanently delete ${student.email}? This cannot be undone.`)) e.preventDefault();
-                          }}
+                          confirmMessage={`Permanently delete ${student.email}? This cannot be undone.`}
                         >
                           <Trash2 className="w-4 h-4" />
-                        </button>
+                        </ConfirmButton>
                       </form>
                     </div>
                   </div>

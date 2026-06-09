@@ -1,7 +1,7 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
-import { createClient as createAdminClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
@@ -20,15 +20,30 @@ export async function deleteUser(formData: FormData) {
   const userId = formData.get('userId') as string;
   if (!userId) return;
 
-  // Use service role to delete from auth + cascade will handle profiles/progress
-  const supabaseAdmin = createAdminClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  // 1. Delete from audit_events first (since it has a foreign key to profiles without cascade)
+  const { error: auditError } = await supabaseAdmin
+    .from('audit_events')
+    .delete()
+    .eq('actor_user_id', userId);
 
-  const { error } = await supabaseAdmin.auth.admin.deleteUser(userId);
-  if (error) {
-    console.error('Delete user error:', error);
+  if (auditError) {
+    console.error('Delete audit events error:', auditError);
+  }
+
+  // 2. Delete from profiles table (this deletes associated child records via CASCADE)
+  const { error: profileError } = await supabaseAdmin
+    .from('profiles')
+    .delete()
+    .eq('id', userId);
+
+  if (profileError) {
+    console.error('Delete profile error:', profileError);
+  }
+
+  // 3. Delete from auth.users (ignore user_not_found errors for mock profiles)
+  const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId);
+  if (authError) {
+    console.error('Delete auth user error (ignored for mock profiles):', authError);
   }
 
   revalidatePath('/admin/users');
@@ -40,13 +55,11 @@ export async function suspendUser(formData: FormData) {
 
   const userId = formData.get('userId') as string;
   if (!userId) return;
-
-  const supabase = await createClient();
   
-  // Change their role to 'suspended' — gating logic will bounce them on every page
-  await supabase
+  // Change their status to 'suspended'
+  await supabaseAdmin
     .from('profiles')
-    .update({ role: 'suspended' })
+    .update({ status: 'suspended' })
     .eq('id', userId);
 
   revalidatePath('/admin/users');
@@ -59,10 +72,9 @@ export async function restoreUser(formData: FormData) {
   const userId = formData.get('userId') as string;
   if (!userId) return;
 
-  const supabase = await createClient();
-  await supabase
+  await supabaseAdmin
     .from('profiles')
-    .update({ role: 'student' })
+    .update({ status: 'active' })
     .eq('id', userId);
 
   revalidatePath('/admin/users');

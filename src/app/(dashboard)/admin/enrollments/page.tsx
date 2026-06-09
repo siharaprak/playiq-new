@@ -1,5 +1,6 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Award, UserCheck, ShieldAlert, Plus, CheckCircle, Ban } from 'lucide-react';
@@ -15,7 +16,7 @@ export default async function AdminEnrollmentsPage() {
   if (profile?.role !== 'admin') redirect('/student/home');
 
   // 1. Fetch all enrollments with student & course profiles joined
-  const { data: enrollmentsData } = await supabase
+  const { data: enrollmentsData } = await supabaseAdmin
     .from('enrollments')
     .select(`
       id,
@@ -31,8 +32,8 @@ export default async function AdminEnrollmentsPage() {
   const courseIds = Array.from(new Set((enrollmentsData || []).map((e) => e.course_id).filter(Boolean)));
 
   const [{ data: studentProfiles }, { data: coursesList }] = await Promise.all([
-    supabase.from('profiles').select('id, full_name, email').in('id', studentIds),
-    supabase.from('courses').select('id, title').in('id', courseIds),
+    supabaseAdmin.from('profiles').select('id, full_name, email').in('id', studentIds),
+    supabaseAdmin.from('courses').select('id, title').in('id', courseIds),
   ]);
 
   const studentMap = (studentProfiles || []).reduce((acc, p) => {
@@ -52,7 +53,7 @@ export default async function AdminEnrollmentsPage() {
   }));
 
   // 2. Fetch all courses
-  const { data: courses } = await supabase.from('courses').select('id, title');
+  const { data: courses } = await supabaseAdmin.from('courses').select('id, title');
 
   return (
     <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)]">

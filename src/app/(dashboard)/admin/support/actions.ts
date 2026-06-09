@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { resolveSupportIssue } from '@/lib/data/admin-support';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 
 type ActionResult<T> = { ok: true; data: T } | { ok: false; error: string };
 
@@ -12,7 +13,7 @@ export async function resolveSupportIssueAction(
   issueId: string,
   notes?: string
 ): Promise<ActionResult<void>> {
-  const result = await resolveSupportIssue(issueId, notes || 'Resolved via Admin Console');
+  const result = await resolveSupportIssue(issueId, notes || 'Resolved via Admin Console', supabaseAdmin);
   if (!result.ok) {
     return { ok: false, error: result.error || 'Failed to resolve ticket' };
   }

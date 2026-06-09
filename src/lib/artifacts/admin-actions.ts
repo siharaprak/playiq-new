@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 import { logProofEvent } from '@/lib/events/learning-events';
 
@@ -35,7 +36,7 @@ export async function approveSubmission(submissionId: string) {
   if (!submission) throw new Error('Submission record not found');
 
   // 3. Perform approval update
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('proof_artifact_submissions')
     .update({
       status: 'approved',
@@ -99,7 +100,7 @@ export async function requestRevision(submissionId: string, notes: string) {
   if (!submission) throw new Error('Submission record not found');
 
   // 3. Perform revision update
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('proof_artifact_submissions')
     .update({
       status: 'revise',

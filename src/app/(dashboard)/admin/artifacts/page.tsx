@@ -1,5 +1,6 @@
 import React from 'react';
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { FileCheck } from 'lucide-react';
@@ -25,7 +26,7 @@ export default async function AdminArtifactsPage() {
   }
 
   // 3. Fetch all artifact submissions in DB
-  const { data: submissions } = await supabase
+  const { data: submissions } = await supabaseAdmin
     .from('proof_artifact_submissions')
     .select(`
       *,
