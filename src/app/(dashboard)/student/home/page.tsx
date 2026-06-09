@@ -1,5 +1,5 @@
 import { Layers, HelpCircle, UploadCloud, Lock, CheckCircle2, Settings } from 'lucide-react';
-import { createClient } from '@/utils/supabase/server';
+import { createClient, ensureProfileExists } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import Link from 'next/link';
@@ -29,9 +29,27 @@ export default async function StudentDashboard() {
 
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role').eq('id', user.id).single();
-  if (profile?.role !== 'student') {
-    redirect(`/${profile?.role || 'parent'}/home`);
+  let { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role').eq('id', user.id).single();
+  
+  if (!profile) {
+    const healed = await ensureProfileExists(
+      user.id,
+      user.email || '',
+      user.user_metadata?.full_name || 'Student',
+      user.email?.endsWith('@student.playiq.dev') ? 'student' : 'parent'
+    );
+    if (healed) {
+      const { data: newProfile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role').eq('id', user.id).single();
+      profile = newProfile;
+    }
+  }
+
+  if (!profile || profile.role !== 'student') {
+    if (profile?.role) {
+      redirect(`/${profile.role}/home`);
+    } else {
+      redirect('/login');
+    }
   }
   const name = (profile as any)?.username || profile?.full_name || 'Student';
   const initials = name.substring(0, 2).toUpperCase();

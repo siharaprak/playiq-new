@@ -3,9 +3,10 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
+import { ensureProfileExists } from '@/utils/supabase/server';
 
 async function createSupabaseClient() {
-  const cookieStore = await cookies();
+  const cookieStore = await cookies()
   
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -13,7 +14,7 @@ async function createSupabaseClient() {
     {
       cookies: {
         getAll() {
-           return cookieStore.getAll() 
+          return cookieStore.getAll() 
         },
         setAll(cookiesToSet) {
           try {
@@ -98,23 +99,16 @@ export async function signupAction(prevState: any, formData: FormData) {
     return { error: error?.message || 'Signup failed' };
   }
 
-  // Fetch true role resolution from profiles table (auto-generated via trigger)
-  // Use a retry loop to handle the race condition where the trigger hasn't finished yet.
-  let role = 'parent';
-  for (let i = 0; i < 5; i++) {
-    const { data: profile } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', authData.user.id)
-      .single();
+  // Explicitly ensure the profile exists in public.profiles.
+  // This serves as an automated fallback if the DB trigger failed to run.
+  const profile = await ensureProfileExists(
+    authData.user.id,
+    authData.user.email || email,
+    name || 'Parent User',
+    'parent'
+  );
 
-    if (profile) {
-      role = profile.role;
-      break;
-    }
-    // Wait 500ms before retrying
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
+  const role = profile?.role || 'parent';
 
   redirect(`/${role}/home`);
 }

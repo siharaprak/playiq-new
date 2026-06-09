@@ -1,9 +1,22 @@
 import React from 'react';
 import Link from 'next/link';
 import { enforceModuleGating } from '@/lib/gating';
+import { createClient } from '@/utils/supabase/server';
+import { MODULES } from '@/lib/constants';
+import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
 
 export default async function Module7CompletionPage() {
-  await enforceModuleGating('completion', 7);
+  const { user } = await enforceModuleGating('completion', 7);
+  const moduleId = MODULES.MODULE_7_ID;
+
+  // Query existing feedback if any
+  const supabase = await createClient();
+  const { data: existingFeedback } = await supabase
+    .from('module_feedback')
+    .select('rating, feedback_text')
+    .eq('student_id', user.id)
+    .eq('module_id', moduleId)
+    .maybeSingle();
 
   const unlocks = [
     'Stronger digital judgment',
@@ -59,6 +72,9 @@ export default async function Module7CompletionPage() {
           ))}
         </ul>
       </div>
+
+      {/* Feedback Form */}
+      <ModuleFeedbackForm moduleId={moduleId} initialFeedback={existingFeedback} />
 
       <Link
         href="/student/home"

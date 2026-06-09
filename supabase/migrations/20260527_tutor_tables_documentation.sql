@@ -42,6 +42,8 @@ CREATE TABLE IF NOT EXISTS knowledge_files (
   created_at timestamptz NOT NULL DEFAULT now()
 );
 
+ALTER TABLE knowledge_files ADD COLUMN IF NOT EXISTS tutor_profile_id uuid REFERENCES tutor_profiles(id) ON DELETE CASCADE;
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_tutor_profiles_student_id ON tutor_profiles(student_id);
 CREATE INDEX IF NOT EXISTS idx_tutor_versions_profile_id ON tutor_versions(tutor_profile_id);

@@ -16,7 +16,7 @@ import {
   Shield,
   Settings,
 } from 'lucide-react';
-import { createClient } from '@/utils/supabase/server';
+import { createClient, ensureProfileExists } from '@/utils/supabase/server';
 import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
@@ -121,9 +121,26 @@ export default async function ParentDashboard({
 
   if (!user) redirect('/login');
 
-  const { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
-  if (profile?.role !== 'parent') {
-    redirect(`/${profile?.role || 'student'}/home`);
+  let { data: profile } = await supabase.from('profiles').select('role').eq('id', user.id).single();
+  
+  if (!profile) {
+    const healed = await ensureProfileExists(
+      user.id,
+      user.email || '',
+      user.user_metadata?.full_name || 'Parent User',
+      'parent'
+    );
+    if (healed) {
+      profile = { role: healed.role };
+    }
+  }
+
+  if (!profile || profile.role !== 'parent') {
+    if (profile?.role) {
+      redirect(`/${profile.role}/home`);
+    } else {
+      redirect('/login');
+    }
   }
 
   const params = await searchParams;
