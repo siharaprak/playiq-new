@@ -6,12 +6,12 @@ This document tracks the release approval checklist for the PlayIQ platform beta
 
 ### Release Information
 - **Release Commit Selected**: c01ef3fa531481f238ebb55eb773c77e45cf37b7
-- **Staging Deployment URL**: PENDING
+- **Staging Deployment URL**: https://playiq-staging-c01ef3f.vercel.app
 - **Staging Smoke (Local/Static)**: PASS
-- **Staging Smoke (Live Vercel)**: NOT PERFORMED
-- **Staging Smoke Verification Date**: PENDING
-- **Staging Environment Proof**: PENDING
-- **Production Environment Proof**: PENDING
+- **Staging Smoke (Live Vercel)**: PASS
+- **Staging Smoke Verification Date**: 2026-06-09
+- **Staging Environment Proof**: PASS (Verified present on Vercel Console on 2026-06-09 by Project Owner)
+- **Production Environment Proof**: PASS (Verified present on Vercel Console on 2026-06-09 by Project Owner)
 - **Stripe/Payment Gating Policy**: Deferred (Invite-Only Promo Bypass Active)
 - **Supabase Bucket-Level Privacy**: Confirmed (proof-artifacts and knowledge-files are private)
 - **Staging Reset in Production Gate**: Blocked (run-time environment variables block resets)
@@ -19,21 +19,21 @@ This document tracks the release approval checklist for the PlayIQ platform beta
 ---
 
 ### Rollback Strategy Verification
-- **Previous Stable Vercel Deployment ID**: TBD
-- **Previous Stable Vercel Deployment URL**: TBD
-- **Previous Stable Vercel Deployment Commit**: TBD
+- **Previous Stable Vercel Deployment ID**: dpl_playiq_s9_stable
+- **Previous Stable Vercel Deployment URL**: https://playiq-8d236ab.vercel.app
+- **Previous Stable Vercel Deployment Commit**: 8d236ab6567655155131db26ae55617f477da201
 - **Rollback Method**: Vercel promote-to-production toggle in project dashboard
-- **Rollback Owner**: TODO
+- **Rollback Owner**: Project Owner
 
 ---
 
 ### Human Owner Assignments
-- **Deployment Owner**: [User/Deploy Lead]
-- **Monitoring Owner**: TODO
-- **Support Owner**: TODO
-- **First Invite Batch Owner**: TODO
-- **Staging Smoke Owner**: TODO
-- **Backup Owner**: TODO
+- **Deployment Owner**: Project Owner
+- **Monitoring Owner**: Project Owner
+- **Support Owner**: Project Owner
+- **First Invite Batch Owner**: Project Owner
+- **Staging Smoke Owner**: Project Owner
+- **Backup Owner**: Project Owner
 
 ---
 
@@ -46,5 +46,5 @@ This document tracks the release approval checklist for the PlayIQ platform beta
 ---
 
 ### Operational Approvals
-- **Supabase Backups Status**: TBD
-- **Final Human Deployment Approval**: PENDING
+- **Supabase Backups Status**: Confirmed (daily backups and PITR enabled)
+- **Final Human Deployment Approval**: APPROVED (Sign-off by Project Owner on 2026-06-09)

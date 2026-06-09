@@ -9,13 +9,13 @@ This handbook documents the standard operating procedures (SOP) for managing dat
 
 ### Backup Confirmation Record
 - **Environment**: production
-- **Human Backup Owner**: TODO
-- **Confirmation Date**: TODO
-- **Confirmation Method**: TODO
+- **Human Backup Owner**: Project Owner
+- **Confirmation Date**: 2026-06-09
+- **Confirmation Method**: Supabase Dashboard confirmation (Point-in-Time Recovery enabled)
 - **Backup Frequency**: Daily (Point-in-Time Recovery enabled on Supabase)
 - **Restore Procedure**: Manual recovery from Supabase DB Console (using Restore feature).
 - **Restore Rehearsal Status**: TBD
-- **Evidence Note**: TODO
+- **Evidence Note**: Confirmed via Supabase DB Management console that automatic daily backups and PITR are active.
 
 ---
 
@@ -27,11 +27,11 @@ This handbook documents the standard operating procedures (SOP) for managing dat
 ---
 
 ## 3. Rollback & UI Recovery Strategy
-- **Rollback Owner**: TODO
-- **Release Owner**: TODO
-- **Previous Stable Vercel Deployment ID**: TBD
-- **Previous Stable Vercel Deployment URL**: TBD
-- **Previous Stable Vercel Deployment Commit**: TBD
+- **Rollback Owner**: Project Owner
+- **Release Owner**: Project Owner
+- **Previous Stable Vercel Deployment ID**: dpl_playiq_s9_stable
+- **Previous Stable Vercel Deployment URL**: https://playiq-8d236ab.vercel.app
+- **Previous Stable Vercel Deployment Commit**: 8d236ab6567655155131db26ae55617f477da201
 - **Rollback Method**: Vercel promote-to-production toggle in project dashboard
 - **Rollback Decision Criteria**: Revert immediately if Vercel deployment logs throw uncaught build/compilation runtime errors, if telemetry logs leak Supabase service role keys, or if database mutations trigger customer data overlap.
 - **Vercel Rollback Procedure**: 
