@@ -129,5 +129,6 @@ export async function submitArtifactsForReview(moduleId: string, moduleNum: numb
   }
 
   revalidatePath(`/student/modules/${moduleNum}/proof-artifacts`);
-  redirect(`/student/modules/${moduleNum}/completion`);
+  revalidatePath(`/student/modules/${moduleNum}/completion`);
+  return { success: true };
 }

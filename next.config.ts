@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
     workerThreads: false,
     cpus: 1,
   },
+  turbopack: {
+    root: process.cwd(),
+  },
 };
 
 export default nextConfig;
+

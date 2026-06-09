@@ -283,9 +283,10 @@ export default function StudentModuleArtifactsContainer({
       await submitArtifactsForReview(moduleId, moduleNum);
       setArtifactStatus('submitted');
       setSuccessMsg('Your proof artifacts have been submitted for evaluation!');
+      // Navigate to completion page, forcing a reload to ensure layout cache is fresh
+      window.location.href = `/student/modules/${moduleNum}/completion`;
     } catch (err: any) {
       setErrorMsg(err.message || 'Failed to submit artifacts for review.');
-    } finally {
       setSubmitting(false);
     }
   };
