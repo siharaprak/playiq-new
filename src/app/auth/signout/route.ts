@@ -2,7 +2,9 @@ import { createClient } from '@/utils/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
-  const requestUrl = new URL(request.url);
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host');
+  const proto = request.headers.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https');
+  const origin = host ? `${proto}://${host}` : new URL(request.url).origin;
   
   try {
     const supabase = await createClient();
@@ -13,13 +15,15 @@ export async function POST(request: Request) {
   }
 
   // Redirect to logout page
-  return NextResponse.redirect(new URL('/logout', requestUrl.origin), {
+  return NextResponse.redirect(new URL('/logout', origin), {
     status: 303,
   });
 }
 
 export async function GET(request: Request) {
-  const requestUrl = new URL(request.url);
+  const host = request.headers.get('x-forwarded-host') || request.headers.get('host');
+  const proto = request.headers.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https');
+  const origin = host ? `${proto}://${host}` : new URL(request.url).origin;
   
   try {
     const supabase = await createClient();
@@ -28,5 +32,5 @@ export async function GET(request: Request) {
     console.error('Sign out error:', e);
   }
 
-  return NextResponse.redirect(new URL('/logout', requestUrl.origin));
+  return NextResponse.redirect(new URL('/logout', origin));
 }
