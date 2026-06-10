@@ -6,9 +6,9 @@ This document defines the master support runbook for the PlayIQ beta phase. All 
 
 ## 1. Roles and Contacts
 
-*   **Beta Support Owner**: Project Support Lead
-*   **Deploy & Infrastructure Lead**: Project Deploy Owner
-*   **Security & Privacy Lead**: Security Escalation Owner
+*   **Beta Support Owner**: Project Owner
+*   **Deploy & Infrastructure Lead**: Project Owner
+*   **Security & Privacy Lead**: Project Owner
 *   **Support Hours**: Monday - Friday, 9:00 AM - 5:00 PM local time
 *   **Support Cadence**: Daily triage review at 9:30 AM to inspect open issues in the admin support queue.
 
@@ -20,8 +20,8 @@ These definitions represent internal support targets and best-effort beta respon
 
 | Severity | Definition | Target Resolution Target | Escalation Target |
 | :--- | :--- | :--- | :--- |
-| **P0** | System-wide outage (e.g. database down, sign-in failing globally, Vercel build crash). | Best-effort 4 hours | Deploy & Infrastructure Lead |
-| **P1** | Core path blocked for multiple users (e.g. MFA loop, proof uploads failing, rate-limit locks). | Best-effort 8 hours | Deploy & Infrastructure Lead |
+| **P0** | System-wide outage (e.g. database down, sign-in failing globally, Vercel build crash). | Best-effort 4 hours | Project Owner |
+| **P1** | Core path blocked for multiple users (e.g. MFA loop, proof uploads failing, rate-limit locks). | Best-effort 8 hours | Project Owner |
 | **P2** | Core feature issue for a single user (e.g. child link failing, specific node not mastering). | Best-effort 12 hours | Support Developer Queue |
 | **P3** | Minor cosmetic layout errors, general questions, or curriculum feedback. | Best-effort 24 hours | Support Queue Triage |
 
@@ -58,7 +58,7 @@ For step-by-step resolution scripts, refer to the following workflows:
 
 ## 5. Escalation & Incident Handoff
 
-1.  **Technical Outage Escalation**: If logs indicate database outage or global API crash (`[ERROR:ai_provider_error]` quota limits or server `500` codes), support immediately notifies the Deploy & Infrastructure Lead.
-2.  **Privacy/Security Escalation**: If an RLS policy bypass is reported (e.g., a student can access another student's tutor configuration or parent summary data), immediately contact the Security & Privacy Lead.
+1.  **Technical Outage Escalation**: If logs indicate database outage or global API crash (`[ERROR:ai_provider_error]` quota limits or server `500` codes), support immediately notifies the Project Owner.
+2.  **Privacy/Security Escalation**: If an RLS policy bypass is reported (e.g., a student can access another student's tutor configuration or parent summary data), immediately contact the Project Owner.
 3.  **Billing Inquiries**: If users raise concerns about checkout paths, support must reiterate the free invite-only beta policy. No paid checkout is required.
 4.  **Launch Readiness Gate**: The master launch readiness state remains **HOLD** until explicit human deploy owner approval, regardless of support queue status.

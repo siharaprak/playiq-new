@@ -77,7 +77,9 @@
     "verify:final-security-access": "npx tsx scripts/verify-final-security-access-review.ts",
     "verify:beta-support-workflows": "npx tsx scripts/verify-beta-support-workflows.ts",
     "audit:support-categories": "npx tsx scripts/audit-support-category-consistency.ts",
-    "verify:sprint10-security-support": "npx tsx scripts/run-sprint10-security-support-checks.ts"
+    "verify:sprint10-security-support": "npx tsx scripts/run-sprint10-security-support-checks.ts",
+    "verify:advanced-beta-support-workflows": "npx tsx scripts/verify-advanced-beta-support-workflows.ts",
+    "verify:sprint10-advanced-support-monitoring": "npx tsx scripts/run-sprint10-advanced-support-monitoring-checks.ts"
   },
   "dependencies": {
     "@google/genai": "^1.50.1",

@@ -16,7 +16,15 @@ async function main() {
   const workflows = [
     { name: 'Onboarding Support Workflow', path: '../docs/runbooks/support-workflow-onboarding-issues.md', expected: 'onboarding' },
     { name: 'Login Support Workflow', path: '../docs/runbooks/support-workflow-login-issues.md', expected: 'login_auth' },
-    { name: 'Hardware/Device Support Workflow', path: '../docs/runbooks/support-workflow-hardware-device-issues.md', expected: 'device_hardware' }
+    { name: 'Hardware/Device Support Workflow', path: '../docs/runbooks/support-workflow-hardware-device-issues.md', expected: 'device_hardware' },
+    { name: 'Proof Upload Support Workflow', path: '../docs/runbooks/support-workflow-proof-submission-issues.md', expected: 'proof_upload' },
+    { name: 'Proof Review Support Workflow', path: '../docs/runbooks/support-workflow-proof-submission-issues.md', expected: 'proof_review' },
+    { name: 'Tutor Build Support Workflow', path: '../docs/runbooks/support-workflow-tutor-build-issues.md', expected: 'tutor_build' },
+    { name: 'Assistant Build Support Workflow', path: '../docs/runbooks/support-workflow-assistant-build-issues.md', expected: 'assistant_build' },
+    { name: 'Parent Access Workflow', path: '../docs/runbooks/support-workflow-parent-questions.md', expected: 'parent_access' },
+    { name: 'Parent Privacy Workflow', path: '../docs/runbooks/support-workflow-parent-questions.md', expected: 'privacy_security' },
+    { name: 'Parent Billing Workflow', path: '../docs/runbooks/support-workflow-parent-questions.md', expected: 'billing_beta_policy' },
+    { name: 'Beta Monitoring Cadence Workflow', path: '../docs/runbooks/beta-monitoring-cadence.md', expected: 'monitoring_beta' }
   ];
 
   const validCategories = [
@@ -24,9 +32,13 @@ async function main() {
     'login_auth',
     'device_hardware',
     'proof_upload',
+    'proof_review',
+    'tutor_build',
+    'assistant_build',
     'parent_access',
     'billing_beta_policy',
     'privacy_security',
+    'monitoring_beta',
     'bug_report'
   ];
 
@@ -56,11 +68,13 @@ async function main() {
   const migrationsDir = path.resolve(__dirname, '../supabase/migrations');
   const migrationFiles = fs.existsSync(migrationsDir) ? fs.readdirSync(migrationsDir) : [];
   
-  // Look for migrations modified today or since Sprint 10C start (no new migrations should exist)
-  const sprint10cMigration = migrationFiles.some(file => file.includes('sprint10c') || file.includes('sprint10_support') || file.includes('sprint_10c'));
+  // Look for migrations modified today or since Sprint 10C/D start (no new migrations should exist)
+  const sprint10Migration = migrationFiles.some(file => 
+    file.includes('sprint10') || file.includes('sprint_10')
+  );
   
-  if (sprint10cMigration) {
-    console.error('❌ FAILED: New SQL migrations found. Sprint 10C forbids support database schema changes or migrations.');
+  if (sprint10Migration) {
+    console.error('❌ FAILED: New SQL migrations found. Sprint 10D forbids support database schema changes or migrations.');
     failed = true;
   } else {
     console.log('✅ Passed migration audit: Zero database migrations introduced.');
