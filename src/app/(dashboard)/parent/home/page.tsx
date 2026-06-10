@@ -222,7 +222,7 @@ export default async function ParentDashboard({
             <h1 className="text-3xl font-display font-black text-[var(--text-primary)] uppercase tracking-widest">
               Mission Control
             </h1>
-            <p className="text-slate-400 text-xs mt-1 font-mono flex items-center gap-2">
+            <div className="text-slate-400 text-xs mt-1 font-mono flex items-center gap-2">
               &gt; ACTIVE LOG: {user.email}
               <Link href="/settings" className="text-[#00c8ff] hover:text-white transition-colors flex items-center gap-1 ml-2 border border-[#00c8ff]/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-[#00c8ff]/10">
                 <Settings className="w-3.5 h-3.5" /> 2FA Shield
@@ -232,7 +232,7 @@ export default async function ParentDashboard({
                   Logout
                 </button>
               </form>
-            </p>
+            </div>
           </div>
           <div className="hidden md:flex items-center gap-4">
             {rollups.length > 0 && (
