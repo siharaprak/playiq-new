@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
+import { supabaseAdmin } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { logProofEvent } from '@/lib/events/learning-events';
@@ -27,7 +28,7 @@ export async function saveArtifactDraft(
   if (!user) throw new Error('Not authenticated');
 
   // Check if a record already exists
-  const { data: existing } = await supabase
+  const { data: existing } = await supabaseAdmin
     .from('proof_artifact_submissions')
     .select('id, status')
     .eq('student_id', user.id)
@@ -41,7 +42,7 @@ export async function saveArtifactDraft(
     }
 
     // Update existing record and reset state to 'draft'
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('proof_artifact_submissions')
       .update({
         content_payload: contentPayload,
@@ -57,7 +58,7 @@ export async function saveArtifactDraft(
     if (error) throw new Error(`Failed to update draft: ${error.message}`);
   } else {
     // Insert new draft record
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('proof_artifact_submissions')
       .insert({
         student_id: user.id,
@@ -87,7 +88,7 @@ export async function submitArtifactsForReview(moduleId: string, moduleNum: numb
   if (!user) throw new Error('Not authenticated');
 
   // Fetch current submissions
-  const { data: submissions } = await supabase
+  const { data: submissions } = await supabaseAdmin
     .from('proof_artifact_submissions')
     .select('id, status, artifact_type')
     .eq('student_id', user.id)
@@ -103,7 +104,7 @@ export async function submitArtifactsForReview(moduleId: string, moduleNum: numb
   const toSubmit = [studyRules, errorReview].filter(s => s.status === 'draft' || s.status === 'revise');
 
   if (toSubmit.length > 0) {
-    const { error } = await supabase
+    const { error } = await supabaseAdmin
       .from('proof_artifact_submissions')
       .update({
         status: 'submitted',
@@ -129,5 +130,6 @@ export async function submitArtifactsForReview(moduleId: string, moduleNum: numb
   }
 
   revalidatePath(`/student/modules/${moduleNum}/proof-artifacts`);
-  redirect(`/student/modules/${moduleNum}/completion`);
+  revalidatePath(`/student/modules/${moduleNum}/completion`);
+  return { success: true };
 }

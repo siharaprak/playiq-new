@@ -30,10 +30,19 @@ function getClient() {
 export const supabaseAdmin = new Proxy({} as any, {
   get(target, prop, receiver) {
     const client = getClient();
+    if (prop in target) {
+      return Reflect.get(target, prop, receiver);
+    }
     const value = Reflect.get(client, prop, receiver);
     if (typeof value === 'function') {
       return value.bind(client);
     }
     return value;
+  },
+  set(target, prop, value, receiver) {
+    return Reflect.set(target, prop, value, receiver);
+  },
+  defineProperty(target, prop, descriptor) {
+    return Reflect.defineProperty(target, prop, descriptor);
   },
 });

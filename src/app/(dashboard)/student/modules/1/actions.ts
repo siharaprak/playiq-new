@@ -318,12 +318,16 @@ export async function submitArtifacts(formData: FormData) {
       module_id: MODULE_ID,
       artifact_type: 'study_rules',
       content_payload: warriorCodePayload,
+      status: 'submitted',
+      submitted_at: new Date().toISOString(),
     },
     {
       student_id: user.id,
       module_id: MODULE_ID,
       artifact_type: 'error_review',
       content_payload: boundariesPayload,
+      status: 'submitted',
+      submitted_at: new Date().toISOString(),
     },
   ]);
 
