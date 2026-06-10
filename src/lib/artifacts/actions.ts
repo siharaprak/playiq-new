@@ -94,14 +94,14 @@ export async function submitArtifactsForReview(moduleId: string, moduleNum: numb
     .eq('student_id', user.id)
     .eq('module_id', moduleId);
 
-  const studyRules = submissions?.find(s => s.artifact_type === 'study_rules');
-  const errorReview = submissions?.find(s => s.artifact_type === 'error_review');
+  const studyRules = submissions?.find((s: any) => s.artifact_type === 'study_rules');
+  const errorReview = submissions?.find((s: any) => s.artifact_type === 'error_review');
 
   if (!studyRules || !errorReview) {
     throw new Error('Both Artifact 1 (Warrior Code) and Artifact 2 (Boundaries Plan) must be created as drafts before submitting.');
   }
 
-  const toSubmit = [studyRules, errorReview].filter(s => s.status === 'draft' || s.status === 'revise');
+  const toSubmit = [studyRules, errorReview].filter((s: any) => s.status === 'draft' || s.status === 'revise');
 
   if (toSubmit.length > 0) {
     const { error } = await supabaseAdmin
