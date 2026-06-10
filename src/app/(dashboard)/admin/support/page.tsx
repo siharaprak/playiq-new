@@ -34,24 +34,24 @@ export default async function AdminSupportPage({
   const { data: issuesData, error } = await query;
 
   // 2. Resolve reporter profiles
-  const reporterIds = Array.from(new Set((issuesData || []).map((i) => i.reporter_id).filter(Boolean)));
+  const reporterIds = Array.from(new Set((issuesData || []).map((i: any) => i.reporter_id).filter(Boolean)));
   
   const { data: reporterProfiles } = await supabaseAdmin
     .from('profiles')
     .select('id, full_name, email')
     .in('id', reporterIds);
 
-  const reporterMap = (reporterProfiles || []).reduce((acc, r) => {
+  const reporterMap = (reporterProfiles || []).reduce((acc: any, r: any) => {
     acc[r.id] = r;
     return acc;
   }, {} as Record<string, any>);
 
-  const issues = (issuesData || []).map((issue) => ({
+  const issues = (issuesData || []).map((issue: any) => ({
     ...issue,
     profiles: reporterMap[issue.reporter_id] || null,
   }));
 
-  const openCount = (issuesData || []).filter((i) => i.status === 'open').length;
+  const openCount = (issuesData || []).filter((i: any) => i.status === 'open').length;
 
   return (
     <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] font-mono">
@@ -118,7 +118,7 @@ export default async function AdminSupportPage({
         {/* Ticket List */}
         {issues.length > 0 ? (
           <div className="space-y-4">
-            {issues.map((issue) => {
+            {issues.map((issue: any) => {
               const studentName = issue.profiles?.full_name || 'Apprentice';
               const studentEmail = issue.profiles?.email || '—';
               const isOpen = issue.status === 'open';

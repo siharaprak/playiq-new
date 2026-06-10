@@ -53,7 +53,7 @@ export async function listModuleMasteryConfigs(courseId: string) {
 
   if (error || !data) return [];
 
-  return data.map((mod) => {
+  return data.map((mod: any) => {
     const metadata = mod.metadata as Record<string, unknown> | null;
     return {
       id: mod.id as string,

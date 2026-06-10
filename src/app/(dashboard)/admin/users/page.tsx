@@ -38,9 +38,6 @@ export default async function AdminUsersPage({
   if (profile?.role !== 'admin') redirect('/student/home');
 
   // Fetch all student profiles
-  console.log('Admin Roster Debug - SUPABASE_SERVICE_ROLE_KEY present:', !!process.env.SUPABASE_SERVICE_ROLE_KEY);
-  console.log('Admin Roster Debug - Key length:', process.env.SUPABASE_SERVICE_ROLE_KEY?.length);
-  
   const { data: students, error: studentsError } = await supabaseAdmin
     .from('profiles')
     .select('id, full_name, email, role, status, created_at')

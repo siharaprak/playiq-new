@@ -8,11 +8,9 @@ function getClient() {
     const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
     
     console.log('[supabaseAdmin] Initializing client dynamically...');
-    console.log('[supabaseAdmin] NEXT_PUBLIC_SUPABASE_URL exists:', !!url);
-    console.log('[supabaseAdmin] SUPABASE_SERVICE_ROLE_KEY exists:', !!key, 'length:', key?.length || 0);
 
     if (!url || !key) {
-      console.error('❌ [supabaseAdmin] Error: Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in process.env!');
+      console.error('❌ [supabaseAdmin] Error: Missing required admin environment variables!');
     }
 
     memoizedClient = createClient(url || '', key || '', {

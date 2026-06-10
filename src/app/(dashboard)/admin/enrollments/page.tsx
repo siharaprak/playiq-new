@@ -28,25 +28,25 @@ export default async function AdminEnrollmentsPage() {
     .order('enrolled_at', { ascending: false });
 
   // Manually fetch student profiles and courses to resolve joins cleanly
-  const studentIds = Array.from(new Set((enrollmentsData || []).map((e) => e.student_id).filter(Boolean)));
-  const courseIds = Array.from(new Set((enrollmentsData || []).map((e) => e.course_id).filter(Boolean)));
+  const studentIds = Array.from(new Set((enrollmentsData || []).map((e: any) => e.student_id).filter(Boolean)));
+  const courseIds = Array.from(new Set((enrollmentsData || []).map((e: any) => e.course_id).filter(Boolean)));
 
   const [{ data: studentProfiles }, { data: coursesList }] = await Promise.all([
     supabaseAdmin.from('profiles').select('id, full_name, email').in('id', studentIds),
     supabaseAdmin.from('courses').select('id, title').in('id', courseIds),
   ]);
 
-  const studentMap = (studentProfiles || []).reduce((acc, p) => {
+  const studentMap = (studentProfiles || []).reduce((acc: any, p: any) => {
     acc[p.id] = p;
     return acc;
   }, {} as Record<string, any>);
 
-  const courseMap = (coursesList || []).reduce((acc, c) => {
+  const courseMap = (coursesList || []).reduce((acc: any, c: any) => {
     acc[c.id] = c;
     return acc;
   }, {} as Record<string, any>);
 
-  const enrollments = (enrollmentsData || []).map((enrollment) => ({
+  const enrollments = (enrollmentsData || []).map((enrollment: any) => ({
     ...enrollment,
     profiles: studentMap[enrollment.student_id] || null,
     courses: courseMap[enrollment.course_id] || null,
@@ -87,7 +87,7 @@ export default async function AdminEnrollmentsPage() {
 
             {enrollments.length > 0 ? (
               <div className="space-y-4">
-                {enrollments.map((e) => {
+                {enrollments.map((e: any) => {
                   const studentName = e.profiles?.full_name || 'Apprentice';
                   const studentEmail = e.profiles?.email || '—';
                   const courseTitle = e.courses?.title || 'System Core Course';

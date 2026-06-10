@@ -73,7 +73,11 @@
     "verify:backup-rollback-release": "npx tsx scripts/verify-backup-rollback-release.ts",
     "verify:production-config-secrets": "npx tsx scripts/verify-production-config-secrets.ts",
     "verify:uat-readiness": "npx tsx scripts/verify-uat-readiness.ts",
-    "verify:sprint10-readiness": "npx tsx scripts/run-sprint10-readiness-checks.ts"
+    "verify:sprint10-readiness": "npx tsx scripts/run-sprint10-readiness-checks.ts",
+    "verify:final-security-access": "npx tsx scripts/verify-final-security-access-review.ts",
+    "verify:beta-support-workflows": "npx tsx scripts/verify-beta-support-workflows.ts",
+    "audit:support-categories": "npx tsx scripts/audit-support-category-consistency.ts",
+    "verify:sprint10-security-support": "npx tsx scripts/run-sprint10-security-support-checks.ts"
   },
   "dependencies": {
     "@google/genai": "^1.50.1",

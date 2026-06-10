@@ -122,8 +122,8 @@ export async function getStudentProgressRollup(
     .select('module_id, node_mastered, unlocked_at, completed_at')
     .eq('student_id', studentId);
 
-  const mastered = (nodeProgress ?? []).filter((n) => n.node_mastered);
-  const moduleIds = new Set((nodeProgress ?? []).map((n) => n.module_id));
+  const mastered = (nodeProgress ?? []).filter((n: any) => n.node_mastered);
+  const moduleIds = new Set((nodeProgress ?? []).map((n: any) => n.module_id));
 
   // Assessment submissions
   const { count: assessmentCount } = await supabaseAdmin
@@ -147,7 +147,7 @@ export async function getStudentProgressRollup(
     .eq('student_id', studentId);
 
   const proofTotal = proofData?.length ?? 0;
-  const proofApproved = proofData?.filter((p) => p.status === 'approved').length ?? 0;
+  const proofApproved = proofData?.filter((p: any) => p.status === 'approved').length ?? 0;
 
   // Tutor profiles
   const { count: tutorCount } = await supabaseAdmin
@@ -260,14 +260,14 @@ export async function getStudentModuleRollups(
     .not('status', 'in', '("draft","revise")');
 
   return modules
-    .filter((m) => m.order_num >= 1 && m.order_num <= 10)
-    .map((mod) => {
-      const modNodes = (nodeProgress ?? []).filter((n) => n.module_id === mod.id);
-      const modMastered = modNodes.filter((n) => n.node_mastered).length;
-      const modAssessments = (assessments ?? []).filter((a) => a.module_id === mod.id);
-      const modProofs = (proofs ?? []).filter((p) => p.module_id === mod.id);
-      const quiz = modAssessments.find((a) => a.assessment_type === 'module_quiz' && a.pass_status === 'pass');
-      const boss = modAssessments.find((a) => a.assessment_type === 'boss_battle' && a.pass_status === 'pass');
+    .filter((m: any) => m.order_num >= 1 && m.order_num <= 10)
+    .map((mod: any) => {
+      const modNodes = (nodeProgress ?? []).filter((n: any) => n.module_id === mod.id);
+      const modMastered = modNodes.filter((n: any) => n.node_mastered).length;
+      const modAssessments = (assessments ?? []).filter((a: any) => a.module_id === mod.id);
+      const modProofs = (proofs ?? []).filter((p: any) => p.module_id === mod.id);
+      const quiz = modAssessments.find((a: any) => a.assessment_type === 'module_quiz' && a.pass_status === 'pass');
+      const boss = modAssessments.find((a: any) => a.assessment_type === 'boss_battle' && a.pass_status === 'pass');
       const expectedNodes = KNOWN_MODULE_NODE_COUNTS[mod.order_num] ?? 4;
 
       return {
@@ -307,7 +307,7 @@ export async function getStudentProofRollup(
 
   return {
     total_submitted: items.length,
-    total_approved: items.filter((p) => p.status === 'approved').length,
+    total_approved: items.filter((p: any) => p.status === 'approved').length,
     by_type: Object.entries(byType).map(([type, data]) => ({
       artifact_type: type,
       count: data.count,
@@ -410,7 +410,7 @@ export async function getParentChildrenRollups(
 
   if (!links || links.length === 0) return [];
 
-  const studentIds = links.map((l) => l.student_id);
+  const studentIds = links.map((l: any) => l.student_id);
   const results: ParentChildSummary[] = [];
 
   for (const studentId of studentIds) {
@@ -453,7 +453,7 @@ export async function getParentChildSummary(
     .select('module_id, node_mastered')
     .eq('student_id', studentId);
 
-  const mastered = (nodeProgress ?? []).filter((n) => n.node_mastered);
+  const mastered = (nodeProgress ?? []).filter((n: any) => n.node_mastered);
   const masteredByModule: Record<string, number> = {};
   for (const n of mastered) {
     masteredByModule[n.module_id] = (masteredByModule[n.module_id] || 0) + 1;
@@ -565,7 +565,7 @@ export async function getParentChildSummary(
     current_module_title: currentModuleTitle,
     latest_activity_at: latestEvent?.created_at ?? null,
     proof_submissions_total: proofs?.length ?? 0,
-    proof_approved_total: proofs?.filter((p) => p.status === 'approved').length ?? 0,
+    proof_approved_total: proofs?.filter((p: any) => p.status === 'approved').length ?? 0,
     discussion_activity_count: (topicsCount ?? 0) + (repliesCount ?? 0),
     tutor_build_status: tutorStatus,
     assistant_build_status: assistantStatus,

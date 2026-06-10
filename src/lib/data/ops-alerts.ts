@@ -38,7 +38,7 @@ export async function getDynamicOpsAlerts(): Promise<DynamicAlert[]> {
         description: rule.description,
         severity: rule.severity,
         affectedCount: overdueProofs.length,
-        details: overdueProofs.map((p) => ({
+        details: overdueProofs.map((p: any) => ({
           submissionId: p.id,
           studentId: p.student_id,
           ageHours: Math.round((now.getTime() - new Date(p.created_at).getTime()) / (1000 * 60 * 60)),
@@ -121,7 +121,7 @@ export async function getDynamicOpsAlerts(): Promise<DynamicAlert[]> {
           description: rule.description,
           severity: rule.severity,
           affectedCount: rateLimitHits.length,
-          details: rateLimitHits.map((h) => ({
+          details: rateLimitHits.map((h: any) => ({
             studentId: h.student_id,
             eventType: h.event_type,
             action: h.metadata?.action,

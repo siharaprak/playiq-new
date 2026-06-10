@@ -27,59 +27,59 @@ export default async function AdminAgentsPage({
   ]);
 
   // Fetch all unique student IDs to get emails/names
-  const tutorStudentIds = (tutorsList || []).map((t) => t.student_id);
-  const assistantStudentIds = (assistantsList || []).map((a) => a.student_id);
+  const tutorStudentIds = (tutorsList || []).map((t: any) => t.student_id);
+  const assistantStudentIds = (assistantsList || []).map((a: any) => a.student_id);
   const uniqueStudentIds = Array.from(new Set([...tutorStudentIds, ...assistantStudentIds]));
-
+ 
   const { data: studentProfiles } = await supabaseAdmin
     .from('profiles')
     .select('id, full_name, email')
     .in('id', uniqueStudentIds);
-
-  const studentMap = (studentProfiles || []).reduce((acc, p) => {
+ 
+  const studentMap = (studentProfiles || []).reduce((acc: any, p: any) => {
     acc[p.id] = p;
     return acc;
   }, {} as Record<string, any>);
-
+ 
   // 2. Fetch versions count only (no instructions/system_prompts fetched)
   const [{ data: tutorVersions }, { data: assistantVersions }] = await Promise.all([
     supabaseAdmin.from('tutor_versions').select('id, tutor_profile_id'),
     supabaseAdmin.from('assistant_versions').select('id, assistant_profile_id'),
   ]);
-
-  const tutorVersionCountMap = (tutorVersions || []).reduce((acc, v) => {
+ 
+  const tutorVersionCountMap = (tutorVersions || []).reduce((acc: any, v: any) => {
     acc[v.tutor_profile_id] = (acc[v.tutor_profile_id] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-
-  const assistantVersionCountMap = (assistantVersions || []).reduce((acc, v) => {
+ 
+  const assistantVersionCountMap = (assistantVersions || []).reduce((acc: any, v: any) => {
     acc[v.assistant_profile_id] = (acc[v.assistant_profile_id] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-
+ 
   // 3. Fetch knowledge files count only (no urls, names, or file_url/storage_path fetched)
   const [{ data: tutorFiles }, { data: assistantFiles }] = await Promise.all([
     supabaseAdmin.from('knowledge_files').select('id, tutor_profile_id').not('tutor_profile_id', 'is', null),
     supabaseAdmin.from('knowledge_files').select('id, assistant_profile_id').not('assistant_profile_id', 'is', null),
   ]);
-
-  const tutorFilesCountMap = (tutorFiles || []).reduce((acc, f) => {
+ 
+  const tutorFilesCountMap = (tutorFiles || []).reduce((acc: any, f: any) => {
     acc[f.tutor_profile_id!] = (acc[f.tutor_profile_id!] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-
-  const assistantFilesCountMap = (assistantFiles || []).reduce((acc, f) => {
+ 
+  const assistantFilesCountMap = (assistantFiles || []).reduce((acc: any, f: any) => {
     acc[f.assistant_profile_id!] = (acc[f.assistant_profile_id!] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-
+ 
   // 4. Fetch test status events counts (no raw prompt/response logged or fetched)
   const { data: testEvents } = await supabaseAdmin
     .from('events_log')
     .select('student_id, event_type, metadata')
     .in('event_type', ['assistant_profile_updated', 'tutor_profile_updated']);
-
-  const testEventMap = (testEvents || []).reduce((acc, event) => {
+ 
+  const testEventMap = (testEvents || []).reduce((acc: any, event: any) => {
     const studentId = event.student_id;
     if (!acc[studentId]) {
       acc[studentId] = { attempts: 0, refusals: 0 };

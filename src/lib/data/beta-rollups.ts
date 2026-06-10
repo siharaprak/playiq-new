@@ -80,7 +80,7 @@ export async function getBetaParentRollup(
     .select('module_id, node_mastered')
     .eq('student_id', studentId);
 
-  const mastered = (nodeProgress ?? []).filter((n) => n.node_mastered);
+  const mastered = (nodeProgress ?? []).filter((n: any) => n.node_mastered);
   
   // Total modules done
   const { data: modules } = await supabaseAdmin
@@ -120,7 +120,7 @@ export async function getBetaParentRollup(
     .eq('student_id', studentId);
 
   const proofSubmissionsTotal = proofs?.length ?? 0;
-  const proofApprovedTotal = proofs?.filter((p) => p.status === 'approved').length ?? 0;
+  const proofApprovedTotal = proofs?.filter((p: any) => p.status === 'approved').length ?? 0;
 
   // Tutor/Assistant status (counts only)
   const { count: tutorCount } = await supabaseAdmin
@@ -238,7 +238,7 @@ export async function getBetaAiUsageRollup(
   let tutorTestsTotal = 0;
   let assistantTestsTotal = 0;
 
-  events?.forEach((e) => {
+  events?.forEach((e: any) => {
     const type = e.event_type;
     const action = e.metadata?.action;
 
@@ -290,7 +290,7 @@ export async function getBetaProofReviewRollup(adminUserId: string): Promise<Pro
   let approved = 0;
   let revise = 0;
 
-  statusCounts?.forEach((p) => {
+  statusCounts?.forEach((p: any) => {
     if (p.status === 'submitted' || p.status === 'under_review') submitted++;
     else if (p.status === 'approved') approved++;
     else if (p.status === 'revise' || p.status === 'rejected') revise++;
@@ -317,7 +317,7 @@ export async function getBetaSupportRollup(adminUserId: string): Promise<Support
   let open = 0;
   let resolved = 0;
 
-  tickets?.forEach((t) => {
+  tickets?.forEach((t: any) => {
     if (t.status === 'open') open++;
     else if (t.status === 'resolved') resolved++;
   });
@@ -341,7 +341,7 @@ export async function getBetaEnrollmentRollup(adminUserId: string): Promise<Enro
     .select('status');
 
   let active = 0;
-  list?.forEach((e) => {
+  list?.forEach((e: any) => {
     if (e.status === 'active') active++;
   });
 

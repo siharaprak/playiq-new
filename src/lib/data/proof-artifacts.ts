@@ -354,7 +354,7 @@ export async function getParentProofSummary(parentId: string, studentId: string)
   let latestApprovedAt: string | null = null;
   let latestSubmittedAt: string | null = null;
 
-  artifacts?.forEach(art => {
+  artifacts?.forEach((art: any) => {
     if (art.status === 'approved') {
       approvedCount++;
       if (!latestApprovedAt || new Date(art.reviewed_at) > new Date(latestApprovedAt)) {

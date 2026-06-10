@@ -144,7 +144,7 @@ export async function getStudentIntegrityTrend(
   }
 
   // Cast safely since we only query target_type = guided_ai
-  const validEvents = (events || []).map(e => ({
+  const validEvents = (events || []).map((e: any) => ({
     event_type: e.event_type as GuidedAiEventType,
     metadata: e.metadata as Record<string, unknown> || {},
     created_at: e.created_at
@@ -193,7 +193,7 @@ export async function getParentChildrenIntegrityTrends(
     return [];
   }
 
-  const studentIds = links.map(l => l.student_id);
+  const studentIds = links.map((l: any) => l.student_id);
   const results: IntegrityTrendSummary[] = [];
 
   for (const studentId of studentIds) {

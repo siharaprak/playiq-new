@@ -43,7 +43,7 @@ export async function getCostUsageRollup(studentId?: string): Promise<CostUsageS
   let assistantTestCount = 0;
   let refusalCount = 0;
 
-  events.forEach(event => {
+  events.forEach((event: any) => {
     const type = event.event_type;
     const action = event.metadata?.action;
 

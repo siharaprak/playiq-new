@@ -84,11 +84,11 @@ export async function checkGuidedAiRateLimit({
   }
 
   const globalEvents = events || [];
-  const burstEvents = globalEvents.filter(e => e.created_at >= burstStart);
+  const burstEvents = globalEvents.filter((e: any) => e.created_at >= burstStart);
   
-  const refusalEvents = globalEvents.filter(e => e.event_type === 'guided_ai_refused' || e.event_type === 'unsafe_assistance_routed');
-  const rescueEvents = globalEvents.filter(e => e.event_type === 'lesson_rescue_used');
-  const quizEvents = globalEvents.filter(e => e.event_type === 'guided_ai_quiz_practice_generated');
+  const refusalEvents = globalEvents.filter((e: any) => e.event_type === 'guided_ai_refused' || e.event_type === 'unsafe_assistance_routed');
+  const rescueEvents = globalEvents.filter((e: any) => e.event_type === 'lesson_rescue_used');
+  const quizEvents = globalEvents.filter((e: any) => e.event_type === 'guided_ai_quiz_practice_generated');
 
   if (burstEvents.length >= policy.burstMaxRequests) {
     return { allowed: false, reason: 'You are sending too many requests too quickly. Please wait a few minutes.' };
