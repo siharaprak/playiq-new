@@ -100,6 +100,9 @@ export type HintLevel = z.infer<typeof HintLevelSchema>;
 // API Request (Zod validated — no conversation history)
 // ---------------------------------------------------------------------------
 
+export const LearningLevelSchema = z.enum(['elementary', 'middle', 'high', 'adult']);
+export type LearningLevel = z.infer<typeof LearningLevelSchema>;
+
 export const GuidedAiRequestSchema = z.object({
   mode: GuidedAiModeId,
   moduleNumber: z.number().int().min(1).max(11).optional(),
@@ -113,6 +116,7 @@ export const GuidedAiRequestSchema = z.object({
   hintLevel: HintLevelSchema.optional(),
   retryCount: z.number().int().min(0).max(10).optional(),
   previousIntegrityAction: z.string().max(50).optional(),
+  learningLevel: LearningLevelSchema.optional(),
 });
 
 export type GuidedAiRequest = z.infer<typeof GuidedAiRequestSchema>;

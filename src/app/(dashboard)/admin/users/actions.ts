@@ -80,3 +80,19 @@ export async function restoreUser(formData: FormData) {
   revalidatePath('/admin/users');
   redirect('/admin/users');
 }
+
+export async function updateLearningLevel(formData: FormData) {
+  await enforceAdmin();
+
+  const userId = formData.get('userId') as string;
+  const learningLevel = formData.get('learningLevel') as string;
+  if (!userId || !learningLevel) return;
+
+  await supabaseAdmin
+    .from('profiles')
+    .update({ learning_level: learningLevel })
+    .eq('id', userId);
+
+  revalidatePath('/admin/users');
+  redirect('/admin/users');
+}

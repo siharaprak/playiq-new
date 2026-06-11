@@ -248,6 +248,47 @@ You MUST return a raw JSON object with this exact shape:
 `,
 };
 
+const LEVEL_INSTRUCTIONS: Record<string, string> = {
+  elementary: `
+=========================================
+COGNITIVE LEVEL: K-5 ELEMENTARY
+- The student is a young child (Ages 6-11).
+- Use simple vocabulary and short sentences (Flesch-Kincaid Grade Level 3-5).
+- NEVER use heavy programming/academic jargon without explaining it simply first.
+- Use fun, relatable analogies (e.g., loops are like repeating a dance move, variables are like a labeled toy chest).
+- Keep replies encouraging, friendly, and visual (use emojis).
+- COMPLIANCE (COPPA/SAFETY): Do not ask for or collect any personal details, do not link to any external websites, and keep interaction strictly text-only.
+=========================================
+  `.trim(),
+  middle: `
+=========================================
+COGNITIVE LEVEL: 6-8 MIDDLE SCHOOL
+- The student is a middle schooler (Ages 12-14).
+- Use relatable scenarios like video games, sports, phone apps, or school clubs.
+- Introduce technical terms, but define them clearly in context.
+- Use a friendly, collaborative tone. Encourage checking in.
+=========================================
+  `.trim(),
+  high: `
+=========================================
+COGNITIVE LEVEL: 9-12 HIGH SCHOOL
+- The student is a high school student (Ages 15-18).
+- Use standard Computer Science and logic terminology.
+- Provide technically accurate explanations with moderate depth.
+- Focus on practical logical rules, syntax structure, and clean coding practices.
+=========================================
+  `.trim(),
+  adult: `
+=========================================
+COGNITIVE LEVEL: ADULT PROFESSIONAL
+- The student is an adult learner or professional.
+- Use highly precise, industry-standard Computer Science vocabulary.
+- Focus on clean code patterns, execution performance, engineering choices, and systems architecture.
+- Do not simplify syntax; prioritize professional-grade explanations.
+=========================================
+  `.trim(),
+};
+
 // ---------------------------------------------------------------------------
 // Prompt builders
 // ---------------------------------------------------------------------------
@@ -255,8 +296,17 @@ You MUST return a raw JSON object with this exact shape:
 /**
  * Builds the full system prompt for a guided AI mode.
  */
-export function buildGuidedAiSystemPrompt(mode: GuidedAiModeId): string {
-  return MODE_SYSTEM_PROMPTS[mode].trim();
+export function buildGuidedAiSystemPrompt(
+  mode: GuidedAiModeId,
+  learningLevel?: 'elementary' | 'middle' | 'high' | 'adult'
+): string {
+  const basePrompt = MODE_SYSTEM_PROMPTS[mode].trim();
+  if (!learningLevel) return basePrompt;
+
+  const levelRules = LEVEL_INSTRUCTIONS[learningLevel];
+  if (!levelRules) return basePrompt;
+
+  return `${levelRules}\n\n${basePrompt}`;
 }
 
 /**

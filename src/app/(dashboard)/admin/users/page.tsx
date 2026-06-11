@@ -3,7 +3,7 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock } from 'lucide-react';
-import { deleteUser, suspendUser, restoreUser } from './actions';
+import { deleteUser, suspendUser, restoreUser, updateLearningLevel } from './actions';
 import { MODULES } from '@/lib/constants';
 import ConfirmButton from '@/components/admin/ConfirmButton';
 
@@ -40,7 +40,7 @@ export default async function AdminUsersPage({
   // Fetch all student profiles
   const { data: students, error: studentsError } = await supabaseAdmin
     .from('profiles')
-    .select('id, full_name, email, role, status, created_at')
+    .select('id, full_name, email, role, status, created_at, learning_level')
     .eq('role', 'student')
     .order('created_at', { ascending: false });
 
@@ -228,12 +228,45 @@ export default async function AdminUsersPage({
                               Suspended
                             </span>
                           )}
+                          <span className={`text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 border ${
+                            student.learning_level === 'elementary' ? 'text-[#00c8ff] border-[#00c8ff]/30 bg-[#00c8ff]/10' :
+                            student.learning_level === 'middle' ? 'text-[#7b4fce] border-[#7b4fce]/30 bg-[#7b4fce]/10' :
+                            student.learning_level === 'adult' ? 'text-[#39ff14] border-[#39ff14]/30 bg-[#39ff14]/10' :
+                            'text-amber-400 border-amber-500/30 bg-amber-500/10'
+                          }`}>
+                            {student.learning_level === 'elementary' ? 'K-5 Elementary' :
+                             student.learning_level === 'middle' ? '6-8 Middle' :
+                             student.learning_level === 'adult' ? 'Adult Pro' :
+                             '9-12 High'}
+                          </span>
                         </p>
                         <p className="text-xs font-mono text-slate-400">{student.email}</p>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      {/* Learning Level Form */}
+                      <form action={updateLearningLevel} className="flex items-center gap-1.5 bg-black/40 border border-slate-700 px-3 py-2 font-mono">
+                        <input type="hidden" name="userId" value={student.id} />
+                        <label className="text-[9px] text-slate-500 uppercase tracking-widest">Level:</label>
+                        <select
+                          name="learningLevel"
+                          defaultValue={student.learning_level || 'high'}
+                          className="bg-[#020617] text-xs text-slate-300 border border-slate-800 focus:border-[#00c8ff] rounded px-2 py-1 outline-none cursor-pointer"
+                        >
+                          <option value="elementary">K-5 Elementary</option>
+                          <option value="middle">6-8 Middle</option>
+                          <option value="high">9-12 High</option>
+                          <option value="adult">Adult Pro</option>
+                        </select>
+                        <button
+                          type="submit"
+                          className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 bg-slate-800 hover:bg-[#00c8ff] hover:text-black border border-slate-700 hover:border-[#00c8ff] transition-all cursor-pointer font-sans"
+                        >
+                          SET
+                        </button>
+                      </form>
+
                       {/* Overall progress pill */}
                       <div className="flex items-center gap-2 bg-black/40 border border-slate-700 px-4 py-2">
                         <div className="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
@@ -245,7 +278,7 @@ export default async function AdminUsersPage({
                         <span className="font-mono text-xs text-[#00c8ff] font-bold">{overallPct}%</span>
                         <span className="font-mono text-[10px] text-slate-500 uppercase">Overall</span>
                       </div>
-                      <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest hidden md:block">
+                      <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest hidden lg:block">
                         Joined {new Date(student.created_at).toLocaleDateString()}
                       </span>
 

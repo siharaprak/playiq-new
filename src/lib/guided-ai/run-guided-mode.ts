@@ -141,6 +141,14 @@ export async function runGuidedMode(
   studentId: string,
   moduleDbId?: string
 ): Promise<GuidedAiResponseData> {
+  // Fetch student's learning level
+  const { data: profile } = await supabaseAdmin
+    .from('profiles')
+    .select('learning_level')
+    .eq('id', studentId)
+    .single();
+  const studentLevel = profile?.learning_level || 'high';
+
   // 0. Sprint 4C: Server-side clamp of hintLevel and retryCount (do not trust client)
   const clampedHintLevel: HintLevel | undefined = input.hintLevel
     ? (Math.max(1, Math.min(3, input.hintLevel)) as HintLevel)
@@ -269,7 +277,7 @@ export async function runGuidedMode(
   });
 
   // 3. Build prompts (uses clampedInput so hint level is injected)
-  const systemPrompt = buildGuidedAiSystemPrompt(input.mode);
+  const systemPrompt = buildGuidedAiSystemPrompt(input.mode, studentLevel as any);
   const userPrompt = buildGuidedAiUserPrompt(clampedInput, context);
 
   // 4. Call Gemini (non-streaming, JSON output)
