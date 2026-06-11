@@ -137,7 +137,7 @@ export default function StudentUsernameSetup({ currentUsername, canEdit, changeC
         This is how you appear in discussions. Do not use your full name, email, school, or phone number.
       </p>
 
-      <div className="relative mb-3">
+      <div className="relative mb-3" suppressHydrationWarning={true}>
         <span className="absolute left-3 top-1/2 -translate-y-1/2 font-mono text-sm" style={{ color: 'var(--text-muted)' }}>@</span>
         <input
           type="text"

@@ -12,6 +12,9 @@ interface GuidedAIPanelProps {
   nodeId?: string;
   pageType?: string;
   isFloating?: boolean;
+  hasProgress?: boolean;
+  studentName?: string;
+  studentId?: string;
 }
 
 interface ChatMessage {
@@ -42,7 +45,15 @@ const HINT_LEVEL_LABELS: Record<1 | 2 | 3, { name: string; color: string }> = {
   3: { name: 'Micro-example', color: 'var(--neon-purple)' },
 };
 
-export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = false }: GuidedAIPanelProps) {
+export function GuidedAIPanel({ 
+  moduleNumber, 
+  nodeId, 
+  pageType, 
+  isFloating = false,
+  hasProgress = true,
+  studentName = 'Student',
+  studentId
+}: GuidedAIPanelProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
@@ -109,6 +120,39 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
       scrollToBottom();
     }
   }, [messages, isOpen, isLoading, teachBackActive]);
+
+  useEffect(() => {
+    // If it's a new student on the dashboard, auto-open Orion with the onboarding walkthrough after a short delay
+    if (isFloating && pathname === '/student/home' && !hasProgress && studentId) {
+      const alreadyOpened = sessionStorage.getItem(`playiq_orion_auto_opened_${studentId}`);
+      if (!alreadyOpened) {
+        const timer = setTimeout(() => {
+          setIsOpen(true);
+          setShowAwakeAnimation(false); // Go directly to custom prompt
+          setActiveMode('chat');
+          setMessages([
+            {
+              id: 'onboarding-walkthrough',
+              role: 'model',
+              content: `👋 Hello, Apprentice ${studentName}! I am Orion, your AI learning partner.
+
+Since this is a new student account, let's run a quick simulation of how you will navigate the course:
+
+1. 🌲 **Skill Tree:** You will unlock and complete 11 training modules in sequential order.
+2. 📖 **Nodes:** Each module has interactive lesson nodes. You must write out your attempted approach before asking me for hints! No lazy prompt cheats allowed.
+3. ⚔️ **Quizzes & Bosses:** Master all nodes in a module to unlock the Quiz. Score 80%+ to unlock the Boss Battle simulation.
+4. 🛡️ **Proof:** Defeat the Boss to unlock the Proof Artifacts step. Upload your work to unlock the next module!
+
+Try asking me "tell me about the first module" or "how do I earn hints?" to simulate how I can assist you.`,
+              isWelcome: true
+            }
+          ]);
+          sessionStorage.setItem(`playiq_orion_auto_opened_${studentId}`, 'true');
+        }, 1500);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [isFloating, pathname, hasProgress, studentId, studentName]);
 
   const handleModeSelect = (mode: GuidedAiModeId) => {
     setActiveMode(mode);
@@ -695,7 +739,7 @@ export function GuidedAIPanel({ moduleNumber, nodeId, pageType, isFloating = fal
       <>
         {/* Floating Toggle Button */}
         {!isOpen && (
-          <div className="fixed bottom-6 right-6 z-50 w-14 h-14">
+          <div id="orion-floating-button" className="fixed bottom-6 right-6 z-50 w-14 h-14">
             {/* Ambient pulse shadow ring */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-purple)] opacity-35 blur-md animate-pulse"></div>
             

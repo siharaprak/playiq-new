@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "path";
 
 const nextConfig: NextConfig = {
   typescript: {
@@ -9,7 +10,7 @@ const nextConfig: NextConfig = {
     cpus: 1,
   },
   turbopack: {
-    root: process.cwd(),
+    root: path.resolve(__dirname),
   },
 };
 

@@ -5,8 +5,9 @@ import { MODULES } from '@/lib/constants';
 import Link from 'next/link';
 import RequestFeedbackButton from './RequestFeedbackButton';
 import StudentUsernameSetup from '@/components/profile/StudentUsernameSetup';
-import WelcomeOrientation from '@/components/dashboard/WelcomeOrientation';
+import CourseNavigationGuide from '@/components/dashboard/CourseNavigationGuide';
 import SupportIssueForm from '@/components/support/SupportIssueForm';
+import DashboardTour from '@/components/dashboard/DashboardTour';
 
 // Module definitions
 const moduleList = [
@@ -95,6 +96,13 @@ export default async function StudentDashboard() {
         <header className="flex justify-between items-center mb-12 pb-6" style={{ borderBottom: '1px solid rgba(123,79,206,0.2)' }}>
           <h1 className="text-2xl font-bold font-display">PlayIQ <span style={{ color: 'var(--neon-cyan)' }}>Guide</span></h1>
           <div className="flex items-center gap-4">
+            <button 
+              id="replay-tour-button"
+              className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all hover:bg-purple-500/10 cursor-pointer"
+              style={{ border: '1px solid var(--neon-purple)', color: 'var(--neon-purple-light)' }}
+            >
+              🗺️ Tour Dashboard
+            </button>
             <Link href="/settings" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>
               <Settings className="w-3.5 h-3.5" /> 2FA Shield
             </Link>
@@ -110,14 +118,12 @@ export default async function StudentDashboard() {
 
         <div className="grid md:grid-cols-3 gap-8">
           <div className="md:col-span-2 space-y-6">
-            {(!allProgress || allProgress.length === 0) && (
-              <WelcomeOrientation studentName={name} />
-            )}
+            <CourseNavigationGuide studentName={name} studentId={user.id} hasProgress={!!(allProgress && allProgress.length > 0)} />
 
             {modulesWithProgress.map((mod, index) => {
               if (mod.isUnlocked) {
                 return (
-                  <div key={mod.id} className="p-8 rounded-2xl transition-all" style={{ background: 'var(--space-card)', border: `1px solid ${mod.isCompleted ? 'var(--neon-purple)' : 'var(--neon-cyan)'}` }}>
+                  <div key={mod.id} id={mod.id === MODULES.MODULE_1_ID ? "current-challenge-card" : undefined} className="p-8 rounded-2xl transition-all" style={{ background: 'var(--space-card)', border: `1px solid ${mod.isCompleted ? 'var(--neon-purple)' : 'var(--neon-cyan)'}` }}>
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm font-bold uppercase tracking-wider" style={{ color: mod.isCompleted ? 'var(--neon-purple)' : 'var(--neon-cyan)' }}>
                         {mod.isCompleted ? 'Completed' : 'Current Challenge'}
@@ -162,14 +168,16 @@ export default async function StudentDashboard() {
 
           <div className="space-y-6">
             {/* Username Setup/Edit */}
-            <StudentUsernameSetup
-              currentUsername={currentUsername}
-              canEdit={canEditUsername}
-              changeCount={usernameChangeCount}
-            />
+            <div id="username-setup-card">
+              <StudentUsernameSetup
+                currentUsername={currentUsername}
+                canEdit={canEditUsername}
+                changeCount={usernameChangeCount}
+              />
+            </div>
 
             {/* Engagement Board */}
-            <Link href="/discussions" className="block p-6 rounded-2xl transition-all group" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-cyan)' }}>
+            <Link href="/discussions" id="engagement-board-card" className="block p-6 rounded-2xl transition-all group" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-cyan)' }}>
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-8 h-8 rounded-lg flex items-center justify-center text-lg" style={{ background: 'var(--glass-bg)' }}>💬</div>
                 <h3 className="font-bold text-sm font-display group-hover:text-[var(--neon-cyan)] transition-colors" style={{ color: 'var(--text-primary)' }}>Engagement Board</h3>
@@ -179,7 +187,7 @@ export default async function StudentDashboard() {
             </Link>
 
             {/* Need Help */}
-            <div className="p-6 rounded-2xl" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-purple)' }}>
+            <div id="need-help-card" className="p-6 rounded-2xl" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-purple)' }}>
               <div className="flex items-center gap-3 mb-4">
                 <HelpCircle style={{ color: 'var(--neon-gold)' }} className="w-6 h-6" />
                 <h3 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Need Help?</h3>
@@ -211,6 +219,7 @@ export default async function StudentDashboard() {
           </div>
         </div>
       </div>
+      <DashboardTour studentId={user.id} hasProgress={!!(allProgress && allProgress.length > 0)} />
     </div>
   );
 }
