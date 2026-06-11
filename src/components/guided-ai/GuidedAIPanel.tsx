@@ -122,19 +122,16 @@ export function GuidedAIPanel({
   }, [messages, isOpen, isLoading, teachBackActive]);
 
   useEffect(() => {
-    // If it's a new student on the dashboard, auto-open Orion with the onboarding walkthrough after a short delay
-    if (isFloating && pathname === '/student/home' && !hasProgress && studentId) {
+    // If it's a new student on the dashboard and they manually open Orion, greet them with the onboarding walkthrough
+    if (isOpen && isFloating && pathname === '/student/home' && !hasProgress && studentId) {
       const alreadyOpened = sessionStorage.getItem(`playiq_orion_auto_opened_${studentId}`);
       if (!alreadyOpened) {
-        const timer = setTimeout(() => {
-          setIsOpen(true);
-          setShowAwakeAnimation(false); // Go directly to custom prompt
-          setActiveMode('chat');
-          setMessages([
-            {
-              id: 'onboarding-walkthrough',
-              role: 'model',
-              content: `👋 Hello, Apprentice ${studentName}! I am Orion, your AI learning partner.
+        setActiveMode('chat');
+        setMessages([
+          {
+            id: 'onboarding-walkthrough',
+            role: 'model',
+            content: `👋 Hello, Apprentice ${studentName}! I am Orion, your AI learning partner.
 
 Since this is a new student account, let's run a quick simulation of how you will navigate the course:
 
@@ -144,15 +141,13 @@ Since this is a new student account, let's run a quick simulation of how you wil
 4. 🛡️ **Proof:** Defeat the Boss to unlock the Proof Artifacts step. Upload your work to unlock the next module!
 
 Try asking me "tell me about the first module" or "how do I earn hints?" to simulate how I can assist you.`,
-              isWelcome: true
-            }
-          ]);
-          sessionStorage.setItem(`playiq_orion_auto_opened_${studentId}`, 'true');
-        }, 1500);
-        return () => clearTimeout(timer);
+            isWelcome: true
+          }
+        ]);
+        sessionStorage.setItem(`playiq_orion_auto_opened_${studentId}`, 'true');
       }
     }
-  }, [isFloating, pathname, hasProgress, studentId, studentName]);
+  }, [isOpen, isFloating, pathname, hasProgress, studentId, studentName]);
 
   const handleModeSelect = (mode: GuidedAiModeId) => {
     setActiveMode(mode);
