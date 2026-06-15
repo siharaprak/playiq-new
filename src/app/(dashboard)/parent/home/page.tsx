@@ -25,6 +25,7 @@ import { getParentChildrenRollups, type ParentChildSummary } from '@/lib/data/pr
 import ParentIntegrityPanel from '@/components/parent/ParentIntegrityPanel';
 import { getParentProofSummary } from '@/lib/data/proof-artifacts';
 import { ParentProofSummaryCard } from '@/components/proof-artifacts/ParentProofSummaryCard';
+import ParentOrientationGuide from '@/components/dashboard/ParentOrientationGuide';
 
 export const dynamic = 'force-dynamic';
 
@@ -256,6 +257,14 @@ export default async function ParentDashboard({
             </div>
           </div>
         )}
+
+        {/* Parent Onboarding Orientation Guide */}
+        <ParentOrientationGuide
+          parentId={user.id}
+          hasApprentice={rollups.length > 0}
+          hasProgress={totalMastered > 0}
+          approvedProofs={rollups.reduce((sum, child) => sum + (child.proof_approved_total || 0), 0)}
+        />
 
         {/* ================================================================ */}
         {/* APPRENTICE SUMMARY CARDS (rollup-powered)                        */}
@@ -505,43 +514,44 @@ export default async function ParentDashboard({
                 <h3 className="font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">Fleet Progress</h3>
               </div>
 
-              {apprentices.length === 0 || totalMastered === 0 ? (
+              {apprentices.length === 0 ? (
                 <div className="text-center py-6">
                   <p className="text-slate-600 font-mono text-xs uppercase tracking-widest">
-                    {apprentices.length === 0 ? 'No apprentice linked.' : 'No progress recorded yet.'}
+                    No apprentice linked.
                   </p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {MODULE_LIST.map((mod) => {
                     const mastered = primaryProgress[mod.id] || 0;
                     const pct = Math.round((mastered / mod.totalNodes) * 100);
                     const complete = mastered >= mod.totalNodes;
                     const started = mastered > 0;
 
-                    if (!started) return null;
-
                     return (
-                      <div key={mod.id}>
-                        <div className="flex justify-between text-xs mb-1.5 font-mono">
-                          <span className={`uppercase tracking-wider flex items-center gap-1.5 ${complete ? 'text-[#39ff14]' : 'text-slate-400'}`}>
+                      <div key={mod.id} className={started ? 'opacity-100' : 'opacity-45'}>
+                        <div className="flex justify-between text-[11px] mb-1 font-mono">
+                          <span className={`uppercase tracking-wider flex items-center gap-1.5 ${complete ? 'text-[#39ff14]' : started ? 'text-[#00c8ff]' : 'text-slate-500'}`}>
                             {complete
-                              ? <CheckCircle2 className="w-3 h-3" />
+                              ? <CheckCircle2 className="w-3 h-3 text-[#39ff14]" />
                               : <AlertCircle className="w-3 h-3 text-[#7b4fce]" />}
                             Module {mod.num}
                           </span>
-                          <span className={`font-bold ${complete ? 'text-[#39ff14]' : 'text-[var(--text-primary)]'}`}>
-                            {pct}%
+                          <span className={`font-mono text-[10px] ${complete ? 'text-[#39ff14]' : started ? 'text-[#00c8ff]' : 'text-slate-500'}`}>
+                            {complete ? 'COMPLETE' : started ? `${pct}%` : 'NOT STARTED'}
                           </span>
                         </div>
-                        <div className="w-full bg-slate-800 h-1.5 overflow-hidden mb-1">
+                        <div className="w-full bg-slate-900 h-1.5 overflow-hidden border border-slate-800/80 mb-1">
                           <div
-                            className={`h-full transition-all ${complete ? 'bg-[#39ff14] shadow-[0_0_8px_rgba(57,255,20,0.4)]' : 'bg-[#7b4fce] shadow-[0_0_8px_rgba(123,79,206,0.3)]'}`}
+                            className={`h-full transition-all ${complete ? 'bg-[#39ff14] shadow-[0_0_8px_rgba(57,255,20,0.4)]' : started ? 'bg-[#00c8ff] shadow-[0_0_8px_rgba(0,200,255,0.3)]' : 'bg-transparent'}`}
                             style={{ width: `${pct}%` }}
                           />
                         </div>
+                        <p className="text-[9px] font-sans text-slate-500 tracking-wide leading-tight mb-1">
+                          {mod.title}
+                        </p>
                         {complete && (
-                          <Link href={`/parent/modules/${mod.num}`} className="block text-center w-full bg-[#00c8ff]/10 hover:bg-[#00c8ff]/20 text-[#00c8ff] border border-[#00c8ff]/30 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors font-mono mt-2">
+                          <Link href={`/parent/modules/${mod.num}`} className="block text-center w-full bg-[#00c8ff]/10 hover:bg-[#00c8ff]/20 text-[#00c8ff] border border-[#00c8ff]/30 py-2 text-[10px] font-bold uppercase tracking-widest transition-colors font-mono mt-1 mb-2">
                             VIEW MODULE REPORT →
                           </Link>
                         )}

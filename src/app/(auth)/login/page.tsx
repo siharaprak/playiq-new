@@ -94,6 +94,15 @@ export default function Login() {
             </button>
           </div>
 
+          {/* Role Helper Info */}
+          <div className="text-center font-mono text-[9px] text-slate-500 uppercase tracking-widest mb-6">
+            {loginRole === 'student' ? (
+              <span>&gt; Apprentice Mode: Log in using your Username Handle to start nodes.</span>
+            ) : (
+              <span>&gt; Mission Control: Log in using your Email Address to monitor progress.</span>
+            )}
+          </div>
+
           {/* Form */}
           <form action={formAction} className="space-y-6">
             <input type="hidden" name="role" value={loginRole} />
