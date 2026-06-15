@@ -26,6 +26,7 @@ import ParentIntegrityPanel from '@/components/parent/ParentIntegrityPanel';
 import { getParentProofSummary } from '@/lib/data/proof-artifacts';
 import { ParentProofSummaryCard } from '@/components/proof-artifacts/ParentProofSummaryCard';
 import ParentOrientationGuide from '@/components/dashboard/ParentOrientationGuide';
+import ParentDashboardTour from '@/components/dashboard/ParentDashboardTour';
 
 export const dynamic = 'force-dynamic';
 
@@ -217,17 +218,23 @@ export default async function ParentDashboard({
         {/* ================================================================ */}
         {/* HEADER                                                           */}
         {/* ================================================================ */}
-        <header className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
+        <header id="parent-header" className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
           <div>
             <p className="font-mono text-[#00c8ff] text-[0.6rem] uppercase tracking-[0.3em] mb-1">&gt; PARENT GATEWAY</p>
             <h1 className="text-3xl font-display font-black text-[var(--text-primary)] uppercase tracking-widest">
               Mission Control
             </h1>
-            <div className="text-slate-400 text-xs mt-1 font-mono flex items-center gap-2">
+            <div className="text-slate-400 text-xs mt-1 font-mono flex items-center gap-2 flex-wrap">
               &gt; ACTIVE LOG: {user.email}
               <Link href="/settings" className="text-[#00c8ff] hover:text-white transition-colors flex items-center gap-1 ml-2 border border-[#00c8ff]/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-[#00c8ff]/10">
                 <Settings className="w-3.5 h-3.5" /> 2FA Shield
               </Link>
+              <button 
+                id="replay-parent-tour-button"
+                className="text-slate-400 hover:text-white transition-colors flex items-center gap-1 ml-2 border border-[#7b4fce]/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-[#7b4fce]/10 cursor-pointer"
+              >
+                🗺️ Tour Dashboard
+              </button>
               <form action="/auth/signout" method="post" className="inline">
                 <button type="submit" className="text-red-400 hover:text-white transition-colors flex items-center gap-1 ml-2 border border-red-500/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-red-500/10 cursor-pointer">
                   Logout
@@ -270,7 +277,7 @@ export default async function ParentDashboard({
         {/* APPRENTICE SUMMARY CARDS (rollup-powered)                        */}
         {/* ================================================================ */}
         {rollups.length > 0 && (
-          <section className="mb-10">
+          <section id="apprentice-intel-section" className="mb-10">
             <div className="flex items-center gap-3 mb-6">
               <Shield className="w-5 h-5 text-[#7b4fce]" />
               <h2 className="text-lg font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">
@@ -417,7 +424,7 @@ export default async function ParentDashboard({
           <div className="lg:col-span-2 space-y-8">
 
             {/* Latest Proof Packets */}
-            <div className="glass-card p-8 !rounded-none border border-slate-800">
+            <div id="proof-packets-card" className="glass-card p-8 !rounded-none border border-slate-800">
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h2 className="text-xl font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">Latest Proof Packets</h2>
@@ -476,7 +483,7 @@ export default async function ParentDashboard({
             {proofSummary && <ParentProofSummaryCard summary={proofSummary} />}
 
             {/* Apprentice Roster */}
-            <div className="glass-card p-6 !rounded-none border border-[#7b4fce]/30">
+            <div id="provision-card" className="glass-card p-6 !rounded-none border border-[#7b4fce]/30">
               <div className="flex items-center justify-between mb-6 border-b border-slate-800 pb-4">
                 <h3 className="font-display font-bold text-lg text-[#7b4fce] uppercase tracking-wider flex items-center gap-2">
                   <UserPlus className="w-5 h-5" /> Apprentices
@@ -508,7 +515,7 @@ export default async function ParentDashboard({
             </div>
 
             {/* Fleet Progress (real data) */}
-            <div className="glass-card p-6 !rounded-none border border-slate-800">
+            <div id="fleet-progress-card" className="glass-card p-6 !rounded-none border border-slate-800">
               <div className="flex items-center gap-3 mb-5">
                 <BarChart3 className="text-[#00c8ff] w-5 h-5" />
                 <h3 className="font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">Fleet Progress</h3>
@@ -565,6 +572,7 @@ export default async function ParentDashboard({
           </div>
         </div>
       </div>
+      <ParentDashboardTour parentId={user.id} hasProgress={totalMastered > 0} />
     </div>
   );
 }

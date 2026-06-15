@@ -110,6 +110,7 @@ export default function ParentOrientationGuide({
 
   return (
     <div 
+      id="parent-orientation-guide"
       className="relative overflow-hidden border transition-all duration-300 mb-8 font-mono shadow-[0_0_25px_rgba(123,79,206,0.05)]"
       style={{ 
         background: 'rgba(7, 11, 25, 0.6)', 
