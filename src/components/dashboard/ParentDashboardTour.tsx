@@ -68,7 +68,7 @@ export default function ParentDashboardTour({ parentId, hasProgress }: ParentDas
       setIsActive(true);
     }, 1000);
     return () => clearTimeout(timer);
-  }, [parentId]);
+  }, []);
 
   useEffect(() => {
     setMounted(true);
