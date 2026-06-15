@@ -144,7 +144,7 @@ export default function DashboardTour({ studentId, hasProgress }: DashboardTourP
     const pad = 20;
     let top = 0;
     let left = 0;
-    let transform = '';
+    const transform = '';
 
     const placement = activeStep.placement;
 

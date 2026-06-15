@@ -54,7 +54,7 @@ const steps: TourStep[] = [
   }
 ];
 
-export default function ParentDashboardTour({ parentId, hasProgress }: ParentDashboardTourProps) {
+export default function ParentDashboardTour({ parentId }: ParentDashboardTourProps) {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
   const [highlightRect, setHighlightRect] = useState<DOMRect | null>(null);
@@ -140,7 +140,7 @@ export default function ParentDashboardTour({ parentId, hasProgress }: ParentDas
     const pad = 20;
     let top = 0;
     let left = 0;
-    let transform = '';
+    const transform = '';
 
     const placement = activeStep.placement;
 

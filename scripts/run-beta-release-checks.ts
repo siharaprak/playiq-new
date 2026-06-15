@@ -55,7 +55,7 @@ async function main() {
     console.log(`⏳ Running ${item.name}...`);
     try {
       // Execute the command synchronously in workspace root directory
-      execSync(item.command, { stdio: 'ignore' });
+      execSync(item.command, { stdio: 'inherit' });
       console.log(`✅ ${item.name}: PASS`);
       results.push({ name: item.name, status: 'PASS', isP0: item.isP0 });
     } catch (err: any) {
