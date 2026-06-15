@@ -287,7 +287,7 @@ export default async function ParentDashboard({
                     {/* Name + Module */}
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-base font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">
+                        <h3 className="text-base font-display font-bold text-[var(--text-primary)] tracking-wider">
                           {child.display_name}
                         </h3>
                         <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mt-0.5">
@@ -483,7 +483,7 @@ export default async function ParentDashboard({
                 ) : (
                   apprentices.map(app => (
                     <div key={app.id} className="p-3 bg-black/50 border border-slate-700 hover:border-[#7b4fce]/50 transition-colors">
-                      <p className="text-[var(--text-primary)] font-bold text-sm uppercase font-display">{app.full_name}</p>
+                      <p className="text-[var(--text-primary)] font-bold text-sm font-display">{app.full_name}</p>
                       <p className="text-slate-500 text-xs mt-1 truncate font-mono">{app.email}</p>
                     </div>
                   ))

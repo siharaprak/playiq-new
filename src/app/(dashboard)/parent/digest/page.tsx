@@ -81,7 +81,7 @@ function DigestCard({ child }: { child: ParentChildSummary }) {
       {/* ── Apprentice header ───────────────────────────────── */}
       <div className="flex justify-between items-start border-b border-slate-800 pb-4">
         <div>
-          <p className="font-display font-bold text-lg text-[var(--text-primary)] uppercase tracking-wider">
+          <p className="font-display font-bold text-lg text-[var(--text-primary)] tracking-wider">
             {child.display_name}
           </p>
           {child.current_module_title ? (

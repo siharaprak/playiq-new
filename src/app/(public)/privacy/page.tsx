@@ -123,13 +123,16 @@ export default function PrivacyPage() {
             <ul className="space-y-2 list-disc list-inside mt-3">
               <li>Access or request a copy of your personal data</li>
               <li>Correct inaccurate information</li>
-              <li>Request deletion of your data ("right to be forgotten")</li>
+              <li>Request deletion of your data ("right to be forgotten" and profile purge)</li>
               <li>Opt out of marketing communications</li>
               <li>Lodge a complaint with your local data protection authority</li>
             </ul>
+            <p className="mt-4 font-mono text-xs text-slate-500 uppercase">
+              &gt; Parents retain full rights over child accounts and may request instant deletion, which will purge the child's profile, lesson progress, and worksheet uploads from all databases.
+            </p>
             <p className="mt-3">
               To exercise any of these rights, contact us at{' '}
-              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">
+              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline font-mono">
                 hello@playiq.com
               </a>
               .
@@ -138,16 +141,37 @@ export default function PrivacyPage() {
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
-              7. Children's Privacy (COPPA)
+              7. Children's Privacy (COPPA) & Consent
             </h2>
             <p>
-              PlayIQ is designed for use by children under parental supervision. We comply with the Children's Online
-              Privacy Protection Act (COPPA). If you believe we have inadvertently collected information from a child
-              under 13 without parental consent, please contact us immediately at{' '}
-              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">
+              PlayIQ is committed to the protection of young learners. We fully comply with the Children's Online Privacy Protection Act (COPPA).
+            </p>
+            
+            <h3 className="text-white font-semibold mt-4 mb-2">Data Collection Boundaries</h3>
+            <p className="text-xs leading-relaxed mb-4">
+              We only collect information necessary to support the educational experience: account login details, lesson progress coordinates, retrieval worksheet responses, and custom AI coach configurations. We do <strong>not</strong> collect child images, biometric identifiers, voice records, location tracking, or third-party behavioral ads.
+            </p>
+
+            <h3 className="text-white font-semibold mt-4 mb-2">Verifiable Parental Consent</h3>
+            <p className="text-xs leading-relaxed mb-4">
+              For users under 13, verifiable parental consent is required before registration. Parents must establish their account link first to authorize a child profile. If we learn we have collected data from a child under 13 without parental authorization, we will purge it immediately.
+            </p>
+
+            <h3 className="text-white font-semibold mt-4 mb-2">Parental Rights & Deletion Protocol</h3>
+            <p className="text-xs leading-relaxed">
+              Parents have the ongoing right to:
+            </p>
+            <ul className="space-y-1 list-disc list-inside text-xs mt-2 mb-4">
+              <li>Review the personal data collected from their child.</li>
+              <li>Request modification or deletion of the child's records.</li>
+              <li>Refuse further collection or use of the child's data.</li>
+            </ul>
+            <p className="text-xs leading-relaxed">
+              To exercise these rights, or request an immediate profile deletion, please email our security officer at{' '}
+              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline font-mono">
                 hello@playiq.com
-              </a>{' '}
-              and we will delete it promptly.
+              </a>
+              . Account purges are processed within 48 hours.
             </p>
           </div>
 

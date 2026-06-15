@@ -21,7 +21,21 @@ export function Footer() {
             </div>
 
             {/* Links & Socials */}
-            <div className="flex flex-col items-center md:items-end gap-6 border-none">
+            <div className="flex flex-col items-center md:items-end gap-6 border-none w-full md:w-auto">
+              {/* Learning Focus SEO links */}
+              <div className="flex flex-wrap justify-center md:justify-end gap-x-4 gap-y-2 text-[0.65rem] xl:text-[0.7rem] uppercase tracking-wider font-mono">
+                <span className="text-[#7b4fce] font-bold">Focus:</span>
+                <Link href="/stem-learning" className="text-slate-500 hover:text-[#00c8ff] transition-colors">STEM Learning</Link>
+                <span className="text-slate-700">|</span>
+                <Link href="/safe-screen-time" className="text-slate-500 hover:text-[#00c8ff] transition-colors">Safe Screen Time</Link>
+                <span className="text-slate-700">|</span>
+                <Link href="/project-based-engineering" className="text-slate-500 hover:text-[#00c8ff] transition-colors">Project Engineering</Link>
+                <span className="text-slate-700">|</span>
+                <Link href="/homeschool-enrichment" className="text-slate-500 hover:text-[#00c8ff] transition-colors">Homeschool</Link>
+                <span className="text-slate-700">|</span>
+                <Link href="/future-skills" className="text-slate-500 hover:text-[#00c8ff] transition-colors">Future Skills</Link>
+              </div>
+
               <div className="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-3">
                 <Link href="/how-it-works" className="text-sm text-slate-500 hover:text-[#00c8ff] transition-colors">How It Works</Link>
                 <Link href="/parents" className="text-sm text-slate-500 hover:text-[#00c8ff] transition-colors">Parents</Link>
