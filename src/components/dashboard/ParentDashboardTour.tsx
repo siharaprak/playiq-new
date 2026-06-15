@@ -63,29 +63,29 @@ export default function ParentDashboardTour({ parentId, hasProgress }: ParentDas
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Automatically trigger for brand new parent accounts who haven't completed the tour
+    // Automatically trigger for parent accounts who haven't completed the tour yet
     const tourCompleted = localStorage.getItem(`playiq_parent_tour_completed_${parentId}`);
-    if (!tourCompleted && !hasProgress) {
+    if (!tourCompleted) {
       const timer = setTimeout(() => {
         setIsActive(true);
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [parentId, hasProgress]);
+  }, [parentId]);
 
   useEffect(() => {
     setMounted(true);
-    
-    // Listen for manual replay clicks from the parent header button
-    const btn = document.getElementById('replay-parent-tour-button');
-    if (btn) {
-      const handleReplay = () => {
+
+    const handleGlobalClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.id === 'replay-parent-tour-button' || target.closest('#replay-parent-tour-button'))) {
         setCurrentStepIndex(0);
         setIsActive(true);
-      };
-      btn.addEventListener('click', handleReplay);
-      return () => btn.removeEventListener('click', handleReplay);
-    }
+      }
+    };
+
+    document.addEventListener('click', handleGlobalClick);
+    return () => document.removeEventListener('click', handleGlobalClick);
   }, []);
 
   const activeStep = steps[currentStepIndex];

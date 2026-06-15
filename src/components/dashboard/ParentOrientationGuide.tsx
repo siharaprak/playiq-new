@@ -164,10 +164,10 @@ export default function ParentOrientationGuide({
             <div className="space-y-1.5">
               <strong className="text-red-400 uppercase tracking-wider block">⚠️ ROLE GATE ACCESS NOTICE:</strong>
               <p className="font-sans">
-                Parent accounts function exclusively as **Mission Control** (overseeing progress, approving submitted proofs, and reviewing telemetry). Parents **do not** participate in lesson nodes directly.
+                Parent accounts function exclusively as <strong className="text-white font-bold">Mission Control</strong> (overseeing progress, approving submitted proofs, and reviewing telemetry). Parents <strong className="text-white font-bold">do not</strong> participate in lesson nodes directly.
               </p>
               <p className="font-sans">
-                Only **Student/Apprentice accounts** can run the interactive lesson nodes, complete quizzes, and enter Boss Battles. To start learning, please provision an Apprentice account, log out, and log back in as the student.
+                Only <strong className="text-white font-bold">Student/Apprentice accounts</strong> can run the interactive lesson nodes, complete quizzes, and enter Boss Battles. To start learning, please provision an Apprentice account, log out, and log back in as the student.
               </p>
             </div>
           </div>
@@ -276,7 +276,7 @@ export default function ParentOrientationGuide({
                   </div>
                   <div className="p-3.5 bg-black/40 border border-slate-800 text-[11px] text-slate-400 font-mono">
                     <strong className="text-[#00c8ff] uppercase tracking-wider block mb-1">💡 LOGOUT PROTOCOL:</strong>
-                    When you are ready to pass the console to your child, click the **Logout** button on the parent header, select **Student** on the login screen, and enter their provisioned student handle and passcode.
+                    When you are ready to pass the console to your child, click the <strong className="text-white font-bold">Logout</strong> button on the parent header, select <strong className="text-white font-bold">Student</strong> on the login screen, and enter their provisioned student handle and passcode.
                   </div>
                 </div>
               )}
