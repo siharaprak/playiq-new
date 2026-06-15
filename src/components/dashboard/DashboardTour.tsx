@@ -35,6 +35,12 @@ const steps: TourStep[] = [
     placement: 'left'
   },
   {
+    target: '#parent-visibility-card',
+    title: 'Parent Visibility & Privacy',
+    content: 'Your raw worksheets and lessons are private so you can focus on learning. Your parents can only track your progress status, time logs, and finalized Proof Packets.',
+    placement: 'left'
+  },
+  {
     target: '#engagement-board-card',
     title: 'Engagement Board',
     content: 'Collaborate with fellow students. Ask questions, share your custom AI tutor builds, and coordinate project ideas.',

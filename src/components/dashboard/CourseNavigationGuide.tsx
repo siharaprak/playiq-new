@@ -112,6 +112,20 @@ export default function CourseNavigationGuide({ studentName, studentId, hasProgr
             </p>
           </div>
 
+          {/* Telemetry & Parent Oversight Notice */}
+          <div className="p-4 bg-slate-900/50 border-l-2 border-[#00c8ff] text-xs font-mono flex items-start gap-3 rounded-r-lg">
+            <div className="text-sm shrink-0">📡</div>
+            <div className="space-y-1.5 font-sans text-slate-300 text-xs">
+              <strong className="text-[#00c8ff] uppercase tracking-wider block font-mono text-[11px]">Telemetry & Parent Oversight Protocol:</strong>
+              <p className="leading-relaxed">
+                Parent accounts function as <strong className="text-white font-bold">Mission Control</strong>. To preserve your learning focus, parents <strong className="text-white font-bold">cannot</strong> view the raw lesson content, active nodes, or active input screens directly.
+              </p>
+              <p className="leading-relaxed">
+                Instead, they see your <strong className="text-white font-bold">progress dashboards</strong>, completions, time logs, and submitted Proof Packets. Your active worksheets remain private, but they will review and approve your capstone proof deliverables to unlock subsequent milestones.
+              </p>
+            </div>
+          </div>
+
           {/* Stepper Timeline Visualizer */}
           <div className="relative p-6 rounded-xl border bg-black/30 border-slate-900">
             <div className="absolute inset-0 bg-grid-white/[0.02] pointer-events-none rounded-xl" />

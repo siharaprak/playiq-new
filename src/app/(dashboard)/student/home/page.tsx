@@ -176,6 +176,22 @@ export default async function StudentDashboard() {
               />
             </div>
 
+            {/* Parent Oversight & Privacy Notice */}
+            <div id="parent-visibility-card" className="p-6 rounded-2xl font-mono shadow-[0_0_15px_rgba(0,200,255,0.02)]" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-cyan)' }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-lg" style={{ background: 'var(--glass-bg)', border: '1px solid var(--neon-cyan)' }}>🛡️</div>
+                <h3 className="font-bold text-sm font-display" style={{ color: 'var(--text-primary)' }}>Parent Visibility Notice</h3>
+              </div>
+              <div className="space-y-3 font-sans text-xs" style={{ color: 'var(--text-secondary)' }}>
+                <p className="leading-relaxed">
+                  Your learning focus is fully protected. Parents <strong className="text-white font-bold">cannot</strong> view your raw learning modules, active nodes, or worksheet input screens.
+                </p>
+                <p className="leading-relaxed">
+                  Instead, they see your overall <strong className="text-white font-bold">progress status</strong>, completed modules, time logs, and submitted Proof Packets. Your active work remains private.
+                </p>
+              </div>
+            </div>
+
             {/* Engagement Board */}
             <Link href="/discussions" id="engagement-board-card" className="block p-6 rounded-2xl transition-all group" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-cyan)' }}>
               <div className="flex items-center gap-3 mb-3">
