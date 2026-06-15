@@ -63,14 +63,11 @@ export default function ParentDashboardTour({ parentId, hasProgress }: ParentDas
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Automatically trigger for parent accounts who haven't completed the tour yet
-    const tourCompleted = localStorage.getItem(`playiq_parent_tour_completed_${parentId}`);
-    if (!tourCompleted) {
-      const timer = setTimeout(() => {
-        setIsActive(true);
-      }, 1000);
-      return () => clearTimeout(timer);
-    }
+    // Automatically trigger each time the dashboard loads
+    const timer = setTimeout(() => {
+      setIsActive(true);
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [parentId]);
 
   useEffect(() => {
