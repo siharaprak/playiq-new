@@ -1,3 +1,4 @@
+import { submitQuiz } from '../actions';
 import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
@@ -19,7 +20,7 @@ export default async function Module5QuizPage() {
         This quiz evaluates your mastery of digital responsibility and highest-path thinking. Achieve 80%+ to unlock the Boss Battle.
       </p>
 
-      <form className="space-y-10">
+      <form action={submitQuiz} className="space-y-10">
 
         {/* Part A: Power and Truth */}
         <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 backdrop-blur-md">

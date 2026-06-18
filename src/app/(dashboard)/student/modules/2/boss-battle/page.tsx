@@ -1,3 +1,4 @@
+import { submitBossBattleAction } from '../actions';
 import Link from 'next/link';
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
@@ -32,6 +33,8 @@ const SCENARIOS = [
 export default async function Module2BossBattlePage() {
   await enforceModuleGating('boss-battle', 2, 6);
 
+  const submitAction = submitBossBattleAction.bind(null, null);
+
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
       <div
@@ -63,7 +66,7 @@ export default async function Module2BossBattlePage() {
         </ul>
       </div>
 
-      <form className="space-y-8">
+      <form action={submitAction} className="space-y-8">
         {SCENARIOS.map(scenario => (
           <div
             key={scenario.id}
