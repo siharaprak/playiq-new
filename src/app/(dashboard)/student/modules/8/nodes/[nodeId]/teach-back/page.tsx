@@ -3,6 +3,7 @@ import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
 import { module8Nodes } from '@/data/module8Content';
 import { TeachBackForm } from '@/components/forms/TeachBackForm';
+import { submitTeachBackAction } from '@/app/(dashboard)/student/modules/8/actions';
 
 export default async function NodeTeachBackPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
@@ -32,7 +33,7 @@ export default async function NodeTeachBackPage({ params }: { params: Promise<{ 
           <p className="text-[var(--text-primary)] font-mono text-lg">&gt; &quot;{lessonData.teachBack}&quot;</p>
         </div>
 
-        <TeachBackForm nodeId={nodeId} prompt={lessonData.teachBack} />
+        <TeachBackForm nodeId={nodeId} prompt={lessonData.teachBack} submitAction={submitTeachBackAction} />
       </div>
     </div>
   );

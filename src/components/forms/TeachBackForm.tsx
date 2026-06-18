@@ -1,19 +1,31 @@
 'use client';
 
 import React, { useActionState } from 'react';
-import { submitTeachBackAction } from '@/app/(dashboard)/student/modules/1/actions';
 
-export function TeachBackForm({ nodeId, prompt }: { nodeId: string, prompt: string }) {
-  // Bind the static arguments to the server action
-  const boundAction = submitTeachBackAction.bind(null, nodeId, prompt);
+interface TeachBackFormProps {
+  nodeId: string;
+  prompt: string;
+  submitAction: (nodeId: string, prompt: string, prevState: any, formData: FormData) => Promise<any>;
+}
+
+export function TeachBackForm({ nodeId, prompt, submitAction }: TeachBackFormProps) {
+  // Bind the static arguments to the passed-in server action
+  const boundAction = submitAction.bind(null, nodeId, prompt);
   const [state, formAction, isPending] = useActionState(boundAction, null);
 
   return (
     <form action={formAction}>
       {state?.error && (
-        <div className="mb-6 p-4 bg-red-900/40 border border-red-500/50 rounded-lg text-red-200 text-sm font-mono break-words leading-relaxed shadow-lg">
-          <p className="font-bold text-red-400 mb-2 uppercase tracking-widest">&gt; SEMANTIC EVALUATION FAILED</p>
-          {state.error}
+        <div className="mb-6 p-5 bg-red-950/60 border-2 border-red-500 rounded-xl text-red-100 text-sm font-mono break-words leading-relaxed shadow-[0_0_15px_rgba(239,68,68,0.25)] flex items-start gap-4 animate-pulse-subtle">
+          <span className="text-2xl shrink-0 mt-0.5 text-red-500">⚠️</span>
+          <div className="flex-1">
+            <p className="font-extrabold text-red-400 mb-1.5 uppercase tracking-widest text-xs">
+              &gt; SEMANTIC EVALUATION FAILED
+            </p>
+            <p className="text-red-200/90 font-sans text-xs">
+              {state.error}
+            </p>
+          </div>
         </div>
       )}
       
@@ -37,3 +49,4 @@ export function TeachBackForm({ nodeId, prompt }: { nodeId: string, prompt: stri
     </form>
   );
 }
+

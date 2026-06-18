@@ -96,7 +96,7 @@ export default function CourseNavigationGuide({ studentName, studentId, hasProgr
       {/* Expanded Content */}
       <div 
         className={`transition-all duration-300 ease-in-out overflow-hidden ${
-          isExpanded ? 'max-h-[800px] border-t border-[var(--glass-border)] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+          isExpanded ? 'max-h-[1200px] border-t border-[var(--glass-border)] opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
         }`}
       >
         <div className="p-6 md:p-8 space-y-8">
