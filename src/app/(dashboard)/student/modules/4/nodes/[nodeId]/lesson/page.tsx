@@ -6,7 +6,7 @@ import { module4Nodes } from '@/data/module4Content';
 
 export default async function NodeLessonPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
-  await enforceNodeGating(nodeId, 'lesson', 2);
+  await enforceNodeGating(nodeId, 'lesson', 4);
 
   const lessonData = module4Nodes[nodeId];
 

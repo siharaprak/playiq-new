@@ -2,6 +2,21 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import type { MasteryRequirementConfig, PlaceholderRequirementKey, PlaceholderRequirementStatus } from '@/lib/mastery/types';
 import { inferRequirementDefaultsForNode, getRequirementSummary } from '@/lib/mastery/placeholders';
+import { MODULES } from '@/lib/constants';
+
+const MODULE_ID_MAP: Record<number, string> = {
+  1: MODULES.MODULE_1_ID,
+  2: MODULES.MODULE_2_ID,
+  3: MODULES.MODULE_3_ID,
+  4: MODULES.MODULE_4_ID,
+  5: MODULES.MODULE_5_ID,
+  6: MODULES.MODULE_6_ID,
+  7: MODULES.MODULE_7_ID,
+  8: MODULES.MODULE_8_ID,
+  9: MODULES.MODULE_9_ID,
+  10: MODULES.MODULE_10_ID,
+  11: MODULES.CAPSTONE_ID,
+};
 
 // Module-agnostic node gating
 export async function enforceNodeGating(
@@ -18,13 +33,20 @@ export async function enforceNodeGating(
 
   const basePath = `/student/modules/${moduleNumber}`;
 
+  const moduleId = MODULE_ID_MAP[moduleNumber];
+
   // Fetch progress for this specific node
-  const { data: progress } = await supabase
+  let query = supabase
     .from('student_node_progress')
     .select('*')
     .eq('student_id', user.id)
-    .eq('node_id', nodeId)
-    .single();
+    .eq('node_id', nodeId);
+
+  if (moduleId) {
+    query = query.eq('module_id', moduleId);
+  }
+
+  const { data: progress } = await query.single();
 
   switch (phase) {
     case 'activity':
@@ -68,11 +90,18 @@ export async function enforceModuleGating(
 
   // Check node mastery count
   if (phase === 'quiz' || phase === 'boss-battle' || phase === 'artifacts' || phase === 'completion') {
-    const { data: allNodes } = await supabase
+    const moduleId = MODULE_ID_MAP[moduleNumber];
+    let query = supabase
       .from('student_node_progress')
       .select('node_id')
       .eq('student_id', user.id)
       .eq('node_mastered', true);
+
+    if (moduleId) {
+      query = query.eq('module_id', moduleId);
+    }
+
+    const { data: allNodes } = await query;
 
     if (!allNodes || allNodes.length < totalNodes) {
       redirect(`${basePath}/overview`);

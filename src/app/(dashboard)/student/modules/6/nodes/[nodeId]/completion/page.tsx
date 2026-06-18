@@ -6,7 +6,7 @@ const TOTAL_NODES = 6;
 
 export default async function NodeCompletionPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
-  await enforceNodeGating(nodeId, 'completion', 2);
+  await enforceNodeGating(nodeId, 'completion', 6);
 
   const isLastNode = nodeId === String(TOTAL_NODES);
 

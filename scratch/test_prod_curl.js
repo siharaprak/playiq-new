@@ -1,0 +1,34 @@
+async function test() {
+  const cookie = `_ga=GA1.1.771750408.1778250637; sb-scdbhpcnqihaswaijptx-auth-token.0=base64-eyJhY2Nlc3NfdG9rZW4iOiJleUpoYkdjaU9pSkZVekkxTmlJc0ltdHBaQ0k2SWpBek9UbG1NVE5rTFdSaE16VXRORFUzWlMwNU4yTTBMV1V3T0RjNFpXSmtOV05oWlNJc0luUjVjQ0k2SWtwWFZDSjkuZXlKcGMzTWlPaUpvZEhSd2N6b3ZMM05qWkdKb2NHTnVjV2xvWVhOM1lXbHFjSFI0TG5OMWNHRmlZWE5sTG1OdkwyRjFkR2d2ZGpFaUxDSnpkV0lpT2lKa1pEZzFObUUxTXkxbE56TXlMVFF3TURndFltTmpPUzFtT1RJeFlXTTFOVEUyT1RNaUxDSmhkV1FpT2lKaGRYUm9aVzUwYVdOaGRHVmtJaXdpWlhod0lqb3hOemd3T1RReE1qTXpMQ0pwWVhRaU9qRTNPREE1TXpjMk16TXNJbVZ0WVdsc0lqb2lhWFpzYkc1MkxqQXdNRUJuYldGcGJDNWpiMjBpTENKd2FHOXVaU0k2SWlJc0ltRndjRjl0WlhSaFpHRjBZU0k2ZXlKd2NtOTJhV1JsY2lJNkltVnRZV2xzSWl3aWNISnZkbWxrWlhKeklqcGJJbVZ0WVdsc0lsMTlMQ0oxYzJWeVgyMWxkR0ZrWVhSaElqcDdJbVZ0WVdsc0lqb2lhWFpzYkc1MkxqQXdNRUJuYldGcGJDNWpiMjBpTENKbGJXRnBiRjkyWlhKcFptbGxaQ0k2Wm1Gc2MyVXNJbVoxYkd4ZmJtRnRaU0k2SWtseWFYTWdkbWxzYkdGdWRXVjJZU0lzSW5Cb2IyNWxYM1psY21sbWFXVmtJanBtWVd4elpTd2ljM1ZpSWpvaVpHUTROVFpoTlRNdFpUY3pNaTAwTURBNExXSmpZemt0WmpreU1XRmpOVFV4TmprekluMHNJbkp2YkdVaU9pSmhkWFJvWlc1MGFXTmhkR1ZrSWl3aVlXRnNJam9pWVdGc01pSXNJbUZ0Y2lJNlczc2liV1YwYUc5a0lqb2lkRzkwY0NJc0luUnBiV1Z6ZEdGdGNDSTZNVGM0TURZME5qazFOMzBzZXlKdFpYUm9iMlFpT2lKd1lYTnpkMjl5WkNJc0luUnBiV1Z6ZEdGdGNDSTZNVGM0TURZME5qazBNSDFkTENKelpYTnphVzl1WDJsa0lqb2lOVEkwTVdWak5XTXRPVEF4TVMwME16UTRMVGxqT1RRdE4ySTVZekE1TTJaaFpUUTJJaXdpYVhOZllXNXZibmx0YjNWeklqcG1ZV3h6WlgwLkZPTTNNUXp2NEhsLVdBaXozeXN4a2JMZ2MzRkFVTXNIelN6YTlscEF1emc5a09LRUR5azB2cGZySm9RV3JuN2pYM1h5QUZlVThmVGlRMHF6cWdLdUl3IiwidG9rZW5fdHlwZSI6ImJlYXJlciIsImV4cGlyZXNfaW4iOjM2MDAsImV4cGlyZXNfYXQiOjE3ODA5NDEyMzMsInJlZnJlc2hfdG9rZW4iOiJqeXpleXEzdmp3Y3UiLCJ1c2VyIjp7ImlkIjoiZGQ4NTZhNTMtZTczMi00MDA4LWJjYzktZjkyMWFjNTUxNjkzIiwiYXVkIjoiYXV0aGVudGljYXRlZCIsInJvbGUiOiJhdXRoZW50aWNhdGVkIiwiZW1haWwiOiJpdmxsbnYuMDAwQGdtYWlsLmNvbSIsImVtYWlsX2NvbmZpcm1lZF9hdCI6IjIwMjYtMDUtMTFUMjE6MDY6MTEuMTM3OTlaIiwicGhvbmUiOiIiLCJjb25maXJtZWRfYXQiOiIyMDI2LTA1LTExVDIxOjA2OjExLjEzNzk5WiIsImxhc3Rfc2lnbl9pbl9hdCI6IjIwMjYtMDYtMDVUMjI6MTM6NDguMDc5NTY4WiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImVtYWlsIjoiaXZsbG52LjAwMEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZ1bGxfbmFtZSI6IklyaXMgdmlsbGFudWV2YSIsInBob25lX3ZlcmlmaWVkIjpmYWxzZSwic3ViIjoiZGQ4NTZhNTMtZTczMi00MDA4LWJjYzktZjkyMWFjNTUxNjkzIn0sImZhY3RvcnMiOlt7ImlkIjoiOGE0MzU1YTctNGQxZS00ZmFjLTlhNzUtNjYxN2Y5MTZlZDIyIiwiY3JlYXRlZF9hdCI6IjIwMjYtMDYtMDJUMTY6MjU6NTQuNDM4OTMxWiIsInVwZGF0ZWRfYXQiOiIyMDI2LTA2LTA1VDIyOjEzOjU3Ljg1NDMwMloiLCJzdGF0dXMiOiJ2ZXJpZmllZCIsImZyaWVuZGx5X25hbWUiOiJQbGF5SVEgU2hpZWxkIiwiZmFjdG9yX3R5cGUiOiJ0b3RwIiwicGhvbmUiOiIiLCJsYXN0X2NoYWxsZW5nZWRfYXQiOiIyMDI2LTA2LTA1VDIyOjEzOjU3Ljg0NzA4NFoifV0sImlkZW50aXRpZXMiOlt7ImlkZW50aXR5X2lkIjoiMTMwYzliZjUtMTk4ZC00OWUwLTg1YzktM2QzZDM5MGMzM2I0IiwiaWQiOiJkZDg1NmE1My1lNzMyLTQwMDgtYmNjOS1mOTIxYWM1NTE2OTMiLCJ1c2VyX2lkIjoiZGQ4NTZhNTMtZTczMi00MDA4LWJjYzktZjkyMWFjNTUxNjkzIiwiaWRlbnRpdHlfZGF0YSI6eyJlbWFpbCI6Iml2bGxudi4wMDBAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJmdWxsX25hbWUiOiJJcmlzIHZpbGxhbnVldmEiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInN1YiI6ImRkODU2YTUzLWU3MzItNDAwOC1iY2M5LWY5MjFhYzU1MTY5MyJ9LCJwcm92aWRlciI6ImVtYWlsIiwibGFzdF9zaWduX2luX2F0IjoiMjAyNi0wNS0xMVQyMTowNjoxMS4xNTg0NjFaIiwiY3JlYXRlZF9hdCI6IjIwMjYtMDUtMTFUMjE6MDY6MTEuMTU4NTExWiIsInVwZGF0ZWRfY; sb-scdbhpcnqihaswaijptx-auth-token.1=XQiOiIyMDI2LTA1LTExVDIxOjA2OjExLjE1ODUxMVoiLCJlbWFpbCI6Iml2bGxudi4wMDBAZ21haWwuY29tIn1dLCJjcmVhdGVkX2F0IjoiMjAyNi0wNS0xMVQyMTowNjoxMS4xMzgzMTdaIiwidXBkYXRlZF9hdCI6IjIwMjYtMDYtMDhUMTY6NTM6NTMuNDU3MjE3WiIsImlzX2Fub255bW91cyI6ZmFsc2V9fQ; _ga_V72N2X8P69=GS2.1.s1780939306.o24.g0.t1780939306.j60.l0.h0`;
+
+  const payload = {
+    mode: "chat",
+    moduleNumber: 1,
+    message: "what question can you help me with give examples",
+    pageType: "activity",
+    nodeId: "1"
+  };
+
+  try {
+    const res = await fetch("https://weplayiq.com/api/diag", {
+      method: "GET",
+      headers: {
+        "accept": "*/*",
+        "accept-language": "en-US,en;q=0.9",
+        "cookie": cookie,
+        "origin": "https://weplayiq.com",
+        "referer": "https://weplayiq.com/student/modules/1/nodes/1/activity",
+        "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36 Edg/149.0.0.0"
+      }
+    });
+
+    const status = res.status;
+    const json = await res.json();
+    console.log("STATUS:", status);
+    console.log("RESPONSE:", JSON.stringify(json, null, 2));
+  } catch (err) {
+    console.error("ERROR:", err);
+  }
+}
+
+test();

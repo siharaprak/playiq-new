@@ -7,7 +7,7 @@ import { submitTeachBackAction } from '@/app/(dashboard)/student/modules/9/actio
 
 export default async function NodeTeachBackPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
-  await enforceNodeGating(nodeId, 'teach-back', 2);
+  await enforceNodeGating(nodeId, 'teach-back', 9);
 
   const lessonData = module9Nodes[nodeId];
 

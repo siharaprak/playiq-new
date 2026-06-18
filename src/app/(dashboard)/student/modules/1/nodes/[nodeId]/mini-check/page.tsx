@@ -6,7 +6,7 @@ import { module1Nodes } from '@/data/module1Content';
 
 export default async function NodeMiniCheckPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
-  await enforceNodeGating(nodeId, 'mini-check', 2);
+  await enforceNodeGating(nodeId, 'mini-check', 1);
 
   const lessonData = module1Nodes[nodeId];
 

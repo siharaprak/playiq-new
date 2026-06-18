@@ -19,6 +19,7 @@ export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activi
     .from('student_node_progress')
     .select('*')
     .eq('student_id', user.id)
+    .eq('module_id', MODULE_ID)
     .eq('node_id', nodeId)
     .single();
 
@@ -136,6 +137,7 @@ export async function submitTeachBackAction(nodeId: string, prompt: string, prev
   const { error: progressError } = await supabase.from('student_node_progress')
     .update({ teach_back_status: 'pass', node_mastered: true })
     .eq('student_id', user.id)
+    .eq('module_id', MODULE_ID)
     .eq('node_id', nodeId);
 
   if (!progressError) {

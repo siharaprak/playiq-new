@@ -2,10 +2,11 @@ import 'server-only';
 import { GoogleGenAI } from '@google/genai';
 
 const getGeminiClient = () => {
-  if (!process.env.GEMINI_API_KEY) {
+  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+  if (!apiKey) {
     throw new Error("GEMINI_API_KEY is missing from environment variables.");
   }
-  return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  return new GoogleGenAI({ apiKey });
 };
 
 export interface AIModerationResult {

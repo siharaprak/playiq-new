@@ -208,7 +208,7 @@ export async function submitCapstoneProof(payload: CapstonePayload) {
       node_mastered: true,
       completed_at: new Date().toISOString(),
     }, {
-      onConflict: 'student_id,node_id'
+      onConflict: 'student_id,module_id,node_id'
     });
 
   if (progressError) {
