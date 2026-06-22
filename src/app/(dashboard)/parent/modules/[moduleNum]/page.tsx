@@ -167,6 +167,42 @@ export default async function ParentModuleReportPage({
                 {totalNodes} nodes in this module
               </p>
 
+              {/* Horizontal Node Path Pipeline */}
+              <div className="bg-black/40 border border-slate-900 p-6 mb-6 flex flex-col items-center justify-center">
+                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">
+                  Node Completion Pipeline
+                </p>
+                <div className="flex items-center w-full max-w-md justify-between relative px-4">
+                  {/* Line under the nodes */}
+                  <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-slate-800 transform -translate-y-1/2 z-0" />
+                  
+                  {Array.from({ length: totalNodes }, (_, i) => {
+                    const nodeId = String(i + 1);
+                    const nodeProgress = progress.find((p: any) => p.node_id === nodeId);
+                    const mastered = nodeProgress?.node_mastered === true;
+                    
+                    return (
+                      <div key={nodeId} className="relative z-10 flex flex-col items-center group">
+                        <title>{`Node ${nodeId}: ${mastered ? 'Mastered' : 'Incomplete'}`}</title>
+                        <div
+                          className={`w-10 h-10 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 ${
+                            mastered
+                              ? 'bg-[#39ff14]/10 text-[#39ff14] border-2 border-[#39ff14] shadow-[0_0_12px_rgba(57,255,20,0.4)]'
+                              : 'bg-slate-950 text-slate-600 border-2 border-slate-850'
+                          }`}
+                        >
+                          N{nodeId}
+                        </div>
+                        <span className={`text-[8px] font-mono mt-1.5 uppercase tracking-wider ${mastered ? 'text-[#39ff14]' : 'text-slate-500'}`}>
+                          {mastered ? 'Done' : 'Pending'}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Detailed Node list */}
               <div className="space-y-3">
                 {Array.from({ length: totalNodes }, (_, i) => {
                   const nodeId = String(i + 1);
@@ -212,40 +248,87 @@ export default async function ParentModuleReportPage({
                 Assessment Scores
               </h2>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div
-                  className="p-5 text-center"
-                  style={{
-                    background: 'rgba(0,200,255,0.05)',
-                    border: '1px solid rgba(0,200,255,0.2)',
-                  }}
-                >
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Quiz Gauge */}
+                <div className="flex flex-col items-center justify-center p-6 bg-black/40 border border-slate-800">
+                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">
                     Module Quiz
                   </p>
-                  <p
-                    className="text-3xl font-display font-black"
-                    style={{ color: quiz ? '#00c8ff' : '#334155' }}
-                  >
-                    {quiz ? `${quiz.score_numeric}%` : '--'}
-                  </p>
+                  {quiz ? (
+                    <div className="flex flex-col items-center">
+                      <div className="relative w-24 h-24">
+                        <svg className="w-full h-full transform -rotate-90">
+                          <circle
+                            cx="48"
+                            cy="48"
+                            r="38"
+                            stroke="rgba(30, 41, 59, 0.8)"
+                            strokeWidth="8"
+                            fill="transparent"
+                          />
+                          <circle
+                            cx="48"
+                            cy="48"
+                            r="38"
+                            stroke={quiz.score_numeric >= 80 ? '#39ff14' : '#00c8ff'}
+                            strokeWidth="8"
+                            fill="transparent"
+                            strokeDasharray={2 * Math.PI * 38}
+                            strokeDashoffset={2 * Math.PI * 38 * (1 - quiz.score_numeric / 100)}
+                            strokeLinecap="round"
+                            className="transition-all duration-500 ease-out"
+                          />
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="text-xl font-display font-black text-[var(--text-primary)]">
+                            {quiz.score_numeric}%
+                          </span>
+                        </div>
+                      </div>
+                      <p className={`font-mono text-[9px] font-bold uppercase tracking-widest mt-4 ${
+                        quiz.score_numeric >= 80 ? 'text-[#39ff14]' : 'text-[#00c8ff]'
+                      }`}>
+                        {quiz.score_numeric >= 80 ? 'PASSING GRADE' : 'INCOMPLETE'}
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="py-6 font-mono text-xs text-slate-600 uppercase tracking-widest">
+                      No Quiz Attempt
+                    </div>
+                  )}
                 </div>
-                <div
-                  className="p-5 text-center"
-                  style={{
-                    background: 'rgba(245,197,24,0.05)',
-                    border: '1px solid rgba(245,197,24,0.2)',
-                  }}
-                >
-                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-2">
+
+                {/* Boss Battle block rating */}
+                <div className="flex flex-col items-center justify-center p-6 bg-black/40 border border-slate-800">
+                  <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-4">
                     Boss Battle
                   </p>
-                  <p
-                    className="text-3xl font-display font-black"
-                    style={{ color: bossBattle ? '#f5c518' : '#334155' }}
-                  >
-                    {bossBattle ? `${bossBattle.score_numeric}/5` : '--'}
-                  </p>
+                  {bossBattle ? (
+                    <div className="flex flex-col items-center">
+                      <div className="flex gap-2.5 items-end justify-center h-24 pb-2">
+                        {Array.from({ length: 5 }).map((_, idx) => {
+                          const active = idx < bossBattle.score_numeric;
+                          return (
+                            <div
+                              key={idx}
+                              className={`w-3.5 h-12 transition-all duration-300 ${
+                                active
+                                  ? 'bg-[#f5c518] shadow-[0_0_10px_rgba(245,197,24,0.4)] border border-[#f5c518]'
+                                  : 'bg-slate-900/50 border border-slate-800'
+                              }`}
+                            />
+                          );
+                        })}
+                      </div>
+                      <p className="text-xl font-display font-black text-[#f5c518] mt-4">
+                        {bossBattle.score_numeric} / 5
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="py-6 font-mono text-xs text-slate-600 uppercase tracking-widest">
+                      No Boss Battle Attempt
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

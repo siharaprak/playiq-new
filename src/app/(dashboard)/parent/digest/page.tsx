@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 import { createClient } from '@/utils/supabase/server';
+import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import {
@@ -16,8 +17,231 @@ import {
 } from 'lucide-react';
 import { getParentChildrenRollups } from '@/lib/data/progress-rollups';
 import type { ParentChildSummary } from '@/lib/data/progress-rollups';
+import { MODULES } from '@/lib/constants';
 
 const TOTAL_NODES = 52;
+
+const MODULE_LIST = [
+  { id: MODULES.MODULE_1_ID, num: 1, title: 'AI Learning Code', totalNodes: 4 },
+  { id: MODULES.MODULE_2_ID, num: 2, title: 'Digital Smarts & Human Responsibility', totalNodes: 6 },
+  { id: MODULES.MODULE_3_ID, num: 3, title: 'Pre-Learn System', totalNodes: 4 },
+  { id: MODULES.MODULE_4_ID, num: 4, title: 'Lesson Rescue Mode', totalNodes: 5 },
+  { id: MODULES.MODULE_5_ID, num: 5, title: 'Compression Learning', totalNodes: 4 },
+  { id: MODULES.MODULE_6_ID, num: 6, title: 'Self-Testing & Mistake Bank', totalNodes: 4 },
+  { id: MODULES.MODULE_7_ID, num: 7, title: 'Notes & Study Pack Creation', totalNodes: 4 },
+  { id: MODULES.MODULE_8_ID, num: 8, title: 'Writing & Answer Clarity', totalNodes: 4 },
+  { id: MODULES.MODULE_9_ID, num: 9, title: 'Build Your AI Tutor', totalNodes: 6 },
+  { id: MODULES.MODULE_10_ID, num: 10, title: 'Build Your AI Assistant', totalNodes: 7 },
+];
+
+// ---------------------------------------------------------------------------
+// Helper: Radial progress ring (SVG)
+// ---------------------------------------------------------------------------
+function RadialProgress({
+  pct,
+  size = 64,
+  strokeWidth = 5,
+  colorClass = 'text-[#00c8ff]',
+  trailColorClass = 'text-slate-800/80',
+  centerText,
+  label,
+}: {
+  pct: number;
+  size?: number;
+  strokeWidth?: number;
+  colorClass?: string;
+  trailColorClass?: string;
+  centerText: string;
+  label: string;
+}) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (Math.min(pct, 100) / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center justify-center p-1">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg className="w-full h-full transform -rotate-90">
+          <circle
+            className={trailColorClass}
+            strokeWidth={strokeWidth}
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+          />
+          <circle
+            className={`${colorClass} transition-all duration-500 ease-out`}
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            stroke="currentColor"
+            fill="transparent"
+            r={radius}
+            cx={size / 2}
+            cy={size / 2}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
+          <span className="text-[10px] font-display font-black text-[var(--text-primary)] leading-none">
+            {centerText}
+          </span>
+        </div>
+      </div>
+      {label && (
+        <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest mt-1.5 text-center leading-none">
+          {label}
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Helper: Module Telemetry Chart (SVG)
+// ---------------------------------------------------------------------------
+function ModuleTelemetryChart({
+  studentProgress,
+}: {
+  studentProgress: Record<string, number>;
+}) {
+  const heights = MODULE_LIST.map((mod) => {
+    const mastered = studentProgress[mod.id] || 0;
+    const pct = Math.round((mastered / mod.totalNodes) * 100);
+    return {
+      num: mod.num,
+      title: mod.title,
+      mastered,
+      total: mod.totalNodes,
+      pct,
+    };
+  });
+
+  const chartHeight = 85;
+  const chartWidth = 400;
+  const paddingLeft = 15;
+  const paddingRight = 15;
+  const paddingTop = 15;
+  const paddingBottom = 20;
+
+  const graphWidth = chartWidth - paddingLeft - paddingRight;
+  const graphHeight = chartHeight - paddingTop - paddingBottom;
+
+  return (
+    <div className="w-full">
+      <svg
+        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+        className="w-full h-auto overflow-visible"
+      >
+        <defs>
+          <linearGradient id="cyan-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#00c8ff" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#0066aa" stopOpacity="0.2" />
+          </linearGradient>
+          <linearGradient id="green-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#39ff14" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#11aa05" stopOpacity="0.2" />
+          </linearGradient>
+        </defs>
+
+        {/* Grid lines */}
+        <line
+          x1={paddingLeft}
+          y1={paddingTop}
+          x2={chartWidth - paddingRight}
+          y2={paddingTop}
+          stroke="rgba(148, 163, 184, 0.08)"
+          strokeDasharray="2"
+        />
+        <line
+          x1={paddingLeft}
+          y1={paddingTop + graphHeight / 2}
+          x2={chartWidth - paddingRight}
+          y2={paddingTop + graphHeight / 2}
+          stroke="rgba(148, 163, 184, 0.08)"
+          strokeDasharray="2"
+        />
+        <line
+          x1={paddingLeft}
+          y1={chartHeight - paddingBottom}
+          x2={chartWidth - paddingRight}
+          y2={chartHeight - paddingBottom}
+          stroke="rgba(148, 163, 184, 0.15)"
+        />
+
+        {heights.map((item, idx) => {
+          const colWidth = 24;
+          const totalGap = graphWidth - 10 * colWidth;
+          const gap = totalGap / 9;
+          const x = paddingLeft + idx * (colWidth + gap);
+          
+          const barHeight = (item.pct / 100) * graphHeight;
+          const y = chartHeight - paddingBottom - barHeight;
+          
+          let fill = 'url(#cyan-grad)';
+          let stroke = 'rgba(0, 200, 255, 0.4)';
+          if (item.pct === 100) {
+            fill = 'url(#green-grad)';
+            stroke = 'rgba(57, 255, 20, 0.4)';
+          } else if (item.pct === 0) {
+            fill = 'rgba(30, 41, 59, 0.1)';
+            stroke = 'rgba(71, 85, 105, 0.1)';
+          }
+
+          return (
+            <g key={item.num} className="group cursor-pointer">
+              <title>{`Module ${item.num}: ${item.pct}% Completed (${item.mastered}/${item.total} Nodes)`}</title>
+              
+              {/* Background slot */}
+              <rect
+                x={x}
+                y={paddingTop}
+                width={colWidth}
+                height={graphHeight}
+                fill="rgba(30, 41, 59, 0.15)"
+                stroke="rgba(71, 85, 105, 0.1)"
+                rx="2"
+              />
+
+              {/* Glowing active bar */}
+              {item.pct > 0 && (
+                <rect
+                  x={x}
+                  y={y}
+                  width={colWidth}
+                  height={barHeight}
+                  fill={fill}
+                  stroke={stroke}
+                  strokeWidth="1"
+                  rx="2"
+                  className="transition-all duration-500 ease-out"
+                />
+              )}
+
+              {/* Number Label */}
+              <text
+                x={x + colWidth / 2}
+                y={chartHeight - 4}
+                textAnchor="middle"
+                className={`font-mono text-[8px] font-bold ${
+                  item.pct === 100
+                    ? 'fill-[#39ff14]'
+                    : item.pct > 0
+                    ? 'fill-[#00c8ff]'
+                    : 'fill-slate-500'
+                }`}
+              >
+                M{item.num}
+              </text>
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
 
 function BuildBadge({
   label,
@@ -70,10 +294,17 @@ function formatTimestamp(ts: string | null): string {
   });
 }
 
-function DigestCard({ child }: { child: ParentChildSummary }) {
-  const progressPct = TOTAL_NODES > 0
-    ? Math.round(((child.modules_completed * 5) / TOTAL_NODES) * 100) // rough estimate from module count
-    : 0;
+function DigestCard({
+  child,
+  studentProgress,
+  childEmail,
+}: {
+  child: ParentChildSummary;
+  studentProgress: Record<string, number>;
+  childEmail?: string;
+}) {
+  const studentMastered = Object.values(studentProgress).reduce((a, b) => a + b, 0);
+  const studentPct = TOTAL_NODES > 0 ? Math.round((studentMastered / TOTAL_NODES) * 100) : 0;
 
   return (
     <div className="glass-card !rounded-none border border-slate-800 p-6 space-y-6">
@@ -84,18 +315,24 @@ function DigestCard({ child }: { child: ParentChildSummary }) {
           <p className="font-display font-bold text-lg text-[var(--text-primary)] tracking-wider">
             {child.display_name}
           </p>
+          {childEmail && (
+            <div className="flex items-center gap-1.5 mt-1.5">
+              <span className="font-mono text-[8px] text-[#00c8ff] uppercase tracking-widest">Login Email:</span>
+              <span className="font-mono text-[9px] text-slate-300 font-bold bg-[#00c8ff]/10 border border-[#00c8ff]/20 px-1.5 py-0.5 select-all">{childEmail}</span>
+            </div>
+          )}
           {child.current_module_title ? (
-            <p className="font-mono text-[10px] text-[#00c8ff] uppercase tracking-widest mt-1">
+            <p className="font-mono text-[10px] text-[#00c8ff] uppercase tracking-widest mt-1.5">
               &gt; Current Module: {child.current_module_title}
             </p>
           ) : (
-            <p className="font-mono text-[10px] text-slate-500 uppercase tracking-widest mt-1">
+            <p className="font-mono text-[10px] text-slate-500 uppercase tracking-widest mt-1.5">
               &gt; All modules completed or not yet started
             </p>
           )}
         </div>
         {child.flags.length > 0 && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap gap-1">
             {child.flags.map((flag) => (
               <span
                 key={flag}
@@ -109,81 +346,90 @@ function DigestCard({ child }: { child: ParentChildSummary }) {
         )}
       </div>
 
-      {/* ── Stats grid ──────────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-
-        {/* Progress */}
-        <div className="border border-slate-800 bg-black/40 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-4 h-4 text-[#00c8ff]" />
-            <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">
-              Progress
-            </p>
-          </div>
-          <p className="font-display font-black text-2xl text-[#00c8ff]">
-            {child.modules_completed}
-            <span className="text-xs text-slate-500 font-mono"> / 10</span>
-          </p>
-          <p className="font-mono text-[9px] text-slate-600 uppercase tracking-wider mt-1">
-            Modules Completed
-          </p>
+      {/* Visual Gauges Row: Overall (large) + 3 Mini Rings */}
+      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center justify-items-center bg-black/40 border border-slate-900 p-4">
+        <div className="sm:border-r sm:border-slate-800/80 w-full flex flex-col items-center justify-center py-1">
+          <RadialProgress
+            pct={studentPct}
+            size={76}
+            strokeWidth={6}
+            colorClass={studentPct >= 100 ? 'text-[#39ff14]' : 'text-[#00c8ff]'}
+            centerText={`${studentPct}%`}
+            label="Overall Progress"
+          />
         </div>
 
-        {/* Proofs */}
-        <div className="border border-slate-800 bg-black/40 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <FileText className="w-4 h-4 text-[#7b4fce]" />
-            <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">
-              Proof Submissions
-            </p>
-          </div>
-          <p className="font-display font-black text-2xl text-[#7b4fce]">
-            {child.proof_approved_total}
-            <span className="text-xs text-slate-500 font-mono">
-              {' '}/ {child.proof_submissions_total}
-            </span>
-          </p>
-          <p className="font-mono text-[9px] text-slate-600 uppercase tracking-wider mt-1">
-            Approved / Submitted
-          </p>
-        </div>
+        <RadialProgress
+          pct={Math.round((studentMastered / TOTAL_NODES) * 100)}
+          size={64}
+          strokeWidth={5}
+          colorClass="text-[#7b4fce]"
+          centerText={`${studentMastered}/${TOTAL_NODES}`}
+          label="Nodes Mastered"
+        />
 
-        {/* Discussion */}
-        <div className="border border-slate-800 bg-black/40 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <MessageCircle className="w-4 h-4 text-[#39ff14]" />
-            <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">
-              Discussion
-            </p>
-          </div>
-          <p className="font-display font-black text-2xl text-[#39ff14]">
-            {child.discussion_activity_count}
-          </p>
-          <p className="font-mono text-[9px] text-slate-600 uppercase tracking-wider mt-1">
-            Total Posts
-          </p>
-        </div>
+        <RadialProgress
+          pct={child.modules_completed * 10}
+          size={64}
+          strokeWidth={5}
+          colorClass="text-[#39ff14]"
+          centerText={`${child.modules_completed}/10`}
+          label="Modules Completed"
+        />
 
-        {/* Latest Activity */}
-        <div className="border border-slate-800 bg-black/40 p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Clock className="w-4 h-4 text-[#f5c518]" />
-            <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">
-              Last Active
-            </p>
-          </div>
-          <p className="font-mono text-xs text-[#f5c518] font-bold leading-tight">
-            {formatTimestamp(child.latest_activity_at)}
-          </p>
+        <RadialProgress
+          pct={
+            child.proof_submissions_total > 0
+              ? Math.round((child.proof_approved_total / child.proof_submissions_total) * 100)
+              : 0
+          }
+          size={64}
+          strokeWidth={5}
+          colorClass="text-[#f5c518]"
+          centerText={`${child.proof_approved_total}/${child.proof_submissions_total}`}
+          label="Proofs Approved"
+        />
+      </div>
+
+      {/* Module Telemetry SVG Column Chart */}
+      <div className="space-y-2">
+        <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
+          <TrendingUp className="w-3.5 h-3.5 text-[#00c8ff]" /> Module Telemetry Status
+        </p>
+        <div className="bg-black/40 border border-slate-950 p-4">
+          <ModuleTelemetryChart studentProgress={studentProgress} />
         </div>
       </div>
 
-      {/* ── AI Build Status ─────────────────────────────────── */}
-      <div className="border-t border-slate-800 pt-4">
+      {/* Activity & Discussions */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="flex items-center gap-3 bg-black/40 border border-slate-800 p-3">
+          <Clock className="w-4 h-4 text-[#f5c518]" />
+          <div>
+            <p className="font-mono text-xs text-[#f5c518] font-bold leading-tight">
+              {formatTimestamp(child.latest_activity_at)}
+            </p>
+            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest mt-0.5">Last Active</p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3 bg-black/40 border border-slate-800 p-3">
+          <MessageCircle className="w-4 h-4 text-[#7b4fce]" />
+          <div>
+            <p className="font-mono text-xs text-[var(--text-primary)] font-bold">
+              {child.discussion_activity_count}
+            </p>
+            <p className="text-[8px] font-mono text-slate-500 uppercase tracking-widest mt-0.5">Discussion Posts</p>
+          </div>
+        </div>
+      </div>
+
+      {/* AI Build Status */}
+      <div className="border-t border-slate-800/80 pt-4">
         <div className="flex items-center gap-2 mb-3">
           <Cpu className="w-4 h-4 text-[#00c8ff]" />
           <p className="font-mono text-[9px] text-slate-500 uppercase tracking-widest">
-            AI Build Status
+            AI Companion Deployment Status
           </p>
         </div>
         <div className="flex flex-wrap gap-3">
@@ -210,6 +456,33 @@ export default async function ParentDigestPage() {
   if (!user) redirect('/login');
 
   const children = await getParentChildrenRollups(user.id);
+
+  // Fetch real progress for ALL linked students
+  const supabaseAdmin = createAdminClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+
+  const studentIds = children.map((r) => r.student_id);
+  const progressByStudent: Record<string, Record<string, number>> = {};
+  let apprentices: { id: string; full_name: string; email: string }[] = [];
+
+  if (studentIds.length > 0) {
+    const [progressRes, profilesRes] = await Promise.all([
+      supabaseAdmin.from('student_node_progress').select('student_id, module_id, node_mastered').in('student_id', studentIds),
+      supabaseAdmin.from('profiles').select('id, full_name, email').in('id', studentIds),
+    ]);
+
+    const allProgress = progressRes.data || [];
+    apprentices = profilesRes.data || [];
+
+    for (const row of allProgress) {
+      if (!row.node_mastered) continue;
+      if (!progressByStudent[row.student_id]) progressByStudent[row.student_id] = {};
+      progressByStudent[row.student_id][row.module_id] =
+        (progressByStudent[row.student_id][row.module_id] || 0) + 1;
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] p-6 md:p-12 star-field">
@@ -251,9 +524,17 @@ export default async function ParentDigestPage() {
           </div>
         ) : (
           <div className="space-y-8">
-            {children.map((child) => (
-              <DigestCard key={child.student_id} child={child} />
-            ))}
+            {children.map((child) => {
+              const childEmail = apprentices.find((a) => a.id === child.student_id)?.email;
+              return (
+                <DigestCard
+                  key={child.student_id}
+                  child={child}
+                  studentProgress={progressByStudent[child.student_id] || {}}
+                  childEmail={childEmail}
+                />
+              );
+            })}
           </div>
         )}
 
