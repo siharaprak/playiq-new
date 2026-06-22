@@ -160,6 +160,10 @@ const htmlWrapper = `<!DOCTYPE html>
 <meta charset="utf-8">
 <title>Orion Portfolio Guide - Jerric Martinez</title>
 <style>
+  @page {
+    size: letter;
+    margin: 20mm;
+  }
   body {
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     color: #0f172a;
@@ -168,12 +172,8 @@ const htmlWrapper = `<!DOCTYPE html>
     margin: 0;
     padding: 0;
   }
-  .page {
-    padding: 2.2cm;
-    page-break-after: always;
-  }
-  .page:last-child {
-    page-break-after: avoid;
+  .content {
+    max-width: 100%;
   }
   h1 {
     font-family: 'Space Grotesk', system-ui, sans-serif;
@@ -186,6 +186,8 @@ const htmlWrapper = `<!DOCTYPE html>
     margin-bottom: 25px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    page-break-after: avoid;
+    break-after: avoid;
   }
   h2 {
     font-family: 'Space Grotesk', system-ui, sans-serif;
@@ -198,6 +200,8 @@ const htmlWrapper = `<!DOCTYPE html>
     letter-spacing: 1px;
     border-left: 4px solid #7b4fce;
     padding-left: 10px;
+    page-break-after: avoid;
+    break-after: avoid;
   }
   h3 {
     font-size: 13px;
@@ -207,12 +211,16 @@ const htmlWrapper = `<!DOCTYPE html>
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    page-break-after: avoid;
+    break-after: avoid;
   }
   p {
     font-size: 13px;
     margin-top: 0;
     margin-bottom: 12px;
     color: #334155;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   .sub-header {
     font-size: 14px;
@@ -220,6 +228,8 @@ const htmlWrapper = `<!DOCTYPE html>
     color: #475569;
     margin-top: 5px;
     margin-bottom: 15px;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   ul {
     margin-top: 0;
@@ -230,12 +240,16 @@ const htmlWrapper = `<!DOCTYPE html>
     margin-bottom: 6px;
     font-size: 13px;
     color: #334155;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   .task-item {
     list-style-type: none;
     position: relative;
     padding-left: 24px;
     margin-bottom: 8px;
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   .checkbox {
     position: absolute;
@@ -263,6 +277,7 @@ const htmlWrapper = `<!DOCTYPE html>
     margin-bottom: 25px;
     font-size: 12px;
     page-break-inside: avoid;
+    break-inside: avoid;
   }
   th {
     background-color: #faf5ff;
@@ -278,6 +293,10 @@ const htmlWrapper = `<!DOCTYPE html>
     padding: 10px;
     border-bottom: 1px solid #f3e8ff;
     color: #334155;
+  }
+  tr {
+    page-break-inside: avoid;
+    break-inside: avoid;
   }
   tr:nth-child(even) td {
     background-color: #fafafa;
@@ -300,16 +319,18 @@ const htmlWrapper = `<!DOCTYPE html>
     background-color: #e2e8f0;
     margin: 30px 0;
     page-break-inside: avoid;
+    break-inside: avoid;
   }
   .cover {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    padding-top: 80px;
+    padding-bottom: 80px;
     text-align: center;
     page-break-after: always;
-    padding: 2cm;
+    break-after: page;
     box-sizing: border-box;
   }
   .cover-logo {
@@ -359,7 +380,7 @@ const htmlWrapper = `<!DOCTYPE html>
     </div>
   </div>
 
-  <div class="page">
+  <div class="content">
     ${parsedHtmlContent}
   </div>
 
