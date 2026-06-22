@@ -102,21 +102,24 @@ Jer-ric, please set up two assets in Figma/Canva using these exact structures:
 
 ---
 
-## 🛠️ Step-by-Step Setup Actions for Jer-ric
+## 🛠️ Preparation Guide & Checklist for Jer-ric
 
-- [ ] **Step 1: Capture Real System UI Mockups**
-  *   Open the parent portal (`/parent/digest` or `/parent/home`) with active test data.
-  *   Take clean, high-resolution screenshots of the radial progress rings and the SVG telemetry bar chart.
-  *   Place these screenshots inside a clean, modern laptop or tablet frame vector.
-- [ ] **Step 2: Initialize Figma/Canva Template**
-  *   Set up a landscape canvas for the pitch deck and a vertical letter-size canvas for the one-pager.
-  *   Apply the PlayIQ styling system: deep space backgrounds, subtle borders, and neon/vibrant highlights (violet, indigo, emerald).
-- [ ] **Step 3: Insert Context-Rich Copy**
-  *   Copy-paste the templates from Section 3. Do not shorten the ChatGPT vs. Orion examples, as they highlight our pedagogical advantage.
-- [ ] **Step 4: Compile and Export to PDF**
-  *   Save the final deck as `playiq-orion-pitch-deck.pdf`.
-  *   Save the one-pager as `playiq-orion-one-pager.pdf`.
-- [ ] **Step 5: Run PDF Validation**
-  *   Verify that text is searchable and images render clearly without pixelation.
-- [ ] **Step 6: Hand Off to Sihara**
-  *   Upload both PDFs to the shared workspace and send Sihara the links.
+To compile this portfolio package, please prepare the following core assets and layout templates (using Figma, Canva, Illustrator, PowerPoint, or your preferred design suite):
+
+### 1. Visual & UI Assets to Gather
+- [ ] **Orion Conversational Flow Mockup:** A visual mockup of the student interface showing a Socratic hint dialogue (e.g. student asking for the answer, Orion prompting them with the next step instead).
+- [ ] **Curriculum Roadmap Graphic:** A clean visual showing progress mapping across skill nodes.
+- [ ] **Parent Portal Dashboards:** Visual screenshots or representations of the real dashboard components:
+  * **Progress Indicators:** The radial progress gauges (Overall Progress, Nodes Mastered, Modules Completed, and Proofs Approved).
+  * **Learning Pipeline:** The step-by-step node completion pipeline.
+  * **Telemetry Chart:** The vertical bar chart representing student progress across modules.
+
+### 2. Copy & Content Layouts
+- [ ] **Deck Layout (Presentation Format):** A 16:9 landscape file containing the 6 slides outlined in Section 3.
+- [ ] **Handout Layout (One-Pager Format):** A vertical portrait document summarizing the problem, the comparison matrix, the parent/student value proposition, and the pilot offer.
+- [ ] **Feature Matrix Highlight:** A visual comparative grid outlining the differences between generic ChatGPT and course-aware Orion.
+
+### 3. Final Deliverables Format
+- [ ] **Presentation Deck PDF:** High-resolution landscape PDF optimized for digital sharing and tablet/iPad display during Sihara's client lunch.
+- [ ] **Handout PDF:** Print-optimized portrait PDF to serve as a physical leave-behind.
+
