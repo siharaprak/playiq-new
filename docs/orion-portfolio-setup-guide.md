@@ -1,125 +1,122 @@
 # Guide: Orion & PlayIQ Portfolio Package Setup
-**For:** Jer-ric Martinez  
-**Purpose:** Creating a high-impact portfolio deck, one-pager, or leave-behind packet for Sihara to share during school principal meetings and offsite lunches.
+**Prepared For:** Jer-ric Martinez  
+**Target Audience:** School Principals, Curriculum Directors, and Lead Educators  
+**Objective:** Provide Sihara with a highly polished, visual leave-behind packet and mini pitch deck explaining PlayIQ and its guided AI, Orion, specifically designed to secure school pilots.
 
 ---
 
 ## 📋 Table of Contents
-1. [Overview & Objective](#-overview--objective)
-2. [Structure of the "Package"](#-structure-of-the-package)
-3. [Slide-by-Slide & Section Content Guide](#-slide-by-slide--section-content-guide)
-4. [Design & Visual Requirements](#-design--visual-requirements)
+1. [Core Positioning Strategy](#-core-positioning-strategy)
+2. [Structure of the Deliverables](#-structure-of-the-deliverables)
+3. [Context-Rich Slide & Section Copy Templates](#-context-rich-slide--section-copy-templates)
+4. [Parent Dashboard Visual Mapping (Real Assets)](#-parent-dashboard-visual-mapping-real-assets)
 5. [Step-by-Step Setup Actions for Jer-ric](#-step-by-step-setup-actions-for-jer-ric)
 
 ---
 
-## 🎯 Overview & Objective
-This guide outlines how to build a polished, professional portfolio package for **PlayIQ** and its custom guided AI, **Orion**. Sihara will use this material in informal meetings and offsite lunches with school administrators and educators to:
-*   **Demonstrate Value:** Explain how PlayIQ and Orion teach students how to work *with* AI, rather than using it as a cheating shortcut.
-*   **Establish Trust & Credibility:** Highlight the safety, course alignment, and pedagogical guardrails that make Orion safe for school deployment.
-*   **Propose a Free Pilot:** Offer a low-friction opportunity for schools to validate the platform at no charge.
+## 🎯 Core Positioning Strategy
+When Sihara meets with school principals, they will focus on **one central theme**:
+> **"Orion teaches students how to use AI as a tutor, not a cheat code."**
+
+Schools are currently fighting a losing battle against copy-paste cheating using public LLMs like ChatGPT. PlayIQ and Orion solve this by integrating AI literacy into the curriculum and restricting the AI to act strictly as a Socratic coach.
 
 ---
 
-## 📦 Structure of the "Package"
-We recommend preparing **two complementary deliverables** so Sihara can adapt to the meeting dynamic:
-
-### Deliverable A: The Mini Pitch Deck (PDF Presentation)
-*   **Format:** Landscape PDF, 5–7 slides.
-*   **Use Case:** Showing the product on an iPad/laptop during lunch or emailing it as a follow-up.
-*   **Tone:** Strategic, visual, benefit-driven.
-
-### Deliverable B: The Quick-Read One-Pager (Printable Leave-Behind)
-*   **Format:** Portrait PDF, 1 page (front & back if necessary).
-*   **Use Case:** Physical handout left with the principal at the end of the meeting.
-*   **Tone:** Highly summarized, structured, easily scannable.
+## 📦 Structure of the Deliverables
+Jer-ric, please set up two assets in Figma/Canva using these exact structures:
+1.  **The Mini Pitch Deck (PDF - 16:9 Landscape):** A 6-slide presentation Sihara can show on an iPad or email as a follow-up.
+2.  **The Leave-Behind One-Pager (PDF - Portrait):** A double-sided physical handout summarizing the core capabilities and the pilot offer.
 
 ---
 
-## 📝 Slide-by-Slide & Section Content Guide
+## 📝 Context-Rich Slide & Section Copy Templates
 
 ### Slide 1: Cover & Vision
-*   **Heading:** PlayIQ + Orion: Guided AI Tutors for Modern Learning
-*   **Sub-heading:** Empowering students to build AI literacy, think critically, and master course concepts safely.
-*   **Visual:** PlayIQ Logo, Orion branding, or a high-quality mockup showing a student interacting with the platform.
+*   **Header:** PlayIQ + Orion: Guided AI Tutors for Classroom Learning
+*   **Sub-header:** Empowering students to build AI literacy, think critically, and master curriculum concepts safely.
+*   **Visual Suggestion:** A high-fidelity mockup showing a student dashboard on a laptop with the floating Orion chat interface showing a socratic dialogue.
 
-### Slide 2: The Core Problem in Education
-*   **Heading:** The AI Dilemma in Classrooms
-*   **Content:**
-    *   *The Shortcut Problem:* Students copy-paste prompts into ChatGPT, receiving answers without understanding the underlying concepts.
-    *   *The Safety & Privacy Gap:* Public AI platforms lack curriculum context, content safety boundaries, and teacher visibility.
-    *   *The Instructor’s Burden:* Teachers cannot track how students interact with AI, making it hard to evaluate authentic learning.
+### Slide 2: The Classroom AI Crisis (The Problem)
+*   **Header:** The "Shortcut" Loop in Modern Education
+*   **Content points:**
+    *   **The Copier Crutch:** Students use public ChatGPT to generate whole essays ("Write this for me") or solve math problems ("Solve this worksheet"). They get the grades, but bypass the thinking.
+    *   **The Black Box:** Teachers cannot see how students interact with AI, leaving them in the dark about actual student comprehension.
+    *   **Zero Safety Boundaries:** Generic AI lacks safety guardrails, exposing students to unverified info or adult topics.
 
-### Slide 3: The Solution — PlayIQ & Orion
-*   **Heading:** Meet Orion: The Purpose-Built AI Learning Coach
-*   **Content:**
-    *   *Course-Aware & Aligned:* Orion is natively integrated into the PlayIQ modules. It knows exactly what lesson the student is on and guides them step-by-step.
-    *   *Socratic Hint Ladder:* Orion doesn't give away answers. Instead, it provides incremental guidance, helping students get unstuck while prompting them to explain concepts back.
-    *   *Pedagogical Safety Guardrails:* Strict content governance prevents out-of-bounds queries, keeping the learning experience focused on the curriculum.
+### Slide 3: The Solution — Meet Orion
+*   **Header:** Orion: The Course-Aware Socratic AI Coach
+*   **Content points:**
+    *   **Natively Aligned to PlayIQ:** Orion isn't a search engine. It knows the exact lesson, big idea, and node the student is on.
+    *   **Socratic Hint Ladders:** If a student asks "What's the answer?", Orion responds: *"I can't give you the answer directly, but let's break down the first step. What do you think happens when we...?"*
+    *   **6 Dedicated Learning Modes:**
+        1. *Explain Mode:* Breaks down hard topics simply.
+        2. *Hint Mode:* Gives clues (not answers) to keep the student thinking.
+        3. *Quiz Mode:* Tests memory before checks.
+        4. *Coach Mode:* Helps organize study time and stay on track.
+        5. *Learn Your Way Mode:* Adapts explanations to how their brain works.
+        6. *Lesson Rescue Mode:* Identifies exactly where they got lost in a paragraph.
 
-### Slide 4: Orion vs. Generic Chatbots (ChatGPT)
-*   **Heading:** Why Orion Belongs in the Classroom (Compared to ChatGPT)
-*   **Content Table/Layout:**
+### Slide 4: ChatGPT vs. Orion Comparative Matrix
+*   **Header:** Why Orion Belongs in Schools (Unlike ChatGPT)
+*   **Visual Table:**
 
-| Feature | ChatGPT | Orion (PlayIQ) |
+| Feature / Scenario | Generic ChatGPT | Orion (PlayIQ) |
 | :--- | :--- | :--- |
-| **Primary Mode** | Direct Answer Generation | Socratic Tutoring & Active Guidance |
-| **Curriculum Context** | None (Generic Web Search) | Fully aware of PlayIQ Modules 1–11 |
-| **Student Progression** | Answer-and-Forget | Adapts dynamically to child's pace |
-| **Privacy & Safety** | Public Data Opt-In | Strict school/parent privacy bounds |
-| **Cheat Protection** | None (Writes essays/answers) | Prompts for "Teach Backs" to verify |
+| **Prompt: "Write this for me"** | Generates text (Enables cheating) | Refuses: Guides student to write it step-by-step |
+| **Curriculum Awareness** | None (Guesses from web training) | Tailored to PlayIQ Modules 1–11 contents |
+| **Socratic Hinting** | Gives immediate answers | Climbs a "hint ladder" to stimulate critical thinking |
+| **Parent & Teacher Visibility** | Completely private/hidden | Detailed progress tracking and mastery analytics |
+| **Privacy & Safety** | Public training opt-in | Enforces strict school/student data boundaries |
 
-### Slide 5: Student & Parent Value Proposition
-*   **Heading:** Empowering the Whole Learning Circle
-*   **Content:**
-    *   **For Students:** A personalized 1-on-1 tutor that adapts to how they learn, making complex computer science and AI concepts intuitive.
-    *   **For Parents:** Peace of mind. Safe learning filters, coupled with an interactive dashboard that shares progress summaries without exposing private messages or records.
-    *   **For Schools:** Turnkey integration that elevates AI education while protecting academic integrity.
+### Slide 5: The Parent & Student Value Proposition
+*   **Header:** Empowering Students, Reassuring Parents
+*   **Student Value:** A personal, non-judgmental 1-on-1 coach that adapts to their speed, helping them get unstuck without feeling lost.
+*   **Parent Value:** Full transparency into progress (mastery, node pipelines) while protecting child privacy.
+*   **Visual Direction:** Showcase the Parent Portal dashboard with circular indicators (see Section 4).
 
-### Slide 6: Pilot Offer & Validation
-*   **Heading:** Partner with PlayIQ: Beta Access & Educator Validation
-*   **Content:**
-    *   **The Offer:** Bring PlayIQ and Orion to your school for a trial run at **no charge**.
-    *   **The Purpose:** Gather feedback from your educators to refine our next-gen launch.
-    *   **Implementation:** Lightweight setup, zero friction, and full support from our engineering team.
-    *   **Call to Action:** "Let’s start with a small group of students this term."
+### Slide 6: The PlayIQ Free Pilot Offer (The Ask)
+*   **Header:** Partner with PlayIQ: A Free Pilot for Your School
+*   **The Details:**
+    *   **Scope:** Modules 1–3 (AI Learning Code, Digital Smarts, and Pre-Learn System).
+    *   **Audience:** 10–20 students (e.g., one middle or high school class/cohort).
+    *   **Cost:** $0 (Completely free beta access).
+    *   **What We Provide:** Student licenses, Parent Portal access, and onboarding templates.
+    *   **What We Ask:** Feedback from your educators to validate and refine our launch.
+    *   **Call to Action:** *"Let's schedule a 10-minute setup call to select your pilot cohort."*
 
 ---
 
-## 🎨 Design & Visual Requirements
-To ensure the deliverables feel premium and premium-grade, Jer-ric should apply the following guidelines:
+## 📊 Parent Dashboard Visual Mapping (Real Assets)
+**Jer-ric:** To make this package look authentic and premium, **do not use generic screenshots or template graphics**. Use screenshots of the actual parent dashboard components we recently implemented:
 
-1.  **Mockups & Product Screenshots:**
-    *   Do not use generic stock photos. Take actual high-resolution screenshots of the student dashboard, the course roadmap, and the Orion floating tutor interface.
-    *   Place these screenshots inside clean browser or tablet device mockups.
-2.  **Harmonious Color Palette:**
-    *   Use a modern, sophisticated color scheme that aligns with the PlayIQ brand.
-    *   Use a clean dark-mode base with vibrant accents (e.g., violet, indigo, or emerald HSL tailored tones) to evoke a forward-looking, high-tech learning environment.
-3.  **Clean Typography:**
-    *   Use premium Google Fonts (like *Inter*, *Outfit*, or *Plus Jakarta Sans*) to keep copy highly readable.
-    *   Ensure large, bold headings and generous line spacing.
-4.  **Micro-Infographics:**
-    *   Use simple, custom-designed charts or vector pathways to show the "Student -> Orion -> Knowledge Base -> Progression" flow rather than paragraphs of text.
+1.  **The Visual Gauges Row:**
+    *   Capture the four circular radial gauges:
+        *   **Overall Progress** (Large blue/green gauge showing percentage completed).
+        *   **Nodes Mastered** (Purple circular gauge showing mastered count, e.g., `4/11`).
+        *   **Modules Completed** (Green gauge showing modules done, e.g., `3/10`).
+        *   **Proofs Approved** (Yellow gauge showing approved capstone projects).
+2.  **The Horizontal Node Path Pipeline:**
+    *   Show the step-by-step pipeline mapping nodes (e.g., `N1`, `N2`, `N3`) with clear `Done` vs. `Pending` labels. This demonstrates to administrators how micro-milestones are recorded.
+3.  **Module Telemetry Chart:**
+    *   Capture the vertical bar chart representing student progress across each module. It proves that teachers and parents can visualize where students are getting stuck.
 
 ---
 
 ## 🛠️ Step-by-Step Setup Actions for Jer-ric
 
-- [ ] **Step 1: Capture Product Assets**
-  *   Log into the student test environment and take clear screenshots of:
-      *   The main curriculum roadmap (showing progress tracking).
-      *   The chat interface with Orion (demonstrating a Socratic hint sequence).
-      *   The parent progress summary dashboard.
-- [ ] **Step 2: Set Up the Design Template**
-  *   Create a presentation file (Figma, Canva, or Pitch) using a 16:9 canvas.
-  *   Import PlayIQ's branding assets, colors, and typography rules.
-- [ ] **Step 3: Draft and Format the Copy**
-  *   Use the [Slide-by-Slide & Section Content Guide](#-slide-by-slide--section-content-guide) to populate the slides.
-  *   Refine the bullet points to be punchy and focused on educator outcomes.
-- [ ] **Step 4: Design the Orion vs. ChatGPT Comparison Graphic**
-  *   Build a clean, high-impact comparative matrix layout (similar to Slide 4) using custom icons instead of plain text tables.
-- [ ] **Step 5: Export and Optimize**
-  *   Save the presentation as a high-quality PDF.
-  *   Create a condensed, double-sided portrait PDF version to serve as the physical one-pager leave-behind.
-- [ ] **Step 6: Deliver to Sihara**
-  *   Provide Sihara with both the presentation link (for digital sharing) and print-ready PDFs.
+- [ ] **Step 1: Capture Real System UI Mockups**
+  *   Open the parent portal (`/parent/digest` or `/parent/home`) with active test data.
+  *   Take clean, high-resolution screenshots of the radial progress rings and the SVG telemetry bar chart.
+  *   Place these screenshots inside a clean, modern laptop or tablet frame vector.
+- [ ] **Step 2: Initialize Figma/Canva Template**
+  *   Set up a landscape canvas for the pitch deck and a vertical letter-size canvas for the one-pager.
+  *   Apply the PlayIQ styling system: deep space backgrounds, subtle borders, and neon/vibrant highlights (violet, indigo, emerald).
+- [ ] **Step 3: Insert Context-Rich Copy**
+  *   Copy-paste the templates from Section 3. Do not shorten the ChatGPT vs. Orion examples, as they highlight our pedagogical advantage.
+- [ ] **Step 4: Compile and Export to PDF**
+  *   Save the final deck as `playiq-orion-pitch-deck.pdf`.
+  *   Save the one-pager as `playiq-orion-one-pager.pdf`.
+- [ ] **Step 5: Run PDF Validation**
+  *   Verify that text is searchable and images render clearly without pixelation.
+- [ ] **Step 6: Hand Off to Sihara**
+  *   Upload both PDFs to the shared workspace and send Sihara the links.
