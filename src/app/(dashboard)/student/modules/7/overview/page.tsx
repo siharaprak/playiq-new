@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 
 import { module7Nodes } from '@/data/module7Content';
 const MODULE_NODES = Object.values(module7Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -44,6 +45,9 @@ export default async function Module7OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Turn learning into a Study Pack that helps you study faster and gives your future AI tutor better fuel.</p>
       </header>
+
+      {/* Intro Video */}
+      <ModuleIntroVideo src="/videos/module_7_intro.mp4" title="Notes and Study Pack Creation" />
 
       {/* What You'll Learn */}
       <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>

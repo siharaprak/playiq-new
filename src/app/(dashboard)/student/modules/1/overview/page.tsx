@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 
 const MODULE_NODES = [
   { id: '1', title: 'What AI Is Good At vs Bad At' },
@@ -68,6 +69,9 @@ export default async function Module1OverviewPage() {
           Master the foundation of using AI as a coach, not a shortcut.
         </p>
       </header>
+
+      {/* Intro Video */}
+      <ModuleIntroVideo src="/videos/module_1_intro.mp4" title="AI Learning Code" />
 
       {/* What You'll Learn */}
       <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>

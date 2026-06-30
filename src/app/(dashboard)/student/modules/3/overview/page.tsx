@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 
 import { module3Nodes } from '@/data/module3Content';
 const MODULE_NODES = Object.values(module3Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -44,6 +45,9 @@ export default async function Module3OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Get a head start on a school topic before class using AI as a coach.</p>
       </header>
+
+      {/* Intro Video */}
+      <ModuleIntroVideo src="/videos/module_3_intro.mp4" title="Pre-Learn System" />
 
       {/* What You'll Learn */}
       <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>

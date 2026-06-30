@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 
 import { module5Nodes } from '@/data/module5Content';
 const MODULE_NODES = Object.values(module5Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -44,6 +45,9 @@ export default async function Module5OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Make hard ideas simpler without making them fake.</p>
       </header>
+
+      {/* Intro Video */}
+      <ModuleIntroVideo src="/videos/module_5_intro.mp4" title="Compression Learning" />
 
       {/* What You'll Learn */}
       <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>

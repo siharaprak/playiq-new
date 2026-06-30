@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 
 import { module10Nodes } from '@/data/module10Content';
 const MODULE_NODES = Object.values(module10Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -53,6 +54,9 @@ export default async function Module10OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Build a helpful AI assistant for yourself and one other person for a real task.</p>
       </header>
+
+      {/* Intro Video */}
+      <ModuleIntroVideo src="/videos/module_10_intro.mp4" title="Build Your AI Assistant" />
 
       {/* What You'll Learn */}
       <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>
