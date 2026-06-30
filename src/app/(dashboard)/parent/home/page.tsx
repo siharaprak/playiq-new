@@ -27,6 +27,12 @@ import { getParentProofSummary } from '@/lib/data/proof-artifacts';
 import { ParentProofSummaryCard } from '@/components/proof-artifacts/ParentProofSummaryCard';
 import ParentOrientationGuide from '@/components/dashboard/ParentOrientationGuide';
 import ParentDashboardTour from '@/components/dashboard/ParentDashboardTour';
+import { 
+  AnimatedRadialProgress, 
+  AnimatedModuleTelemetryChart, 
+  AnimatedProgressBar,
+  AnimatedAnalyticsDashboard 
+} from '@/components/parent/AnimatedVisualizations';
 
 export const dynamic = 'force-dynamic';
 
@@ -44,215 +50,6 @@ const MODULE_LIST = [
 ];
 
 const TOTAL_NODES = 52;
-
-// ---------------------------------------------------------------------------
-// Helper: Radial progress ring (SVG)
-// ---------------------------------------------------------------------------
-function RadialProgress({
-  pct,
-  size = 64,
-  strokeWidth = 5,
-  colorClass = 'text-[#00c8ff]',
-  trailColorClass = 'text-slate-800/80',
-  centerText,
-  label,
-}: {
-  pct: number;
-  size?: number;
-  strokeWidth?: number;
-  colorClass?: string;
-  trailColorClass?: string;
-  centerText: string;
-  label: string;
-}) {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  const strokeDashoffset = circumference - (Math.min(pct, 100) / 100) * circumference;
-
-  return (
-    <div className="flex flex-col items-center justify-center p-1">
-      <div className="relative" style={{ width: size, height: size }}>
-        <svg className="w-full h-full transform -rotate-90">
-          <circle
-            className={trailColorClass}
-            strokeWidth={strokeWidth}
-            stroke="currentColor"
-            fill="transparent"
-            r={radius}
-            cx={size / 2}
-            cy={size / 2}
-          />
-          <circle
-            className={`${colorClass} transition-all duration-500 ease-out`}
-            strokeWidth={strokeWidth}
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            stroke="currentColor"
-            fill="transparent"
-            r={radius}
-            cx={size / 2}
-            cy={size / 2}
-          />
-        </svg>
-        <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="text-[10px] font-display font-black text-[var(--text-primary)] leading-none">
-            {centerText}
-          </span>
-        </div>
-      </div>
-      {label && (
-        <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest mt-1.5 text-center leading-none">
-          {label}
-        </span>
-      )}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Helper: Module Telemetry Chart (SVG)
-// ---------------------------------------------------------------------------
-function ModuleTelemetryChart({
-  studentProgress,
-}: {
-  studentProgress: Record<string, number>;
-}) {
-  const heights = MODULE_LIST.map((mod) => {
-    const mastered = studentProgress[mod.id] || 0;
-    const pct = Math.round((mastered / mod.totalNodes) * 100);
-    return {
-      num: mod.num,
-      title: mod.title,
-      mastered,
-      total: mod.totalNodes,
-      pct,
-    };
-  });
-
-  const chartHeight = 85;
-  const chartWidth = 400;
-  const paddingLeft = 15;
-  const paddingRight = 15;
-  const paddingTop = 15;
-  const paddingBottom = 20;
-
-  const graphWidth = chartWidth - paddingLeft - paddingRight;
-  const graphHeight = chartHeight - paddingTop - paddingBottom;
-
-  return (
-    <div className="w-full">
-      <svg
-        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-        className="w-full h-auto overflow-visible"
-      >
-        <defs>
-          <linearGradient id="cyan-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#00c8ff" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#0066aa" stopOpacity="0.2" />
-          </linearGradient>
-          <linearGradient id="green-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#39ff14" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#11aa05" stopOpacity="0.2" />
-          </linearGradient>
-        </defs>
-
-        {/* Grid lines */}
-        <line
-          x1={paddingLeft}
-          y1={paddingTop}
-          x2={chartWidth - paddingRight}
-          y2={paddingTop}
-          stroke="rgba(148, 163, 184, 0.08)"
-          strokeDasharray="2"
-        />
-        <line
-          x1={paddingLeft}
-          y1={paddingTop + graphHeight / 2}
-          x2={chartWidth - paddingRight}
-          y2={paddingTop + graphHeight / 2}
-          stroke="rgba(148, 163, 184, 0.08)"
-          strokeDasharray="2"
-        />
-        <line
-          x1={paddingLeft}
-          y1={chartHeight - paddingBottom}
-          x2={chartWidth - paddingRight}
-          y2={chartHeight - paddingBottom}
-          stroke="rgba(148, 163, 184, 0.15)"
-        />
-
-        {heights.map((item, idx) => {
-          const colWidth = 24;
-          const totalGap = graphWidth - 10 * colWidth;
-          const gap = totalGap / 9;
-          const x = paddingLeft + idx * (colWidth + gap);
-          
-          const barHeight = (item.pct / 100) * graphHeight;
-          const y = chartHeight - paddingBottom - barHeight;
-          
-          let fill = 'url(#cyan-grad)';
-          let stroke = 'rgba(0, 200, 255, 0.4)';
-          if (item.pct === 100) {
-            fill = 'url(#green-grad)';
-            stroke = 'rgba(57, 255, 20, 0.4)';
-          } else if (item.pct === 0) {
-            fill = 'rgba(30, 41, 59, 0.1)';
-            stroke = 'rgba(71, 85, 105, 0.1)';
-          }
-
-          return (
-            <g key={item.num} className="group cursor-pointer">
-              <title>{`Module ${item.num}: ${item.pct}% Completed (${item.mastered}/${item.total} Nodes)`}</title>
-              
-              {/* Background slot */}
-              <rect
-                x={x}
-                y={paddingTop}
-                width={colWidth}
-                height={graphHeight}
-                fill="rgba(30, 41, 59, 0.15)"
-                stroke="rgba(71, 85, 105, 0.1)"
-                rx="2"
-              />
-
-              {/* Glowing active bar */}
-              {item.pct > 0 && (
-                <rect
-                  x={x}
-                  y={y}
-                  width={colWidth}
-                  height={barHeight}
-                  fill={fill}
-                  stroke={stroke}
-                  strokeWidth="1"
-                  rx="2"
-                  className="transition-all duration-500 ease-out"
-                />
-              )}
-
-              {/* Number Label */}
-              <text
-                x={x + colWidth / 2}
-                y={chartHeight - 4}
-                textAnchor="middle"
-                className={`font-mono text-[8px] font-bold ${
-                  item.pct === 100
-                    ? 'fill-[#39ff14]'
-                    : item.pct > 0
-                    ? 'fill-[#00c8ff]'
-                    : 'fill-slate-500'
-                }`}
-              >
-                M{item.num}
-              </text>
-            </g>
-          );
-        })}
-      </svg>
-    </div>
-  );
-}
 
 // ---------------------------------------------------------------------------
 // Helper: format relative time
@@ -482,6 +279,13 @@ export default async function ParentDashboard({
           approvedProofs={rollups.reduce((sum, child) => sum + (child.proof_approved_total || 0), 0)}
         />
 
+        {/* Animated Analytics Dashboard */}
+        {rollups.length > 0 && (
+          <div className="mb-10">
+            <AnimatedAnalyticsDashboard rollups={rollups} progressByStudent={progressByStudent} />
+          </div>
+        )}
+
         {/* ================================================================ */}
         {/* APPRENTICE SUMMARY CARDS (rollup-powered)                        */}
         {/* ================================================================ */}
@@ -545,7 +349,7 @@ export default async function ParentDashboard({
                     {/* Visual Gauges Row: Overall (large) + 3 Mini Rings */}
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center justify-items-center bg-black/40 border border-slate-900 p-4">
                       <div className="sm:border-r sm:border-slate-800/80 w-full flex flex-col items-center justify-center py-1">
-                        <RadialProgress
+                        <AnimatedRadialProgress
                           pct={studentPct}
                           size={76}
                           strokeWidth={6}
@@ -555,7 +359,7 @@ export default async function ParentDashboard({
                         />
                       </div>
 
-                      <RadialProgress
+                      <AnimatedRadialProgress
                         pct={Math.round((studentMastered / TOTAL_NODES) * 100)}
                         size={64}
                         strokeWidth={5}
@@ -564,7 +368,7 @@ export default async function ParentDashboard({
                         label="Nodes Mastered"
                       />
 
-                      <RadialProgress
+                      <AnimatedRadialProgress
                         pct={child.modules_completed * 10}
                         size={64}
                         strokeWidth={5}
@@ -573,7 +377,7 @@ export default async function ParentDashboard({
                         label="Modules Done"
                       />
 
-                      <RadialProgress
+                      <AnimatedRadialProgress
                         pct={
                           child.proof_submissions_total > 0
                             ? Math.round((child.proof_approved_total / child.proof_submissions_total) * 100)
@@ -593,7 +397,7 @@ export default async function ParentDashboard({
                         <BarChart3 className="w-3.5 h-3.5 text-[#00c8ff]" /> Module Telemetry Status
                       </p>
                       <div className="bg-black/40 border border-slate-950 p-4">
-                        <ModuleTelemetryChart studentProgress={studentProgress} />
+                        <AnimatedModuleTelemetryChart studentProgress={studentProgress} />
                       </div>
                     </div>
 
@@ -776,12 +580,7 @@ export default async function ParentDashboard({
                             {complete ? 'COMPLETE' : started ? `${pct}%` : 'NOT STARTED'}
                           </span>
                         </div>
-                        <div className="w-full bg-slate-900 h-1.5 overflow-hidden border border-slate-800/80 mb-1">
-                          <div
-                            className={`h-full transition-all ${complete ? 'bg-[#39ff14] shadow-[0_0_8px_rgba(57,255,20,0.4)]' : started ? 'bg-[#00c8ff] shadow-[0_0_8px_rgba(0,200,255,0.3)]' : 'bg-transparent'}`}
-                            style={{ width: `${pct}%` }}
-                          />
-                        </div>
+                        <AnimatedProgressBar pct={pct} complete={complete} started={started} />
                         <p className="text-[9px] font-sans text-slate-500 tracking-wide leading-tight mb-1">
                           {mod.title}
                         </p>
