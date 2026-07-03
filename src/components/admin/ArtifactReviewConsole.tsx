@@ -245,7 +245,115 @@ export default function ArtifactReviewConsole({ initialSubmissions }: ArtifactRe
                 Written Synthesis Contents
               </h4>
 
-              {selectedSubmission.artifact_type === 'study_rules' ? (
+              {selectedSubmission.module_id === 'a0b94091-62d9-4ac9-8f0a-86c2e3650228' ? (
+                // MODULE 1 SPECIFIC SUBMISSION PREVIEW
+                selectedSubmission.artifact_type === 'study_rules' ? (
+                  <div className="space-y-4 bg-black/40 border border-slate-800/80 p-4 font-mono text-xs text-slate-300">
+                    <div>
+                      <p className="text-[#00c8ff] uppercase text-[9px] font-bold block mb-1">&gt; PART 0: THE LIGHTNING CHALLENGE (Math explanation trap)</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-1">
+                        <p><span className="text-slate-500 text-[10px]">Decision:</span> <span className="text-slate-200">{selectedSubmission.content_payload?.m1Q1Choice === 'spots_error' ? 'Spotted the math error (Correct)' : 'Missed the math error'}</span></p>
+                        <p><span className="text-slate-500 text-[10px]">Explanation:</span> <span className="text-slate-200">"{selectedSubmission.content_payload?.m1Q1Explanation || '—'}"</span></p>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#00c8ff] uppercase text-[9px] font-bold block mb-1">&gt; PART 1: WHAT AI IS GOOD AT vs. BAD AT</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-3">
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q2 (skateboard analogy): <span className="text-slate-200 uppercase font-semibold">{selectedSubmission.content_payload?.m1Q2Use || '—'} Use</span></p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q2Explanation || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q3 (solve math worksheet): <span className="text-slate-200 uppercase font-semibold">{selectedSubmission.content_payload?.m1Q3Use || '—'} Use</span></p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q3Explanation || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q4 (dangerous to trust polished answer):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m1Q4 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q5 (missed history project requirements):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m1Q5 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#00c8ff] uppercase text-[9px] font-bold block mb-1">&gt; PART 2: CHOOSING THE RIGHT AI MODE</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <p><span className="text-slate-500 text-[10px]">Q6 (Biology paragraph mode):</span> <span className="text-slate-200 uppercase font-bold">{selectedSubmission.content_payload?.m1Q6 || '—'}</span></p>
+                        <p><span className="text-slate-500 text-[10px]">Q7 (Stuck math problem nudge mode):</span> <span className="text-slate-200 uppercase font-bold">{selectedSubmission.content_payload?.m1Q7 || '—'}</span></p>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q8 (Quiz Mode vs Explain Mode younger student):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q8 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q9 (Coach Mode study schedule overwhelm):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q9 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4 bg-black/40 border border-slate-800/80 p-4 font-mono text-xs text-slate-300">
+                    <div>
+                      <p className="text-[#7b4fce] uppercase text-[9px] font-bold block mb-1">&gt; PART 3: ASK BETTER QUESTIONS</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q10 (Rewrite "What's the answer?"):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m1Q10 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q11 (Rewrite "Write Civil War paragraph"):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m1Q11 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q12 (Why better questions lead to faster learning):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q12 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#7b4fce] uppercase text-[9px] font-bold block mb-1">&gt; PART 4: VERIFY BEFORE YOU BELIEVE</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <p><span className="text-slate-500 text-[10px]">Q13 (First step of Verification Ritual):</span> <span className="text-slate-200 uppercase font-bold">{selectedSubmission.content_payload?.m1Q13 || '—'}</span></p>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q14 (Fractions smaller check / 5/4):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q14 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q15 (Copying AI polished robotic words danger):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q15 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#7b4fce] uppercase text-[9px] font-bold block mb-1">&gt; PART 5: INTEGRITY AND IDENTITY</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <p><span className="text-slate-500 text-[10px]">Q16 (Ask AI hint classification):</span> <span className="text-slate-200 uppercase font-bold">{selectedSubmission.content_payload?.m1Q16 || '—'}</span></p>
+                        <p><span className="text-slate-500 text-[10px]">Q17 (Copy AI answer classification):</span> <span className="text-slate-200 uppercase font-bold">{selectedSubmission.content_payload?.m1Q17 || '—'}</span></p>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q18 (Train a "shortcut identity"):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q18 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q19 (AI can coach me, but I earn skill):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q19 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#7b4fce] uppercase text-[9px] font-bold block mb-1">&gt; PART 6: SOCIAL IMPACT & DIGITAL POWER</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <p><span className="text-slate-500 text-[10px]">Q20 (Pause share NOT option):</span> <span className="text-slate-200 uppercase font-bold">{selectedSubmission.content_payload?.m1Q20 || '—'}</span></p>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q21 (AI politician photo next move):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m1Q21 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              ) : selectedSubmission.artifact_type === 'study_rules' ? (
                 <div className="space-y-3.5 bg-black/40 border border-slate-800/80 p-4 font-mono text-xs text-slate-300">
                   <div>
                     <span className="text-[#00c8ff] uppercase text-[9px] block mb-0.5">&gt; TECH EMPOWERMENT GOAL:</span>

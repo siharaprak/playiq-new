@@ -123,7 +123,7 @@ export default function StudentModuleArtifactsContainer({
   const [artifactStatus, setArtifactStatus] = useState<string>('draft');
   const [adminNotes, setAdminNotes] = useState<string | null>(null);
 
-  // Form payload states
+  // Form payload states for Module 2
   const [dwBeMore, setDwBeMore] = useState('');
   const [dwAttention, setDwAttention] = useState('');
   const [dwTrust, setDwTrust] = useState('');
@@ -134,6 +134,32 @@ export default function StudentModuleArtifactsContainer({
   const [hpBoundary1, setHpBoundary1] = useState({ boundary: '', whyMatters: '', when: '' });
   const [hpBoundary2, setHpBoundary2] = useState({ boundary: '', whyMatters: '', when: '' });
   const [hpBoundary3, setHpBoundary3] = useState({ boundary: '', whyMatters: '', when: '' });
+
+  // Form payload states for Module 1 (The PlayIQ Foundation Worksheet)
+  const [m1Q1Choice, setM1Q1Choice] = useState('');
+  const [m1Q1Explanation, setM1Q1Explanation] = useState('');
+  const [m1Q2Use, setM1Q2Use] = useState('');
+  const [m1Q2Explanation, setM1Q2Explanation] = useState('');
+  const [m1Q3Use, setM1Q3Use] = useState('');
+  const [m1Q3Explanation, setM1Q3Explanation] = useState('');
+  const [m1Q4, setM1Q4] = useState('');
+  const [m1Q5, setM1Q5] = useState('');
+  const [m1Q6, setM1Q6] = useState('');
+  const [m1Q7, setM1Q7] = useState('');
+  const [m1Q8, setM1Q8] = useState('');
+  const [m1Q9, setM1Q9] = useState('');
+  const [m1Q10, setM1Q10] = useState('');
+  const [m1Q11, setM1Q11] = useState('');
+  const [m1Q12, setM1Q12] = useState('');
+  const [m1Q13, setM1Q13] = useState('');
+  const [m1Q14, setM1Q14] = useState('');
+  const [m1Q15, setM1Q15] = useState('');
+  const [m1Q16, setM1Q16] = useState('');
+  const [m1Q17, setM1Q17] = useState('');
+  const [m1Q18, setM1Q18] = useState('');
+  const [m1Q19, setM1Q19] = useState('');
+  const [m1Q20, setM1Q20] = useState('');
+  const [m1Q21, setM1Q21] = useState('');
 
   // File upload metadata states
   const [studyRulesFile, setStudyRulesFile] = useState<any | null>(null);
@@ -166,12 +192,27 @@ export default function StudentModuleArtifactsContainer({
           const rules = submissions.find(s => s.artifact_type === 'study_rules');
           if (rules) {
             const p = rules.content_payload || {};
-            setDwBeMore(p.beMore || '');
-            setDwAttention(p.protectAttention || '');
-            setDwTrust(p.beforeTrust || '');
-            setDwEnsure(p.stillEnsure || '');
-            setDwHpQuestion(p.highestPathQ || '');
-            setDwHabit(p.habitToImprove || '');
+            if (moduleNum === 1) {
+              setM1Q1Choice(p.m1Q1Choice || '');
+              setM1Q1Explanation(p.m1Q1Explanation || '');
+              setM1Q2Use(p.m1Q2Use || '');
+              setM1Q2Explanation(p.m1Q2Explanation || '');
+              setM1Q3Use(p.m1Q3Use || '');
+              setM1Q3Explanation(p.m1Q3Explanation || '');
+              setM1Q4(p.m1Q4 || '');
+              setM1Q5(p.m1Q5 || '');
+              setM1Q6(p.m1Q6 || '');
+              setM1Q7(p.m1Q7 || '');
+              setM1Q8(p.m1Q8 || '');
+              setM1Q9(p.m1Q9 || '');
+            } else {
+              setDwBeMore(p.beMore || '');
+              setDwAttention(p.protectAttention || '');
+              setDwTrust(p.beforeTrust || '');
+              setDwEnsure(p.stillEnsure || '');
+              setDwHpQuestion(p.highestPathQ || '');
+              setDwHabit(p.habitToImprove || '');
+            }
 
             if (rules.file_path) {
               setStudyRulesFile({
@@ -187,9 +228,24 @@ export default function StudentModuleArtifactsContainer({
           const boundaries = submissions.find(s => s.artifact_type === 'error_review');
           if (boundaries) {
             const p = boundaries.content_payload || {};
-            setHpBoundary1(p.boundary1 || { boundary: '', whyMatters: '', when: '' });
-            setHpBoundary2(p.boundary2 || { boundary: '', whyMatters: '', when: '' });
-            setHpBoundary3(p.boundary3 || { boundary: '', whyMatters: '', when: '' });
+            if (moduleNum === 1) {
+              setM1Q10(p.m1Q10 || '');
+              setM1Q11(p.m1Q11 || '');
+              setM1Q12(p.m1Q12 || '');
+              setM1Q13(p.m1Q13 || '');
+              setM1Q14(p.m1Q14 || '');
+              setM1Q15(p.m1Q15 || '');
+              setM1Q16(p.m1Q16 || '');
+              setM1Q17(p.m1Q17 || '');
+              setM1Q18(p.m1Q18 || '');
+              setM1Q19(p.m1Q19 || '');
+              setM1Q20(p.m1Q20 || '');
+              setM1Q21(p.m1Q21 || '');
+            } else {
+              setHpBoundary1(p.boundary1 || { boundary: '', whyMatters: '', when: '' });
+              setHpBoundary2(p.boundary2 || { boundary: '', whyMatters: '', when: '' });
+              setHpBoundary3(p.boundary3 || { boundary: '', whyMatters: '', when: '' });
+            }
 
             if (boundaries.file_path) {
               setErrorReviewFile({
@@ -210,7 +266,7 @@ export default function StudentModuleArtifactsContainer({
     }
 
     loadSubmissions();
-  }, [moduleId, supabase]);
+  }, [moduleId, supabase, moduleNum]);
 
   const isLocked = artifactStatus === 'submitted' || artifactStatus === 'approved' || artifactStatus === 'under_review';
 
@@ -220,20 +276,55 @@ export default function StudentModuleArtifactsContainer({
     setSuccessMsg(null);
     setErrorMsg(null);
 
-    const warriorPayload = {
-      beMore: dwBeMore,
-      protectAttention: dwAttention,
-      beforeTrust: dwTrust,
-      stillEnsure: dwEnsure,
-      highestPathQ: dwHpQuestion,
-      habitToImprove: dwHabit,
-    };
+    let warriorPayload = {};
+    let boundariesPayload = {};
 
-    const boundariesPayload = {
-      boundary1: hpBoundary1,
-      boundary2: hpBoundary2,
-      boundary3: hpBoundary3,
-    };
+    if (moduleNum === 1) {
+      warriorPayload = {
+        m1Q1Choice,
+        m1Q1Explanation,
+        m1Q2Use,
+        m1Q2Explanation,
+        m1Q3Use,
+        m1Q3Explanation,
+        m1Q4,
+        m1Q5,
+        m1Q6,
+        m1Q7,
+        m1Q8,
+        m1Q9
+      };
+
+      boundariesPayload = {
+        m1Q10,
+        m1Q11,
+        m1Q12,
+        m1Q13,
+        m1Q14,
+        m1Q15,
+        m1Q16,
+        m1Q17,
+        m1Q18,
+        m1Q19,
+        m1Q20,
+        m1Q21
+      };
+    } else {
+      warriorPayload = {
+        beMore: dwBeMore,
+        protectAttention: dwAttention,
+        beforeTrust: dwTrust,
+        stillEnsure: dwEnsure,
+        highestPathQ: dwHpQuestion,
+        habitToImprove: dwHabit,
+      };
+
+      boundariesPayload = {
+        boundary1: hpBoundary1,
+        boundary2: hpBoundary2,
+        boundary3: hpBoundary3,
+      };
+    }
 
     try {
       // Save Draft 1
@@ -407,7 +498,429 @@ export default function StudentModuleArtifactsContainer({
 
       <form onSubmit={handleSubmitReview} className="space-y-12">
         
-        {moduleNum <= 2 ? (
+        {moduleNum === 1 ? (
+          <>
+            {/* PART 0 & PART 1 & PART 2 (Artifact 1: study_rules) */}
+            <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-8 animate-fade-in">
+              <h3 className="text-[#00c8ff] font-bold uppercase tracking-widest text-sm border-b border-[#00c8ff]/20 pb-2 flex justify-between items-center">
+                <span>ARTIFACT 1: FOUNDATION DIAGNOSTICS (PARTS 0-2)</span>
+                <span className="text-[10px] text-slate-500 font-mono font-normal">REQUIRED TYPE: STUDY_RULES</span>
+              </h3>
+
+              {/* Part 0: The Lightning Challenge */}
+              <div className="space-y-4">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 0: The Lightning Challenge (Spot the Trap)</h4>
+                <div className="bg-black/50 p-4 border border-slate-800 rounded font-mono text-xs text-slate-300 leading-relaxed">
+                  <p className="font-bold text-[#00c8ff] mb-2">// Math Rule Explanation from AI:</p>
+                  <p className="italic bg-black/40 p-3 border-l-2 border-slate-700">
+                    "To divide fractions, simply divide the numerators and divide the denominators. For example, (1/2) ÷ (1/4) = (1÷1) / (2÷4) = 1 / (1/2) = 2. This works because division is the opposite of multiplication."
+                  </p>
+                </div>
+                <div className="space-y-3 font-mono text-xs">
+                  <label className="block text-slate-300 font-semibold">&gt; Is this statement correct, or is there a subtle mistake?</label>
+                  <div className="flex flex-col sm:flex-row gap-4 mt-2">
+                    <label className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
+                      <input
+                        type="radio"
+                        name="m1q1choice"
+                        value="spots_error"
+                        checked={m1Q1Choice === 'spots_error'}
+                        onChange={(e) => setM1Q1Choice(e.target.value)}
+                        disabled={isLocked}
+                        className="accent-[#00c8ff]"
+                      />
+                      It has a subtle mistake (Correct Answer)
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
+                      <input
+                        type="radio"
+                        name="m1q1choice"
+                        value="missed"
+                        checked={m1Q1Choice === 'missed'}
+                        onChange={(e) => setM1Q1Choice(e.target.value)}
+                        disabled={isLocked}
+                        className="accent-[#00c8ff]"
+                      />
+                      It is correct
+                    </label>
+                  </div>
+
+                  {m1Q1Choice === 'spots_error' && (
+                    <div className="mt-3 p-4 border border-green-500/30 bg-green-950/20 text-green-400 font-mono text-xs rounded transition-all">
+                      <strong>Orion Feedback:</strong> "Boom! You spotted it. Most students fall for that because the final answer was correct and the AI sounded so polished. You didn't. That is your first victory. Let's build on this."
+                    </div>
+                  )}
+                  {m1Q1Choice === 'missed' && (
+                    <div className="mt-3 p-4 border border-yellow-500/30 bg-yellow-950/20 text-yellow-400 font-mono text-xs rounded transition-all">
+                      <strong>Orion Feedback:</strong> "Don't sweat it. 90% of students fall for this trap because the AI sounds so confident and the final number is correct. But the method is completely broken. That's why we're here. Let's learn how to spot these."
+                    </div>
+                  )}
+
+                  <div className="pt-2">
+                    <label className="block text-slate-300 mb-1.5">&gt; Explain why (spotting the rule violation):</label>
+                    <textarea
+                      required
+                      placeholder="e.g. Dividing denominators directly is not the correct rule for fraction division..."
+                      disabled={isLocked}
+                      value={m1Q1Explanation}
+                      onChange={(e) => setM1Q1Explanation(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs font-mono outline-none h-16 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Part 1: What AI Is Good At vs. Bad At */}
+              <div className="space-y-6 pt-6 border-t border-slate-800">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 1: What AI Is Good At vs. Bad At</h4>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Q2 */}
+                  <div className="p-4 border border-slate-800 rounded bg-black/20 space-y-3 font-mono text-xs">
+                    <p className="text-[#00c8ff] font-bold uppercase tracking-wider text-[10px]">&gt; Q2: Complex Science Skateboard Analogy</p>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q2Use}
+                      onChange={(e) => setM1Q2Use(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#00c8ff] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select Classification...</option>
+                      <option value="good">Good Use</option>
+                      <option value="risky">Risky Use</option>
+                      <option value="bad">Bad Use</option>
+                    </select>
+                    <textarea
+                      required
+                      placeholder="Explain why..."
+                      disabled={isLocked}
+                      value={m1Q2Explanation}
+                      onChange={(e) => setM1Q2Explanation(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#00c8ff] rounded p-2 text-slate-200 outline-none text-xs h-16 disabled:opacity-50"
+                    />
+                  </div>
+
+                  {/* Q3 */}
+                  <div className="p-4 border border-slate-800 rounded bg-black/20 space-y-3 font-mono text-xs">
+                    <p className="text-[#00c8ff] font-bold uppercase tracking-wider text-[10px]">&gt; Q3: Paste Math Worksheet and write "Solve these"</p>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q3Use}
+                      onChange={(e) => setM1Q3Use(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#00c8ff] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select Classification...</option>
+                      <option value="good">Good Use</option>
+                      <option value="risky">Risky Use</option>
+                      <option value="bad">Bad Use</option>
+                    </select>
+                    <textarea
+                      required
+                      placeholder="Explain why..."
+                      disabled={isLocked}
+                      value={m1Q3Explanation}
+                      onChange={(e) => setM1Q3Explanation(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#00c8ff] rounded p-2 text-slate-200 outline-none text-xs h-16 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q4: Why is it dangerous to trust an AI answer just because it sounds polished?</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q4}
+                      onChange={(e) => setM1Q4(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q5: Your friend is frustrated because AI missed the main requirement of their history project. What is one thing AI is typically "bad at" that might explain this?</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q5}
+                      onChange={(e) => setM1Q5(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Part 2: Choosing the Right AI Mode */}
+              <div className="space-y-6 pt-6 border-t border-slate-800">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 2: Choosing the Right AI Mode</h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+                  {/* Q6 */}
+                  <div className="p-4 border border-slate-800 rounded bg-black/20 space-y-2">
+                    <label className="block text-slate-300 font-bold uppercase tracking-wider text-[10px]">&gt; Q6: Reading textbook paragraph, no idea what it means. Mode:</label>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q6}
+                      onChange={(e) => setM1Q6(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#00c8ff] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select Mode...</option>
+                      <option value="coach">Coach Mode</option>
+                      <option value="quiz">Quiz Mode</option>
+                      <option value="rescue">Lesson Rescue Mode</option>
+                      <option value="hint">Hint Mode</option>
+                    </select>
+                  </div>
+
+                  {/* Q7 */}
+                  <div className="p-4 border border-slate-800 rounded bg-black/20 space-y-2">
+                    <label className="block text-slate-300 font-bold uppercase tracking-wider text-[10px]">&gt; Q7: Done half a math problem, got stuck. Want a nudge. Mode:</label>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q7}
+                      onChange={(e) => setM1Q7(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#00c8ff] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select Mode...</option>
+                      <option value="coach">Coach Mode</option>
+                      <option value="quiz">Quiz Mode</option>
+                      <option value="rescue">Lesson Rescue Mode</option>
+                      <option value="hint">Hint Mode</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q8: Explain to a younger student when they should use "Quiz Mode" instead of "Explain Mode."</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q8}
+                      onChange={(e) => setM1Q8(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q9: You feel completely overwhelmed by your study schedule. How could "Coach Mode" help you without doing the work for you?</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q9}
+                      onChange={(e) => setM1Q9(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* PART 3 & PART 4 & PART 5 & PART 6 (Artifact 2: error_review) */}
+            <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-8 animate-fade-in">
+              <h3 className="text-[#7b4fce] font-bold uppercase tracking-widest text-sm border-b border-[#7b4fce]/20 pb-2 flex justify-between items-center">
+                <span>ARTIFACT 2: APPLIED STRATEGIES (PARTS 3-6)</span>
+                <span className="text-[10px] text-slate-500 font-mono font-normal">REQUIRED TYPE: ERROR_REVIEW</span>
+              </h3>
+
+              {/* Part 3: Ask Better Questions */}
+              <div className="space-y-4 font-mono text-xs">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider">&gt; Part 3: Ask Better Questions</h4>
+                <div className="space-y-4 mt-2">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q10 (Prompt Upgrade): Rewrite "What's the answer to question 4?" into a strong prompt that helps you learn:</label>
+                    <input
+                      required
+                      disabled={isLocked}
+                      value={m1Q10}
+                      onChange={(e) => setM1Q10(e.target.value)}
+                      type="text"
+                      placeholder="e.g. Can you explain the concept behind question 4 and give me a similar example to try?"
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q11 (Prompt Upgrade): Rewrite "Write my history paragraph about the Civil War" so the AI acts as a writing coach:</label>
+                    <input
+                      required
+                      disabled={isLocked}
+                      value={m1Q11}
+                      onChange={(e) => setM1Q11(e.target.value)}
+                      type="text"
+                      placeholder="e.g. I need to write a history paragraph about the Civil War. Can you help me outline it and review my draft?"
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q12: Why does asking better, more specific questions lead to faster learning?</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q12}
+                      onChange={(e) => setM1Q12(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Part 4: Verify Before You Believe */}
+              <div className="space-y-6 pt-6 border-t border-slate-800">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 4: Verify Before You Believe</h4>
+
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q13: What is the very first step of the PlayIQ Verification Ritual?</label>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q13}
+                      onChange={(e) => setM1Q13(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select Option...</option>
+                      <option value="cross_check">Can I cross-check it?</option>
+                      <option value="make_sense">Does this make sense?</option>
+                      <option value="missing">Is anything missing?</option>
+                      <option value="explain_myself">Can I explain it myself?</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q14: An AI tells you "Fractions are always smaller than whole numbers." You think back to improper fractions like 5/4. What part of the Verification Ritual are you using?</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q14}
+                      onChange={(e) => setM1Q14(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q15: Why does copying an AI's polished, robotic words actually make your work weaker in the long run?</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q15}
+                      onChange={(e) => setM1Q15(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Part 5: Integrity and Identity */}
+              <div className="space-y-6 pt-6 border-t border-slate-800">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 5: Integrity and Identity</h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 font-mono text-xs">
+                  {/* Q16 */}
+                  <div className="p-4 border border-slate-800 rounded bg-black/20 space-y-2">
+                    <label className="block text-slate-300 font-bold uppercase tracking-wider text-[10px]">&gt; Q16: Ask AI to give a hint, solve it yourself. Classification:</label>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q16}
+                      onChange={(e) => setM1Q16(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select classification...</option>
+                      <option value="coach">Coach</option>
+                      <option value="cheat">Cheat</option>
+                      <option value="borderline">Borderline</option>
+                    </select>
+                  </div>
+
+                  {/* Q17 */}
+                  <div className="p-4 border border-slate-800 rounded bg-black/20 space-y-2">
+                    <label className="block text-slate-300 font-bold uppercase tracking-wider text-[10px]">&gt; Q17: Copy AI answer directly because you're tired. Classification:</label>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q17}
+                      onChange={(e) => setM1Q17(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select classification...</option>
+                      <option value="coach">Coach</option>
+                      <option value="cheat">Cheat</option>
+                      <option value="borderline">Borderline</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q18: PlayIQ says: "Cheating is not just a rule problem. It is an identity problem." In your own words, what does it mean to train a "shortcut identity"?</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q18}
+                      onChange={(e) => setM1Q18(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q19: Explain the PlayIQ principle: "AI can coach me, but I earn the skill."</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q19}
+                      onChange={(e) => setM1Q19(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Part 6: Social Impact & Digital Power */}
+              <div className="space-y-6 pt-6 border-t border-slate-800">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 6: Social Impact & Digital Power</h4>
+
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q20: Before sharing a surprising fact online, you should use the Pause Before Share Rule. Which of the following is NOT one of those questions?</label>
+                    <select
+                      required
+                      disabled={isLocked}
+                      value={m1Q20}
+                      onChange={(e) => setM1Q20(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select option...</option>
+                      <option value="true">Is it true?</option>
+                      <option value="likes">Will this get a lot of likes?</option>
+                      <option value="respectful">Is it respectful?</option>
+                      <option value="hurt">Could this hurt someone if I'm wrong?</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Q21: A friend sends you a crazy, AI-generated image of a politician doing something embarrassing and says, "Post this!" Apply the Pause Before Share rule to explain what your next move should be.</label>
+                    <textarea
+                      required
+                      placeholder="Write your explanation..."
+                      disabled={isLocked}
+                      value={m1Q21}
+                      onChange={(e) => setM1Q21(e.target.value)}
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </>
+        ) : moduleNum === 2 ? (
           <>
             {/* ARTIFACT 1 */}
             <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-6">
