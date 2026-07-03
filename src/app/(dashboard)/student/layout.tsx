@@ -9,9 +9,20 @@ export default async function StudentLayout({ children }: { children: React.Reac
   let hasProgress = true;
   let name = 'Student';
   let userId = '';
+  let assessmentCompleted = true; // default true to avoid blocking if table doesn't exist yet
 
   if (user) {
     userId = user.id;
+
+    // Check assessment completion
+    const { data: assessmentProfile } = await supabase
+      .from('student_assessment_profiles')
+      .select('assessment_completed')
+      .eq('student_id', user.id)
+      .maybeSingle();
+
+    assessmentCompleted = assessmentProfile?.assessment_completed ?? false;
+
     const { data: allProgress } = await supabase
       .from('student_node_progress')
       .select('module_id')
@@ -32,12 +43,16 @@ export default async function StudentLayout({ children }: { children: React.Reac
   return (
     <>
       {children}
-      <GuidedAIPanel 
-        isFloating={true} 
-        hasProgress={hasProgress}
-        studentName={name}
-        studentId={userId}
-      />
+      {/* Hide GuidedAI panel during assessment to keep experience focused */}
+      {assessmentCompleted && (
+        <GuidedAIPanel 
+          isFloating={true} 
+          hasProgress={hasProgress}
+          studentName={name}
+          studentId={userId}
+        />
+      )}
     </>
   );
 }
+

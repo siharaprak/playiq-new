@@ -62,6 +62,13 @@ export default async function StudentDashboard() {
   const usernameChangeCount: number = (profile as any)?.username_change_count ?? 0;
   const canEditUsername = usernameChangeCount < 3;
 
+  // Fetch assessment profile for blueprint display
+  const { data: assessmentProfile } = await supabase
+    .from('student_assessment_profiles')
+    .select('assessment_completed, explanation_style, motivation_driver, ai_literacy_level, rescue_target_subject, advance_target_subject, personal_goal, learning_blueprint')
+    .eq('student_id', user.id)
+    .maybeSingle();
+
   // Fetch all progress at once
   const { data: allProgress } = await supabase
     .from('student_node_progress')
@@ -175,6 +182,31 @@ export default async function StudentDashboard() {
                 changeCount={usernameChangeCount}
               />
             </div>
+
+            {/* Assessment Blueprint Card */}
+            {assessmentProfile?.assessment_completed && (
+              <div className="p-6 rounded-2xl" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-purple)' }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-lg font-bold" style={{ background: 'var(--glass-bg)', border: '1px solid var(--neon-purple)', color: 'var(--neon-purple)' }}>Ω</div>
+                  <h3 className="font-bold text-sm font-display" style={{ color: 'var(--text-primary)' }}>Your Learning Blueprint</h3>
+                </div>
+                <div className="space-y-2 text-xs" style={{ color: 'var(--text-secondary)' }}>
+                  {assessmentProfile.explanation_style && (
+                    <div className="flex justify-between"><span className="font-mono uppercase" style={{ color: 'var(--text-muted)' }}>Style</span><span style={{ color: 'var(--neon-cyan)' }}>{assessmentProfile.explanation_style === 'visual' ? 'Visual / Big-Picture' : assessmentProfile.explanation_style === 'analytical' ? 'Analytical / Step-by-Step' : 'Verbal / Story-Based'}</span></div>
+                  )}
+                  {assessmentProfile.motivation_driver && (
+                    <div className="flex justify-between"><span className="font-mono uppercase" style={{ color: 'var(--text-muted)' }}>Motivation</span><span style={{ color: 'var(--neon-cyan)' }}>{assessmentProfile.motivation_driver === 'mastery' ? 'Improvement' : assessmentProfile.motivation_driver === 'competitive' ? 'Competition' : assessmentProfile.motivation_driver === 'purpose' ? 'Real-world skills' : 'Recognition'}</span></div>
+                  )}
+                  {assessmentProfile.rescue_target_subject && (
+                    <div className="flex justify-between"><span className="font-mono uppercase" style={{ color: 'var(--text-muted)' }}>Rescue</span><span style={{ color: 'var(--neon-gold)' }}>{assessmentProfile.rescue_target_subject}</span></div>
+                  )}
+                  {assessmentProfile.advance_target_subject && (
+                    <div className="flex justify-between"><span className="font-mono uppercase" style={{ color: 'var(--text-muted)' }}>Advance</span><span style={{ color: 'var(--neon-green)' }}>{assessmentProfile.advance_target_subject}</span></div>
+                  )}
+                </div>
+                <p className="text-xs mt-3 italic" style={{ color: 'var(--text-muted)' }}>&ldquo;Orion is calibrated to you.&rdquo;</p>
+              </div>
+            )}
 
             {/* Parent Oversight & Privacy Notice */}
             <div id="parent-visibility-card" className="p-6 rounded-2xl font-mono shadow-[0_0_15px_rgba(0,200,255,0.02)]" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-cyan)' }}>

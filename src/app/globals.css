@@ -1202,3 +1202,504 @@ html[data-theme="light"] .drop-shadow-\[0_0_5px_\#00c8ff\] {
 html[data-theme="light"] .drop-shadow-\[0_0_5px_\#7b4fce\] {
   filter: drop-shadow(0 0 3px rgba(153, 0, 153, 0.5)) !important;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* MODULE 0 — ASSESSMENT (Orion First-Login Experience)                       */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Container & Phase Transitions ──────────────────────────────────────── */
+
+.assessment-container {
+  position: relative;
+  min-height: 60vh;
+}
+
+.assessment-fade-in {
+  animation: assessmentFadeIn 0.5s ease-out forwards;
+}
+
+.assessment-fade-out {
+  animation: assessmentFadeOut 0.35s ease-in forwards;
+}
+
+@keyframes assessmentFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes assessmentFadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-12px); }
+}
+
+.assessment-phase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: assessmentFadeIn 0.5s ease-out;
+}
+
+/* ── Orion Avatar ────────────────────────────────────────────────────────── */
+
+.assessment-orion-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, rgba(123,79,206,0.3), rgba(0,200,255,0.2));
+  border: 2px solid var(--neon-purple);
+  box-shadow: 0 0 20px rgba(123,79,206,0.3), 0 0 60px rgba(123,79,206,0.1);
+  color: var(--neon-purple-light);
+  font-family: var(--font-display);
+  animation: orionPulse 3s ease-in-out infinite;
+}
+
+@keyframes orionPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(123,79,206,0.3), 0 0 60px rgba(123,79,206,0.1); }
+  50%      { box-shadow: 0 0 30px rgba(123,79,206,0.5), 0 0 80px rgba(123,79,206,0.2); }
+}
+
+/* ── Orion Typing ────────────────────────────────────────────────────────── */
+
+.orion-typing-container {
+  width: 100%;
+  max-width: 540px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.orion-line {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  font-style: italic;
+  font-family: var(--font-display);
+}
+
+.orion-cursor {
+  color: var(--neon-cyan);
+  font-weight: bold;
+  font-style: normal;
+  animation: cursorBlink 1s step-end infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ── Form Inputs ─────────────────────────────────────────────────────────── */
+
+.assessment-form-section {
+  width: 100%;
+  max-width: 480px;
+  animation: assessmentFadeIn 0.4s ease-out;
+}
+
+.assessment-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-family: var(--font-display);
+}
+
+.assessment-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 15, 30, 0.8);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.assessment-input:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.15);
+}
+
+.assessment-input::placeholder {
+  color: var(--text-muted);
+}
+
+.assessment-textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 15, 30, 0.8);
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 0.75rem;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-family: inherit;
+  outline: none;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.assessment-textarea:focus {
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.15);
+}
+
+.assessment-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+
+.assessment-continue-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  background: transparent;
+  border: 1px solid var(--neon-cyan);
+  border-radius: 0.75rem;
+  color: var(--neon-cyan);
+  font-weight: 700;
+  font-size: 0.875rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.assessment-continue-button:hover:not(:disabled) {
+  background: rgba(0, 200, 255, 0.1);
+  box-shadow: 0 0 16px rgba(0, 200, 255, 0.2);
+}
+
+.assessment-continue-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.assessment-begin-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+  border: none;
+  border-radius: 0.75rem;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 24px rgba(123,79,206,0.3), 0 0 48px rgba(0,200,255,0.15);
+}
+
+.assessment-begin-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 32px rgba(123,79,206,0.5), 0 0 64px rgba(0,200,255,0.25);
+}
+
+/* ── Scenario Cards (Phase 2) ────────────────────────────────────────────── */
+
+.assessment-scenario-card {
+  width: 100%;
+  max-width: 540px;
+  padding: 1.5rem;
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(123, 79, 206, 0.25);
+  border-radius: 1rem;
+  animation: assessmentFadeIn 0.4s ease-out;
+}
+
+.assessment-question-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+  font-family: var(--font-display);
+  background: var(--neon-purple);
+  color: #fff;
+}
+
+.assessment-option-button {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(10, 15, 30, 0.6);
+  border: 1px solid rgba(100, 116, 139, 0.25);
+  border-radius: 0.75rem;
+  color: var(--text-secondary);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.assessment-option-button:hover {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 200, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.assessment-option-selected {
+  border-color: var(--neon-cyan) !important;
+  background: rgba(0, 200, 255, 0.1) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 0 12px rgba(0, 200, 255, 0.1);
+}
+
+.assessment-option-letter {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.7rem;
+  font-family: var(--font-display);
+  background: rgba(100, 116, 139, 0.2);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.assessment-option-selected .assessment-option-letter,
+.assessment-option-letter-active {
+  background: var(--neon-cyan) !important;
+  color: #0a0f1e !important;
+}
+
+.assessment-option-check {
+  color: var(--neon-cyan);
+  font-weight: bold;
+  font-size: 0.875rem;
+}
+
+/* ── Baseline Tasks (Phase 3) ────────────────────────────────────────────── */
+
+.assessment-baseline-task {
+  width: 100%;
+  max-width: 540px;
+  padding: 1.5rem;
+  background: rgba(17, 24, 39, 0.8);
+  border: 1px solid rgba(245, 197, 24, 0.2);
+  border-radius: 1rem;
+  animation: assessmentFadeIn 0.4s ease-out;
+}
+
+.assessment-ai-answer-card {
+  width: 100%;
+  padding: 1rem;
+  background: rgba(10, 15, 30, 0.7);
+  border: 1px solid rgba(100, 116, 139, 0.25);
+  border-radius: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s;
+}
+
+.assessment-ai-answer-card:hover {
+  border-color: var(--neon-cyan);
+  background: rgba(0, 200, 255, 0.04);
+}
+
+.assessment-ai-answer-selected {
+  border-color: var(--neon-cyan) !important;
+  background: rgba(0, 200, 255, 0.08) !important;
+  box-shadow: 0 0 16px rgba(0, 200, 255, 0.1);
+}
+
+/* ── Error Banner ────────────────────────────────────────────────────────── */
+
+.assessment-error {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 0.75rem;
+  color: #ef4444;
+  font-size: 0.8rem;
+  font-family: var(--font-display);
+  backdrop-filter: blur(8px);
+  animation: assessmentFadeIn 0.3s ease-out;
+}
+
+/* ── The Reveal (Phase 5) — The Emotional Peak ──────────────────────────── */
+
+.assessment-reveal-phase {
+  position: relative;
+}
+
+.assessment-reveal-phase::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(123, 79, 206, 0.15) 0%,
+    rgba(0, 200, 255, 0.08) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: revealGlow 4s ease-in-out infinite;
+}
+
+@keyframes revealGlow {
+  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 1;   transform: translateX(-50%) scale(1.1); }
+}
+
+.assessment-reveal-orion {
+  width: 80px !important;
+  height: 80px !important;
+  border-color: var(--neon-gold) !important;
+  box-shadow: 0 0 30px rgba(245,197,24,0.3), 0 0 80px rgba(245,197,24,0.1) !important;
+  animation: revealOrionPulse 2.5s ease-in-out infinite !important;
+}
+
+@keyframes revealOrionPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(245,197,24,0.3), 0 0 80px rgba(245,197,24,0.1); }
+  50%      { box-shadow: 0 0 40px rgba(245,197,24,0.5), 0 0 100px rgba(245,197,24,0.2); }
+}
+
+.assessment-reveal-content {
+  width: 100%;
+  max-width: 540px;
+  animation: assessmentFadeIn 0.6s ease-out;
+}
+
+.assessment-reveal-summary {
+  padding: 1.5rem;
+  background: rgba(17, 24, 39, 0.7);
+  border: 1px solid rgba(123, 79, 206, 0.3);
+  border-radius: 1rem;
+  font-style: italic;
+}
+
+.assessment-reveal-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, rgba(123,79,206,0.3), rgba(0,200,255,0.2));
+  border: 1px solid var(--neon-purple);
+  border-radius: 0.75rem;
+  color: var(--neon-purple-light);
+  font-weight: 700;
+  font-size: 0.9rem;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 20px rgba(123,79,206,0.2);
+}
+
+.assessment-reveal-button:hover {
+  background: linear-gradient(135deg, rgba(123,79,206,0.5), rgba(0,200,255,0.3));
+  box-shadow: 0 0 32px rgba(123,79,206,0.4);
+}
+
+.assessment-vision-outcome {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: rgba(17, 24, 39, 0.6);
+  border: 1px solid rgba(245, 197, 24, 0.15);
+  border-radius: 0.75rem;
+  animation: visionOutcomeSlide 0.5s ease-out forwards;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+@keyframes visionOutcomeSlide {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Learning Blueprint Card ────────────────────────────────────────────── */
+
+.assessment-blueprint-card {
+  width: 100%;
+  max-width: 540px;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, rgba(17,24,39,0.9), rgba(10,15,30,0.95));
+  border: 1px solid rgba(0, 200, 255, 0.25);
+  border-radius: 1rem;
+  box-shadow: 0 0 24px rgba(0, 200, 255, 0.08), 0 4px 32px rgba(0,0,0,0.4);
+  animation: blueprintAppear 0.6s ease-out;
+}
+
+@keyframes blueprintAppear {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.assessment-blueprint-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(0, 200, 255, 0.15);
+}
+
+.assessment-blueprint-orion-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--neon-purple), var(--neon-cyan));
+  color: #fff;
+  box-shadow: 0 0 12px rgba(123, 79, 206, 0.4);
+}
+
+.assessment-blueprint-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  transition: background 0.15s;
+}
+
+.assessment-blueprint-row:hover {
+  background: rgba(0, 200, 255, 0.04);
+}

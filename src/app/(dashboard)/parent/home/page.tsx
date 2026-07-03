@@ -217,6 +217,26 @@ export default async function ParentDashboard({
     }
   }
 
+  // Fetch assessment profiles for linked students
+  type AssessmentSummary = {
+    student_id: string;
+    assessment_completed: boolean;
+    assessment_completed_at: string | null;
+    explanation_style: string | null;
+    motivation_driver: string | null;
+    rescue_target_subject: string | null;
+    advance_target_subject: string | null;
+    personal_goal: string | null;
+  };
+  let assessmentSummaries: AssessmentSummary[] = [];
+  if (studentIds.length > 0) {
+    const { data: assessmentData } = await supabaseAdmin
+      .from('student_assessment_profiles')
+      .select('student_id, assessment_completed, assessment_completed_at, explanation_style, motivation_driver, rescue_target_subject, advance_target_subject, personal_goal')
+      .in('student_id', studentIds);
+    assessmentSummaries = (assessmentData || []) as AssessmentSummary[];
+  }
+
   return (
     <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] p-6 md:p-12 star-field">
       <div className="max-w-6xl mx-auto relative z-10">
@@ -513,6 +533,35 @@ export default async function ParentDashboard({
           <div className="space-y-6">
 
             {proofSummary && <ParentProofSummaryCard summary={proofSummary} />}
+
+            {/* Assessment Summary Cards */}
+            {assessmentSummaries.filter(a => a.assessment_completed).map((assessment) => {
+              const childName = apprentices.find(a => a.id === assessment.student_id)?.full_name || 'Apprentice';
+              const styleLabel = assessment.explanation_style === 'visual' ? 'Visual / Big-Picture' : assessment.explanation_style === 'analytical' ? 'Analytical / Step-by-Step' : 'Verbal / Story-Based';
+              const motivLabel = assessment.motivation_driver === 'mastery' ? 'Improvement' : assessment.motivation_driver === 'competitive' ? 'Competition' : assessment.motivation_driver === 'purpose' ? 'Real-world skills' : 'Recognition';
+              return (
+                <div key={`assess-${assessment.student_id}`} className="glass-card p-6 !rounded-none border border-[#7b4fce]/30">
+                  <div className="flex items-center gap-3 mb-4 border-b border-slate-800 pb-3">
+                    <div className="w-8 h-8 flex items-center justify-center text-lg font-bold" style={{ background: '#7b4fce20', border: '1px solid #7b4fce50', color: '#7b4fce' }}>Ω</div>
+                    <div>
+                      <h3 className="font-display font-bold text-sm text-[var(--text-primary)] uppercase tracking-wider">Assessment Complete</h3>
+                      <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest">{childName} • {assessment.assessment_completed_at ? new Date(assessment.assessment_completed_at).toLocaleDateString() : 'Completed'}</p>
+                    </div>
+                  </div>
+                  <div className="space-y-2.5 text-xs">
+                    <div className="flex justify-between"><span className="font-mono text-slate-500 uppercase">Learning Style</span><span className="font-bold text-[#00c8ff]">{styleLabel}</span></div>
+                    <div className="flex justify-between"><span className="font-mono text-slate-500 uppercase">Motivation</span><span className="font-bold text-[#00c8ff]">{motivLabel}</span></div>
+                    <div className="flex justify-between"><span className="font-mono text-slate-500 uppercase">Rescue Target</span><span className="font-bold text-[#f5c518]">{assessment.rescue_target_subject || '—'}</span></div>
+                    <div className="flex justify-between"><span className="font-mono text-slate-500 uppercase">Advance Target</span><span className="font-bold text-[#39ff14]">{assessment.advance_target_subject || '—'}</span></div>
+                    <div className="flex justify-between"><span className="font-mono text-slate-500 uppercase">Baseline PDI</span><span className="font-mono text-slate-400">Recorded — visible after Module 3</span></div>
+                  </div>
+                  <div className="mt-4 p-3 bg-[#7b4fce]/5 border border-[#7b4fce]/20">
+                    <p className="text-[10px] font-mono text-[#7b4fce] uppercase tracking-widest mb-1">✅ Orion is calibrated</p>
+                    <p className="text-[10px] font-mono text-slate-400">Suggested prompt: &ldquo;Ask your apprentice: what did Orion say about how they learn best?&rdquo;</p>
+                  </div>
+                </div>
+              );
+            })}
 
             {/* Apprentice Roster */}
             <div id="provision-card" className="glass-card p-6 !rounded-none border border-[#7b4fce]/30">

@@ -56,7 +56,8 @@ export function Navbar() {
     checkAuth();
   }, [pathname]);
 
-
+  // Hide entire navbar during the assessment for a fully immersive Orion experience
+  if (pathname?.startsWith('/student/assessment')) return null;
 
   const isStudentLoggedIn = !isLoading && (userRole === 'student' || userRole === 'admin');
   const baseLinkClass = "outline-none font-display text-[0.65rem] xl:text-[0.75rem] font-bold uppercase tracking-[0.15em] xl:tracking-[0.2em] transition-colors duration-300 before:content-['['] before:mr-1 before:text-[#00c8ff] after:content-[']'] after:ml-1 after:text-[#00c8ff] whitespace-nowrap";

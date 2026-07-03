@@ -110,6 +110,30 @@ export async function updateSession(request: NextRequest) {
         
         return redirectResponse
       }
+
+      // Assessment gating: redirect students to assessment if not completed
+      const isStudentRoute = request.nextUrl.pathname.startsWith('/student')
+      const isAssessmentRoute = request.nextUrl.pathname.startsWith('/student/assessment')
+
+      if (isStudentRoute && !isAssessmentRoute) {
+        const { data: assessmentProfile } = await supabase
+          .from('student_assessment_profiles')
+          .select('assessment_completed')
+          .eq('student_id', user.id)
+          .maybeSingle()
+
+        if (!assessmentProfile?.assessment_completed) {
+          const url = request.nextUrl.clone()
+          url.pathname = '/student/assessment'
+          const redirectResponse = NextResponse.redirect(url)
+          
+          supabaseResponse.cookies.getAll().forEach((cookie) => {
+            redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+          })
+          
+          return redirectResponse
+        }
+      }
     }
   }
 

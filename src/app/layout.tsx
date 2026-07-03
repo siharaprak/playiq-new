@@ -5,6 +5,7 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { SocialSidebar } from "@/components/layout/SocialSidebar";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
+import { HideOnAssessment } from "@/components/layout/HideOnAssessment";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA4RouteTracker } from "@/components/analytics/GA4RouteTracker";
 
@@ -63,11 +64,16 @@ export default function RootLayout({
         )}
         <ThemeProvider>
           <Navbar />
-          <SocialSidebar />
+          <HideOnAssessment>
+            <SocialSidebar />
+          </HideOnAssessment>
           <div className="flex-grow">{children}</div>
-          <Footer />
+          <HideOnAssessment>
+            <Footer />
+          </HideOnAssessment>
         </ThemeProvider>
       </body>
     </html>
   );
 }
+
