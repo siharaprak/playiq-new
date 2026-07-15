@@ -3,6 +3,7 @@
 import { z } from 'zod';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
+import { headers } from 'next/headers';
 
 import { BetaApplicationSchema, type BetaApplicationData } from './schema';
 
@@ -22,12 +23,17 @@ export async function submitBetaApplication(data: BetaApplicationData) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const appDomain = (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000').replace(/\/$/, '');
+  const headersList = await headers();
+  const host = headersList.get('host') || 'localhost:3000';
+  const protocol = host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https';
+  const appDomain = `${protocol}://${host}`;
+
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const priceId = process.env.STRIPE_BETA_PRICE_ID; 
 
   const promoAttempt = parsed.data.promoCode?.trim();
-  const validPromoCode = (process.env.BETA_PROMO_CODE || 'PLAYIQ2025').toUpperCase();
+  const rawPromo = process.env.BETA_PROMO_CODE || 'PLAYIQ2025';
+  const validPromoCode = rawPromo.trim().replace(/^["']|["']$/g, '').toUpperCase();
   const isPromoBypass = promoAttempt && promoAttempt.toUpperCase() === validPromoCode;
 
   // Reject invalid codes immediately — don't silently proceed

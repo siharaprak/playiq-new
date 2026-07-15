@@ -106,7 +106,7 @@ export default function OrionTypingEffect({
             opacity: idx === displayedLines.length - 1 && !isComplete ? 1 : 0.95,
           }}
         >
-          &ldquo;{line}&rdquo;
+          {line}
           {idx === displayedLines.length - 1 && !isComplete && showCursor && (
             <span className="orion-cursor">|</span>
           )}

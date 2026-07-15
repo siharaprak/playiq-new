@@ -23,13 +23,13 @@ const WORKSHEET_OVERVIEWS: Record<number, { title: string; parts: string[] }> = 
     ]
   },
   2: {
-    title: "Power and Responsibility",
+    title: "Power, Policies, and Gray Zones",
     parts: [
-      "Part 1: The Power Tool Principle (Superpowers vs. Superweapons)",
-      "Part 2: Truth, Trust, and Misinformation (Applying the Truth Filter)",
-      "Part 3: Attention, Distraction, and Algorithm Traps (Rest vs. Escape)",
-      "Part 4: Human Responsibility and the Highest Path (Ethical Choices)",
-      "Part 5: Applied Ethics and Social Impact (Digital Smartness & Reflection)"
+      "Part 1: The Power Tool Principle (Active Branching Scenario)",
+      "Part 2: Navigation — AI Detectors and School Policies",
+      "Part 3: Mid-Module Check-In & Attention Traps (Micro-Win)",
+      "Part 4: The Highest Path Test (Real Decisions)",
+      "Part 5: Social Power & Applied Ethics"
     ]
   },
   3: {
@@ -123,17 +123,16 @@ export default function StudentModuleArtifactsContainer({
   const [artifactStatus, setArtifactStatus] = useState<string>('draft');
   const [adminNotes, setAdminNotes] = useState<string | null>(null);
 
-  // Form payload states for Module 2
-  const [dwBeMore, setDwBeMore] = useState('');
-  const [dwAttention, setDwAttention] = useState('');
-  const [dwTrust, setDwTrust] = useState('');
-  const [dwEnsure, setDwEnsure] = useState('');
-  const [dwHpQuestion, setDwHpQuestion] = useState('');
-  const [dwHabit, setDwHabit] = useState('');
-
-  const [hpBoundary1, setHpBoundary1] = useState({ boundary: '', whyMatters: '', when: '' });
-  const [hpBoundary2, setHpBoundary2] = useState({ boundary: '', whyMatters: '', when: '' });
-  const [hpBoundary3, setHpBoundary3] = useState({ boundary: '', whyMatters: '', when: '' });
+  // Form payload states for Module 2 (Power, Policies, and Gray Zones)
+  const [m2Q1Superpower, setM2Q1Superpower] = useState('');
+  const [m2Q1Superweapon, setM2Q1Superweapon] = useState('');
+  const [m2Q2, setM2Q2] = useState('');
+  const [m2Q3, setM2Q3] = useState('');
+  const [m2Q4Analysis, setM2Q4Analysis] = useState('');
+  const [m2Q4Boundary, setM2Q4Boundary] = useState('');
+  const [m2Q5, setM2Q5] = useState('');
+  const [m2Q6, setM2Q6] = useState('');
+  const [m2Q7, setM2Q7] = useState('');
 
   // Form payload states for Module 1 (The PlayIQ Foundation Worksheet)
   const [m1Q1Choice, setM1Q1Choice] = useState('');
@@ -205,13 +204,13 @@ export default function StudentModuleArtifactsContainer({
               setM1Q7(p.m1Q7 || '');
               setM1Q8(p.m1Q8 || '');
               setM1Q9(p.m1Q9 || '');
-            } else {
-              setDwBeMore(p.beMore || '');
-              setDwAttention(p.protectAttention || '');
-              setDwTrust(p.beforeTrust || '');
-              setDwEnsure(p.stillEnsure || '');
-              setDwHpQuestion(p.highestPathQ || '');
-              setDwHabit(p.habitToImprove || '');
+            } else if (moduleNum === 2) {
+              setM2Q1Superpower(p.m2Q1Superpower || '');
+              setM2Q1Superweapon(p.m2Q1Superweapon || '');
+              setM2Q2(p.m2Q2 || '');
+              setM2Q3(p.m2Q3 || '');
+              setM2Q4Analysis(p.m2Q4Analysis || '');
+              setM2Q4Boundary(p.m2Q4Boundary || '');
             }
 
             if (rules.file_path) {
@@ -241,10 +240,10 @@ export default function StudentModuleArtifactsContainer({
               setM1Q19(p.m1Q19 || '');
               setM1Q20(p.m1Q20 || '');
               setM1Q21(p.m1Q21 || '');
-            } else {
-              setHpBoundary1(p.boundary1 || { boundary: '', whyMatters: '', when: '' });
-              setHpBoundary2(p.boundary2 || { boundary: '', whyMatters: '', when: '' });
-              setHpBoundary3(p.boundary3 || { boundary: '', whyMatters: '', when: '' });
+            } else if (moduleNum === 2) {
+              setM2Q5(p.m2Q5 || '');
+              setM2Q6(p.m2Q6 || '');
+              setM2Q7(p.m2Q7 || '');
             }
 
             if (boundaries.file_path) {
@@ -309,20 +308,20 @@ export default function StudentModuleArtifactsContainer({
         m1Q20,
         m1Q21
       };
-    } else {
+    } else if (moduleNum === 2) {
       warriorPayload = {
-        beMore: dwBeMore,
-        protectAttention: dwAttention,
-        beforeTrust: dwTrust,
-        stillEnsure: dwEnsure,
-        highestPathQ: dwHpQuestion,
-        habitToImprove: dwHabit,
+        m2Q1Superpower,
+        m2Q1Superweapon,
+        m2Q2,
+        m2Q3,
+        m2Q4Analysis,
+        m2Q4Boundary,
       };
 
       boundariesPayload = {
-        boundary1: hpBoundary1,
-        boundary2: hpBoundary2,
-        boundary3: hpBoundary3,
+        m2Q5,
+        m2Q6,
+        m2Q7,
       };
     }
 
@@ -529,7 +528,7 @@ export default function StudentModuleArtifactsContainer({
                         disabled={isLocked}
                         className="accent-[#00c8ff]"
                       />
-                      It has a subtle mistake (Correct Answer)
+                      It has a subtle mistake
                     </label>
                     <label className="flex items-center gap-2 cursor-pointer text-slate-300 hover:text-white">
                       <input
@@ -920,179 +919,231 @@ export default function StudentModuleArtifactsContainer({
 
             </div>
           </>
-        ) : moduleNum === 2 ? (
+                ) : moduleNum === 2 ? (
           <>
             {/* ARTIFACT 1 */}
-            <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-6">
+            <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-8 animate-fade-in">
               <h3 className="text-[#00c8ff] font-bold uppercase tracking-widest text-sm border-b border-[#00c8ff]/20 pb-2 flex justify-between items-center">
-                <span>ARTIFACT 1: DIGITAL WARRIOR CODE</span>
+                <span>ARTIFACT 1: POWER, POLICIES, AND GRAY ZONES (PARTS 1-3)</span>
                 <span className="text-[10px] text-slate-500 font-mono font-normal">REQUIRED TYPE: STUDY_RULES</span>
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Form Fields */}
-                <div className="space-y-4">
-                  <p className="text-slate-500 font-mono text-xs uppercase tracking-widest mb-2">&gt; Written Synthesis</p>
-                  <div>
-                    <label className="block text-slate-300 font-mono text-xs mb-1.5">&gt; I want tech to help me become more...</label>
-                    <input
-                      required
-                      disabled={isLocked}
-                      value={dwBeMore}
-                      onChange={(e) => setDwBeMore(e.target.value)}
-                      type="text"
-                      placeholder="e.g. focused on building models"
-                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-[var(--text-primary)] text-xs font-mono outline-none disabled:opacity-50"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-slate-300 font-mono text-xs mb-1.5">&gt; One way I will protect my attention is...</label>
-                    <input
-                      required
-                      disabled={isLocked}
-                      value={dwAttention}
-                      onChange={(e) => setDwAttention(e.target.value)}
-                      type="text"
-                      placeholder="e.g. blocking browser access before 2 PM"
-                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-[var(--text-primary)] text-xs font-mono outline-none disabled:opacity-50"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-slate-300 font-mono text-xs mb-1.5">&gt; Before I trust something online, I will...</label>
-                    <input
-                      required
-                      disabled={isLocked}
-                      value={dwTrust}
-                      onChange={(e) => setDwTrust(e.target.value)}
-                      type="text"
-                      placeholder="e.g. checking author credentials"
-                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-[var(--text-primary)] text-xs font-mono outline-none disabled:opacity-50"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-slate-300 font-mono text-xs mb-1.5">&gt; When AI helps me, I will still make sure I...</label>
-                    <input
-                      required
-                      disabled={isLocked}
-                      value={dwEnsure}
-                      onChange={(e) => setDwEnsure(e.target.value)}
-                      type="text"
-                      placeholder="e.g. write the tests myself"
-                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-[var(--text-primary)] text-xs font-mono outline-none disabled:opacity-50"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-slate-300 font-mono text-xs mb-1.5">&gt; A Highest Path question I want to use is...</label>
-                    <input
-                      required
-                      disabled={isLocked}
-                      value={dwHpQuestion}
-                      onChange={(e) => setDwHpQuestion(e.target.value)}
-                      type="text"
-                      placeholder="e.g. Does this help build long-term value?"
-                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-[var(--text-primary)] text-xs font-mono outline-none disabled:opacity-50"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-slate-300 font-mono text-xs mb-1.5">&gt; One digital habit I want to improve is...</label>
-                    <input
-                      required
-                      disabled={isLocked}
-                      value={dwHabit}
-                      onChange={(e) => setDwHabit(e.target.value)}
-                      type="text"
-                      placeholder="e.g. turning off screens 1 hr before sleep"
-                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-[var(--text-primary)] text-xs font-mono outline-none disabled:opacity-50"
-                    />
+              {/* Part 1: The Power Tool Principle */}
+              <div className="space-y-4">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 1: The Power Tool Principle (Active Branching Scenario)</h4>
+                <div className="bg-black/50 p-4 border border-slate-800 rounded font-mono text-xs text-slate-300 space-y-3 leading-relaxed">
+                  <p className="font-bold text-[#00c8ff]">// Scenario Card: You have a major history report due. You're completely stuck on how to structure it.</p>
+                  <div className="space-y-2 pl-3 border-l border-slate-700">
+                    <p><strong>Option A:</strong> Prompt the AI: <em>"Write a 5-paragraph outline for an essay on the causes of the American Revolution."</em> Use it to structure your own research and writing.</p>
+                    <p><strong>Option B:</strong> Prompt the AI: <em>"Write the intro and first body paragraph for my history essay."</em> Copy it and write the rest yourself.</p>
+                    <p><strong>Option C:</strong> Paste a draft you wrote into the AI and prompt: <em>"Give me feedback on my arguments and highlight sentences that are confusing."</em></p>
                   </div>
                 </div>
 
-                {/* Upload Zone */}
-                <div className="flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-800 pt-6 md:pt-0 md:pl-8 space-y-4">
-                  <p className="text-slate-500 font-mono text-xs uppercase tracking-widest">&gt; Upload Attachment (Optional)</p>
-                  <ArtifactUploadZone
-                    studentId={studentId}
-                    moduleId={moduleId}
-                    artifactType="study_rules"
-                    initialFile={studyRulesFile}
-                    status={artifactStatus}
-                    onUploadComplete={(file) => setStudyRulesFile(file)}
-                    onFileDelete={() => setStudyRulesFile(null)}
-                  />
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q1a: Which of these choices is a Superpower that builds your writing skill? Explain why.</label>
+                    <textarea
+                      required
+                      disabled={isLocked}
+                      value={m2Q1Superpower}
+                      onChange={(e) => setM2Q1Superpower(e.target.value)}
+                      placeholder="e.g. Option C is a Superpower because it acts as an editor..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q1b: Which of these choices is a Superweapon that shortcut-trains your brain to avoid hard work? Explain why.</label>
+                    <textarea
+                      required
+                      disabled={isLocked}
+                      value={m2Q1Superweapon}
+                      onChange={(e) => setM2Q1Superweapon(e.target.value)}
+                      placeholder="e.g. Option B is a Superweapon because you copy AI work directly..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
+                    />
+                  </div>
                 </div>
+              </div>
+
+              {/* Part 2: Navigation — AI Detectors and School Policies */}
+              <div className="space-y-4 border-t border-slate-800/80 pt-6">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 2: Navigation — AI Detectors and School Policies</h4>
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q2 (The Detector Trap): Why do AI detectors sometimes flag human essays as "AI-written" (false positives), and how can writing in your own natural voice protect you from false accusations?</label>
+                    <textarea
+                      required
+                      disabled={isLocked}
+                      value={m2Q2}
+                      onChange={(e) => setM2Q2(e.target.value)}
+                      placeholder="Explain perplexity/burstiness and voice protection..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q3 (School Policy Variance): Under which of policies A, B, and C is AI translation + summary acceptable, and where does it cross into cheating?</label>
+                    <textarea
+                      required
+                      disabled={isLocked}
+                      value={m2Q3}
+                      onChange={(e) => setM2Q3(e.target.value)}
+                      placeholder="e.g. Acceptable under C, crossing under A..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Part 3: Mid-Module Check-In & Attention Traps */}
+              <div className="space-y-4 border-t border-slate-800/80 pt-6">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 3: Mid-Module Check-In & Attention Traps</h4>
+                
+                {/* Micro-Win box */}
+                <div className="bg-[#00c8ff]/10 border border-[#00c8ff]/30 p-4 rounded text-slate-300 font-mono text-xs leading-relaxed flex items-start gap-3">
+                  <span className="text-xl">🎉</span>
+                  <div>
+                    <p className="font-bold text-[#00c8ff]">Micro-Win Unlock!</p>
+                    <p className="text-slate-400 mt-0.5">"You've made it through the core gray-zone strategy guide. Your digital navigation score has been updated (+50 XP). Let's do a quick reality check before moving to the final section."</p>
+                  </div>
+                </div>
+
+                <div className="bg-black/50 p-4 border border-slate-800 rounded font-mono text-xs text-slate-300 leading-relaxed">
+                  <p className="font-bold text-[#00c8ff]">// Trap Audit Scenario:</p>
+                  <p className="italic">You feel overwhelmed about starting a big project, so you click on social media "just for a minute" and end up scrolling for two hours.</p>
+                </div>
+
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q4a (Trap Audit Analysis): Is this Rest (recharging energy) or Escape (running from discomfort)? Why?</label>
+                    <input
+                      required
+                      disabled={isLocked}
+                      value={m2Q4Analysis}
+                      onChange={(e) => setM2Q4Analysis(e.target.value)}
+                      type="text"
+                      placeholder="e.g. Escape, because it is driven by avoidance of task friction..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 outline-none disabled:opacity-50 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q4b (The Boundary): What is one practical friction point you can set up on your phone/browser to break the Escape loop before it starts?</label>
+                    <input
+                      required
+                      disabled={isLocked}
+                      value={m2Q4Boundary}
+                      onChange={(e) => setM2Q4Boundary(e.target.value)}
+                      type="text"
+                      placeholder="e.g. Setting a screen time block limit or keeping the phone in another room..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 outline-none disabled:opacity-50 text-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Upload Zone for study_rules */}
+              <div className="border-t border-slate-800/80 pt-6 space-y-4">
+                <p className="text-slate-500 font-mono text-xs uppercase tracking-widest">&gt; Upload Attachment (Optional)</p>
+                <ArtifactUploadZone
+                  studentId={studentId}
+                  moduleId={moduleId}
+                  artifactType="study_rules"
+                  initialFile={studyRulesFile}
+                  status={artifactStatus}
+                  onUploadComplete={(file) => setStudyRulesFile(file)}
+                  onFileDelete={() => setStudyRulesFile(null)}
+                />
               </div>
             </div>
 
             {/* ARTIFACT 2 */}
-            <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-6">
+            <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-8 animate-fade-in">
               <h3 className="text-[#7b4fce] font-bold uppercase tracking-widest text-sm border-b border-[#7b4fce]/20 pb-2 flex justify-between items-center">
-                <span>ARTIFACT 2: HIGHEST PATH BOUNDARIES PLAN</span>
+                <span>ARTIFACT 2: ETHICAL CHOICES & SOCIAL IMPACT (PARTS 4-5)</span>
                 <span className="text-[10px] text-slate-500 font-mono font-normal">REQUIRED TYPE: ERROR_REVIEW</span>
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Form Fields */}
-                <div className="space-y-6">
-                  <p className="text-slate-500 font-mono text-xs uppercase tracking-widest">&gt; Written Synthesis</p>
-                  {[1, 2, 3].map((n) => {
-                    const boundary = n === 1 ? hpBoundary1 : n === 2 ? hpBoundary2 : hpBoundary3;
-                    const setBoundary = n === 1 ? setHpBoundary1 : n === 2 ? setHpBoundary2 : setHpBoundary3;
-
-                    return (
-                      <div key={n} className="p-4 border border-slate-800/80 rounded bg-black/20 space-y-3 font-mono text-xs">
-                        <p className="text-[#7b4fce] font-bold uppercase tracking-wider text-[10px]">&gt; Boundary {n}</p>
-                        <div>
-                          <input
-                            required
-                            disabled={isLocked}
-                            value={boundary.boundary}
-                            onChange={(e) => setBoundary({ ...boundary, boundary: e.target.value })}
-                            type="text"
-                            placeholder="What is the boundary?"
-                            className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2 text-slate-200 outline-none disabled:opacity-50 text-xs"
-                          />
-                        </div>
-                        <div className="grid grid-cols-2 gap-3">
-                          <input
-                            required
-                            disabled={isLocked}
-                            value={boundary.whyMatters}
-                            onChange={(e) => setBoundary({ ...boundary, whyMatters: e.target.value })}
-                            type="text"
-                            placeholder="Why does it matter?"
-                            className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2 text-slate-200 outline-none disabled:opacity-50 text-xs"
-                          />
-                          <input
-                            required
-                            disabled={isLocked}
-                            value={boundary.when}
-                            onChange={(e) => setBoundary({ ...boundary, when: e.target.value })}
-                            type="text"
-                            placeholder="When to apply?"
-                            className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2 text-slate-200 outline-none disabled:opacity-50 text-xs"
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
+              {/* Part 4: The Highest Path Test */}
+              <div className="space-y-4">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 4: The Highest Path Test (Real Decisions)</h4>
+                <div className="bg-black/50 p-4 border border-slate-800 rounded font-mono text-xs text-slate-300 space-y-3 leading-relaxed">
+                  <p className="font-bold text-[#7b4fce]">// Scenario - The Lab Report:</p>
+                  <p className="italic">Your lab partner suggests using AI to write the "Discussion" section of your chemistry report because the class is hard. Apply the Highest Path Test questions:</p>
+                  <div className="space-y-1 pl-3 border-l border-slate-700 text-slate-400">
+                    <p>1. <em>Does this make me stronger or weaker?</em></p>
+                    <p>2. <em>Would I be proud if a mentor saw this choice?</em></p>
+                    <p>3. <em>Am I using this to create or to escape?</em></p>
+                  </div>
                 </div>
 
-                {/* Upload Zone */}
-                <div className="flex flex-col justify-center border-t md:border-t-0 md:border-l border-slate-800 pt-6 md:pt-0 md:pl-8 space-y-4">
-                  <p className="text-slate-500 font-mono text-xs uppercase tracking-widest">&gt; Upload Attachment (Optional)</p>
-                  <ArtifactUploadZone
-                    studentId={studentId}
-                    moduleId={moduleId}
-                    artifactType="error_review"
-                    initialFile={errorReviewFile}
-                    status={artifactStatus}
-                    onUploadComplete={(file) => setErrorReviewFile(file)}
-                    onFileDelete={() => setErrorReviewFile(null)}
+                <div className="font-mono text-xs">
+                  <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q5 (Highest Path Decision): What is the highest path action you should take, and what do you tell your partner?</label>
+                  <textarea
+                    required
+                    disabled={isLocked}
+                    value={m2Q5}
+                    onChange={(e) => setM2Q5(e.target.value)}
+                    placeholder="Describe your choice and response to your partner..."
+                    className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
                   />
                 </div>
               </div>
+
+              {/* Part 5: Social Power & Applied Ethics */}
+              <div className="space-y-4 border-t border-slate-800/80 pt-6">
+                <h4 className="text-slate-300 font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 5: Social Power & Applied Ethics</h4>
+                <div className="bg-black/50 p-4 border border-slate-800 rounded font-mono text-xs text-slate-300 space-y-3 leading-relaxed">
+                  <p className="font-bold text-[#7b4fce]">// Scenario - Pause Before Share:</p>
+                  <p className="italic">A classmate sends you an AI-edited audio clip of a teacher saying something funny but completely out of character. They tell you to post it in the class group chat. Apply Pause Before Share rules:</p>
+                  <div className="space-y-1 pl-3 border-l border-slate-700 text-slate-400">
+                    <p>1. <em>Is it true/real?</em></p>
+                    <p>2. <em>Is it respectful?</em></p>
+                    <p>3. <em>Could this hurt someone's job or reputation if shared?</em></p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q6 (Pause Before Share Action): Explain what your response should be to prevent digital harm.</label>
+                    <textarea
+                      required
+                      disabled={isLocked}
+                      value={m2Q6}
+                      onChange={(e) => setM2Q6(e.target.value)}
+                      placeholder="Describe your action and what you tell the classmate..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Q7 (Reflection): What is the difference between letting AI do the thinking for you (keeps you dependent) and using AI to build a custom study tool (makes you a creator)?</label>
+                    <textarea
+                      required
+                      disabled={isLocked}
+                      value={m2Q7}
+                      onChange={(e) => setM2Q7(e.target.value)}
+                      placeholder="Reflect on dependency vs creator mindset..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Upload Zone for error_review */}
+              <div className="border-t border-slate-800/80 pt-6 space-y-4">
+                <p className="text-slate-500 font-mono text-xs uppercase tracking-widest">&gt; Upload Attachment (Optional)</p>
+                <ArtifactUploadZone
+                  studentId={studentId}
+                  moduleId={moduleId}
+                  artifactType="error_review"
+                  initialFile={errorReviewFile}
+                  status={artifactStatus}
+                  onUploadComplete={(file) => setErrorReviewFile(file)}
+                  onFileDelete={() => setErrorReviewFile(null)}
+                />
+              </div>
             </div>
           </>
+
         ) : (
           <>
             {/* UPLOAD WORKSHEET CARD FOR MODULES 3 TO 10 */}

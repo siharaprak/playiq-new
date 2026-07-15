@@ -554,7 +554,7 @@ export default function OrionAssessment({
           {schoolQuestionStep === 0 && (
             <div className="assessment-form-section">
               <p className="text-base leading-relaxed mb-5" style={{ color: 'var(--text-primary)' }}>
-                &ldquo;What&apos;s one subject where you feel lost or behind right now?&rdquo;
+                What&apos;s one subject where you feel lost or behind right now?
               </p>
               <input
                 type="text"
@@ -578,7 +578,7 @@ export default function OrionAssessment({
           {schoolQuestionStep === 1 && (
             <div className="assessment-form-section">
               <p className="text-base leading-relaxed mb-5" style={{ color: 'var(--text-primary)' }}>
-                &ldquo;What&apos;s one subject you&apos;re actually decent at — or want to get way better at?&rdquo;
+                What&apos;s one subject you&apos;re actually decent at — or want to get way better at?
               </p>
               <input
                 type="text"
@@ -602,7 +602,7 @@ export default function OrionAssessment({
           {schoolQuestionStep === 2 && (
             <div className="assessment-form-section">
               <p className="text-base leading-relaxed mb-5" style={{ color: 'var(--text-primary)' }}>
-                &ldquo;If PlayIQ could do one thing for you — what would it be?&rdquo;
+                If PlayIQ could do one thing for you — what would it be?
               </p>
               <input
                 type="text"
@@ -700,7 +700,7 @@ export default function OrionAssessment({
               </div>
 
               <p className="text-sm italic text-center mb-6" style={{ color: 'var(--text-muted)' }}>
-                &ldquo;{ORION_VISION_LINES[1]}&rdquo;
+                {ORION_VISION_LINES[1]}
               </p>
 
               <button

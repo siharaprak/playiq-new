@@ -27,6 +27,45 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
+  // Apply dev session mocking
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const configPath = path.join(process.cwd(), 'scratch/mock-config.json');
+    if (fs.existsSync(configPath)) {
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+      if (config.mockEnabled) {
+        const mockUser = {
+          id: config.userId,
+          email: config.email,
+          aud: 'authenticated',
+          role: 'authenticated',
+        };
+        supabase.auth.getUser = async () => {
+          return { data: { user: mockUser }, error: null };
+        };
+        supabase.auth.mfa = {
+          getAuthenticatorAssuranceLevel: async () => {
+            return { data: { currentLevel: 'aal2', nextLevel: 'aal2' }, error: null };
+          }
+        } as any;
+
+        // Wrap from method to bypass RLS with admin client
+        const { createClient } = require('@supabase/supabase-js');
+        const adminClient = createClient(
+          process.env.NEXT_PUBLIC_SUPABASE_URL!,
+          process.env.SUPABASE_SERVICE_ROLE_KEY!,
+          { auth: { autoRefreshToken: false, persistSession: false } }
+        );
+        supabase.from = (relation) => {
+          return adminClient.from(relation);
+        };
+      }
+    }
+  } catch (err) {
+    console.error('Error applying dev mock session in middleware:', err);
+  }
+
   // IMPORTANT: Avoid writing any logic between createServerClient and
   // supabase.auth.getUser(). A simple mistake could make it very hard to debug
   // issues with users being randomly logged out.

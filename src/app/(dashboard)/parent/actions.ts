@@ -17,6 +17,18 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     return { error: 'Password must be at least 6 characters.' };
   }
 
+  if (!username.includes('@')) {
+    if (username.trim() !== username) {
+      return { error: 'Username handle cannot start or end with spaces.' };
+    }
+    if (/\s/.test(username)) {
+      return { error: 'Username handle cannot contain spaces. Use underscores (_) or hyphens (-) instead.' };
+    }
+    if (!/^[a-zA-Z0-9_\-]+$/.test(username)) {
+      return { error: 'Username handle can only contain letters, numbers, underscores, and hyphens.' };
+    }
+  }
+
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
     return { error: 'Server configuration error. Please contact support.' };
   }

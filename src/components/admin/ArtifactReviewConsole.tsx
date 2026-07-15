@@ -353,6 +353,76 @@ export default function ArtifactReviewConsole({ initialSubmissions }: ArtifactRe
                     </div>
                   </div>
                 )
+              ) : selectedSubmission.module_id === '1d711232-e906-468c-9f32-ef8d0c7aa0b9' ? (
+                // MODULE 2 SPECIFIC SUBMISSION PREVIEW
+                selectedSubmission.artifact_type === 'study_rules' ? (
+                  <div className="space-y-4 bg-black/40 border border-slate-800/80 p-4 font-mono text-xs text-slate-300">
+                    <div>
+                      <p className="text-[#00c8ff] uppercase text-[9px] font-bold block mb-1">&gt; PART 1: THE POWER TOOL PRINCIPLE</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q1a (Superpower identification):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m2Q1Superpower || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q1b (Superweapon identification):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m2Q1Superweapon || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#00c8ff] uppercase text-[9px] font-bold block mb-1">&gt; PART 2: AI DETECTORS &amp; SCHOOL POLICIES</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q2 (Detector Trap — false positives &amp; voice protection):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m2Q2 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q3 (School Policy Variance — translation scenario):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m2Q3 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#00c8ff] uppercase text-[9px] font-bold block mb-1">&gt; PART 3: MID-MODULE CHECK-IN &amp; ATTENTION TRAPS</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q4a (Trap Audit — Rest vs Escape analysis):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m2Q4Analysis || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q4b (Friction point boundary):</p>
+                          <p className="text-slate-200 pl-2">"{selectedSubmission.content_payload?.m2Q4Boundary || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4 bg-black/40 border border-slate-800/80 p-4 font-mono text-xs text-slate-300">
+                    <div>
+                      <p className="text-[#7b4fce] uppercase text-[9px] font-bold block mb-1">&gt; PART 4: THE HIGHEST PATH TEST</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q5 (Lab Report — Highest Path decision + partner response):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m2Q5 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="border-t border-slate-800/60 pt-3">
+                      <p className="text-[#7b4fce] uppercase text-[9px] font-bold block mb-1">&gt; PART 5: SOCIAL POWER &amp; APPLIED ETHICS</p>
+                      <div className="pl-3 border-l border-slate-800 space-y-2">
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q6 (Pause Before Share — preventing digital harm):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m2Q6 || '—'}"</p>
+                        </div>
+                        <div>
+                          <p className="text-[10px] text-slate-500">Q7 (Reflection — AI dependency vs. creator mindset):</p>
+                          <p className="text-slate-300 pl-2">"{selectedSubmission.content_payload?.m2Q7 || '—'}"</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
               ) : selectedSubmission.artifact_type === 'study_rules' ? (
                 <div className="space-y-3.5 bg-black/40 border border-slate-800/80 p-4 font-mono text-xs text-slate-300">
                   <div>

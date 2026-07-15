@@ -279,8 +279,9 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                           ${app.status === 'canceled' ? 'text-red-400 border border-red-400 bg-red-400/10' : ''}
                           ${app.status === 'pending' ? 'text-slate-400 border border-slate-600 bg-slate-800' : ''}
                           ${app.status === 'fulfilled' ? 'text-[#00c8ff] border border-[#00c8ff] bg-[#00c8ff]/10' : ''}
+                          ${app.status === 'fulfilled_promo' ? 'text-[#7b4fce] border border-[#7b4fce] bg-[#7b4fce]/10' : ''}
                         `}>
-                          {app.status === 'checkout_started' ? 'Processing' : app.status}
+                          {app.status === 'checkout_started' ? 'Processing' : app.status === 'fulfilled_promo' ? 'promo' : app.status}
                         </span>
                       </td>
                       <td className="px-6 py-4 text-slate-500 text-xs tracking-wider">
