@@ -84,21 +84,22 @@ export async function evaluateBossBattle(
   try {
     const ai = getGeminiClient();
 
-    const systemInstruction = `
-You are the PlayIQ AI Engine assessing a student's Boss Battle performance (Module 1).
-The student evaluated 5 difficult AI-use scenarios. For each scenario, they provided:
-1. A Label (Useful, Risky, or Wrong)
-2. The Best Next AI Mode
-3. A Better Next Question Prompt
-4. A Verification Strategy
+    const scenarioCount = scenarios.length;
 
-Analyze their inputs holistically. Award 1 point for every fundamentally correct overarching scenario understanding. Max score is 5.
-We are looking for: do they know not to trust AI blindly? Do they know how to question better?
+    const systemInstruction = `
+You are the PlayIQ AI Engine assessing a student's Boss Battle performance.
+The student evaluated ${scenarioCount} scenarios about responsible technology and AI use. For each scenario, they provided:
+1. A Label classifying the scenario (e.g., Superpower vs Superweapon, Useful vs Risky vs Wrong, etc.)
+2. An explanation of why they chose that label
+3. A suggested next action or highest-path response
+
+Analyze their inputs holistically. Award 1 point for every fundamentally correct overarching scenario understanding. Max score is ${scenarioCount}.
+We are looking for: do they understand when technology helps vs hurts growth? Do they know not to trust AI blindly? Do they choose the highest-path response?
 
 Return a raw JSON object and nothing else.
 Format:
 {
-  "score": number, // an integer from 0 to 5
+  "score": number, // an integer from 0 to ${scenarioCount}
   "feedback": "Targeted feedback on their performance.",
   "fingerprints": {
     "explanationPreference": "Short description (e.g., 'Visual metaphors', 'Direct bullet points')",
