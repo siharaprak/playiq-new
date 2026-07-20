@@ -23,10 +23,22 @@ export async function submitBetaApplication(data: BetaApplicationData) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
-  const headersList = await headers();
-  const host = headersList.get('host') || 'localhost:3000';
-  const protocol = host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https';
-  const appDomain = `${protocol}://${host}`;
+  // Prefer NEXT_PUBLIC_APP_URL for absolute URLs (e.g. Stripe redirects) to
+  // avoid constructing a raw Cloud Run URL that bypasses Firebase's CDN and
+  // gets rejected by Cloud Run IAM.
+  let appDomain = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '');
+  if (!appDomain) {
+    const headersList = await headers();
+    // x-forwarded-host carries the original public-facing domain when running
+    // behind Firebase App Hosting / Cloud Run's load balancer. Fall back to
+    // host only for local dev where there is no proxy.
+    const host = headersList.get('x-forwarded-host')
+      || headersList.get('host')
+      || 'localhost:3000';
+    const protocol = headersList.get('x-forwarded-proto')
+      || (host.includes('localhost') || host.includes('127.0.0.1') ? 'http' : 'https');
+    appDomain = `${protocol}://${host}`;
+  }
 
   const stripeSecret = process.env.STRIPE_SECRET_KEY;
   const priceId = process.env.STRIPE_BETA_PRICE_ID; 
@@ -62,7 +74,7 @@ export async function submitBetaApplication(data: BetaApplicationData) {
   if (isPromoBypass) {
     return {
       success: true,
-      redirectUrl: `${appDomain}/signup?beta=success`
+      redirectUrl: `/signup?beta=success`
     };
   }
 
