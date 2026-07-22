@@ -13,7 +13,7 @@ export default function Beta() {
             APPLY FOR PILOT
           </h1>
           <p className="font-mono text-sm max-w-2xl mx-auto text-slate-400 capitalize bg-black/40 p-4 border border-[rgba(0,200,255,0.2)]">
-            <span className="text-white font-bold">WARNING: SPOT LIMIT REACHED SOON.</span> We are opening exactly <strong>25 spots</strong> for the inaugural launch of Course 1 to calibrate system endpoints.
+            <span className="text-white font-bold">WARNING: SPOT LIMIT REACHED SOON.</span> We are opening exactly <strong>50 spots</strong> for the inaugural launch of Course 1 to calibrate system endpoints.
           </p>
         </section>
 

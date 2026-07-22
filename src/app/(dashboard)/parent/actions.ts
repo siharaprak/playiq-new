@@ -69,11 +69,13 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     return { error: 'Parent session expired during provisioning. Please log in again.' };
   }
 
-  const { data: betaApp } = await adminClient
+  const { data: betaApp } = parentSession.user?.email ? await adminClient
     .from('beta_applications')
     .select('child_age_band')
-    .eq('email', parentSession.user.email)
-    .maybeSingle();
+    .ilike('email', parentSession.user.email.trim())
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle() : { data: null };
 
   // Map the child age band to learning level
   let initialLevel: 'elementary' | 'middle' | 'high' | 'adult' = 'high';

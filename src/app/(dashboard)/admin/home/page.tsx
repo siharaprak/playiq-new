@@ -48,6 +48,48 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
     supabaseAdmin.from('discussion_reports').select('id', { count: 'exact', head: true }),
   ]);
 
+  // Fetch linked student accounts for applications (case-insensitive)
+  const { data: parentProfiles } = await supabaseAdmin
+    .from('profiles')
+    .select('id, email')
+    .eq('role', 'parent');
+
+  const parentIdToEmail: Record<string, string> = {};
+  const parentIds: string[] = [];
+  for (const p of (parentProfiles || [])) {
+    if (p.email) {
+      const cleanEm = p.email.trim().toLowerCase();
+      parentIdToEmail[p.id] = cleanEm;
+      parentIds.push(p.id);
+    }
+  }
+
+  const { data: parentChildLinks } = parentIds.length > 0 ? await supabaseAdmin
+    .from('parent_child_links')
+    .select('parent_id, student_id')
+    .in('parent_id', parentIds) : { data: [] };
+
+  const studentIds = Array.from(new Set((parentChildLinks || []).map((l: any) => l.student_id)));
+  const { data: studentProfiles } = studentIds.length > 0 ? await supabaseAdmin
+    .from('profiles')
+    .select('id, full_name, email')
+    .in('id', studentIds) : { data: [] };
+
+  const studentMap: Record<string, { id: string; name: string; email: string }> = {};
+  for (const s of (studentProfiles || [])) {
+    studentMap[s.id] = { id: s.id, name: s.full_name || s.email || 'Student', email: s.email };
+  }
+
+  const emailToStudentsMap: Record<string, { name: string; email: string }[]> = {};
+  for (const link of (parentChildLinks || [])) {
+    const parentEmail = parentIdToEmail[link.parent_id];
+    if (parentEmail) {
+      if (!emailToStudentsMap[parentEmail]) emailToStudentsMap[parentEmail] = [];
+      const st = studentMap[link.student_id];
+      if (st) emailToStudentsMap[parentEmail].push(st);
+    }
+  }
+
   // Query dynamic derived alerts (no PII or custom prompts returned)
   const dynamicAlerts = await getDynamicOpsAlerts();
 
@@ -76,7 +118,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Beta Intake Capacity</p>
              </div>
              <div>
-               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{totalCount} <span className="text-sm text-slate-500">/ 25</span></p>
+               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{totalCount} <span className="text-sm text-slate-500">/ 50</span></p>
              </div>
            </div>
            
@@ -259,6 +301,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                   <tr>
                     <th className="px-6 py-4">Sponsor/Parent</th>
                     <th className="px-6 py-4">Target Email</th>
+                    <th className="px-6 py-4">Linked Students</th>
                     <th className="px-6 py-4">Age Bracket</th>
                     <th className="px-6 py-4">Geo_Zip</th>
                     <th className="px-6 py-4">Status</th>
@@ -266,29 +309,45 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                   </tr>
                 </thead>
                 <tbody>
-                  {(applications || []).map((app: any) => (
-                    <tr key={app.id} className="border-b border-slate-800 hover:bg-white/5 transition-colors">
-                      <td className="px-6 py-4 text-slate-200">{app.parent_full_name}</td>
-                      <td className="px-6 py-4 text-slate-400 text-xs">{app.email}</td>
-                      <td className="px-6 py-4 text-[#00c8ff]">{app.child_age_band}</td>
-                      <td className="px-6 py-4 text-slate-400">{app.shipping_zip_code}</td>
-                      <td className="px-6 py-4">
-                        <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest 
-                          ${app.status === 'paid' ? 'text-emerald-400 border border-emerald-400 bg-emerald-400/10' : ''}
-                          ${app.status === 'checkout_started' ? 'text-amber-400 border border-amber-400 bg-amber-400/10' : ''}
-                          ${app.status === 'canceled' ? 'text-red-400 border border-red-400 bg-red-400/10' : ''}
-                          ${app.status === 'pending' ? 'text-slate-400 border border-slate-600 bg-slate-800' : ''}
-                          ${app.status === 'fulfilled' ? 'text-[#00c8ff] border border-[#00c8ff] bg-[#00c8ff]/10' : ''}
-                          ${app.status === 'fulfilled_promo' ? 'text-[#7b4fce] border border-[#7b4fce] bg-[#7b4fce]/10' : ''}
-                        `}>
-                          {app.status === 'checkout_started' ? 'Processing' : app.status === 'fulfilled_promo' ? 'promo' : app.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 text-slate-500 text-xs tracking-wider">
-                        {new Date(app.created_at).toISOString().split('T')[0]}
-                      </td>
-                    </tr>
-                  ))}
+                  {(applications || []).map((app: any) => {
+                    const linkedStudents = emailToStudentsMap[app.email.toLowerCase()] || [];
+                    return (
+                      <tr key={app.id} className="border-b border-slate-800 hover:bg-white/5 transition-colors">
+                        <td className="px-6 py-4 text-slate-200">{app.parent_full_name}</td>
+                        <td className="px-6 py-4 text-slate-400 text-xs">{app.email}</td>
+                        <td className="px-6 py-4 text-xs font-mono">
+                          {linkedStudents.length > 0 ? (
+                            <span className="text-[#39ff14] font-bold flex items-center gap-1.5" title={linkedStudents.map(s => s.name).join(', ')}>
+                              <span className="w-1.5 h-1.5 rounded-full bg-[#39ff14] inline-block animate-pulse" />
+                              {linkedStudents.length} {linkedStudents.length === 1 ? 'Student' : 'Students'}
+                              <span className="text-slate-400 text-[10px] font-normal font-sans ml-1">
+                                ({linkedStudents.map(s => s.name).join(', ')})
+                              </span>
+                            </span>
+                          ) : (
+                            <span className="text-slate-600 italic">0 enrolled</span>
+                          )}
+                        </td>
+                        <td className="px-6 py-4 text-[#00c8ff]">{app.child_age_band}</td>
+                        <td className="px-6 py-4 text-slate-400">{app.shipping_zip_code}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest 
+                            ${app.status === 'paid' ? 'text-emerald-400 border border-emerald-400 bg-emerald-400/10' : ''}
+                            ${app.status === 'checkout_started' ? 'text-amber-400 border border-amber-400 bg-amber-400/10' : ''}
+                            ${app.status === 'canceled' ? 'text-red-400 border border-red-400 bg-red-400/10' : ''}
+                            ${app.status === 'pending' ? 'text-slate-400 border border-slate-600 bg-slate-800' : ''}
+                            ${app.status === 'fulfilled' ? 'text-[#00c8ff] border border-[#00c8ff] bg-[#00c8ff]/10' : ''}
+                            ${app.status === 'fulfilled_promo' ? 'text-[#7b4fce] border border-[#7b4fce] bg-[#7b4fce]/10' : ''}
+                          `}>
+                            {app.status === 'checkout_started' ? 'Processing' : app.status === 'fulfilled_promo' ? 'promo' : app.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-slate-500 text-xs tracking-wider">
+                          {new Date(app.created_at).toISOString().split('T')[0]}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>

@@ -301,7 +301,7 @@ export default function Home() {
               <div className="text-xs text-[#00c8ff] font-bold uppercase mb-2">[ PILOT COHORT ]</div>
               <h4 className="text-xl text-white font-bold mb-4 uppercase">Early Access Free Tier</h4>
               <p className="text-xs text-slate-400 uppercase leading-relaxed mb-6">
-                Exactly 25 spots available. Includes a full 12-week software license, custom AI mentor creation, and live Parent Proof Packet dashboard access.
+                Exactly 50 spots available. Includes a full 12-week software license, custom AI mentor creation, and live Parent Proof Packet dashboard access.
               </p>
               <div className="text-lg text-[#00c8ff] font-bold uppercase tracking-widest">$0 / MONTH</div>
             </div>

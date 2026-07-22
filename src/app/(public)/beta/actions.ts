@@ -53,21 +53,50 @@ export async function submitBetaApplication(data: BetaApplicationData) {
     return { success: false, message: "That access code is invalid. Please double-check and try again." };
   }
 
-  const { data: insertData, error } = await supabaseAdmin
-     .from('beta_applications')
-     .insert({
-       parent_full_name: parsed.data.parentFullName,
-       email: parsed.data.emailAddress,
-       child_age_band: parsed.data.childAge,
-       shipping_zip_code: parsed.data.shippingZipCode,
-       status: isPromoBypass ? 'fulfilled_promo' : ((stripeSecret && priceId) ? 'checkout_started' : 'pending'),
-       source: 'web_form'
-     })
-     .select();
+  const cleanEmail = parsed.data.emailAddress.trim().toLowerCase();
 
-  if (error) {
-     console.error("Supabase Insertion Error:", error);
-     return { success: false, message: "We encountered an issue saving your application. Please try again later." };
+  // Check if an application already exists for this email
+  const { data: existingApp } = await supabaseAdmin
+    .from('beta_applications')
+    .select('id, status')
+    .ilike('email', cleanEmail)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  let applicationId: string;
+
+  if (existingApp) {
+    applicationId = existingApp.id;
+    const newStatus = isPromoBypass ? 'fulfilled_promo' : ((stripeSecret && priceId) ? 'checkout_started' : existingApp.status);
+    await supabaseAdmin
+      .from('beta_applications')
+      .update({
+        parent_full_name: parsed.data.parentFullName,
+        email: cleanEmail,
+        child_age_band: parsed.data.childAge,
+        shipping_zip_code: parsed.data.shippingZipCode,
+        status: newStatus,
+      })
+      .eq('id', existingApp.id);
+  } else {
+    const { data: insertData, error } = await supabaseAdmin
+       .from('beta_applications')
+       .insert({
+         parent_full_name: parsed.data.parentFullName,
+         email: cleanEmail,
+         child_age_band: parsed.data.childAge,
+         shipping_zip_code: parsed.data.shippingZipCode,
+         status: isPromoBypass ? 'fulfilled_promo' : ((stripeSecret && priceId) ? 'checkout_started' : 'pending'),
+         source: 'web_form'
+       })
+       .select();
+
+    if (error) {
+       console.error("Supabase Insertion Error:", error);
+       return { success: false, message: "We encountered an issue saving your application. Please try again later." };
+    }
+    applicationId = insertData?.[0]?.id;
   }
 
   // Bypass Stripe if valid promo code
@@ -101,8 +130,8 @@ export async function submitBetaApplication(data: BetaApplicationData) {
       mode: 'payment',
       success_url: `${appDomain}/signup?beta=success`,
       cancel_url: `${appDomain}/beta?canceled=true`,
-      customer_email: parsed.data.emailAddress,
-      client_reference_id: insertData ? (insertData as any)[0]?.id : undefined,
+      customer_email: cleanEmail,
+      client_reference_id: applicationId,
     });
 
     return {
