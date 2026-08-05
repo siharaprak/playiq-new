@@ -69,6 +69,10 @@ export default async function StudentDashboard() {
     .eq('student_id', user.id)
     .maybeSingle();
 
+  if (profile?.role === 'student' && !assessmentProfile?.assessment_completed) {
+    redirect('/student/assessment');
+  }
+
   // Fetch all progress at once
   const { data: allProgress } = await supabase
     .from('student_node_progress')
