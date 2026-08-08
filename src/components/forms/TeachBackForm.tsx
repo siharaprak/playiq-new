@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useActionState } from 'react';
+import React, { useActionState, useRef } from 'react';
+import { useFormAutoSave } from '@/hooks/useFormAutoSave';
 
 interface TeachBackFormProps {
   nodeId: string;
@@ -12,9 +13,12 @@ export function TeachBackForm({ nodeId, prompt, submitAction }: TeachBackFormPro
   // Bind the static arguments to the passed-in server action
   const boundAction = submitAction.bind(null, nodeId, prompt);
   const [state, formAction, isPending] = useActionState(boundAction, null);
+  const formRef = useRef<HTMLFormElement>(null);
+  
+  useFormAutoSave(`teachback-autosave-${nodeId}`, formRef);
 
   return (
-    <form action={formAction}>
+    <form ref={formRef} action={formAction}>
       {state?.error && (
         <div className="mb-6 p-5 bg-red-950/60 border-2 border-red-500 rounded-xl text-red-100 text-sm font-mono break-words leading-relaxed shadow-[0_0_15px_rgba(239,68,68,0.25)] flex items-start gap-4 animate-pulse-subtle">
           <span className="text-2xl shrink-0 mt-0.5 text-red-500">⚠️</span>

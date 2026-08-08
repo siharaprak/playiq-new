@@ -1,13 +1,17 @@
 'use client';
 
-import React, { useActionState } from 'react';
+import React, { useActionState, useRef } from 'react';
 import { submitBossBattleAction } from '@/app/(dashboard)/student/modules/1/actions';
+import { useFormAutoSave } from '@/hooks/useFormAutoSave';
 
 export function BossBattleForm() {
   const [state, formAction, isPending] = useActionState(submitBossBattleAction, null);
+  const formRef = useRef<HTMLFormElement>(null);
+  
+  useFormAutoSave('bossbattle-autosave-m1', formRef);
 
   return (
-    <form action={formAction} className="space-y-12 mt-12">
+    <form ref={formRef} action={formAction} className="space-y-12 mt-12">
       {state?.error && (
         <div className="mb-6 p-6 bg-red-900/40 border-2 border-red-500 rounded-xl text-red-200 text-sm font-mono break-words leading-relaxed shadow-[0_0_20px_rgba(255,0,0,0.3)] animate-pulse">
           <p className="font-bold text-red-400 mb-2 uppercase tracking-widest text-lg">&gt; CRITICAL EVALUATION FAILURE</p>

@@ -345,6 +345,25 @@ export default function StudentModuleArtifactsContainer({
     }
   };
 
+  // Debounced auto-save effect
+  useEffect(() => {
+    // Only auto-save if we are in draft mode and not already saving/loading
+    if (loading || isLocked || artifactStatus === 'approved') return;
+
+    // Use a 5-second debounce to save to backend silently
+    const timeoutId = setTimeout(() => {
+      handleSaveDraft(false); // false = silent save without banner
+    }, 5000);
+
+    return () => clearTimeout(timeoutId);
+  }, [
+    loading, isLocked, artifactStatus,
+    m1Q1Choice, m1Q1Explanation, m1Q2Use, m1Q2Explanation, m1Q3Use, m1Q3Explanation,
+    m1Q4, m1Q5, m1Q6, m1Q7, m1Q8, m1Q9, m1Q10, m1Q11, m1Q12, m1Q13, m1Q14, m1Q15,
+    m1Q16, m1Q17, m1Q18, m1Q19, m1Q20, m1Q21, m2Q1Superpower, m2Q1Superweapon,
+    m2Q2, m2Q3, m2Q4Analysis, m2Q4Boundary, m2Q5, m2Q6, m2Q7
+  ]);
+
   // Core handler to finalize submissions
   const handleSubmitReview = async (e: React.FormEvent) => {
     e.preventDefault();
