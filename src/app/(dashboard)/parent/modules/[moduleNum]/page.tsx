@@ -3,7 +3,8 @@ import { createClient as createAdminClient } from '@supabase/supabase-js';
 import { redirect, notFound } from 'next/navigation';
 import Link from 'next/link';
 import { MODULES } from '@/lib/constants';
-import { ArrowLeft, CheckCircle2, XCircle, FileText, Brain, Shield } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, XCircle, FileText, Brain, Shield, Clock, Target, Lightbulb } from 'lucide-react';
+import { getModuleTelemetry } from '@/lib/data/progress-rollups';
 
 export const dynamic = 'force-dynamic';
 
@@ -68,6 +69,7 @@ export default async function ParentModuleReportPage({
   let assessments: any[] = [];
   let artifacts: any[] = [];
   let signals: any[] = [];
+  let telemetry = { time_logged_minutes: 0, hints_utilized: 0, resilience_score: 0 };
 
   if (studentId) {
     const [progRes, assmRes, artRes, sigRes] = await Promise.all([
@@ -80,6 +82,7 @@ export default async function ParentModuleReportPage({
     assessments = assmRes.data || [];
     artifacts = artRes.data || [];
     signals = sigRes.data || [];
+    telemetry = await getModuleTelemetry(studentId, moduleId);
   }
 
   const quiz = assessments.find((a: any) => a.assessment_type === 'module_quiz');
@@ -157,87 +160,39 @@ export default async function ParentModuleReportPage({
           {/* Left column: Progress + Assessments + Artifacts */}
           <div className="lg:col-span-2 space-y-6">
 
-            {/* Node Progress */}
+            {/* Improvement Signals (replaces raw node tracking) */}
             <div className="glass-card p-6 md:p-8 !rounded-none border border-slate-800">
               <h2 className="font-display font-bold text-lg text-[var(--text-primary)] uppercase tracking-widest mb-1 flex items-center gap-2">
                 <Shield className="w-5 h-5 text-[#00c8ff]" />
-                Node Progress
+                Improvement Signals
               </h2>
               <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-6">
-                {totalNodes} nodes in this module
+                High-level telemetry and resilience
               </p>
 
-              {/* Horizontal Node Path Pipeline */}
-              <div className="bg-black/40 border border-slate-900 p-6 mb-6 flex flex-col items-center justify-center">
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-5">
-                  Node Completion Pipeline
-                </p>
-                <div className="flex items-center w-full max-w-md justify-between relative px-4">
-                  {/* Line under the nodes */}
-                  <div className="absolute top-1/2 left-4 right-4 h-0.5 bg-slate-800 transform -translate-y-1/2 z-0" />
-                  
-                  {Array.from({ length: totalNodes }, (_, i) => {
-                    const nodeId = String(i + 1);
-                    const nodeProgress = progress.find((p: any) => p.node_id === nodeId);
-                    const mastered = nodeProgress?.node_mastered === true;
-                    
-                    return (
-                      <div key={nodeId} className="relative z-10 flex flex-col items-center group">
-                        <title>{`Node ${nodeId}: ${mastered ? 'Mastered' : 'Incomplete'}`}</title>
-                        <div
-                          className={`w-10 h-10 rounded-full flex items-center justify-center font-mono text-xs font-bold transition-all duration-300 ${
-                            mastered
-                              ? 'bg-[#39ff14]/10 text-[#39ff14] border-2 border-[#39ff14] shadow-[0_0_12px_rgba(57,255,20,0.4)]'
-                              : 'bg-slate-950 text-slate-600 border-2 border-slate-850'
-                          }`}
-                        >
-                          N{nodeId}
-                        </div>
-                        <span className={`text-[8px] font-mono mt-1.5 uppercase tracking-wider ${mastered ? 'text-[#39ff14]' : 'text-slate-500'}`}>
-                          {mastered ? 'Done' : 'Pending'}
-                        </span>
-                      </div>
-                    );
-                  })}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="bg-black/40 border border-slate-900 p-6 flex flex-col items-center justify-center text-center">
+                  <Clock className="w-6 h-6 text-[#00c8ff] mb-3" />
+                  <p className="text-2xl font-display font-black text-[#00c8ff]">{telemetry.time_logged_minutes}m</p>
+                  <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest mt-1">Active Time Logged</p>
+                </div>
+                
+                <div className="bg-black/40 border border-slate-900 p-6 flex flex-col items-center justify-center text-center">
+                  <Lightbulb className="w-6 h-6 text-[#f5c518] mb-3" />
+                  <p className="text-2xl font-display font-black text-[#f5c518]">{telemetry.hints_utilized}</p>
+                  <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest mt-1">Hints Utilized (Resourcefulness)</p>
+                </div>
+
+                <div className="bg-black/40 border border-slate-900 p-6 flex flex-col items-center justify-center text-center">
+                  <Target className="w-6 h-6 text-[#39ff14] mb-3" />
+                  <p className="text-2xl font-display font-black text-[#39ff14]">{telemetry.resilience_score}</p>
+                  <p className="text-[9px] font-mono text-slate-500 uppercase tracking-widest mt-1">Attempts (Resilience)</p>
                 </div>
               </div>
-
-              {/* Detailed Node list */}
-              <div className="space-y-3">
-                {Array.from({ length: totalNodes }, (_, i) => {
-                  const nodeId = String(i + 1);
-                  const nodeProgress = progress.find((p: any) => p.node_id === nodeId);
-                  const mastered = nodeProgress?.node_mastered === true;
-
-                  return (
-                    <div
-                      key={nodeId}
-                      className="flex items-center gap-3 px-4 py-3 font-mono text-sm"
-                      style={{
-                        background: mastered ? 'rgba(57,255,20,0.05)' : 'rgba(0,0,0,0.3)',
-                        border: `1px solid ${mastered ? 'rgba(57,255,20,0.2)' : 'rgba(51,65,85,0.5)'}`,
-                      }}
-                    >
-                      {mastered ? (
-                        <CheckCircle2 className="w-4.5 h-4.5 flex-shrink-0" style={{ color: '#39ff14' }} />
-                      ) : (
-                        <XCircle className="w-4.5 h-4.5 flex-shrink-0" style={{ color: '#475569' }} />
-                      )}
-                      <span
-                        className="uppercase tracking-wider text-xs"
-                        style={{ color: mastered ? '#39ff14' : '#64748b' }}
-                      >
-                        Node {nodeId}
-                      </span>
-                      <span
-                        className="ml-auto text-[10px] uppercase tracking-widest font-bold"
-                        style={{ color: mastered ? '#39ff14' : '#334155' }}
-                      >
-                        {mastered ? 'Mastered' : 'Not Mastered'}
-                      </span>
-                    </div>
-                  );
-                })}
+              <div className="mt-4 p-3 bg-slate-900/50 border border-slate-800/80">
+                <p className="text-[10px] font-mono text-slate-400 uppercase tracking-widest leading-relaxed">
+                  <span className="text-[#00c8ff] font-bold">Privacy Note:</span> To encourage risk-taking and a safe space for learning, we do not show raw trial-and-error problem sets. Instead, we highlight these high-level signals of effort and resourcefulness.
+                </p>
               </div>
             </div>
 
@@ -337,13 +292,13 @@ export default async function ParentModuleReportPage({
             <div className="glass-card p-6 md:p-8 !rounded-none border border-slate-800">
               <h2 className="font-display font-bold text-lg text-[var(--text-primary)] uppercase tracking-widest mb-1 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#7b4fce]" />
-                Proof Artifacts
+                Final Proof Packets
               </h2>
               <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-6">
-                Submitted work and deliverables
+                Approved work and deliverables
               </p>
 
-              {artifacts.length === 0 ? (
+              {artifacts.filter(a => a.status === 'approved').length === 0 ? (
                 <div
                   className="text-center py-10 font-mono text-xs uppercase tracking-widest"
                   style={{
@@ -352,44 +307,55 @@ export default async function ParentModuleReportPage({
                     color: '#475569',
                   }}
                 >
-                  No artifacts submitted yet.
+                  No finalized proof packets yet. (Drafts are kept private).
                 </div>
               ) : (
-                <div className="space-y-3">
-                  {artifacts.map((art: any) => {
+                <div className="space-y-6">
+                  {artifacts.filter(a => a.status === 'approved').map((art: any) => {
                     const badge = getStatusBadge(art.status);
                     return (
                       <div
                         key={art.id}
-                        className="flex items-center justify-between gap-4 px-4 py-3"
+                        className="flex flex-col gap-4 px-4 py-4"
                         style={{
                           background: 'rgba(0,0,0,0.3)',
-                          border: '1px solid rgba(51,65,85,0.5)',
+                          border: '1px solid rgba(123,79,206,0.3)',
                         }}
                       >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <FileText className="w-4 h-4 flex-shrink-0" style={{ color: '#7b4fce' }} />
-                          <div className="min-w-0">
-                            <p className="font-mono text-xs text-[var(--text-primary)] uppercase tracking-wider truncate">
-                              {art.artifact_type?.replace(/_/g, ' ') || 'Artifact'}
-                            </p>
-                            {art.created_at && (
-                              <p className="text-[10px] font-mono text-slate-600 mt-0.5">
-                                {new Date(art.created_at).toLocaleDateString()}
+                        <div className="flex items-center justify-between gap-4 border-b border-slate-800 pb-3">
+                          <div className="flex items-center gap-3 min-w-0">
+                            <FileText className="w-4 h-4 flex-shrink-0" style={{ color: '#7b4fce' }} />
+                            <div className="min-w-0">
+                              <p className="font-mono text-xs text-[var(--text-primary)] uppercase tracking-wider truncate">
+                                {art.artifact_type?.replace(/_/g, ' ') || 'Artifact'}
                               </p>
-                            )}
+                              {art.created_at && (
+                                <p className="text-[10px] font-mono text-slate-600 mt-0.5">
+                                  Finalized {new Date(art.created_at).toLocaleDateString()}
+                                </p>
+                              )}
+                            </div>
                           </div>
+                          <span
+                            className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 flex-shrink-0"
+                            style={{
+                              color: badge.color,
+                              background: badge.bg,
+                              border: `1px solid ${badge.border}`,
+                            }}
+                          >
+                            {badge.label}
+                          </span>
                         </div>
-                        <span
-                          className="text-[10px] font-mono font-bold uppercase tracking-widest px-2.5 py-1 flex-shrink-0"
-                          style={{
-                            color: badge.color,
-                            background: badge.bg,
-                            border: `1px solid ${badge.border}`,
-                          }}
-                        >
-                          {badge.label}
-                        </span>
+                        <div className="font-sans text-sm text-slate-300 bg-slate-950 p-4 border border-slate-800 rounded-sm">
+                          {art.content_payload ? (
+                            <pre className="whitespace-pre-wrap font-sans">
+                              {JSON.stringify(art.content_payload, null, 2).replace(/[{}"]/g, '')}
+                            </pre>
+                          ) : (
+                            <span className="text-slate-500 italic">Artifact content is empty.</span>
+                          )}
+                        </div>
                       </div>
                     );
                   })}

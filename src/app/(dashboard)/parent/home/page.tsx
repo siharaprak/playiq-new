@@ -206,7 +206,7 @@ export default async function ParentDashboard({
   const primaryStudentId = studentIds[0];
   const primaryProgress = primaryStudentId ? (progressByStudent[primaryStudentId] || {}) : {};
   const totalMastered = Object.values(primaryProgress).reduce((a, b) => a + b, 0);
-  const overallPct = TOTAL_NODES > 0 ? Math.round((totalMastered / TOTAL_NODES) * 100) : 0;
+  const primaryPDI = rollups.length > 0 ? rollups[0].pdi_score : 0;
 
   let proofSummary = null;
   if (primaryStudentId) {
@@ -270,9 +270,9 @@ export default async function ParentDashboard({
           </div>
           <div className="hidden md:flex items-center gap-4">
             {rollups.length > 0 && (
-              <div className="glass-card px-4 py-2 border-l-2 border-[#00c8ff] text-center !rounded-none">
-                <p className="text-xl font-display font-black text-[#00c8ff]">{overallPct}%</p>
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Overall Progress</p>
+              <div className="glass-card px-4 py-2 border-l-2 border-[#f5c518] text-center !rounded-none">
+                <p className="text-xl font-display font-black text-[#f5c518]">{primaryPDI}</p>
+                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Fleet PDI Score</p>
               </div>
             )}
           </div>
@@ -370,12 +370,12 @@ export default async function ParentDashboard({
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 items-center justify-items-center bg-black/40 border border-slate-900 p-4">
                       <div className="sm:border-r sm:border-slate-800/80 w-full flex flex-col items-center justify-center py-1">
                         <AnimatedRadialProgress
-                          pct={studentPct}
+                          pct={child.pdi_score}
                           size={76}
                           strokeWidth={6}
-                          colorClass={studentPct >= 100 ? 'text-[#39ff14]' : 'text-[#00c8ff]'}
-                          centerText={`${studentPct}%`}
-                          label="Overall Progress"
+                          colorClass={child.pdi_score >= 80 ? 'text-[#f5c518]' : 'text-[#00c8ff]'}
+                          centerText={child.pdi_score.toString()}
+                          label="PDI Score"
                         />
                       </div>
 

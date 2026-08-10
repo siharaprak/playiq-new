@@ -35,8 +35,8 @@ export interface StudentProgressRollup {
   tutor_versions_count: number;
   assistant_profiles_count: number;
   assistant_versions_count: number;
-  discussion_topics_count: number;
   discussion_replies_count: number;
+  pdi_score: number;
 }
 
 export interface StudentModuleRollup {
@@ -84,6 +84,13 @@ export interface ParentChildSummary {
   tutor_build_status: 'none' | 'started' | 'has_version';
   assistant_build_status: 'none' | 'started' | 'has_version';
   flags: string[];
+  pdi_score: number;
+}
+
+export interface ModuleTelemetry {
+  time_logged_minutes: number;
+  hints_utilized: number;
+  resilience_score: number; // attempts on boss battle/mini check
 }
 
 // ---------------------------------------------------------------------------
@@ -95,6 +102,87 @@ const KNOWN_MODULE_NODE_COUNTS: Record<number, number> = {
 };
 const TOTAL_KNOWN_NODES = Object.values(KNOWN_MODULE_NODE_COUNTS).reduce((a, b) => a + b, 0);
 const TOTAL_MODULES = 10;
+
+// ---------------------------------------------------------------------------
+// Telemetry & PDI Helpers
+// ---------------------------------------------------------------------------
+
+/**
+ * Calculates the PDI (Performance & Dedication Index).
+ * Formula: 40% Effort (Nodes), 30% Accuracy (Assessments), 30% Mastery (Proofs).
+ */
+export async function getPDIForStudent(studentId: string): Promise<number> {
+  const { data: nodeProgress } = await supabaseAdmin
+    .from('student_node_progress')
+    .select('node_mastered')
+    .eq('student_id', studentId);
+    
+  const mastered = (nodeProgress ?? []).filter((n: any) => n.node_mastered).length;
+  const effortScore = TOTAL_KNOWN_NODES > 0 ? (mastered / TOTAL_KNOWN_NODES) * 100 : 0;
+
+  const { data: assessments } = await supabaseAdmin
+    .from('assessment_submissions')
+    .select('score_numeric, assessment_type')
+    .eq('student_id', studentId)
+    .in('assessment_type', ['mini_check', 'boss_battle']);
+    
+  let accuracyScore = 0;
+  if (assessments && assessments.length > 0) {
+    const sum = assessments.reduce((acc, curr) => acc + (Number(curr.score_numeric) || 0), 0);
+    // boss_battle is out of 5, mini_check is out of 100, we'll normalize everything roughly
+    // For simplicity of MVP, just average their raw percentages or out-of-5 to 100
+    let normalizedSum = 0;
+    assessments.forEach((a: any) => {
+      if (a.assessment_type === 'boss_battle') normalizedSum += ((Number(a.score_numeric) || 0) / 5) * 100;
+      else normalizedSum += Number(a.score_numeric) || 0;
+    });
+    accuracyScore = normalizedSum / assessments.length;
+  }
+
+  const { data: proofs } = await supabaseAdmin
+    .from('proof_artifact_submissions')
+    .select('status')
+    .eq('student_id', studentId);
+    
+  const proofTotal = proofs?.length || 0;
+  const proofApproved = proofs?.filter((p: any) => p.status === 'approved').length || 0;
+  const masteryScore = proofTotal > 0 ? (proofApproved / proofTotal) * 100 : 0;
+
+  return Math.round((effortScore * 0.4) + (accuracyScore * 0.3) + (masteryScore * 0.3));
+}
+
+/**
+ * Fetches real-time telemetry for a specific module
+ */
+export async function getModuleTelemetry(studentId: string, moduleId: string): Promise<ModuleTelemetry> {
+  // Approximate time from events_log (just counting events * 2 mins for MVP if no true duration exists)
+  // Or if we have actual timestamps, we could diff them. For MVP:
+  const { count: eventCount } = await supabaseAdmin
+    .from('events_log')
+    .select('id', { count: 'exact', head: true })
+    .eq('student_id', studentId)
+    .eq('module_id', moduleId); // Assuming events_log has module_id or target_id is node
+    
+  // hints utilized (checking fingerprint or events)
+  const { count: hintsCount } = await supabaseAdmin
+    .from('events_log')
+    .select('id', { count: 'exact', head: true })
+    .eq('student_id', studentId)
+    .eq('event_type', 'hint_requested' as any); // Might not exist, fallback to 0
+    
+  // attempts on assessments
+  const { count: attemptsCount } = await supabaseAdmin
+    .from('assessment_submissions')
+    .select('id', { count: 'exact', head: true })
+    .eq('student_id', studentId)
+    .eq('module_id', moduleId);
+
+  return {
+    time_logged_minutes: (eventCount || 0) * 2, // Mock 2 min per event logged
+    hints_utilized: hintsCount || 0,
+    resilience_score: attemptsCount || 0, // Number of attempts indicates resilience
+  };
+}
 
 // ---------------------------------------------------------------------------
 // Student rollups
@@ -223,6 +311,7 @@ export async function getStudentProgressRollup(
     assistant_versions_count: assistantVersions ?? 0,
     discussion_topics_count: topicsCount ?? 0,
     discussion_replies_count: repliesCount ?? 0,
+    pdi_score: await getPDIForStudent(studentId),
   };
 }
 
@@ -570,5 +659,6 @@ export async function getParentChildSummary(
     tutor_build_status: tutorStatus,
     assistant_build_status: assistantStatus,
     flags,
+    pdi_score: await getPDIForStudent(studentId),
   };
 }
