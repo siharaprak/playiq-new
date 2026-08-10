@@ -14,30 +14,41 @@ interface ModuleFeedbackFormProps {
 
 export default function ModuleFeedbackForm({ moduleId, initialFeedback }: ModuleFeedbackFormProps) {
   // Parse initial feedback fields if serialized as JSON
-  let initialQ1 = '';
   let initialQ2 = '';
   let initialQ3 = '';
+  let initialQ4 = '';
+  let initialQ5 = '';
 
   if (initialFeedback?.feedback_text) {
     try {
       const parsed = JSON.parse(initialFeedback.feedback_text);
       if (parsed && typeof parsed === 'object') {
-        initialQ1 = parsed.q1 || '';
-        initialQ2 = parsed.q2 || '';
-        initialQ3 = parsed.q3 || '';
+        // Handle old format (q1, q2, q3) by mapping to new format
+        if (parsed.q1 && !parsed.q4) {
+          initialQ2 = parsed.q1;
+          initialQ3 = parsed.q2 || '';
+          initialQ4 = ''; // Old Q2 was combined, so we leave Q4 empty or map Q2 to both. Leaving empty is safer.
+          initialQ5 = parsed.q3 || '';
+        } else {
+          initialQ2 = parsed.q2 || '';
+          initialQ3 = parsed.q3 || '';
+          initialQ4 = parsed.q4 || '';
+          initialQ5 = parsed.q5 || '';
+        }
       } else {
-        initialQ1 = initialFeedback.feedback_text;
+        initialQ2 = initialFeedback.feedback_text;
       }
     } catch (e) {
-      initialQ1 = initialFeedback.feedback_text;
+      initialQ2 = initialFeedback.feedback_text;
     }
   }
 
   const [rating, setRating] = useState<number>(initialFeedback?.rating ?? 0);
   const [hoveredRating, setHoveredRating] = useState<number | null>(null);
-  const [q1, setQ1] = useState<string>(initialQ1);
   const [q2, setQ2] = useState<string>(initialQ2);
   const [q3, setQ3] = useState<string>(initialQ3);
+  const [q4, setQ4] = useState<string>(initialQ4);
+  const [q5, setQ5] = useState<string>(initialQ5);
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -48,14 +59,14 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
       setError('Please select a rating (1-5 stars).');
       return;
     }
-    if (!q1.trim() || !q2.trim() || !q3.trim()) {
-      setError('Please answer all three feedback questions.');
+    if (!q2.trim() || !q3.trim() || !q4.trim() || !q5.trim()) {
+      setError('Please answer all four feedback questions.');
       return;
     }
 
     setError(null);
     startTransition(async () => {
-      const serializedText = JSON.stringify({ q1, q2, q3 });
+      const serializedText = JSON.stringify({ q2, q3, q4, q5 });
       const result = await submitModuleFeedback(moduleId, rating, serializedText);
       if (result.error) {
         setError(result.error);
@@ -90,7 +101,7 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
       style={{ background: 'rgba(17,24,39,0.85)' }}
     >
       <div className="absolute top-0 right-0 p-3 opacity-10 font-mono text-xs select-none">
-        BETA_FEEDBACK_PROTOCOL_v1.1
+        BETA_FEEDBACK_PROTOCOL_v2.0
       </div>
 
       <h3 className="text-lg font-bold uppercase tracking-wider mb-2 font-display text-glow-purple" style={{ color: 'var(--text-primary)' }}>
@@ -108,10 +119,10 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
           </div>
         )}
 
-        {/* Rating Select */}
+        {/* Question 1: Rating Select */}
         <div className="space-y-2">
           <label className="text-xs font-bold uppercase tracking-widest block font-mono" style={{ color: 'var(--text-primary)' }}>
-            System Rating
+            1. Overall, how much did you enjoy this module? (1-5)
           </label>
           <div className="flex items-center gap-3 py-1">
             {[1, 2, 3, 4, 5].map((star) => {
@@ -145,28 +156,10 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
           </div>
         </div>
 
-        {/* Question 1 */}
-        <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
-            1. Did this module teach you something meaningful, useful, or new about AI and learning? Why or why not?
-          </label>
-          <textarea
-            value={q1}
-            onChange={(e) => setQ1(e.target.value)}
-            disabled={isPending}
-            className="neon-input min-h-[80px] w-full bg-black/40 text-sm font-mono focus:border-[#7b4fce]"
-            placeholder="Type your answer here..."
-            maxLength={1000}
-          />
-          <div className="text-right text-[10px] font-mono text-slate-500">
-            {q1.length}/1000 CHARACTERS
-          </div>
-        </div>
-
         {/* Question 2 */}
         <div className="space-y-2">
           <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
-            2. Did the lessons feel clear and connected, or were there parts that felt confusing or boring?
+            2. Did this module teach you something meaningful, useful, or new about AI and learning? Why or why not?
           </label>
           <textarea
             value={q2}
@@ -184,7 +177,7 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
         {/* Question 3 */}
         <div className="space-y-2">
           <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
-            3. After finishing this module, are you interested in continuing to the next one? Why or why not?
+            3. Was anything confusing? What specifically?
           </label>
           <textarea
             value={q3}
@@ -196,6 +189,42 @@ export default function ModuleFeedbackForm({ moduleId, initialFeedback }: Module
           />
           <div className="text-right text-[10px] font-mono text-slate-500">
             {q3.length}/1000 CHARACTERS
+          </div>
+        </div>
+
+        {/* Question 4 */}
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
+            4. Did it feel boring or draggy anywhere? Where?
+          </label>
+          <textarea
+            value={q4}
+            onChange={(e) => setQ4(e.target.value)}
+            disabled={isPending}
+            className="neon-input min-h-[80px] w-full bg-black/40 text-sm font-mono focus:border-[#7b4fce]"
+            placeholder="Type your answer here..."
+            maxLength={1000}
+          />
+          <div className="text-right text-[10px] font-mono text-slate-500">
+            {q4.length}/1000 CHARACTERS
+          </div>
+        </div>
+
+        {/* Question 5 */}
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-wider block font-mono text-[var(--text-primary)]">
+            5. After finishing, are you interested in continuing to the next module? Why or why not?
+          </label>
+          <textarea
+            value={q5}
+            onChange={(e) => setQ5(e.target.value)}
+            disabled={isPending}
+            className="neon-input min-h-[80px] w-full bg-black/40 text-sm font-mono focus:border-[#7b4fce]"
+            placeholder="Type your answer here..."
+            maxLength={1000}
+          />
+          <div className="text-right text-[10px] font-mono text-slate-500">
+            {q5.length}/1000 CHARACTERS
           </div>
         </div>
 
