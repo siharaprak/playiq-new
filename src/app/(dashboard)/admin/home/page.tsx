@@ -22,7 +22,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   }
 
   // Fetch Beta Applications - optimize with limit and explicit fields
-  let query = supabaseAdmin.from('beta_applications').select('id, parent_full_name, email, child_age_band, shipping_zip_code, status, created_at').limit(50);
+  let query = supabaseAdmin.from('beta_applications').select('id, parent_full_name, email, child_age_band, status, created_at').limit(50);
   
   if (searchParams?.status && searchParams.status !== 'all') {
     query = query.eq('status', searchParams.status);
@@ -269,6 +269,19 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
             </div>
             <span className="ml-auto text-slate-600 group-hover:text-red-500 transition-colors">→</span>
           </Link>
+
+          {/* Card 7: Module Feedback */}
+          <Link href="/admin/feedback" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#00c8ff]/60 transition-all group flex items-center gap-4">
+            <div className="w-12 h-12 flex items-center justify-center border border-[#00c8ff]/40 bg-[#00c8ff]/10 text-[#00c8ff] group-hover:shadow-[0_0_15px_rgba(0,200,255,0.4)] transition-all flex-shrink-0">
+              <MessageSquare className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Module Feedback</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Review student ratings and answers for each module</p>
+            </div>
+            <span className="ml-auto text-slate-600 group-hover:text-[#00c8ff] transition-colors">→</span>
+          </Link>
+
           <Link href="/admin/home" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-[#7b4fce]/60 transition-all group flex items-center gap-4">
             <div className="w-12 h-12 flex items-center justify-center border border-[#7b4fce]/40 bg-[#7b4fce]/10 text-[#7b4fce] group-hover:shadow-[0_0_15px_rgba(123,79,206,0.4)] transition-all flex-shrink-0">
               <Users className="w-6 h-6" />
@@ -303,7 +316,6 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                     <th className="px-6 py-4">Target Email</th>
                     <th className="px-6 py-4">Linked Students</th>
                     <th className="px-6 py-4">Age Bracket</th>
-                    <th className="px-6 py-4">Geo_Zip</th>
                     <th className="px-6 py-4">Status</th>
                     <th className="px-6 py-4">Timestamp</th>
                   </tr>
@@ -329,7 +341,6 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                           )}
                         </td>
                         <td className="px-6 py-4 text-[#00c8ff]">{app.child_age_band}</td>
-                        <td className="px-6 py-4 text-slate-400">{app.shipping_zip_code}</td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest 
                             ${app.status === 'paid' ? 'text-emerald-400 border border-emerald-400 bg-emerald-400/10' : ''}

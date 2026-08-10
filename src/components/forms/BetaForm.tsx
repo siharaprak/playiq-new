@@ -42,7 +42,7 @@ export function BetaForm() {
         <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
         <h3 className="text-2xl font-bold text-emerald-900 mb-2">Application Received</h3>
         <p className="text-emerald-700">
-          {serverState.message} We will be in touch shortly with hardware shipping details.
+          {serverState.message}
         </p>
         <button 
            onClick={() => setServerState({type: 'idle'})}
@@ -102,17 +102,6 @@ export function BetaForm() {
           <option value="over_17" className="bg-[#020617] text-[#e2e8f0]">18+</option>
         </select>
         {errors.childAge && <p className="mt-1 text-xs font-mono text-red-400">{errors.childAge.message}</p>}
-      </div>
-
-      <div>
-        <label htmlFor="shippingZipCode" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Shipping Zip Code</label>
-        <input 
-          id="shippingZipCode"
-          {...register('shippingZipCode')}
-          className={`neon-input ${errors.shippingZipCode ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
-          placeholder="e.g. 90210" 
-        />
-        {errors.shippingZipCode && <p className="mt-1 text-xs font-mono text-red-400">{errors.shippingZipCode.message}</p>}
       </div>
 
       <div>

@@ -75,7 +75,6 @@ export async function submitBetaApplication(data: BetaApplicationData) {
         parent_full_name: parsed.data.parentFullName,
         email: cleanEmail,
         child_age_band: parsed.data.childAge,
-        shipping_zip_code: parsed.data.shippingZipCode,
         status: newStatus,
       })
       .eq('id', existingApp.id);
@@ -86,7 +85,6 @@ export async function submitBetaApplication(data: BetaApplicationData) {
          parent_full_name: parsed.data.parentFullName,
          email: cleanEmail,
          child_age_band: parsed.data.childAge,
-         shipping_zip_code: parsed.data.shippingZipCode,
          status: isPromoBypass ? 'fulfilled_promo' : ((stripeSecret && priceId) ? 'checkout_started' : 'pending'),
          source: 'web_form'
        })

@@ -6,7 +6,6 @@ export const BetaApplicationSchema = z.object({
   childAge: z.enum(["under_13", "13_14", "15_17", "over_17"], {
     error: "Please select the target teen's age"
   }),
-  shippingZipCode: z.string().min(5, "Zip code is required for logistics allocation"),
   promoCode: z.string().optional(),
 });
 
