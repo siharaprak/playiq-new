@@ -96,43 +96,22 @@ export default async function AdminFeedbackPage() {
                         <td className="px-6 py-4 text-slate-400 text-xs">
                           {answers && typeof answers === 'object' ? (
                             <div className="space-y-4">
-                              {answers.q1 && !answers.q4 ? (
-                                // Legacy format
-                                <>
-                                  <div>
-                                    <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">1. Did this module teach you something meaningful?</p>
-                                    <p className="text-slate-300">{answers.q1 || '-'}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">2. Were there parts that felt confusing or boring?</p>
-                                    <p className="text-slate-300">{answers.q2 || '-'}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">3. Interested in continuing to the next one?</p>
-                                    <p className="text-slate-300">{answers.q3 || '-'}</p>
-                                  </div>
-                                </>
-                              ) : (
-                                // New format
-                                <>
-                                  <div>
-                                    <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">2. Did this module teach you something meaningful?</p>
-                                    <p className="text-slate-300">{answers.q2 || '-'}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">3. Was anything confusing? What specifically?</p>
-                                    <p className="text-slate-300">{answers.q3 || '-'}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">4. Did it feel boring or draggy anywhere? Where?</p>
-                                    <p className="text-slate-300">{answers.q4 || '-'}</p>
-                                  </div>
-                                  <div>
-                                    <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">5. Interested in continuing to the next module?</p>
-                                    <p className="text-slate-300">{answers.q5 || '-'}</p>
-                                  </div>
-                                </>
-                              )}
+                              <div>
+                                <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">2. Did this module teach you something meaningful?</p>
+                                <p className="text-slate-300">{answers.q1 && !answers.q4 ? answers.q1 : (answers.q2 || '-')}</p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">3. Was anything confusing? What specifically?</p>
+                                <p className="text-slate-300">{answers.q1 && !answers.q4 ? answers.q2 : (answers.q3 || '-')}</p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">4. Did it feel boring or draggy anywhere? Where?</p>
+                                <p className="text-slate-300">{answers.q1 && !answers.q4 ? answers.q2 : (answers.q4 || '-')}</p>
+                              </div>
+                              <div>
+                                <p className="text-[10px] uppercase tracking-wider text-slate-500 mb-1">5. Interested in continuing to the next module?</p>
+                                <p className="text-slate-300">{answers.q1 && !answers.q4 ? answers.q3 : (answers.q5 || '-')}</p>
+                              </div>
                             </div>
                           ) : (
                             <div className="whitespace-pre-wrap break-words text-slate-300">
