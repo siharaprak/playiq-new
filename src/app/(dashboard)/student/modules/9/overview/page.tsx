@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 
 import { module9Nodes } from '@/data/module9Content';
 const MODULE_NODES = Object.values(module9Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -54,6 +55,8 @@ export default async function Module9OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Build your own Learning Supercharger using custom instructions and knowledge files.</p>
       </header>
+
+      <ModuleOpeningHook moduleNumber={9} title="Build Your AI Tutor" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_9_intro.mp4" title="Build Your AI Tutor" />

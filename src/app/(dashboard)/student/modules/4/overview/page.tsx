@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 
 import { module4Nodes } from '@/data/module4Content';
 const MODULE_NODES = Object.values(module4Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -45,6 +46,8 @@ export default async function Module4OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Diagnose confusion and fix the missing piece instead of asking AI to explain everything.</p>
       </header>
+
+      <ModuleOpeningHook moduleNumber={4} title="Lesson Rescue Mode" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_4_intro.mp4" title="Lesson Rescue Mode" />

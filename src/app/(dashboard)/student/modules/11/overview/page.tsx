@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import { Lock, ChevronRight, Award, Trophy } from 'lucide-react';
 import CapstoneForm from './CapstoneForm';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
 
 interface ModuleConfig {
   id: string;
@@ -115,6 +117,13 @@ export default async function Module11OverviewPage() {
 
   const initialStatus = capstoneSubmissions && capstoneSubmissions.length > 0 ? capstoneSubmissions[0].status : 'draft';
 
+  const { data: existingFeedback } = await supabase
+    .from('module_feedback')
+    .select('rating, feedback_text')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULES.CAPSTONE_ID)
+    .maybeSingle();
+
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto space-y-8">
       
@@ -141,6 +150,8 @@ export default async function Module11OverviewPage() {
         </p>
       </header>
 
+      <ModuleOpeningHook moduleNumber={11} title="the Capstone Master Trial" />
+
       {/* Multi-step Form */}
       <CapstoneForm
         studentId={user.id}
@@ -152,6 +163,11 @@ export default async function Module11OverviewPage() {
         initialStatus={initialStatus}
         initialSubmissions={capstoneSubmissions || []}
       />
+
+      {/* Beta tester feedback belongs at the end of the module, after the final submission. */}
+      <section className="mt-4">
+        <ModuleFeedbackForm moduleId={MODULES.CAPSTONE_ID} initialFeedback={existingFeedback} />
+      </section>
     </div>
   );
 }

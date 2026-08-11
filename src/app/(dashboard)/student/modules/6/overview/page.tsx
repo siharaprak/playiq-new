@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 
 import { module6Nodes } from '@/data/module6Content';
 const MODULE_NODES = Object.values(module6Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -45,6 +46,8 @@ export default async function Module6OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Stop relying on rereading and build a Mistake Bank to measure memory and correction.</p>
       </header>
+
+      <ModuleOpeningHook moduleNumber={6} title="Self-Testing and Mistake Bank" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_6_intro.mp4" title="Self-Testing and Mistake Bank" />
