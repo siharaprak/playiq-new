@@ -21,6 +21,7 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://weplayiq.com"),
   title: "PlayIQ | Imagine. Build. Grow.",
   description:
     "PlayIQ is a next-generation Digital Learning Operating System. Future-proof learning with AI-powered STEM education, interactive study modules, and guided digital experiences.",
