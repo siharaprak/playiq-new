@@ -86,7 +86,7 @@ export async function submitBetaApplication(data: BetaApplicationData) {
          email: cleanEmail,
          child_age_band: parsed.data.childAge,
          status: isPromoBypass ? 'fulfilled_promo' : ((stripeSecret && priceId) ? 'checkout_started' : 'pending'),
-         source: 'web_form'
+         source: parsed.data.source || 'direct_traffic'
        })
        .select();
 

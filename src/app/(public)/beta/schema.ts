@@ -7,6 +7,7 @@ export const BetaApplicationSchema = z.object({
     error: "Please select the target teen's age"
   }),
   promoCode: z.string().optional(),
+  source: z.string().optional(),
 });
 
 export type BetaApplicationData = z.infer<typeof BetaApplicationSchema>;

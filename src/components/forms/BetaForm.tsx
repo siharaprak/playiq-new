@@ -7,7 +7,7 @@ import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { submitBetaApplication } from '@/app/(public)/beta/actions';
 import { BetaApplicationSchema, type BetaApplicationData } from '@/app/(public)/beta/schema';
 
-export function BetaForm() {
+export function BetaForm({ source }: { source?: string }) {
   const [serverState, setServerState] = useState<{ type: 'idle' | 'success' | 'error', message?: string }>({ type: 'idle' });
 
   const {
@@ -62,6 +62,8 @@ export function BetaForm() {
           <p>{serverState.message}</p>
         </div>
       )}
+
+      <input type="hidden" {...register('source')} value={source} />
 
       <div>
         <label htmlFor="parentFullName" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Parent's Full Name</label>

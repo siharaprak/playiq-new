@@ -22,7 +22,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   }
 
   // Fetch Beta Applications - optimize with limit and explicit fields
-  let query = supabaseAdmin.from('beta_applications').select('id, parent_full_name, email, child_age_band, status, created_at').limit(50);
+  let query = supabaseAdmin.from('beta_applications').select('id, parent_full_name, email, child_age_band, status, source, created_at').limit(50);
   
   if (searchParams?.status && searchParams.status !== 'all') {
     query = query.eq('status', searchParams.status);
@@ -31,9 +31,29 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
   const { data: applications, error } = await query.order('created_at', { ascending: false });
 
   // For metrics, fetch raw total pending status only
-  const { data: allApps } = await supabaseAdmin.from('beta_applications').select('status');
+  const { data: allApps } = await supabaseAdmin.from('beta_applications').select('status, source');
   const pendingCount = (allApps || []).filter((a: any) => a.status === 'pending').length;
   const totalCount = allApps?.length || 0;
+  
+  // Calculate source breakdown
+  let emailCount = 0;
+  let socialCount = 0;
+  let otherCount = 0;
+  const otherBreakdown: Record<string, number> = {};
+
+  (allApps || []).forEach((app: any) => {
+    let s = (app.source || 'direct_traffic').toLowerCase();
+    if (s === 'web_form') s = 'direct_traffic';
+
+    if (s.includes('email')) {
+      emailCount++;
+    } else if (s.includes('social') || s === 'facebook' || s === 'instagram') {
+      socialCount++;
+    } else {
+      otherCount++;
+      otherBreakdown[s] = (otherBreakdown[s] || 0) + 1;
+    }
+  });
 
   // Operational telemetry queries and discussion reports - optimize select fields for head counts
   const [
@@ -111,7 +131,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
         </header>
 
         {/* HUD Modules */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-4 gap-4 mb-12">
            <div className="glass-card p-6 border-l-[3px] border-l-[#00c8ff] !rounded-none shadow-none flex flex-col justify-between h-full">
              <div className="flex items-center gap-4 mb-4">
                <div className="text-[#00c8ff]"><Users className="w-6 h-6" /></div>
@@ -129,6 +149,39 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
              </div>
              <div>
                <p className="font-display text-4xl font-black text-[var(--text-primary)]">{(allApps || []).filter((a: any) => a.status === 'paid').length}</p>
+             </div>
+           </div>
+
+           <div className="glass-card p-6 border-t-[3px] border-t-emerald-400 !rounded-none shadow-none flex flex-col justify-between h-full">
+             <div className="flex items-center gap-4 mb-2">
+               <div className="text-emerald-400"><Activity className="w-6 h-6" /></div>
+               <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Traffic Source</p>
+             </div>
+             <div className="mt-2 space-y-1 font-mono text-xs">
+               <div className="flex justify-between items-center group relative">
+                 <span className="text-slate-400 border-b border-dashed border-slate-600 cursor-help" title="Traffic from webmail clients (Gmail, Outlook) or links with ?source=email">EMAIL:</span>
+                 <span className="text-emerald-400 font-bold">{emailCount}</span>
+               </div>
+               <div className="flex justify-between items-center group relative">
+                 <span className="text-slate-400 border-b border-dashed border-slate-600 cursor-help" title="Traffic from Facebook, Instagram, Twitter, TikTok, LinkedIn, or links with ?source=social">SOCIAL:</span>
+                 <span className="text-[#00c8ff] font-bold">{socialCount}</span>
+               </div>
+               <div className="flex justify-between items-center group relative">
+                 <span className="text-slate-400 border-b border-dashed border-slate-600 cursor-help" title="Hover to see breakdown">OTHER:</span>
+                 <span className="text-slate-200">{otherCount}</span>
+                 {/* Tooltip */}
+                 <div className="hidden group-hover:block absolute bottom-full left-0 mb-1 w-48 p-2 bg-slate-900 border border-slate-700 rounded shadow-[0_0_15px_rgba(0,0,0,0.5)] z-50 text-[10px]">
+                    <div className="font-bold text-[#7b4fce] mb-1 border-b border-slate-800 pb-1 uppercase tracking-widest">Other Breakdown</div>
+                    <div className="space-y-1 mt-1 max-h-32 overflow-y-auto">
+                      {Object.entries(otherBreakdown).length > 0 ? Object.entries(otherBreakdown).map(([key, val]) => (
+                        <div key={key} className="flex justify-between text-slate-400">
+                          <span className="truncate pr-2" title={key}>{key}</span>
+                          <span className="text-slate-300 font-bold">{val}</span>
+                        </div>
+                      )) : <div className="text-slate-600 italic">No data</div>}
+                    </div>
+                 </div>
+               </div>
              </div>
            </div>
 
@@ -316,6 +369,7 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                     <th className="px-6 py-4">Target Email</th>
                     <th className="px-6 py-4">Linked Students</th>
                     <th className="px-6 py-4">Age Bracket</th>
+                    <th className="px-6 py-4">Source</th>
                     <th className="px-6 py-4">Status</th>
                     <th className="px-6 py-4">Timestamp</th>
                   </tr>
@@ -341,6 +395,14 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                           )}
                         </td>
                         <td className="px-6 py-4 text-[#00c8ff]">{app.child_age_band}</td>
+                        <td className="px-6 py-4">
+                          <span 
+                            className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest border border-slate-600 bg-slate-800/50 text-slate-300 cursor-help`}
+                            title={app.source === 'web_form' || !app.source ? 'Direct URL entry, untracked links, or historical data before tracking was enabled.' : 'Detected traffic source'}
+                          >
+                            {app.source === 'web_form' || !app.source ? 'direct_traffic' : app.source}
+                          </span>
+                        </td>
                         <td className="px-6 py-4">
                           <span className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest 
                             ${app.status === 'paid' ? 'text-emerald-400 border border-emerald-400 bg-emerald-400/10' : ''}

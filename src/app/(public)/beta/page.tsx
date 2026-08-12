@@ -1,7 +1,42 @@
 import Link from 'next/link';
 import { BetaForm } from '@/components/forms/BetaForm';
+import { headers } from 'next/headers';
 
-export default function Beta() {
+export default async function Beta({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+  const sourceParam = searchParams?.source || searchParams?.utm_source;
+  const source = typeof sourceParam === 'string' ? sourceParam : Array.isArray(sourceParam) ? sourceParam[0] : undefined;
+
+  const headersList = await headers();
+  const referer = headersList.get('referer');
+  
+  let detectedSource = source;
+  if (!detectedSource) {
+    if (referer) {
+      if (referer.includes('facebook.com') || referer.includes('instagram.com') || referer.includes('t.co') || referer.includes('twitter.com') || referer.includes('linkedin.com') || referer.includes('tiktok.com')) {
+        detectedSource = 'social_organic';
+      } else if (referer.includes('google.com') || referer.includes('bing.com') || referer.includes('yahoo.com')) {
+        detectedSource = 'search_organic';
+      } else if (referer.includes('mail.google.com') || referer.includes('outlook.live.com') || referer.includes('yahoo.com/mail')) {
+        detectedSource = 'email_organic';
+      } else {
+        try {
+          const url = new URL(referer);
+          // Ignore self-referrals (navigating within the app)
+          if (!url.hostname.includes('weplayiq.com') && !url.hostname.includes('localhost')) {
+            detectedSource = `referral:${url.hostname}`;
+          }
+        } catch (e) {
+          // invalid url
+        }
+      }
+    }
+    
+    // If still no source, it means they typed the URL directly or clicked a link from a non-web app (like a desktop email client)
+    if (!detectedSource) {
+      detectedSource = 'direct_traffic';
+    }
+  }
+
   return (
     <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       <div className="absolute top-[30%] right-[15%] w-[600px] h-[600px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[140px] pointer-events-none" />
@@ -48,7 +83,7 @@ export default function Beta() {
 
           <div className="glass-card p-8 border border-[rgba(123,79,206,0.3)] !rounded-none">
             <h3 className="text-[#7b4fce] font-display text-2xl font-bold mb-6 uppercase tracking-[0.2em] drop-shadow-[0_0_5px_#7b4fce]">&gt; SECURE APPLICATION</h3>
-            <BetaForm />
+            <BetaForm source={detectedSource} />
           </div>
         </section>
         
