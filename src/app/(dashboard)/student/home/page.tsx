@@ -188,7 +188,7 @@ export default async function StudentDashboard() {
             </div>
 
             {/* Assessment Blueprint Card */}
-            {assessmentProfile?.assessment_completed && (
+            {assessmentProfile?.assessment_completed ? (
               <div className="p-6 rounded-2xl" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-purple)' }}>
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-8 h-8 rounded-lg flex items-center justify-center text-lg font-bold" style={{ background: 'var(--glass-bg)', border: '1px solid var(--neon-purple)', color: 'var(--neon-purple)' }}>Ω</div>
@@ -209,6 +209,19 @@ export default async function StudentDashboard() {
                   )}
                 </div>
                 <p className="text-xs mt-3 italic" style={{ color: 'var(--text-muted)' }}>&ldquo;Orion is calibrated to you.&rdquo;</p>
+              </div>
+            ) : (
+              <div className="p-6 rounded-2xl" style={{ background: 'var(--space-card)', border: '1px solid var(--glass-border)' }}>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg flex items-center justify-center text-lg font-bold" style={{ background: 'var(--glass-bg)', border: '1px solid var(--text-muted)', color: 'var(--text-muted)' }}>Ω</div>
+                  <h3 className="font-bold text-sm font-display" style={{ color: 'var(--text-primary)' }}>Module 0: Assessment</h3>
+                </div>
+                <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
+                  Your learning blueprint has not been created yet. You can manually enter the Orion assessment simulator here.
+                </p>
+                <Link href="/student/assessment" className="inline-block w-full text-center px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition-colors" style={{ background: 'var(--neon-purple)', color: '#fff' }}>
+                  Start Assessment
+                </Link>
               </div>
             )}
 

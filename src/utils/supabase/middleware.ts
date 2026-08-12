@@ -155,22 +155,31 @@ export async function updateSession(request: NextRequest) {
       const isAssessmentRoute = request.nextUrl.pathname.startsWith('/student/assessment')
 
       if (isStudentRoute && !isAssessmentRoute) {
-        const { data: assessmentProfile } = await supabase
-          .from('student_assessment_profiles')
-          .select('assessment_completed')
-          .eq('student_id', user.id)
-          .maybeSingle()
+        // We only want to gate actual students, not admins using the LMS simulator
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('role')
+          .eq('id', user.id)
+          .single()
 
-        if (!assessmentProfile?.assessment_completed) {
-          const url = request.nextUrl.clone()
-          url.pathname = '/student/assessment'
-          const redirectResponse = NextResponse.redirect(url)
-          
-          supabaseResponse.cookies.getAll().forEach((cookie) => {
-            redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
-          })
-          
-          return redirectResponse
+        if (profile?.role !== 'admin') {
+          const { data: assessmentProfile } = await supabase
+            .from('student_assessment_profiles')
+            .select('assessment_completed')
+            .eq('student_id', user.id)
+            .maybeSingle()
+
+          if (!assessmentProfile?.assessment_completed) {
+            const url = request.nextUrl.clone()
+            url.pathname = '/student/assessment'
+            const redirectResponse = NextResponse.redirect(url)
+            
+            supabaseResponse.cookies.getAll().forEach((cookie) => {
+              redirectResponse.cookies.set(cookie.name, cookie.value, cookie)
+            })
+            
+            return redirectResponse
+          }
         }
       }
     }
