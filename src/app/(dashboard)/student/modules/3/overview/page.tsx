@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 
 import { module3Nodes } from '@/data/module3Content';
 const MODULE_NODES = Object.values(module3Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -45,6 +46,8 @@ export default async function Module3OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Get a head start on a school topic before class using AI as a coach.</p>
       </header>
+
+      <ModuleOpeningHook moduleNumber={3} title="Pre-Learn System" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_3_intro.mp4" title="Pre-Learn System" />

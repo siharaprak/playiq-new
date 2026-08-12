@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 
 import { module8Nodes } from '@/data/module8Content';
 const MODULE_NODES = Object.values(module8Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -45,6 +46,8 @@ export default async function Module8OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Use AI as a writing coach to make answers clearer, without letting AI ghostwrite.</p>
       </header>
+
+      <ModuleOpeningHook moduleNumber={8} title="Writing and Answer Clarity" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_8_intro.mp4" title="Writing and Answer Clarity" />

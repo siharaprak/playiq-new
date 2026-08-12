@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 
 import { module10Nodes } from '@/data/module10Content';
 const MODULE_NODES = Object.values(module10Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -54,6 +55,8 @@ export default async function Module10OverviewPage() {
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
           Build a helpful AI assistant for yourself and one other person for a real task.</p>
       </header>
+
+      <ModuleOpeningHook moduleNumber={10} title="Build Your AI Assistant" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_10_intro.mp4" title="Build Your AI Assistant" />

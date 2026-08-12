@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
+import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 
 const MODULE_NODES = [
   { id: '1', title: 'The Power Tool Principle' },
@@ -52,6 +53,8 @@ export default async function Module2OverviewPage() {
           AI and the internet are amplifiers. They can make you more focused, help you learn faster, and create better work — or, if used badly, distract you and turn you into a passive consumer. By the end of this module, you&apos;ll know how to use technology in a way that keeps you on your highest path.
         </p>
       </header>
+
+      <ModuleOpeningHook moduleNumber={2} title="Digital Smarts & Human Responsibility" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_2_intro.mp4" title="Digital Smarts & Human Responsibility" />
