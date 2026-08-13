@@ -10,6 +10,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
   let name = 'Student';
   let userId = '';
   let assessmentCompleted = true; // default true to avoid blocking if table doesn't exist yet
+  let isAdmin = false;
 
   if (user) {
     userId = user.id;
@@ -33,18 +34,21 @@ export default async function StudentLayout({ children }: { children: React.Reac
 
     const { data: profile } = await supabase
       .from('profiles')
-      .select('full_name, username')
+      .select('full_name, username, role')
       .eq('id', user.id)
       .single();
 
     name = profile?.username || profile?.full_name || 'Student';
+    isAdmin = profile?.role === 'admin';
   }
+
+  const showOrion = assessmentCompleted || isAdmin;
 
   return (
     <>
       {children}
-      {/* Hide GuidedAI panel during assessment to keep experience focused */}
-      {assessmentCompleted && (
+      {/* Hide GuidedAI panel during assessment to keep experience focused, except for admins using the simulator */}
+      {showOrion && (
         <GuidedAIPanel 
           isFloating={true} 
           hasProgress={hasProgress}
