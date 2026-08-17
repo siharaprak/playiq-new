@@ -1,5 +1,4 @@
 import React from 'react';
-import Link from 'next/link';
 import { enforceModuleGating } from '@/lib/gating';
 import { createClient } from '@/utils/supabase/server';
 import { MODULES } from '@/lib/constants';
@@ -73,16 +72,8 @@ export default async function Module5CompletionPage() {
         </ul>
       </div>
 
-      {/* Feedback Form */}
+      {/* Feedback Form (includes soft-gated Return to Dashboard link) */}
       <ModuleFeedbackForm moduleId={moduleId} initialFeedback={existingFeedback} />
-
-      <Link
-        href="/student/home"
-        className="px-8 py-4 rounded-lg font-bold text-lg transition-opacity hover:opacity-90 shadow-lg"
-        style={{ background: '#fff', color: '#0a0f1e' }}
-      >
-        Return to Dashboard
-      </Link>
     </div>
   );
 }
