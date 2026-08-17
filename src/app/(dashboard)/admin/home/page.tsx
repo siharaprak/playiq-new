@@ -4,6 +4,7 @@ import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { getDynamicOpsAlerts } from '@/lib/data/ops-alerts';
+import { QuickSendBetaModal, SendBetaEmailButton } from './BetaEmailActions';
 
 export default async function AdminDashboard({ searchParams }: { searchParams: { status?: string } }) {
   const supabase = await createClient();
@@ -349,8 +350,11 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
 
         {/* Database Table view */}
         <div className="glass-card !p-0 !rounded-none overflow-hidden border border-slate-800">
-          <div className="px-6 py-4 border-b border-slate-800 bg-[#020617] flex justify-between items-center overflow-x-auto">
-            <h2 className="font-mono text-sm tracking-widest text-[#00c8ff] uppercase mr-4">&gt; COHORT_TABLE_MANIFEST</h2>
+          <div className="px-6 py-4 border-b border-slate-800 bg-[#020617] flex justify-between items-center overflow-x-auto gap-4">
+            <div className="flex items-center gap-4">
+              <h2 className="font-mono text-sm tracking-widest text-[#00c8ff] uppercase whitespace-nowrap">&gt; COHORT_TABLE_MANIFEST</h2>
+              <QuickSendBetaModal />
+            </div>
             <div className="flex bg-black/50 border border-slate-800 p-1 gap-1 text-xs font-mono uppercase">
                <Link href="/admin/home" className={`px-4 py-2 transition-colors ${!searchParams?.status || searchParams.status === 'all' ? 'bg-[#00c8ff] text-black font-bold shadow-[0_0_10px_rgba(0,200,255,0.4)]' : 'text-slate-400 hover:text-[var(--text-primary)]'}`}>All</Link>
                <Link href="/admin/home?status=paid" className={`px-4 py-2 transition-colors ${searchParams?.status === 'paid' ? 'bg-emerald-500 text-black font-bold shadow-[0_0_10px_rgba(16,185,129,0.4)]' : 'text-slate-400 hover:text-[var(--text-primary)]'}`}>Paid</Link>
@@ -372,11 +376,13 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                     <th className="px-6 py-4">Source</th>
                     <th className="px-6 py-4">Status</th>
                     <th className="px-6 py-4">Timestamp</th>
+                    <th className="px-6 py-4">Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {(applications || []).map((app: any) => {
                     const linkedStudents = emailToStudentsMap[app.email.toLowerCase()] || [];
+                    const firstStudentName = linkedStudents[0]?.name;
                     return (
                       <tr key={app.id} className="border-b border-slate-800 hover:bg-white/5 transition-colors">
                         <td className="px-6 py-4 text-slate-200">{app.parent_full_name}</td>
@@ -417,6 +423,13 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                         </td>
                         <td className="px-6 py-4 text-slate-500 text-xs tracking-wider">
                           {new Date(app.created_at).toISOString().split('T')[0]}
+                        </td>
+                        <td className="px-6 py-4">
+                          <SendBetaEmailButton
+                            email={app.email}
+                            parentName={app.parent_full_name}
+                            teenName={firstStudentName}
+                          />
                         </td>
                       </tr>
                     );
