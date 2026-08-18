@@ -736,33 +736,28 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
         {!isOpen && (
           <div id="orion-floating-button" className="fixed bottom-6 right-6 z-50 w-14 h-14">
             {/* Ambient pulse shadow ring */}
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-purple)] opacity-35 blur-md animate-pulse"></div>
+            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-purple)] opacity-40 blur-md animate-pulse"></div>
             
             <button
               type="button"
               onClick={() => {
                 setIsOpen(true);
-                setShowAwakeAnimation(true);
               }}
-              className="w-full h-full rounded-full border border-[var(--neon-cyan)]/60 text-[var(--neon-cyan)] shadow-[0_0_15px_rgba(0,200,255,0.3)] hover:shadow-[0_0_25px_rgba(123,79,206,0.6)] hover:border-[var(--neon-purple)] transition-all duration-300 group focus:outline-none transform hover:-translate-y-0.5 flex items-center justify-center overflow-hidden relative"
+              className="w-full h-full rounded-full border-2 border-[var(--neon-cyan)] text-[var(--neon-cyan)] shadow-[0_0_18px_rgba(0,200,255,0.4)] hover:shadow-[0_0_25px_rgba(123,79,206,0.7)] hover:border-[var(--neon-purple)] transition-all duration-300 group focus:outline-none transform hover:-translate-y-0.5 flex items-center justify-center overflow-hidden relative cursor-pointer"
               style={{ backgroundColor: 'var(--space-deep)' }}
               aria-label="Open Orion Chat"
             >
               {/* Concentric border ring */}
-              <div className="absolute inset-0.5 rounded-full border border-[var(--neon-purple)]/25 group-hover:border-[var(--neon-cyan)]/40 transition-colors z-10"></div>
+              <div className="absolute inset-0.5 rounded-full border border-[var(--neon-purple)]/30 group-hover:border-[var(--neon-cyan)]/50 transition-colors z-10"></div>
               
-              <video 
-                src="/videos/orion-sleep.mp4" 
-                poster="/images/orion-avatar.png"
-                autoPlay 
-                muted 
-                loop 
-                playsInline 
+              <img 
+                src="/images/orion-avatar.png" 
+                alt="Orion AI"
                 className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-300"
               />
             </button>
             
-            {/* Active online green dot badge (Placed outside the overflow-hidden button to prevent clipping) */}
+            {/* Active online green dot badge */}
             <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-[var(--neon-green)] border-2 shadow-[0_0_8px_var(--neon-green)] z-20 pointer-events-none" style={{ borderColor: 'var(--space-deep)' }}></span>
           </div>
         )}
@@ -773,42 +768,8 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
             className={`!fixed bottom-6 right-6 z-50 w-[360px] sm:w-[410px] h-[580px] max-h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl ${isClosing ? 'animate-fade-out-down' : 'animate-fade-in-up'} border border-[var(--neon-cyan)]/30 backdrop-blur-xl`}
             style={{ background: 'linear-gradient(to bottom, var(--space-deep), var(--space-mid))', opacity: 0.98 }}
           >
-            
-            {showAwakeAnimation ? (
-              /* Awake animation transition overlay */
-              <div className="flex-1 flex flex-col items-center justify-center relative overflow-hidden h-full" style={{ backgroundColor: 'var(--space-deep)' }}>
-                {/* Subtle background glow */}
-                <div className="absolute w-48 h-48 rounded-full bg-[var(--neon-cyan)]/10 blur-3xl pointer-events-none"></div>
-                
-                <video
-                  src="/videos/orion-awake.mp4"
-                  poster="/images/orion-avatar.png"
-                  autoPlay
-                  muted
-                  playsInline
-                  onEnded={() => setShowAwakeAnimation(false)}
-                  className="w-full h-full object-cover max-h-[75%] rounded-xl"
-                />
-                
-                {/* Skip button overlay */}
-                <button
-                  type="button"
-                  onClick={() => setShowAwakeAnimation(false)}
-                  className="absolute top-4 right-4 text-[9px] font-bold uppercase tracking-widest text-[var(--text-muted)] hover:text-[var(--neon-cyan)] transition-colors px-2 py-1 rounded border z-30"
-                  style={{ backgroundColor: 'var(--space-deep)', borderColor: 'var(--glass-border)' }}
-                >
-                  Skip Intro
-                </button>
-                
-                <div className="absolute bottom-10 text-center space-y-1">
-                  <p className="text-[10px] font-bold uppercase tracking-[0.25em] font-mono text-[var(--neon-cyan)] animate-pulse">
-                    Orion Boot Sequence...
-                  </p>
-                </div>
-              </div>
-            ) : (
-              /* Real chat panel contents */
-              <>
+            {/* Real chat panel contents */}
+            <>
                 {/* Cyber Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--neon-cyan)]/20 backdrop-blur-md" style={{ backgroundColor: 'var(--space-deep)' }}>
                   <div className="flex items-center gap-2.5">
@@ -922,7 +883,6 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                   </div>
                 )}
               </>
-            )}
           </div>
         )}
       </>
