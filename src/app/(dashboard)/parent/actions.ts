@@ -3,6 +3,7 @@
 import { createClient } from '@supabase/supabase-js';
 import { createClient as createServerClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
+import { sendApprenticeProvisionedNotifications } from '@/lib/server/notifications';
 
 export async function provisionApprenticeAction(prevState: any, formData: FormData) {
   const name = formData.get('name') as string;
@@ -117,6 +118,18 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     console.error('Link error:', linkError);
     return { error: 'Apprentice account created but could not link to your account. Please contact support.' };
   }
+
+  // Trigger non-blocking user confirmation + admin alerts
+  const parentName = parentSession.user?.user_metadata?.full_name || 'Parent';
+  const parentEmail = parentSession.user?.email || '';
+
+  sendApprenticeProvisionedNotifications({
+    parentName,
+    parentEmail,
+    apprenticeName: name,
+    username,
+    learningLevel: initialLevel,
+  }).catch(err => console.error('Error dispatching apprentice notifications:', err));
 
   // All done — redirect to parent home showing success
   redirect('/parent/home?provisioned=1');

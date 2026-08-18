@@ -16,28 +16,33 @@ interface SendEmailOptions {
   }>;
 }
 
-// Initialize AWS SESv2 Client
-const sesClient = new SESv2Client({
-  region: process.env.AWS_REGION || 'us-east-1',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-  },
-});
+let transporter: nodemailer.Transporter | null = null;
 
-// Initialize Nodemailer with SESv2 transport
-const transporter = nodemailer.createTransport({
-  SES: {
-    sesClient,
-    SendEmailCommand,
-  },
-});
+function getTransporter(): nodemailer.Transporter {
+  if (!transporter) {
+    const sesClient = new SESv2Client({
+      region: process.env.AWS_REGION || 'us-east-1',
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
+      },
+    });
+
+    transporter = nodemailer.createTransport({
+      SES: {
+        sesClient,
+        SendEmailCommand,
+      },
+    });
+  }
+  return transporter;
+}
 
 /**
  * Sends an email via Amazon SES with HTML and attachment support.
  */
 export async function sendEmail(options: SendEmailOptions) {
-  const fromEmail = process.env.AWS_SES_FROM_EMAIL || 'sender@sienvi.com';
+  const fromEmail = process.env.AWS_SES_FROM_EMAIL || 'sender@weplayiq.com';
   const fromName = options.fromName || 'WePlayIQ';
   const from = `"${fromName}" <${fromEmail}>`;
 
@@ -58,5 +63,6 @@ export async function sendEmail(options: SendEmailOptions) {
       : {}),
   };
 
-  return transporter.sendMail(mailOptions);
+  const client = getTransporter();
+  return client.sendMail(mailOptions);
 }

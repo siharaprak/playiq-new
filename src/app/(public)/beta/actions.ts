@@ -6,6 +6,7 @@ import Stripe from 'stripe';
 import { headers } from 'next/headers';
 
 import { BetaApplicationSchema, type BetaApplicationData } from './schema';
+import { sendBetaSignupNotifications } from '@/lib/server/notifications';
 
 export async function submitBetaApplication(data: BetaApplicationData) {
   // Simulate network latency / Stripe checkout generation delay
@@ -96,6 +97,16 @@ export async function submitBetaApplication(data: BetaApplicationData) {
     }
     applicationId = insertData?.[0]?.id;
   }
+
+  // Trigger non-blocking user welcome + admin alerts
+  sendBetaSignupNotifications({
+    parentName: parsed.data.parentFullName,
+    email: cleanEmail,
+    childAge: parsed.data.childAge,
+    source: parsed.data.source || 'direct_traffic',
+    promoCode: promoAttempt,
+    status: isPromoBypass ? 'fulfilled_promo' : 'pending',
+  }).catch(err => console.error('Error dispatching beta notifications:', err));
 
   // Bypass Stripe if valid promo code
   if (isPromoBypass) {

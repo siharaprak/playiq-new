@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ensureProfileExists } from '@/utils/supabase/server';
+import { sendBetaSignupNotifications } from '@/lib/server/notifications';
 
 async function createSupabaseClient() {
   const cookieStore = await cookies()
@@ -107,6 +108,15 @@ export async function signupAction(prevState: any, formData: FormData) {
     name || 'Parent User',
     'parent'
   );
+
+  // Trigger non-blocking user welcome + admin alerts
+  sendBetaSignupNotifications({
+    parentName: name || 'Parent User',
+    email: authData.user.email || email,
+    source: 'direct_signup',
+    promoCode: 'PLAYIQ2025',
+    status: 'fulfilled_promo',
+  }).catch(err => console.error('Error dispatching signup notifications:', err));
 
   const role = profile?.role || 'parent';
 
