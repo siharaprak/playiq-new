@@ -156,10 +156,10 @@ export async function submitTeachBackAction(nodeId: string, prompt: string, prev
   redirect(`${BASE}/nodes/${nodeId}/completion`);
 }
 
-export async function submitQuiz(formData: FormData) {
+export async function submitQuizAction(prevState: unknown, formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) throw new Error('Not authenticated');
+  if (!user) return { error: 'Not authenticated' };
 
   // Part A answers: q1→B, q2→C, q3→B
   // Part B answers: q4→A, q5→B, q6→B
@@ -197,19 +197,26 @@ export async function submitQuiz(formData: FormData) {
       assessmentType: 'module_quiz',
       metadata: {
         moduleId: MODULE_ID,
-        
         score,
         passStatus,
-        source: 'submitQuiz'
+        source: 'submitQuizAction'
       }
     });
   }
 
   if (passStatus === 'pass') {
     redirect(`${BASE}/boss-battle`);
-  } else {
-    redirect(`${BASE}/quiz`);
   }
+
+  return {
+    error: `You scored ${score}%. An 80%+ score is required to unlock the Boss Battle. Please review your answers.`,
+    score,
+    passed: false,
+  };
+}
+
+export async function submitQuiz(formData: FormData) {
+  return submitQuizAction(null, formData);
 }
 
 export async function submitBossBattleAction(prevState: unknown, formData: FormData) {

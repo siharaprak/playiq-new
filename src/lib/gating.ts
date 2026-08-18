@@ -31,6 +31,17 @@ export async function enforceNodeGating(
     redirect('/login');
   }
 
+  // Admin bypass: allow administrators to freely test and preview all student nodes
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (profile?.role === 'admin') {
+    return { user, progress: null, isAdmin: true };
+  }
+
   const basePath = `/student/modules/${moduleNumber}`;
 
   const moduleId = MODULE_ID_MAP[moduleNumber];
@@ -84,6 +95,17 @@ export async function enforceModuleGating(
 
   if (!user) {
     redirect('/login');
+  }
+
+  // Admin bypass: allow administrators to freely test and preview all student modules and assessments
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  if (profile?.role === 'admin') {
+    return { user, isAdmin: true };
   }
 
   const basePath = `/student/modules/${moduleNumber}`;

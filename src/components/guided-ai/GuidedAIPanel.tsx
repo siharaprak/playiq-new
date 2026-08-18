@@ -753,12 +753,12 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
               
               <video 
                 src="/videos/orion-sleep.mp4" 
+                poster="/images/orion-avatar.png"
                 autoPlay 
                 muted 
                 loop 
                 playsInline 
                 className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-300"
-                style={{ mixBlendMode: 'screen' }}
               />
             </button>
             
@@ -782,12 +782,12 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 
                 <video
                   src="/videos/orion-awake.mp4"
+                  poster="/images/orion-avatar.png"
                   autoPlay
                   muted
                   playsInline
                   onEnded={() => setShowAwakeAnimation(false)}
-                  className="w-full h-full object-cover max-h-[75%]"
-                  style={{ mixBlendMode: 'screen' }}
+                  className="w-full h-full object-cover max-h-[75%] rounded-xl"
                 />
                 
                 {/* Skip button overlay */}

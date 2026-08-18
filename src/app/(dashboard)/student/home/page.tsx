@@ -86,13 +86,15 @@ export default async function StudentDashboard() {
     return acc;
   }, {} as Record<string, number>);
 
+  const isAdmin = profile?.role === 'admin';
+
   // Determine unlock status and progress percentages
   let previousCompleted = true; // Module 1 is always unlocked
 
   const modulesWithProgress = moduleList.map((mod) => {
     const nodesMastered = progressMap[mod.id] || 0;
     const isCompleted = nodesMastered >= mod.totalNodes;
-    const isUnlocked = previousCompleted;
+    const isUnlocked = isAdmin || previousCompleted;
     const percent = Math.round((nodesMastered / mod.totalNodes) * 100);
     
     // The next module is unlocked only if this one is completed

@@ -37,16 +37,25 @@ export default async function Module1OverviewPage() {
     .eq('module_id', MODULES.MODULE_1_ID)
     .order('created_at', { ascending: false });
 
+  // Check if admin
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  const isAdmin = profile?.role === 'admin';
+
   const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
   const bossBattle = assessments?.find(a => a.assessment_type === 'boss_battle');
 
-  const quizUnlocked = masteredNodeIds.size >= 4;
+  const quizUnlocked = isAdmin || masteredNodeIds.size >= 4;
   const quizPassed = quiz && quiz.score_numeric >= 80;
 
-  const bossBattleUnlocked = quizPassed;
+  const bossBattleUnlocked = isAdmin || quizPassed;
   const bossBattlePassed = bossBattle && bossBattle.score_numeric >= 4;
 
-  const artifactsUnlocked = bossBattlePassed;
+  const artifactsUnlocked = isAdmin || bossBattlePassed;
 
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
@@ -110,7 +119,7 @@ export default async function Module1OverviewPage() {
           {MODULE_NODES.map((node, idx) => {
             const mastered = masteredNodeIds.has(node.id);
             const isNext = node.id === firstActiveNodeId && !mastered;
-            const locked = !mastered && !isNext && idx > 0 && !masteredNodeIds.has(MODULE_NODES[idx - 1]?.id ?? '');
+            const locked = !isAdmin && !mastered && !isNext && idx > 0 && !masteredNodeIds.has(MODULE_NODES[idx - 1]?.id ?? '');
 
             if (mastered) {
               return (

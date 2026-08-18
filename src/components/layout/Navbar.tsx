@@ -59,7 +59,10 @@ export function Navbar() {
   // Hide entire navbar during the assessment for a fully immersive Orion experience
   if (pathname?.startsWith('/student/assessment')) return null;
 
-  const isStudentLoggedIn = !isLoading && (userRole === 'student' || userRole === 'admin');
+  const homeHref = !isLoading && userRole 
+    ? (userRole === 'admin' ? '/admin/home' : userRole === 'parent' ? '/parent/home' : '/student/home') 
+    : '/';
+
   const baseLinkClass = "outline-none font-display text-[0.65rem] xl:text-[0.75rem] font-bold uppercase tracking-[0.15em] xl:tracking-[0.2em] transition-colors duration-300 before:content-['['] before:mr-1 before:text-[#00c8ff] after:content-[']'] after:ml-1 after:text-[#00c8ff] whitespace-nowrap";
   const inactiveLinkClass = "text-[#94a3b8] hover:text-[#7b4fce] hover:text-glow-magenta focus-visible:text-[#7b4fce]";
   const activeLinkClass = "text-[#00c8ff] text-glow-cyan";
@@ -69,7 +72,7 @@ export function Navbar() {
       <div className="glass-card flex items-center justify-between px-8 py-4 rounded-none border-t-[3px] border-t-[#00c8ff]">
 
         {/* Logo */}
-        <Link href={isStudentLoggedIn ? '/student/home' : '/'} className="flex items-center gap-2 flex-shrink-0 group" aria-label="PlayIQ Home">
+        <Link href={homeHref} className="flex items-center gap-2 flex-shrink-0 group" aria-label="PlayIQ Home">
           <PlayIQLogo variant="navbar" className="group-hover:brightness-125 transition-all duration-300" />
         </Link>
 

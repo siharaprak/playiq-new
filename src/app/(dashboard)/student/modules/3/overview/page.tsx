@@ -25,6 +25,34 @@ export default async function Module3OverviewPage() {
     progressData?.filter(p => p.node_mastered).map(p => p.node_id) ?? []
   );
 
+  // Fetch assessments and check their scores/states, ordered by newest first
+  const { data: assessments } = await supabase
+    .from('assessment_submissions')
+    .select('*')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULES.MODULE_3_ID)
+    .order('created_at', { ascending: false });
+
+  // Check if admin
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  const isAdmin = profile?.role === 'admin';
+
+  const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
+  const bossBattle = assessments?.find(a => a.assessment_type === 'boss_battle');
+
+  const quizUnlocked = isAdmin || masteredNodeIds.size >= MODULE_NODES.length;
+  const quizPassed = quiz && quiz.score_numeric >= 80;
+
+  const bossBattleUnlocked = isAdmin || quizPassed;
+  const bossBattlePassed = bossBattle && bossBattle.score_numeric >= 4;
+
+  const artifactsUnlocked = isAdmin || bossBattlePassed;
+
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
 
@@ -36,7 +64,7 @@ export default async function Module3OverviewPage() {
         <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Dashboard</span>
       </Link>
 <div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
-        Module 3 • Skill Tree: Highest Path
+        Module 3 • Skill Tree: Pre-Learn System
       </div>
 
       <header className="mb-10">
@@ -86,7 +114,7 @@ export default async function Module3OverviewPage() {
           {MODULE_NODES.map((node, idx) => {
             const mastered = masteredNodeIds.has(node.id);
             const isNext = node.id === firstActiveNodeId && !mastered;
-            const locked = !mastered && !isNext && idx > 0 && !masteredNodeIds.has(MODULE_NODES[idx - 1]?.id ?? '');
+            const locked = !isAdmin && !mastered && !isNext && idx > 0 && !masteredNodeIds.has(MODULE_NODES[idx - 1]?.id ?? '');
 
             if (mastered) {
               return (
@@ -126,15 +154,48 @@ export default async function Module3OverviewPage() {
           Module Assessments
         </h2>
         <div className="flex flex-col gap-3">
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires 6 Nodes Mastered</span>
-          </div>
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>
-          </div>
-          <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-            <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Proof Artifacts — Requires Boss Battle</span>
-          </div>
+          {quizUnlocked ? (
+            <Link href="/student/modules/3/quiz" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(0,200,255,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">Module Quiz — Pre-Learn System Quiz</span>
+              {quizPassed ? (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>PASSED ({quiz.score_numeric}%)</span>
+              ) : quiz ? (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>FAILED ({quiz.score_numeric}%) - RETRY</span>
+              ) : (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>START</span>
+              )}
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires {MODULE_NODES.length} Nodes Mastered</span>
+            </div>
+          )}
+
+          {bossBattleUnlocked ? (
+            <Link href="/student/modules/3/boss-battle" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-purple)' }}>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors">Boss Battle — Module 3 Challenge</span>
+              {bossBattlePassed ? (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>COMPLETED</span>
+              ) : (
+                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-purple)', color: 'var(--neon-purple)' }}>START</span>
+              )}
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>
+            </div>
+          )}
+
+          {artifactsUnlocked ? (
+            <Link href="/student/modules/3/proof-artifacts" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid #7b4fce' }}>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[#7b4fce] transition-colors">Proof Artifacts — Submit Artifacts</span>
+              <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid #7b4fce', color: '#7b4fce' }}>OPEN</span>
+            </Link>
+          ) : (
+            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
+              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Proof Artifacts — Requires Boss Battle</span>
+            </div>
+          )}
         </div>
       </section>
     </div>
