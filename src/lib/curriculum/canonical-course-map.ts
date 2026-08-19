@@ -19,7 +19,7 @@ export const PLAYIQ_COURSE_1_CANONICAL: CanonicalModule[] = [
   {
     order_num: 0,
     slug: 'setup-personalization',
-    title: 'Setup & Personalization',
+    title: 'The Assessment & AI Workspace Orientation',
     skill_tree_name: null,
     engine_name: null,
     expected_nodes: [],

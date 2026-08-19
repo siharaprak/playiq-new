@@ -96,26 +96,28 @@ const DIAGNOSTIC_QUESTIONS = [
 // ── Orion Opening Script Lines ──────────────────────────────────────────────
 
 const ORION_OPENING_LINES = [
-  "Hey. I'm Orion.",
-  'Before we start — I need to learn something about you.',
-  "Most AI just gives you answers. I don't. I'm here to make you smarter than the AI.",
-  'But to do that right — I need to know how your brain actually works.',
-  "This takes about 10 minutes. And what you share right now shapes everything that comes after.",
+  "Welcome, apprentice. I'm Orion — your genie, guide, and future tutor.",
+  "You've let the genie out of the bottle. The wishes are unlimited; the secret is learning how to ask for what you want.",
+  "Every great creation starts with a question: what do you want to make real, solve, or understand?",
+  "Before I teach you, I want to learn how you think so I can help you learn faster — in a way that fits you.",
+  "This is your first step toward turning imagination into reality. Nothing is promised for free, but the possibilities are endless when you stay curious and in control.",
 ];
 
 const ORION_BASELINE_INTRO = [
-  "Now I'm going to show you three quick challenges.",
-  "Don't overthink them. Just go with your gut. I'm not grading you — I'm learning how you think right now.",
+  "Now I'm going to show you three quick challenges — your first look at how the learning system works.",
+  "Power is not cheating. It is knowing how to stay in control. The real shortcut is learning how to learn faster, so you do not waste energy on methods that do not fit you.",
+  "Do not overthink these. Follow your intuition. Where you get stuck is useful information — it tells us what to learn next.",
 ];
 
 const ORION_POST_BASELINE = [
-  "Good. I have what I need.",
-  "That's your starting point. By the time you finish this program, you're going to look back at this moment and see exactly how far you've come.",
+  "Good. I have your starting signals.",
+  "What felt easy may become your superpower. What felt difficult is a hint about what to learn next — not a limit on what you can do.",
+  "We will use this map to learn faster, reduce overwhelm, and turn your questions into better results.",
 ];
 
 const ORION_VISION_LINES = [
-  "Here's what's actually possible for you starting today.",
-  "None of this is a promise. It's a possibility. And whether it happens depends on what you do next.",
+  "Here is what becomes possible when you learn to ask better questions and stay in control of the genie.",
+  "You can learn to make ideas real — from a movie or game to an app, a useful assistant, or a learning dashboard. These are possibilities, not promises; your imagination, practice, judgment, and action make the difference.",
 ];
 
 // ── Main Component ──────────────────────────────────────────────────────────
