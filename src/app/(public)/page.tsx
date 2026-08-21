@@ -218,6 +218,8 @@ export default function Home() {
                 alt="Teens building creative digital systems"
                 width={220}
                 height={220}
+                priority
+                unoptimized
               />
             </div>
             <div className="text-left flex-1">
@@ -253,6 +255,8 @@ export default function Home() {
                   alt="Parent Proof Packet Dashboard"
                   width={520}
                   height={360}
+                  priority
+                  unoptimized
                   className="rounded-xl w-full h-auto object-cover"
                 />
               </div>

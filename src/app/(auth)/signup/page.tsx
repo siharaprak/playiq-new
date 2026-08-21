@@ -24,6 +24,7 @@ function SignupContent() {
   const [state, formAction] = useActionState(signupAction, null);
   const searchParams = useSearchParams();
   const isBetaSuccess = searchParams.get('beta') === 'success';
+  const urlPromo = searchParams.get('promo') || searchParams.get('code') || searchParams.get('promoCode') || '';
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-28 pb-12 px-6">
@@ -34,10 +35,14 @@ function SignupContent() {
       <div className="relative z-10 w-full max-w-md">
         <div className="glass-card !border-t-4 !border-t-[#00c8ff] !rounded-none p-8">
           
-          {isBetaSuccess && (
+          {isBetaSuccess ? (
             <div className="mb-6 p-4 bg-[rgba(0,200,255,0.1)] border-l-4 border-[#00c8ff] text-[#00c8ff] font-display text-xs tracking-wider flex gap-3 shadow-[0_0_10px_rgba(0,200,255,0.2)] leading-relaxed">
                <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-[#00c8ff]" />
-               <p><strong className="uppercase">Payment Successful!</strong><br/>Your pilot hardware kit is secured. Please create your parent account below to access your Proof Dashboard.</p>
+               <p><strong className="uppercase">Pilot Access Confirmed!</strong><br/>Your early access license is verified. Create your parent credentials below to access your Proof Dashboard.</p>
+            </div>
+          ) : (
+            <div className="mb-6 p-3 bg-[rgba(123,79,206,0.1)] border-l-4 border-[#7b4fce] text-slate-300 font-display text-[0.65rem] tracking-wider flex gap-2 items-center">
+              <span className="text-[#00c8ff] font-bold">[PILOT PHASE]</span> Enter your invite access code below to activate your account.
             </div>
           )}
 
@@ -56,7 +61,7 @@ function SignupContent() {
               CREATE_ACCOUNT
             </h1>
             <p className="text-slate-400 mt-3 font-display text-[0.65rem] uppercase tracking-[0.15em] leading-relaxed max-w-xs">
-              Please note: Pilot hardware must be purchased prior to creating a platform account.
+              Parent account creation for Pilot & Beta testing participants.
             </p>
           </div>
 
@@ -83,6 +88,18 @@ function SignupContent() {
                 &gt; PASSKEY
               </label>
               <input type="password" name="password" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce]" placeholder="••••••••" />
+            </div>
+            <div>
+              <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] mb-2 opacity-80">
+                &gt; PROMO / ACCESS_CODE (OPTIONAL)
+              </label>
+              <input 
+                type="text" 
+                name="promoCode" 
+                defaultValue={urlPromo} 
+                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase" 
+                placeholder="ENTER ACCESS CODE" 
+              />
             </div>
             <SubmitButton />
           </form>

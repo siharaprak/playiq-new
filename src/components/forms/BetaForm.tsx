@@ -7,7 +7,7 @@ import { Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import { submitBetaApplication } from '@/app/(public)/beta/actions';
 import { BetaApplicationSchema, type BetaApplicationData } from '@/app/(public)/beta/schema';
 
-export function BetaForm({ source }: { source?: string }) {
+export function BetaForm({ source, initialPromo }: { source?: string; initialPromo?: string }) {
   const [serverState, setServerState] = useState<{ type: 'idle' | 'success' | 'error', message?: string }>({ type: 'idle' });
 
   const {
@@ -16,6 +16,9 @@ export function BetaForm({ source }: { source?: string }) {
     formState: { errors, isSubmitting },
   } = useForm<BetaApplicationData>({
     resolver: zodResolver(BetaApplicationSchema),
+    defaultValues: {
+      promoCode: initialPromo || '',
+    },
   });
 
   const onSubmit = async (data: BetaApplicationData) => {

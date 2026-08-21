@@ -2,9 +2,13 @@ import Link from 'next/link';
 import { BetaForm } from '@/components/forms/BetaForm';
 import { headers } from 'next/headers';
 
-export default async function Beta({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-  const sourceParam = searchParams?.source || searchParams?.utm_source;
+export default async function Beta({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> | { [key: string]: string | string[] | undefined } }) {
+  const resolvedParams = await Promise.resolve(searchParams);
+  const sourceParam = resolvedParams?.source || resolvedParams?.utm_source;
   const source = typeof sourceParam === 'string' ? sourceParam : Array.isArray(sourceParam) ? sourceParam[0] : undefined;
+
+  const promoParam = resolvedParams?.promo || resolvedParams?.code || resolvedParams?.promoCode || resolvedParams?.accessCode;
+  const initialPromo = typeof promoParam === 'string' ? promoParam : Array.isArray(promoParam) ? promoParam[0] : undefined;
 
   const headersList = await headers();
   const referer = headersList.get('referer');
@@ -83,7 +87,7 @@ export default async function Beta({ searchParams }: { searchParams: { [key: str
 
           <div className="glass-card p-8 border border-[rgba(123,79,206,0.3)] !rounded-none">
             <h3 className="text-[#7b4fce] font-display text-2xl font-bold mb-6 uppercase tracking-[0.2em] drop-shadow-[0_0_5px_#7b4fce]">&gt; SECURE APPLICATION</h3>
-            <BetaForm source={detectedSource} />
+            <BetaForm source={detectedSource} initialPromo={initialPromo} />
           </div>
         </section>
         
