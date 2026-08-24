@@ -69,11 +69,11 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
       <input type="hidden" {...register('source')} value={source} />
 
       <div>
-        <label htmlFor="parentFullName" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Parent's Full Name</label>
+        <label htmlFor="parentFullName" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">Parent's Full Name</label>
         <input 
           id="parentFullName"
           {...register('parentFullName')}
-          className={`neon-input ${errors.parentFullName ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
+          className={`neon-input min-h-[44px] ${errors.parentFullName ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
           placeholder="Jane Doe" 
           aria-invalid={!!errors.parentFullName}
         />
@@ -81,12 +81,12 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
       </div>
 
       <div>
-        <label htmlFor="emailAddress" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Email Address</label>
+        <label htmlFor="emailAddress" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">Email Address</label>
         <input 
           id="emailAddress"
           type="email"
           {...register('emailAddress')}
-          className={`neon-input ${errors.emailAddress ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
+          className={`neon-input min-h-[44px] ${errors.emailAddress ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
           placeholder="jane@example.com" 
           aria-invalid={!!errors.emailAddress}
         />
@@ -94,11 +94,11 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
       </div>
 
       <div>
-        <label htmlFor="childAge" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Teen's Target Age Group</label>
+        <label htmlFor="childAge" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">Teen's Target Age Group</label>
         <select 
           id="childAge"
           {...register('childAge')}
-          className={`neon-input ${errors.childAge ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
+          className={`neon-input min-h-[44px] ${errors.childAge ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
         >
           <option value="" className="bg-[#020617] text-slate-400">Select an age group</option>
           <option value="under_13" className="bg-[#020617] text-[#e2e8f0]">Under 13</option>
@@ -110,26 +110,26 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
       </div>
 
       <div>
-        <label htmlFor="promoCode" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2 opacity-80">Promo / Access Code (Optional)</label>
+        <label htmlFor="promoCode" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">Promo / Access Code (Optional)</label>
         <input 
           id="promoCode"
           {...register('promoCode')}
-          className={`neon-input ${errors.promoCode ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
+          className={`neon-input min-h-[44px] ${errors.promoCode ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
           placeholder="Enter code to bypass payment" 
         />
         {errors.promoCode && <p className="mt-1 text-xs font-mono text-red-400">{errors.promoCode.message}</p>}
       </div>
 
-      <div className="pt-6">
+      <div className="pt-4 sm:pt-6">
          <button 
           type="submit" 
           disabled={isSubmitting}
-          className="btn-neon-filled w-full font-display text-lg py-4 gap-2 !rounded-none disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-neon-filled w-full font-display text-base sm:text-lg py-3.5 sm:py-4 min-h-[48px] gap-2 !rounded-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-transform"
          >
             {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mr-3 inline-block" /> : null}
             {isSubmitting ? "PROCESSING..." : "PROCEED TO ENTRY"}
          </button>
-         <p className="font-mono text-[10px] text-center text-slate-500 mt-4 uppercase tracking-[0.2em]">By applying, you acknowledge this is an early access pilot program.</p>
+         <p className="font-mono text-[9px] sm:text-[10px] text-center text-slate-500 mt-3 sm:mt-4 uppercase tracking-wider sm:tracking-[0.2em]">By applying, you acknowledge this is an early access pilot program.</p>
       </div>
     </form>
   );

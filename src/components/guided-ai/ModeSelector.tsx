@@ -49,7 +49,7 @@ export function ModeSelector({ activeMode, onSelectMode, disabled }: ModeSelecto
         type="button"
         disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--neon-cyan)] ${
+        className={`w-full min-h-[44px] flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-300 border focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--neon-cyan)] ${
           disabled
             ? 'border-[var(--glass-border)] bg-transparent text-[var(--text-muted)] opacity-50 cursor-not-allowed'
             : isOpen
@@ -81,7 +81,7 @@ export function ModeSelector({ activeMode, onSelectMode, disabled }: ModeSelecto
           className="absolute left-0 right-0 mt-2 z-50 rounded-xl border border-[var(--glass-border)] backdrop-blur-xl shadow-2xl overflow-hidden animate-fade-in-up"
           style={{ animationDuration: '0.2s', backgroundColor: 'var(--space-deep)' }}
         >
-          <div className="p-1 max-h-72 overflow-y-auto custom-scrollbar">
+          <div className="p-1 max-h-72 overflow-y-auto custom-scrollbar touch-scroll">
             {MODES.map((mode) => {
               const isActive = activeMode === mode.id;
               const isScaffold = mode.scaffold;
@@ -92,12 +92,12 @@ export function ModeSelector({ activeMode, onSelectMode, disabled }: ModeSelecto
                   type="button"
                   disabled={isScaffold}
                   onClick={() => handleSelect(mode.id)}
-                  className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left text-xs uppercase tracking-wider font-bold transition-all duration-205 border border-transparent ${
+                  className={`w-full min-h-[40px] flex items-center justify-between px-3 py-2.5 rounded-lg text-left text-xs uppercase tracking-wider font-bold transition-all duration-205 border border-transparent ${
                     isActive
                       ? 'bg-gradient-to-r from-[rgba(0,200,255,0.15)] to-[rgba(123,79,206,0.1)] text-[var(--neon-cyan)] border-[rgba(0,200,255,0.2)] font-extrabold'
                       : isScaffold
                         ? 'text-[var(--text-muted)] opacity-50 cursor-not-allowed'
-                        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg)]'
+                        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--glass-bg)] active:bg-[rgba(0,200,255,0.1)]'
                   }`}
                 >
                   <div className="flex items-center gap-2">

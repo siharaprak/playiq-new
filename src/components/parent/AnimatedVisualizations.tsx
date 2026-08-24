@@ -483,11 +483,11 @@ export function AnimatedAnalyticsDashboard({
               Cumulative Mastery Curve
             </h3>
             <span className="text-[8px] font-mono text-slate-500 uppercase tracking-widest">
-              Hover dots to inspect
+              <span className="hidden sm:inline">Hover</span><span className="sm:hidden">Tap</span> dots to inspect
             </span>
           </div>
 
-          <div className="bg-black/40 border border-slate-900 p-4 relative overflow-visible">
+          <div className="bg-black/40 border border-slate-900 p-2 sm:p-4 relative overflow-visible">
             {/* Render chart */}
             <svg
               viewBox={`0 0 ${width} ${height}`}
@@ -565,13 +565,14 @@ export function AnimatedAnalyticsDashboard({
                 const active = hoveredPoint?.modNum === p.num;
                 return (
                   <g key={p.num}>
-                    {/* Larger hover target */}
+                    {/* Larger hover & touch target */}
                     <circle
                       cx={p.x}
                       cy={p.y}
-                      r="12"
+                      r="16"
                       fill="transparent"
                       className="cursor-pointer"
+                      onClick={() => setHoveredPoint(active ? null : { x: p.x, y: p.y, modNum: p.num, nodes: p.cumulativeNodes, name: p.title })}
                       onMouseEnter={() => setHoveredPoint({ x: p.x, y: p.y, modNum: p.num, nodes: p.cumulativeNodes, name: p.title })}
                       onMouseLeave={() => setHoveredPoint(null)}
                     />
@@ -580,7 +581,7 @@ export function AnimatedAnalyticsDashboard({
                       cx={p.x}
                       cy={p.y}
                       r={active ? '5.5' : '3.5'}
-                      className="transition-all duration-300 ease-out"
+                      className="transition-all duration-300 ease-out pointer-events-none"
                       fill={p.nodesThisModule > 0 ? 'var(--neon-cyan)' : 'var(--space-deep)'}
                       stroke="var(--neon-cyan)"
                       strokeWidth="1.5"
@@ -593,7 +594,7 @@ export function AnimatedAnalyticsDashboard({
                       x={p.x}
                       y={height - 8}
                       textAnchor="middle"
-                      className="font-mono text-[7px] font-bold fill-slate-500 uppercase"
+                      className="font-mono text-[7px] font-bold fill-slate-500 uppercase pointer-events-none"
                     >
                       M{p.num}
                     </text>

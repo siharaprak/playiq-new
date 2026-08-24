@@ -104,74 +104,77 @@ export default async function StudentDashboard() {
   });
 
   return (
-    <div className="min-h-screen p-6 md:p-12" style={{ backgroundColor: 'var(--space-deep)', color: 'var(--text-primary)' }}>
+    <div className="min-h-screen p-4 sm:p-6 md:p-12" style={{ backgroundColor: 'var(--space-deep)', color: 'var(--text-primary)' }}>
       <div className="max-w-6xl mx-auto">
-        <header className="flex justify-between items-center mb-12 pb-6" style={{ borderBottom: '1px solid rgba(123,79,206,0.2)' }}>
-          <h1 className="text-2xl font-bold font-display">PlayIQ <span style={{ color: 'var(--neon-cyan)' }}>Guide</span></h1>
-          <div className="flex items-center gap-4">
+        <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-12 pb-4 sm:pb-6" style={{ borderBottom: '1px solid rgba(123,79,206,0.2)' }}>
+          <div className="flex items-center justify-between w-full sm:w-auto">
+            <h1 className="text-xl sm:text-2xl font-bold font-display">PlayIQ <span style={{ color: 'var(--neon-cyan)' }}>Guide</span></h1>
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full flex sm:hidden items-center justify-center font-bold text-xs sm:text-sm" style={{ background: 'var(--neon-purple)', color: '#fff' }} title={name}>{initials}</div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-4 w-full sm:w-auto">
             <button 
               id="replay-tour-button"
-              className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all hover:bg-purple-500/10 cursor-pointer"
+              className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 min-h-[38px] rounded-lg transition-all hover:bg-purple-500/10 cursor-pointer"
               style={{ border: '1px solid var(--neon-purple)', color: 'var(--neon-purple-light)' }}
             >
               🗺️ Tour Dashboard
             </button>
-            <Link href="/settings" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>
+            <Link href="/settings" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 min-h-[38px] rounded-lg transition-all" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>
               <Settings className="w-3.5 h-3.5" /> 2FA Shield
             </Link>
             <form action="/auth/signout" method="post" className="inline">
-              <button type="submit" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer hover:bg-red-500/10" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>
+              <button type="submit" className="text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 px-2.5 sm:px-3 py-2 sm:py-1.5 min-h-[38px] rounded-lg transition-all cursor-pointer hover:bg-red-500/10" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>
                 Logout
               </button>
             </form>
-            <span className="text-sm px-3 py-1 rounded-full" style={{ background: 'var(--space-card)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>Phase 1: Foundations</span>
-            <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm" style={{ background: 'var(--neon-purple)', color: '#fff' }} title={name}>{initials}</div>
+            <span className="hidden sm:inline-block text-sm px-3 py-1 rounded-full" style={{ background: 'var(--space-card)', color: 'var(--text-secondary)', border: '1px solid var(--glass-border)' }}>Phase 1: Foundations</span>
+            <div className="hidden sm:flex w-10 h-10 rounded-full items-center justify-center font-bold text-sm" style={{ background: 'var(--neon-purple)', color: '#fff' }} title={name}>{initials}</div>
           </div>
         </header>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <div className="md:col-span-2 space-y-6">
+        <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
+          <div className="md:col-span-2 space-y-4 sm:space-y-6">
             <CourseNavigationGuide studentName={name} studentId={user.id} hasProgress={!!(allProgress && allProgress.length > 0)} />
 
             {modulesWithProgress.map((mod, index) => {
               if (mod.isUnlocked) {
                 return (
-                  <div key={mod.id} id={mod.id === MODULES.MODULE_1_ID ? "current-challenge-card" : undefined} className="p-8 rounded-2xl transition-all" style={{ background: 'var(--space-card)', border: `1px solid ${mod.isCompleted ? 'var(--neon-purple)' : 'var(--neon-cyan)'}` }}>
+                  <div key={mod.id} id={mod.id === MODULES.MODULE_1_ID ? "current-challenge-card" : undefined} className="p-5 sm:p-8 rounded-2xl transition-all" style={{ background: 'var(--space-card)', border: `1px solid ${mod.isCompleted ? 'var(--neon-purple)' : 'var(--neon-cyan)'}` }}>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-bold uppercase tracking-wider" style={{ color: mod.isCompleted ? 'var(--neon-purple)' : 'var(--neon-cyan)' }}>
+                      <span className="text-xs sm:text-sm font-bold uppercase tracking-wider" style={{ color: mod.isCompleted ? 'var(--neon-purple)' : 'var(--neon-cyan)' }}>
                         {mod.isCompleted ? 'Completed' : 'Current Challenge'}
                       </span>
                       {mod.isCompleted ? (
-                        <span className="flex items-center gap-1 text-xs px-2 py-1 rounded-full" style={{ background: 'transparent', color: 'var(--neon-green)', border: '1px solid var(--neon-green)' }}>
+                        <span className="flex items-center gap-1 text-[11px] sm:text-xs px-2 py-0.5 sm:py-1 rounded-full" style={{ background: 'transparent', color: 'var(--neon-green)', border: '1px solid var(--neon-green)' }}>
                           <CheckCircle2 className="w-3 h-3" /> COMPLETE
                         </span>
                       ) : (
-                        mod.nodesMastered > 0 && <span className="text-xs px-2 py-1 rounded-full" style={{ background: 'transparent', color: 'var(--neon-cyan)', border: '1px solid var(--neon-cyan)' }}>{mod.percent}% Complete</span>
+                        mod.nodesMastered > 0 && <span className="text-[11px] sm:text-xs px-2 py-0.5 sm:py-1 rounded-full" style={{ background: 'transparent', color: 'var(--neon-cyan)', border: '1px solid var(--neon-cyan)' }}>{mod.percent}% Complete</span>
                       )}
                     </div>
-                    <h2 className="text-2xl font-extrabold mb-3 font-display" style={{ color: 'var(--text-primary)' }}>Module {mod.num}: {mod.title}</h2>
-                    <p className="mb-6 max-w-lg leading-relaxed text-sm" style={{ color: 'var(--text-secondary)' }}>{mod.desc}</p>
+                    <h2 className="text-xl sm:text-2xl font-extrabold mb-2 sm:mb-3 font-display" style={{ color: 'var(--text-primary)' }}>Module {mod.num}: {mod.title}</h2>
+                    <p className="mb-4 sm:mb-6 max-w-lg leading-relaxed text-xs sm:text-sm" style={{ color: 'var(--text-secondary)' }}>{mod.desc}</p>
                     
                     {(!mod.isCompleted || mod.nodesMastered > 0) && (
-                      <div className="w-full rounded-full h-2 mb-6" style={{ background: 'var(--glass-bg)' }}>
+                      <div className="w-full rounded-full h-2 mb-4 sm:mb-6" style={{ background: 'var(--glass-bg)' }}>
                         <div className="h-2 rounded-full transition-all duration-500" style={{ width: `${mod.percent}%`, background: mod.isCompleted ? 'linear-gradient(90deg, var(--neon-purple), var(--neon-cyan))' : 'linear-gradient(90deg, var(--neon-cyan), var(--neon-green))' }} />
                       </div>
                     )}
                     
-                    <Link href={`/student/modules/${mod.num}/overview`} className="inline-block px-6 py-3 rounded-lg font-bold transition-colors" style={{ background: mod.isCompleted ? 'transparent' : 'var(--glass-bg)', color: 'var(--neon-cyan)', border: `1px solid var(--neon-cyan)` }}>
+                    <Link href={`/student/modules/${mod.num}/overview`} className="w-full sm:w-auto text-center inline-flex items-center justify-center px-6 py-3 min-h-[44px] rounded-lg font-bold transition-colors active:scale-[0.98]" style={{ background: mod.isCompleted ? 'transparent' : 'var(--glass-bg)', color: 'var(--neon-cyan)', border: `1px solid var(--neon-cyan)` }}>
                       {mod.nodesMastered > 0 ? `CONTINUE MODULE ${mod.num} →` : `START MODULE ${mod.num} →`}
                     </Link>
                   </div>
                 );
               } else {
                 return (
-                  <div key={mod.id} className="p-8 rounded-2xl opacity-50" style={{ background: 'var(--space-mid)', border: '1px solid var(--glass-border)' }}>
-                    <div className="flex items-center gap-3 mb-3">
+                  <div key={mod.id} className="p-5 sm:p-8 rounded-2xl opacity-50" style={{ background: 'var(--space-mid)', border: '1px solid var(--glass-border)' }}>
+                    <div className="flex items-center gap-3 mb-2 sm:mb-3">
                       <Lock className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
-                      <span className="text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Locked</span>
+                      <span className="text-xs sm:text-sm font-bold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Locked</span>
                     </div>
-                    <h2 className="text-xl font-extrabold mb-2 font-display" style={{ color: 'var(--text-muted)' }}>Module {mod.num}: {mod.title}</h2>
-                    <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Complete Module {mod.num - 1} to unlock this module.</p>
+                    <h2 className="text-lg sm:text-xl font-extrabold mb-1 sm:mb-2 font-display" style={{ color: 'var(--text-muted)' }}>Module {mod.num}: {mod.title}</h2>
+                    <p className="text-xs sm:text-sm" style={{ color: 'var(--text-muted)' }}>Complete Module {mod.num - 1} to unlock this module.</p>
                   </div>
                 );
               }

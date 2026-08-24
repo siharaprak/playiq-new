@@ -143,9 +143,9 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
   };
 
   return (
-    <div className={`bg-slate-800/60 p-8 rounded-xl border backdrop-blur-md transition-colors ${resubmitArtifactId ? 'border-[#7b4fce]/60 shadow-[0_0_15px_rgba(123,79,206,0.1)]' : 'border-slate-700'}`}>
-      <div className="flex items-center justify-between mb-6 border-b border-slate-700 pb-2">
-        <h3 className={`font-bold uppercase tracking-widest text-sm flex items-center gap-2 ${resubmitArtifactId ? 'text-[#7b4fce]' : 'text-white'}`}>
+    <div className={`bg-slate-800/60 p-4 sm:p-8 rounded-xl border backdrop-blur-md transition-colors ${resubmitArtifactId ? 'border-[#7b4fce]/60 shadow-[0_0_15px_rgba(123,79,206,0.1)]' : 'border-slate-700'}`}>
+      <div className="flex items-center justify-between mb-4 sm:mb-6 border-b border-slate-700 pb-2">
+        <h3 className={`font-bold uppercase tracking-wider sm:tracking-widest text-xs sm:text-sm flex items-center gap-2 ${resubmitArtifactId ? 'text-[#7b4fce]' : 'text-white'}`}>
           {resubmitArtifactId ? (
             <><RefreshCw className="w-4 h-4" /> Resubmitting Revision</>
           ) : (
@@ -157,17 +157,17 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
           <button 
             onClick={onCancelResubmit}
             disabled={uploading}
-            className="text-slate-400 hover:text-white text-xs font-mono flex items-center gap-1 uppercase tracking-widest transition-colors disabled:opacity-50"
+            className="text-slate-400 hover:text-white text-xs font-mono flex items-center gap-1 uppercase tracking-widest transition-colors disabled:opacity-50 min-h-[36px] px-2"
           >
             <X className="w-3 h-3" /> Cancel
           </button>
         )}
       </div>
 
-      <form onSubmit={handleUpload} className="space-y-6">
+      <form onSubmit={handleUpload} className="space-y-4 sm:space-y-6">
         <div>
-          <label className="block text-slate-300 font-mono text-sm mb-3">Media Type</label>
-          <div className="grid grid-cols-4 gap-2">
+          <label className="block text-slate-300 font-mono text-xs sm:text-sm mb-2 sm:mb-3">Media Type</label>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             {[
               { id: 'photo', icon: ImageIcon, label: 'Photo' },
               { id: 'document', icon: FileText, label: 'Document' },
@@ -182,7 +182,7 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
                   setFile(null);
                   if (fileInputRef.current) fileInputRef.current.value = '';
                 }}
-                className={`flex flex-col items-center justify-center p-3 rounded border font-mono text-xs uppercase tracking-wider transition-all ${
+                className={`flex flex-col items-center justify-center p-3 min-h-[52px] rounded border font-mono text-xs uppercase tracking-wider transition-all cursor-pointer ${
                   mediaKind === type.id 
                     ? 'border-[#00c8ff] bg-[#00c8ff]/10 text-[#00c8ff]' 
                     : 'border-slate-700 bg-black/30 text-slate-400 hover:border-slate-500'
@@ -195,10 +195,10 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-4">
+        <div className="grid md:grid-cols-2 gap-4 sm:gap-6">
+          <div className="space-y-3 sm:space-y-4">
             <div>
-              <label className="block text-slate-300 font-mono text-xs mb-2 uppercase tracking-wider">Title *</label>
+              <label className="block text-slate-300 font-mono text-xs mb-1.5 sm:mb-2 uppercase tracking-wider">Title *</label>
               <input 
                 required 
                 value={title}
@@ -206,11 +206,11 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
                 type="text" 
                 placeholder="E.g., My written notes"
                 disabled={uploading}
-                className="w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 text-[var(--text-primary)] text-sm outline-none" 
+                className="w-full bg-black/50 border border-slate-700 focus:border-[#00c8ff] rounded p-3 min-h-[44px] text-[var(--text-primary)] text-sm outline-none" 
               />
             </div>
             <div>
-              <label className="block text-slate-300 font-mono text-xs mb-2 uppercase tracking-wider">Description</label>
+              <label className="block text-slate-300 font-mono text-xs mb-1.5 sm:mb-2 uppercase tracking-wider">Description</label>
               <textarea 
                 value={description}
                 onChange={e => setDescription(e.target.value)}
@@ -222,9 +222,9 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
           </div>
 
           <div>
-            <label className="block text-slate-300 font-mono text-xs mb-2 uppercase tracking-wider">File *</label>
+            <label className="block text-slate-300 font-mono text-xs mb-1.5 sm:mb-2 uppercase tracking-wider">File *</label>
             <div 
-              className={`border-2 border-dashed border-slate-700 rounded-lg p-6 flex flex-col items-center justify-center h-[164px] text-center transition-colors ${file ? 'bg-[#00c8ff]/5 border-[#00c8ff]/30' : 'bg-black/30 hover:border-slate-500'}`}
+              className={`border-2 border-dashed border-slate-700 rounded-lg p-4 sm:p-6 flex flex-col items-center justify-center min-h-[164px] text-center transition-colors ${file ? 'bg-[#00c8ff]/5 border-[#00c8ff]/30' : 'bg-black/30 hover:border-slate-500'}`}
             >
               {file ? (
                 <div className="flex flex-col items-center">
@@ -238,21 +238,21 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
                       if (fileInputRef.current) fileInputRef.current.value = '';
                     }}
                     disabled={uploading}
-                    className="text-red-400 hover:text-red-300 text-xs font-mono uppercase tracking-widest mt-3 flex items-center gap-1"
+                    className="text-red-400 hover:text-red-300 text-xs font-mono uppercase tracking-widest mt-3 flex items-center gap-1 min-h-[36px] px-2 cursor-pointer"
                   >
                     <X className="w-3 h-3" /> Remove
                   </button>
                 </div>
               ) : (
                 <>
-                  <Upload className="w-8 h-8 text-slate-500 mb-3" />
-                  <p className="text-sm text-slate-400 font-mono">Select a {mediaKind} file</p>
-                  <p className="text-xs text-slate-600 font-mono mt-1 mb-4">Max size: {getMaxSize() / (1024 * 1024)}MB</p>
+                  <Upload className="w-7 h-7 sm:w-8 sm:h-8 text-slate-500 mb-2 sm:mb-3" />
+                  <p className="text-xs sm:text-sm text-slate-400 font-mono">Select a {mediaKind} file</p>
+                  <p className="text-[11px] sm:text-xs text-slate-600 font-mono mt-1 mb-3 sm:mb-4">Max size: {getMaxSize() / (1024 * 1024)}MB</p>
                   <button 
                     type="button" 
                     onClick={() => fileInputRef.current?.click()}
                     disabled={uploading}
-                    className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 text-xs font-mono uppercase tracking-widest rounded transition-colors"
+                    className="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 min-h-[38px] text-xs font-mono uppercase tracking-widest rounded transition-colors cursor-pointer"
                   >
                     Browse Files
                   </button>
@@ -288,10 +288,10 @@ export function ProofArtifactUploader({ moduleId, onUploadSuccess, resubmitArtif
           <button
             type="submit"
             disabled={!file || !title || uploading}
-            className={`w-full md:w-auto text-black px-8 py-3 rounded font-bold uppercase tracking-widest transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+            className={`w-full sm:w-auto text-black px-8 py-3.5 min-h-[48px] rounded font-bold uppercase tracking-widest transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed ${
               resubmitArtifactId 
-                ? 'bg-[#7b4fce] hover:bg-[#8b5fde]' 
-                : 'bg-[#00c8ff] hover:bg-white'
+                ? 'bg-[#7b4fce] hover:bg-[#8b5fde] text-white' 
+                : 'bg-[#00c8ff] hover:bg-white text-black'
             }`}
           >
             {uploading ? 'Uploading...' : resubmitArtifactId ? 'Submit Revision' : 'Submit Proof'}

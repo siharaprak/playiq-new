@@ -47,7 +47,7 @@ export function SocialSidebar() {
   ];
 
   return (
-    <div className="fixed left-1.5 top-20 sm:left-2 sm:top-24 md:left-3 md:top-28 lg:left-5 lg:top-28 z-40 flex flex-col items-center gap-0">
+    <div className="fixed hidden md:flex md:left-3 md:top-28 lg:left-5 lg:top-28 z-40 flex-col items-center gap-0">
       {/* Top line */}
       <div className="w-px h-5 sm:h-7 md:h-8 lg:h-10 bg-gradient-to-b from-transparent to-[#00c8ff]/40" />
 

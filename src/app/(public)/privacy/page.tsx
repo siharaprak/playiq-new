@@ -11,29 +11,29 @@ export default function PrivacyPage() {
   return (
     <main className="w-full min-h-screen" style={{ background: '#020617' }}>
       {/* Header */}
-      <section className="relative py-20 px-6 border-b border-slate-800/50 overflow-hidden">
+      <section className="relative py-12 sm:py-20 px-4 sm:px-6 border-b border-slate-800/50 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 left-[10%] w-[400px] h-[400px] bg-[rgba(0,200,255,0.06)] rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <p className="font-display text-xs uppercase tracking-[0.3em] text-[#7b4fce] mb-4">
+          <p className="font-display text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#7b4fce] mb-3 sm:mb-4">
             Legal
           </p>
-          <h1 className="font-display font-black text-4xl md:text-5xl text-white tracking-widest uppercase drop-shadow-[0_0_20px_rgba(0,200,255,0.4)]">
+          <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white tracking-wider sm:tracking-widest uppercase drop-shadow-[0_0_20px_rgba(0,200,255,0.4)]">
             Privacy <span className="text-[#00c8ff]">Policy</span>
           </h1>
-          <p className="mt-4 text-slate-500 text-sm">
+          <p className="mt-3 sm:mt-4 text-slate-500 text-xs sm:text-sm">
             Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
       </section>
 
       {/* Content */}
-      <section className="py-16 px-6">
-        <div className="mx-auto max-w-3xl space-y-10 text-slate-400 leading-relaxed">
+      <section className="py-8 sm:py-16 px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl space-y-6 sm:space-y-10 text-slate-400 leading-relaxed text-xs sm:text-sm">
 
-          <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
+          <div className="glass-card p-5 sm:p-8">
+            <h2 className="font-display text-xs sm:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] font-bold mb-3 sm:mb-4">
               1. Introduction
             </h2>
             <p>
