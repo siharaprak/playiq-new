@@ -147,6 +147,7 @@ export default function OrionAssessment({
     (existingProfile?.learner_type as string) || 'student',
   );
   const [openingComplete, setOpeningComplete] = useState(false);
+  const [workspaceReady, setWorkspaceReady] = useState(false);
 
   // Phase 2 state
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -344,7 +345,21 @@ export default function OrionAssessment({
             className="mb-8"
           />
 
-          {openingComplete && (
+          {openingComplete && !workspaceReady && (
+            <div className="assessment-form-section text-center">
+              <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--text-secondary)' }}>
+                If your parent or guardian has completed the setup checklist, continue here. Orion will guide the assessment inside PlayIQ; you do not need to open another AI chat or type a special phrase.
+              </p>
+              <button
+                onClick={() => setWorkspaceReady(true)}
+                className="assessment-continue-button"
+              >
+                Continue to Orion&apos;s Assessment →
+              </button>
+            </div>
+          )}
+
+          {openingComplete && workspaceReady && (
             <div className="assessment-form-section">
               <div className="space-y-5">
                 {/* Name */}
