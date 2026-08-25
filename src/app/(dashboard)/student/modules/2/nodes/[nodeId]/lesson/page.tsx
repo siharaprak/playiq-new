@@ -3,6 +3,7 @@ import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
 import { advanceNodePhase } from '../../../actions';
 import { module2Nodes } from '@/data/module2Content';
+import LessonContentRenderer from '@/components/modules/LessonContentRenderer';
 
 export default async function NodeLessonPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
@@ -45,16 +46,7 @@ export default async function NodeLessonPage({ params }: { params: Promise<{ nod
             ))}
           </div>
 
-          {lessonData.sections.map((section, idx) => (
-            <div key={idx} className="bg-slate-800/80 p-6 rounded-xl border border-slate-700/50 backdrop-blur-sm">
-              {section.title && <h3 className="text-xl font-bold text-[var(--text-primary)] mb-4">{section.title}</h3>}
-              <ul className="list-disc pl-5 space-y-2 text-slate-300">
-                {section.content.map((item, i) => (
-                  <li key={i}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          <LessonContentRenderer sections={lessonData.sections} />
         </div>
       </div>
 

@@ -3,165 +3,292 @@ import type { NodeContent } from './module1Content';
 export const module6Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
-    imageUrl: '/images/modules/bright-mixed-playiq-22.png',
-    title: 'Why Rereading Fails',
+    imageUrl: '/images/modules/bright-mixed-playiq-01.png',
+    title: 'Retrieval Over Rereading',
     bigIdea: [
-      'Rereading can help a little, but it often tricks you.',
-      'You recognize the answer when you see it, but you may not be able to produce it yourself.',
-      'Retrieval practice means pulling the answer from your brain. That is stronger.',
+      'Your mission: turn wrong answers into your fastest study map.',
+      'What if every mistake could tell you exactly what to learn next? Most students hide mistakes, erase them, or reread the whole chapter. In this module, you will test what you can produce without looking, investigate why an answer missed, and save the useful clue in a Mistake Bank.',
+      'A wrong answer is not a verdict. It is a message from the exact edge of what you know.',
     ],
     sections: [
       {
-        title: 'Prompt to Use',
+        title: 'The 30-second confidence hook',
         content: [
-          '"Explain why rereading can feel helpful but still fail. Then help me create a quick retrieval practice test for [topic]. Do not give answers until I try."',
+          'Without looking back at Module 5, answer quickly: What were the three supporting parts on your Understanding Card called?',
+          'How confident are you? Very confident / Somewhat confident / Guessing',
+          'Now check Module 5. Result: correct / partly correct / not yet',
+          'In less than a minute, you discovered two pieces of useful information: what you could retrieve and whether your confidence matched the result.',
+        ],
+      },
+      {
+        title: 'Rereading can feel easier than remembering',
+        content: [
+          'When the answer is visible, your brain can recognize it. Recognition feels familiar, but a test usually asks you to produce, explain, select, or use the idea without the answer in front of you.',
+          'Self-testing closes that gap:',
+          '1. Hide the source.',
+          '2. Try to retrieve or use the idea.',
+          '3. Check against an approved source.',
+          '4. Investigate the mistake.',
+          '5. Correct it in your own words.',
+          '6. Try a new question that tests the same missing skill.',
+        ],
+      },
+      {
+        title: 'Coach, not answer machine',
+        content: [
+          'STUDENT: "I got it wrong. Just tell me the answer."',
+          'ORION: "I will help, but first let us use the mistake. Was the problem a missing fact, an unclear word, a skipped step, a rushed error, difficulty using the idea in a new situation, or confidence that did not match the answer?"',
+          'The same wrong answer can need very different repairs. More rereading will not fix every kind of mistake.',
         ],
       },
     ],
     activity: {
-      title: 'Rereading vs Retrieval',
+      title: 'Quick Retrieval Test',
       instructions: [
-        'Think about something you recently studied by just reading over it.',
+        'Answer the confidence hook without looking.',
+        'Check your answer and record the result.',
+        'Reflect on whether your confidence matched reality.',
       ],
       scenarios: [
-        'Write one thing you reread recently:',
-        'Did it feel familiar? (yes or no)',
-        'Could you explain it without looking? (yes or no)',
+        'What were the three supporting parts on your Understanding Card called?',
+        'How confident were you?',
+        'Was your answer correct, partly correct, or not yet?',
       ],
       reflection: [
-        'What does that show you about rereading versus retrieving?',
+        'What did you discover about your retrieval vs. recognition?',
       ],
     },
     miniCheck: [
-      'Why can rereading trick students?',
-      'What is retrieval practice?',
-      'Why is retrieval stronger than recognition?',
+      'What is the difference between recognition and retrieval?',
+      'What are the six steps of self-testing?',
+      'Why is investigating a mistake more useful than just seeing the correct answer?',
     ],
-    teachBack:
-      'Explain to a friend why reading a textbook chapter three times is less effective than taking a blank piece of paper and trying to write out what you remember.',
+    teachBack: 'Explain why self-testing reveals more than passive rereading.',
   },
 
   '2': {
     id: '2',
-    imageUrl: '/images/modules/bright-mixed-playiq-23.png',
-    title: 'Retrieval Practice System',
+    imageUrl: '/images/modules/bright-mixed-playiq-02.png',
+    title: 'The Six Mistake Categories & Mistake Bank',
     bigIdea: [
-      'A good self-test is not random.',
-      'It should include: easy recall, meaning, examples, application, and mistake correction.',
+      'Categories are working hypotheses. You can revise one after looking more closely.',
+      'The categories help you ask the right kind of repair question instead of repeating the same study method.',
     ],
     sections: [
       {
-        title: 'Prompt to Use',
+        title: '1. Knowledge gap',
         content: [
-          '"Create a 6-question retrieval practice test for [topic]. Include 2 easy recall questions, 2 understanding questions, 1 example question, and 1 application question. Ask me one question at a time. Do not reveal answers until I try."',
+          'You did not yet know or remember an important fact, rule, or concept.',
+          'Useful Orion request: "Explain [concept] in plain language, give one example and one check question."',
+        ],
+      },
+      {
+        title: '2. Vocabulary or symbol gap',
+        content: [
+          'A word, phrase, unit, or notation blocked understanding.',
+          'Useful Orion request: "Define [term] in this context. Show one correct use and one common misuse."',
+        ],
+      },
+      {
+        title: '3. Step or process gap',
+        content: [
+          'You knew the pieces but missed a move in between.',
+          'Useful Orion request: "Show only the missing step between [A] and [B]. Then give me a similar step to try."',
+        ],
+      },
+      {
+        title: '4. Application gap',
+        content: [
+          'You understood the idea in one setting but could not transfer it to a new one.',
+          'Useful Orion request: "Give me a different context and ask me to apply the same rule. Do not solve it."',
+        ],
+      },
+      {
+        title: '5. Attention or rush error',
+        content: [
+          'You knew the content but made a careless mistake under speed or fatigue.',
+          'Useful Orion request: "Show me where my process was correct and where the error entered."',
+        ],
+      },
+      {
+        title: '6. Confidence mismatch',
+        content: [
+          'Your confidence was higher than your actual result. You believed you knew it.',
+          'Useful Orion request: "Quiz me again on the same concept without hints. Do not reveal the answer until I attempt it."',
+        ],
+      },
+      {
+        title: 'Creating your Mistake Bank',
+        content: [
+          'For each mistake, record: Date, Topic, Question or task, My answer, Correct answer, Gap category, Why (one sentence), Correction in my own words, New question to prove the fix.',
+          'Orion should ask for the correction before showing the complete answer.',
         ],
       },
     ],
     activity: {
-      title: 'Retrieval Tracker',
+      title: 'Build Your First Mistake Bank Entry',
       instructions: [
-        'Take the 6-question test and track your results.',
+        'Choose a recent mistake from schoolwork or Module 5 retrieval.',
+        'Classify it into one of the six categories.',
+        'Write the correction in your own words.',
+        'Ask Orion for a new question that tests the same skill.',
       ],
       scenarios: [
-        'Question 1 & 2 results:',
-        'Question 3 & 4 results:',
-        'Question 5 & 6 results:',
-        'Score: __ / 6',
+        'Date / Topic / Question',
+        'My answer vs. correct answer',
+        'Gap category and evidence',
+        'Correction in my own words',
+        'New question to prove the fix',
       ],
       reflection: [
-        'Strongest question type:',
-        'Weakest question type:',
-        'What I need to practice next:',
+        'Which mistake category was hardest to identify?',
+        'Did the category help you choose a better repair strategy?',
       ],
     },
     miniCheck: [
-      'Which question type was easiest?',
-      'Which question type was hardest?',
-      'What does that tell you?',
+      'Name all six Mistake Bank categories.',
+      'What information goes in each Mistake Bank entry?',
+      'Why should Orion ask for your correction before showing the answer?',
     ],
-    teachBack:
-      'Explain the difference between an easy recall question and an application question.',
+    teachBack: 'Explain the six Mistake Bank categories and give an example of each.',
   },
 
   '3': {
     id: '3',
-    imageUrl: '/images/modules/bright-mixed-playiq-24.png',
-    title: 'Mistake Bank Patterns',
+    imageUrl: '/images/modules/bright-mixed-playiq-03.png',
+    title: 'Quiz Format Comparison & Spaced Review',
     bigIdea: [
-      'A mistake is data.',
-      'The goal is not to feel bad. The goal is to find the pattern.',
-      'Mistake Types: Knowledge Gap, Word Gap, Step Error, Careless Error, Transfer Error, Confidence Error.',
+      'Compare one-at-a-time and full-set quiz formats to see which helps you retrieve and repair more effectively.',
+      'A spaced-review plan is only useful if you actually follow it. Start with a realistic, simple plan.',
     ],
     sections: [
       {
-        title: 'Prompt to Use',
+        title: 'Active comparison \u2014 two quiz formats',
         content: [
-          '"Help me sort my missed questions into mistake types: knowledge gap, word gap, step error, careless error, transfer error, or confidence error. Ask me why I missed each one before giving your opinion."',
+          'Format A \u2014 One-at-a-time: Orion asks one question, waits for your attempt, gives feedback, then asks the next.',
+          'Format B \u2014 Full set: Orion gives five questions at once. You attempt all of them before checking any.',
+          'Rate each: Thinking effort (1\u20135), Temptation to check early (1\u20135), Quality of mistake info (1\u20135), Frustration (1\u20135).',
+        ],
+      },
+      {
+        title: 'Build a spaced-review plan',
+        content: [
+          'A simple plan: Review Session 1 (same day), Session 2 (next day), Session 3 (three days later), Session 4 (one week later).',
+          'Each session: attempt the retrieval questions from your Mistake Bank without looking. Check against the source. Update the entry if your answer changed.',
+          'If you miss a review session, resume at the next one. Do not restart.',
+        ],
+      },
+      {
+        title: 'Learn How You Learn discovery',
+        content: [
+          'When a quiz feels hard, do you tend to push through, pause, switch topics, or avoid?',
+          'What conditions help you focus during self-testing?',
+          'What usually makes you stop reviewing before you planned to?',
+          'When have you remembered something days later because you tested yourself?',
+          'These answers help design your tutor\u2019s quiz behavior.',
         ],
       },
     ],
     activity: {
-      title: 'Mistake Bank Snapshot',
+      title: 'Quiz Format Comparison',
       instructions: [
-        'Log up to 3 mistakes you made recently into your Mistake Bank.',
+        'Run both quiz formats (one-at-a-time and full-set) on the same topic.',
+        'Rate each format on thinking effort, temptation, mistake info quality, and frustration.',
+        'Create your first spaced-review plan.',
       ],
       scenarios: [
-        'Mistake 1 - Question & My answer:',
-        'Mistake 1 - Mistake type & Why I missed it:',
-        'Mistake 2 - Question & My answer:',
-        'Mistake 2 - Mistake type & Why I missed it:',
+        'Format A: one-at-a-time ratings',
+        'Format B: full-set ratings',
+        'My spaced-review plan: Session 1 (today), Session 2 (tomorrow), Session 3 (3 days), Session 4 (1 week)',
       ],
       reflection: [
-        'What pattern do you notice in your mistakes?',
-        'How can you fix this pattern next time?',
+        'Which format revealed more about what you actually know?',
+        'Is your review plan realistic for your schedule?',
       ],
     },
     miniCheck: [
-      'What is a Knowledge Gap vs. a Careless Error?',
-      'Why is it important to know the type of mistake?',
-      'How does a Mistake Bank help you study better?',
+      'What is the difference between one-at-a-time and full-set quiz formats?',
+      'What are the four sessions in a simple spaced-review plan?',
+      'What should you do if you miss a review session?',
     ],
-    teachBack:
-      'Teach someone else how classifying mistakes (like "Step Error" or "Word Gap") makes studying less frustrating and more effective.',
+    teachBack: 'Describe both quiz formats and explain which one worked better for you, using evidence from your comparison.',
   },
 
   '4': {
     id: '4',
-    imageUrl: '/images/modules/bright-mixed-playiq-28.png',
-    title: 'Progressive Correction',
+    imageUrl: '/images/modules/bright-mixed-playiq-04.png',
+    title: 'Blueprint, Proof & Repair-Retest Mastery',
     bigIdea: [
-      'Mistakes should be corrected progressively, not just reviewed once.',
-      'You must prove you can answer the missed question correctly after time has passed.',
+      'Your Blueprint quiz-and-feedback setting tells Orion how to quiz you and what to do when you get something wrong. It is testable and revisable.',
     ],
     sections: [
       {
-        title: 'Prompt to Use',
+        title: 'Learning Supercharger Blueprint update',
         content: [
-          '"I want to review the mistakes from my Mistake Bank. Give me questions similar to the ones I missed, but change the examples or numbers so I cannot just memorize the answer. Ask them one at a time."',
+          'quiz-format = [one-at-a-time | full-set | mixed | not-yet-known]',
+          'mistake-response = how Orion should help when you get something wrong',
+          'review-reminder = your planned review schedule',
+          'evidence = your comparison result',
+          'Rule in plain language: "When quizzing me, use ___. When I get something wrong, first ask me to classify the mistake, then ___."',
+        ],
+      },
+      {
+        title: 'Knowledge File updates',
+        content: [
+          'rule_id: module_6_quiz_format',
+          'module: 6',
+          'skill_tested: self_testing_and_mistake_repair',
+          'source_activity: one_at_a_time_vs_full_set_comparison',
+          'proposed_quiz_format: [format or not_yet_known]',
+          'mistake_response_rule: [category_first | hint_first | explain_first]',
+          'evidence: quiz format ratings, mistake categories used',
+          'confidence: [low|medium|high]',
+          'privacy: safe_for_tutor_project',
+        ],
+      },
+      {
+        title: 'Proof artifact \u2014 Quiz and Mistake Repair Card',
+        content: [
+          'Topic tested:',
+          'Mistake Bank entries created:',
+          'Quiz format comparison result:',
+          'Proposed quiz-format setting:',
+          'One mistake I classified and repaired:',
+          'New question I answered to prove the fix:',
+          'Spaced review plan:',
+          'Orion rules staged: quiz-format / mistake-response',
         ],
       },
     ],
     activity: {
-      title: 'Correction Loop',
+      title: 'Mastery Challenge \u2014 Repair and Retest',
       instructions: [
-        'Have AI generate new questions based on your previous mistakes.',
+        'Choose one real topic from current schoolwork.',
+        '1. Self-test using your preferred quiz format.',
+        '2. Classify at least two mistakes using the six categories.',
+        '3. Correct each mistake in your own words.',
+        '4. Ask Orion for a new question that tests the same skill.',
+        '5. Answer the new question without help.',
+        '6. Record your results in the Mistake Bank.',
       ],
       scenarios: [
-        'Original Mistake 1 Type & New Question AI gave:',
-        'Did I get it right this time? (yes or no)',
-        'Original Mistake 2 Type & New Question AI gave:',
-        'Did I get it right this time? (yes or no)',
+        'I can self-test without seeing the answers first.',
+        'I can classify a mistake into the right category.',
+        'I can correct the mistake in my own words.',
+        'I can answer a new question that tests the same skill.',
+        'I saved the proof artifact and knowledge-file record.',
       ],
       reflection: [
-        'What feels easier now compared to the first time you tested yourself?',
+        'What did classifying the mistake reveal that rereading would not?',
+        'Is your spaced-review plan realistic?',
+        'What do you want to test again in your next review session?',
       ],
     },
     miniCheck: [
-      'Why should AI change the examples when re-testing you?',
-      'Did you improve on your second attempt?',
-      'Why is reviewing mistakes a few days later important?',
+      'What is your quiz-format setting and why?',
+      'How did you classify and repair your mistakes?',
+      'What is your spaced-review plan?',
     ],
-    teachBack:
-      'Explain the concept of Progressive Correction. Why is it not enough to just look at the right answer and move on?',
+    teachBack: 'Walk through a mistake you classified, repaired, and retested \u2014 showing the full Mistake Bank process.',
   },
 };

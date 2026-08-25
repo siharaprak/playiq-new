@@ -18,221 +18,295 @@ export const module1Nodes: Record<string, NodeContent> = {
   '1': {
     id: '1',
     imageUrl: '/images/modules/bright-mixed-playiq-01.png',
-    title: 'What AI Is Good At vs Bad At',
+    title: 'The AI Learning Code — Modes & Power',
     bigIdea: [
-      'AI is powerful, but it is not magic.',
-      'It can help you learn faster. It can also confuse you if you use it badly.'
+      'Your mission: learn how to control the genie.',
+      'AI can explain ideas, give hints, quiz you, coach you through a plan, adapt to how you learn, and rescue a lesson you missed. But it can only do those things well if you tell it which role to play.',
+      'A strong prompt tells Orion what role to play and what not to do. If you ask the genie for "help," you get whatever it guesses. If you ask for the right mode, you get the right kind of help.',
     ],
     sections: [
       {
-        title: 'AI is good at:',
+        title: 'Lightning Hook — Choose your power',
         content: [
-          'explaining ideas in different ways',
-          'giving examples',
-          'helping break down a hard topic',
-          'quizzing you',
-          'helping you organize your thoughts'
-        ]
+          'Imagine you have 20 minutes before a big test. You can pick one AI power. Which would you choose?',
+          'A. "Give me all the answers so I can memorize them."',
+          'B. "Explain the three hardest ideas simply and then quiz me."',
+          'C. "Find where I am confused and fix only that part."',
+          'Your choice tells Orion something about how you want to learn. There is no wrong answer — but the second and third choices tend to build skills that stay with you after the test is over.',
+        ],
       },
       {
-        title: 'AI is bad at:',
+        title: '1. Explain Mode',
         content: [
-          'always being correct',
-          'fully understanding your teacher’s exact expectations',
-          'knowing when something is missing',
-          'replacing your judgment'
-        ]
+          'Use it when a topic is new or confusing.',
+          'Example prompt: "Explain fractions using one simple example. Then ask me to explain the idea back in my own words."',
+        ],
       },
       {
-        title: 'Read this carefully',
+        title: '2. Hint Mode',
         content: [
-          'AI often sounds confident. That is important. Something can sound polished, clear, and smart… and still be wrong.',
-          'So one of the most important rules in this program is: Confident is not the same as correct.'
-        ]
+          'Use it when you have started but feel stuck.',
+          'Example prompt: "Give me one hint only. Do not solve the problem. Wait for my attempt."',
+        ],
       },
       {
-        title: 'Why this matters for you',
+        title: '3. Quiz Mode',
         content: [
-          'If you use AI well, it can help you: understand faster, get unstuck faster, learn in a way that fits your brain.',
-          'If you use AI badly, it can: do the thinking for you, make you trust weak answers, make you feel smart without actually learning.',
-          'The goal in PlayIQ is not to look smart. The goal is to become smarter.'
-        ]
-      }
+          'Use it when you want to prove what you remember.',
+          'Example prompt: "Quiz me one question at a time. Do not reveal the answer until I try."',
+        ],
+      },
+      {
+        title: '4. Coach Mode',
+        content: [
+          'Use it when you need a plan, sequence, or way to begin.',
+          'Example prompt: "Help me divide this assignment into three short work blocks. I will do the work."',
+        ],
+      },
+      {
+        title: '5. Learn-My-Way Mode',
+        content: [
+          'Use it when you want to test a different explanation format.',
+          'Example prompt: "Start with a real example, then explain the rule in simple steps."',
+        ],
+      },
+      {
+        title: '6. Lesson Rescue Mode',
+        content: [
+          'Use it when you are overwhelmed and do not know exactly where understanding broke.',
+          'Example prompt: "Ask me three short questions to find the first part I do not understand. Repair only that part."',
+        ],
+      },
     ],
     activity: {
-      title: 'Good Use, Risky Use, or Bad Use?',
+      title: 'Quick Mode Match',
       instructions: [
-        'Read each example and decide whether it is: Good Use, Risky Use, or Bad Use.',
-        'Then answer the 2 reflection questions in full sentences.'
+        'Write the best mode beside each situation.',
+        'Suggested matches: Hint, Quiz, Lesson Rescue, Coach, Explain.',
       ],
       scenarios: [
-        '“Explain photosynthesis like I’m 12.”',
-        '“Write my entire essay for me.”',
-        '“Give me 5 practice questions about fractions.”',
-        '“Tell me the exact answer to my worksheet.”',
-        '“Help me understand what I got wrong.”',
-        '“Summarize this paragraph, then quiz me on it.”',
-        '“Solve all my homework and I’ll copy it.”',
-        '“Give me a simpler example of this equation.”'
+        'I understand half the equation but cannot see the next step.',
+        'I have a test tomorrow and need to check my memory.',
+        'My textbook paragraph makes no sense at all.',
+        'I have three assignments and do not know what to start.',
+        'I have never learned this topic before.',
       ],
       reflection: [
-        'One way AI can help me learn better is...',
-        'One way AI could make me weaker if I used it badly is...'
-      ]
+        'Which mode would help you most right now, and why?',
+        'What would happen if you always used Explain Mode even when you only needed a hint?',
+      ],
     },
     miniCheck: [
-      'Why can AI be useful for learning?',
-      'Why is AI sometimes risky to trust?',
-      'What is one sign that an AI answer should be checked?'
+      'Name three of the six PlayIQ learning modes.',
+      'When should you use Hint Mode instead of Explain Mode?',
+      'Why does choosing the right mode matter?',
     ],
-    teachBack: 'Explain to a younger student why AI can be useful but still needs to be checked.'
+    teachBack: 'Explain to a friend how to choose between Hint Mode and Explain Mode for a problem they are stuck on.',
   },
+
   '2': {
     id: '2',
     imageUrl: '/images/modules/bright-mixed-playiq-02.png',
-    title: 'Choosing the Right AI Mode',
+    title: 'Ask for Learning, Not Just Answers',
     bigIdea: [
-      'Different problems need different kinds of help.',
-      'If you use the wrong mode, learning gets slower, messier, and more frustrating. If you use the right mode, learning gets faster and clearer.',
-      'In PlayIQ, your AI is not just answering you. It is also learning how to teach you better.',
-      'That means the way you respond, the kinds of prompts you use, and the modes you choose all help shape your AI into a better coach for your brain.'
+      'The real cheat is not getting an answer early. The real learning advantage is knowing how to understand something faster without skipping the understanding.',
+      'A learning prompt keeps you in control. Orion supplies support; you supply the thinking.',
     ],
     sections: [
       {
-        title: 'The 6 Modes',
+        title: 'Answer-seeking vs learning prompts',
         content: [
-          '1. Explain Mode: Use this when learning something new, wanting a simpler explanation, or wanting something taught in your specific style.',
-          '2. Hint Mode: Use this when you already started a problem, want a clue (not the answer), and want to keep your brain doing the work.',
-          '3. Quiz Mode: Use this when testing memory or checking if you really understand before a test.',
-          '4. Coach Mode: Use this when you need a plan, feel overwhelmed, or want structure to your studying time.',
-          '5. Learn Your Way Mode: Use this when explanations are not clicking and you want the AI to learn how your brain works.',
-          '6. Lesson Rescue Mode: Use this when a whole paragraph/note is confusing and you need help finding exactly where you got lost.'
-        ]
-      }
+          'Answer-seeking prompt: "What is the answer to question 4?"',
+          'Learning prompt: "Do not give me the answer. Ask what I have tried, then give one hint and one check question."',
+          'The second prompt keeps you in control. Orion supplies support; you supply the thinking.',
+        ],
+      },
+      {
+        title: 'Prompt upgrade practice',
+        content: [
+          'Weak: "Write my history paragraph." \u2192 Stronger: Ask for coaching that helps you write it yourself.',
+          'Weak: "Solve all these math questions." \u2192 Stronger: Ask for one hint at a time while you attempt each question.',
+        ],
+      },
+      {
+        title: 'Orion checkpoint \u2014 before sending a school prompt, ask:',
+        content: [
+          '1. What am I trying to learn?',
+          '2. Which mode would help?',
+          '3. What work must remain mine?',
+          '4. How will I check the result?',
+        ],
+      },
     ],
     activity: {
-      title: 'Pick the Best Mode',
+      title: 'Prompt Upgrade Workshop',
       instructions: [
-        'Now that you know the six modes, you’re going to practice using them.',
-        'Choose the best mode for each situation below. Make sure to specify the exact mode.'
+        'Rewrite each weak prompt into a learning prompt that keeps you doing the thinking.',
+        'For each upgraded prompt, identify which mode it uses.',
       ],
       scenarios: [
-        'You want to understand a confusing paragraph from biology.',
-        'You already tried a math problem and want a clue.',
-        'You want to test whether you remember yesterday’s lesson.',
-        'You need a study plan for an exam next week.',
-        'You pasted your notes and want help finding the confusing part.',
-        'You want the explanation changed to fit how you learn best.'
-      ]
+        '"What is the answer?"',
+        '"Do this for me."',
+        '"Write my paragraph."',
+        '"Solve this worksheet."',
+        '"Tell me what to put."',
+      ],
+      reflection: [
+        'Write three strong learning prompts for something you are currently studying in school.',
+        'For each prompt, which Orion checkpoint question helped you most?',
+      ],
     },
     miniCheck: [
-      'When should you use Hint Mode instead of Explain Mode?',
-      'When is Lesson Rescue Mode better than Coach Mode?',
-      'Why does choosing the right mode matter?'
+      'What is the difference between a shortcut prompt and a coaching prompt?',
+      'What are the four Orion checkpoint questions?',
+      'Why does a learning prompt help more than an answer-seeking prompt?',
     ],
-    teachBack: 'Teach someone when they should use Hint Mode instead of Explain Mode.'
+    teachBack: 'Explain why better questions lead to better learning, using an example from your own school experience.',
   },
+
   '3': {
     id: '3',
     imageUrl: '/images/modules/bright-mixed-playiq-03.png',
-    title: 'Ask Better Questions',
+    title: 'Learn How You Learn Lab',
     bigIdea: [
-      'The quality of your learning depends on the quality of your questions.',
-      'Weak questions lead to weak learning. Better questions lead to better learning.',
-      'When you ask better questions, your AI gets better at helping you. It learns your gaps, your thinking, and how to teach you faster.'
+      'This module is not about finding one correct learning style. It is about testing what works for you today with a specific topic and seeing the evidence.',
+      'You will ask Orion to explain the same topic three different ways, then compare which opening made the idea easiest to follow.',
     ],
     sections: [
       {
-        title: 'Weak question vs strong question',
+        title: 'The three explanation tests',
         content: [
-          'Weak question: "What’s the answer?" (That pushes AI to think for you)',
-          'Better questions: "Can you explain this simply?" "Give me a hint instead of the answer." "What do students usually misunderstand here?"'
-        ]
+          'Choose one topic you understand a little but want to understand better. Examples: gravity, a historical event, percentages, photosynthesis, or a skill from a hobby.',
+          'Test A \u2014 Example-first: "Explain [topic] by starting with one everyday example. Then give the rule."',
+          'Test B \u2014 Step-by-step: "Explain [topic] as four short numbered steps. Use simple words."',
+          'Test C \u2014 Big-picture or visual-first: "Explain [topic] by describing the big picture or a simple diagram first, then connect the details."',
+        ],
       },
       {
-        title: 'The Question Ladder',
+        title: 'Active comparison \u2014 Explain Mode versus Hint Mode',
         content: [
-          'Step 1: What is this?',
-          'Step 2: Why does it work this way?',
-          'Step 3: Can you explain it more simply?',
-          'Step 4: Can you show me an example?',
-          'Step 5: Can you test me on it?',
-          'Step 6: Can you ask me questions that will help me learn this faster?'
-        ]
-      }
+          'Choose a problem you can attempt but cannot solve instantly.',
+          'Round A \u2014 Explain Mode: "Explain how to solve this type of problem. Use a similar example, not my exact answer. Then ask one check question." Try the original problem yourself afterward.',
+          'Round B \u2014 Hint Mode: Start a fresh attempt and send: "Give me one hint only. Do not solve it. Wait for my attempt before giving another hint."',
+          'Rate understanding, thinking effort, and temptation to copy for each round.',
+          'Explain Mode may help when you are missing the whole method. Hint Mode may help when you already understand enough to take the next step.',
+        ],
+      },
+      {
+        title: 'Verification Ritual',
+        content: [
+          'AI can sound confident while being incomplete or wrong. Verification is not a punishment; it is how you stay smarter than the tool.',
+          '1. Does it make sense?',
+          '2. Can I explain it myself?',
+          '3. Can I check it with a trusted source, calculation, or example?',
+          '4. What might be missing?',
+          'Choose one claim from Orion\'s explanation and verify it using these four questions.',
+        ],
+      },
     ],
     activity: {
-      title: 'Upgrade These Weak Prompts',
+      title: 'Three-Way Comparison & Verification',
       instructions: [
-        'Rewrite each weak prompt underneath it so it helps you learn instead of shortcutting.',
-        'After that, write 3 strong prompts for something you’re currently learning in school.'
+        'Run all three explanation tests (A, B, C) on your chosen topic.',
+        'Then run the Explain vs Hint Mode comparison on a problem.',
+        'Finally, verify one AI claim using the four-question ritual.',
       ],
       scenarios: [
-        '“What’s the answer?”',
-        '“Do this for me.”',
-        '“Write my paragraph.”',
-        '“Solve this worksheet.”',
-        '“Tell me what to put.”'
-      ]
+        'Which opening made the idea easiest to follow \u2014 not merely the most fun?',
+        'Which opening made you want to keep reading?',
+        'Which opening gave you enough information without overwhelming you?',
+        'Did any format work badly because Orion\'s explanation was unclear rather than because the format itself was wrong?',
+        'Which format should Orion test first next time?',
+      ],
+      reflection: [
+        'Which mode (Explain vs Hint) fit this situation better, and why?',
+        'What claim did you verify, how did you check it, and what was the result?',
+      ],
     },
     miniCheck: [
-      'Why are better questions important?',
-      'What is the difference between a shortcut prompt and a coaching prompt?',
-      'What kind of prompt would you use if you wanted a simpler explanation and then a test?'
+      'What are the three explanation tests you ran?',
+      'What are the four steps of the Verification Ritual?',
+      'Why might Hint Mode be better than Explain Mode for some problems?',
     ],
-    teachBack: 'Why do better questions lead to better learning?'
+    teachBack: 'Describe the Verification Ritual and explain why it matters for staying smarter than the tool.',
   },
+
   '4': {
     id: '4',
     imageUrl: '/images/modules/bright-mixed-playiq-04.png',
-    title: 'Verify Before You Believe',
+    title: 'Blueprint, Proof & Mastery Challenge',
     bigIdea: [
-      'Verifying is not extra work. Verifying is learning.',
-      'If you check whether something is true, compare it, question it, and make sure it makes sense, you are building real understanding.',
-      'AI can sound smarter than it actually is, and produce answers that sound polished but are not truly correct.',
-      'The permanent PlayIQ rule: Verify before you believe.'
+      'Your Learning Supercharger Blueprint is a set of tutor settings that Orion will test and improve. It is not a permanent label such as "I am only a visual learner."',
+      'In this module, you choose how Orion should begin an explanation. Orion will try that opening first, then you will keep or change it based on evidence.',
     ],
     sections: [
       {
-        title: 'The PlayIQ Verification Ritual',
+        title: 'Learning Supercharger Blueprint update',
         content: [
-          '1. Does this make sense? (Do I understand it, or does it just sound smart?)',
-          '2. Can I explain it myself? (If I cannot explain it, I probably do not own it yet.)',
-          '3. Can I cross-check it? (Can I compare it with class notes or a trusted source?)',
-          '4. Is anything missing or suspicious? (Does it feel too confident, vague, or incomplete?)'
-        ]
+          'Choose the first explanation opening Orion should test with you:',
+          'example-first: show a real example before the rule',
+          'step-by-step: begin with a short sequence',
+          'big-picture-first: show how the parts connect before details',
+          'question-first: ask what the student already knows before explaining',
+          'Your setting is based on evidence from your comparison. Confidence can be low, medium, or high. Review rule: Test again in Module 3 with a different topic.',
+        ],
       },
       {
-        title: 'AI voice vs your voice',
+        title: 'Knowledge File update \u2014 How I Learn Best',
         content: [
-          'AI often writes in a polished, robotic, generic style.',
-          'If you use AI to understand something, then write it using your own brain, your answer sounds natural, human, and like you actually own the material.'
-        ]
-      }
+          'Copy this record into your approved course profile. Orion should show you what changed and should not invent missing answers.',
+          'module: 1',
+          'record_type: experiment_result',
+          'topic_tested: [your topic]',
+          'explanation_start_to_test: [example-first | step-by-step | big-picture-first | question-first]',
+          'best_mode_for_this_task: [explain | hint]',
+          'evidence: [one-sentence result]',
+          'confidence: [low | medium | high]',
+          'rule_updated: explanation-start',
+          'privacy: safe_for_tutor_project',
+        ],
+      },
+      {
+        title: 'Proof artifact \u2014 AI Learning Code Card',
+        content: [
+          'Complete this card to document your Module 1 learning:',
+          'Topic tested:',
+          'Mode that helped most:',
+          'Explanation opening to test again:',
+          'One weak prompt I improved:',
+          'One claim I verified:',
+          'What I did myself:',
+          'Orion rule staged: explanation-start =',
+          'Save or screenshot the completed card.',
+        ],
+      },
     ],
     activity: {
-      title: 'Spot the Problem',
+      title: 'Mastery Challenge \u2014 Keep Your Brain in the Game',
       instructions: [
-        'Read each answer and decide: Looks good, Needs checking, or Wrong.',
-        'Then provide a full sentence explaining why.'
+        'Ask Orion for a medium puzzle or problem suitable for your age.',
+        'Tell Orion: "Use Hint Mode. Give one hint at a time and never reveal the answer before I attempt it."',
+        'Record your first attempt and each hint used.',
+        'Solve it or explain exactly where you remain stuck.',
+        'Teach the key idea back in two or three sentences.',
+        'Verify one part of the final reasoning.',
       ],
       scenarios: [
-        '“Photosynthesis is how plants make food using sunlight.”',
-        '“The Civil War ended in 1992.”',
-        '“A metaphor compares two things without using ‘like’ or ‘as.’”',
-        '“Fractions are always smaller than whole numbers.”',
-        '“The Earth has one moon.”'
+        'I can choose a mode.',
+        'I can improve a weak prompt.',
+        'I can verify an AI claim.',
+        'I can explain my first Blueprint rule.',
       ],
       reflection: [
-        'Take one real school concept and run the verification ritual on it. Write 2-4 sentences showing how you checked it.'
-      ]
+        'What evidence shows that I \u2014 not Orion \u2014 did the thinking?',
+        'What question do you want to learn how to ask better in Module 2?',
+      ],
     },
     miniCheck: [
-      'Why is verifying part of learning?',
-      'What are the 4 steps of the PlayIQ Verification Ritual?',
-      'Why can copying AI language make your work weaker instead of stronger?',
-      'What is the difference between using AI to learn faster and using AI to cheat yourself?'
+      'What is your current Blueprint explanation-start setting?',
+      'What evidence supports that choice?',
+      'Can you verify one part of your mastery challenge reasoning?',
     ],
-    teachBack: 'What does "verify before you believe" mean in school?'
-  }
+    teachBack: 'Teach the key idea from your mastery challenge back in two or three sentences, showing evidence that you \u2014 not Orion \u2014 did the thinking.',
+  },
 };

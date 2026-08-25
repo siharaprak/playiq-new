@@ -5,6 +5,7 @@ import { inferRequirementDefaultsForNode, getRequirementSummary } from '@/lib/ma
 import { MODULES } from '@/lib/constants';
 
 const MODULE_ID_MAP: Record<number, string> = {
+  0: MODULES.MODULE_0_ID,
   1: MODULES.MODULE_1_ID,
   2: MODULES.MODULE_2_ID,
   3: MODULES.MODULE_3_ID,

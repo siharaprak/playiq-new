@@ -5,15 +5,9 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import { module2Nodes } from '@/data/module2Content';
 
-const MODULE_NODES = [
-  { id: '1', title: 'The Power Tool Principle' },
-  { id: '2', title: 'Truth, Trust, and Misinformation' },
-  { id: '3', title: 'Attention, Distraction, and Algorithm Traps' },
-  { id: '4', title: 'Human Responsibility and the Highest Path' },
-  { id: '5', title: 'Integrity and Identity' },
-  { id: '6', title: 'Social Impact: Privacy, Respect, and Digital Power' },
-];
+const MODULE_NODES = Object.values(module2Nodes).map(n => ({ id: n.id, title: n.title }));
 
 export default async function Module2OverviewPage() {
   const supabase = await createClient();
