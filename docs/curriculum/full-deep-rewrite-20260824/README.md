@@ -6,6 +6,12 @@ This directory is the commit-backed implementation handoff for the approved
 student-facing course rewrite. It contains Module 0, Modules 1-10, the
 Capstone, and one combined reading copy.
 
+Founder/team approval for the complete curriculum package was confirmed on
+2026-08-25. The course content is approved for Iris to map into the existing
+PlayIQ LMS experience. UI integration, testing, merge, and deployment remain
+separate implementation steps and must not be represented as complete until
+verified.
+
 The active editorial source remains the Sienvi PlayIQ Google Drive. These files
 give Iris and the website team an exact Git revision to review and integrate.
 
@@ -37,3 +43,8 @@ feedback gating, and validate the student journey before merge or deployment.
 
 - 7,839 lines
 - SHA-256: `c4af7824cc88bd67ff09259cf4f3d1d36597e6e262892493b981c9b8bd8d5bbc`
+
+## Iris handoff
+
+See `IRIS_IMPLEMENTATION_HANDOFF.md` in this directory for the exact source
+list, integration requirements, QA checklist, and completion evidence needed.
