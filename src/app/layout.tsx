@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
@@ -28,6 +28,13 @@ export const metadata: Metadata = {
   keywords: ["STEM", "education", "AI learning", "PlayIQ", "study coaching"],
 };
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: "#0a0f1e",
+};
+
 const gaId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export default function RootLayout({
@@ -54,7 +61,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} font-sans min-h-screen flex flex-col pt-24`}
+        className={`${inter.variable} ${spaceGrotesk.variable} font-sans min-h-screen flex flex-col pt-20 sm:pt-24 antialiased overflow-x-hidden`}
         suppressHydrationWarning
       >
         {gaId && (

@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { ensureProfileExists } from '@/utils/supabase/server';
 import { sendBetaSignupNotifications } from '@/lib/server/notifications';
+import { isValidBetaPromoCode, normalizePromoCode } from '@/lib/auth/promo';
 
 async function createSupabaseClient() {
   const cookieStore = await cookies()
@@ -80,9 +81,15 @@ export async function signupAction(prevState: any, formData: FormData) {
   const name = formData.get('name') as string;
   const email = formData.get('email') as string;
   const password = formData.get('password') as string;
+  const rawPromo = formData.get('promoCode') as string;
 
   if (!email || !password) {
     return { error: 'Both email and password are required' };
+  }
+
+  const promoAttempt = rawPromo ? normalizePromoCode(rawPromo) : '';
+  if (rawPromo && !isValidBetaPromoCode(rawPromo)) {
+    return { error: 'Invalid promo or access code. Please check your invite and try again.' };
   }
 
   const supabase = await createSupabaseClient();
@@ -91,7 +98,8 @@ export async function signupAction(prevState: any, formData: FormData) {
     password,
     options: {
       data: {
-        full_name: name || 'Parent User'
+        full_name: name || 'Parent User',
+        promo_code: promoAttempt || 'PLAYIQ2025',
       }
     }
   });
@@ -114,7 +122,7 @@ export async function signupAction(prevState: any, formData: FormData) {
     parentName: name || 'Parent User',
     email: authData.user.email || email,
     source: 'direct_signup',
-    promoCode: 'PLAYIQ2025',
+    promoCode: promoAttempt || 'PLAYIQ2025',
     status: 'fulfilled_promo',
   }).catch(err => console.error('Error dispatching signup notifications:', err));
 

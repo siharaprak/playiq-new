@@ -53,6 +53,8 @@
 html {
   scroll-behavior: smooth;
   background-color: #0a0f1e !important;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -62,6 +64,9 @@ body {
   font-family: var(--font-inter, 'Inter', system-ui, sans-serif);
   min-height: 100vh;
   overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* CRT scanline removed — too heavy for deck aesthetic */
@@ -1702,4 +1707,67 @@ html[data-theme="light"] .drop-shadow-\[0_0_5px_\#7b4fce\] {
 
 .assessment-blueprint-row:hover {
   background: rgba(0, 200, 255, 0.04);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOBILE & HAND-HELD DEVICE RESPONSIVE OPTIMIZATIONS
+   ══════════════════════════════════════════════════════════════ */
+
+/* Prevent iOS Safari 100vh jumping */
+@supports (-webkit-touch-callout: none) {
+  .min-h-screen {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Touch scrolling helper */
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Minimum 44px touch target guideline */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 640px) {
+  /* Prevent automatic iOS zoom on focus by ensuring minimum 16px font size */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="hidden"]),
+  select,
+  textarea,
+  .neon-input,
+  .assessment-input,
+  .assessment-textarea {
+    font-size: 16px !important;
+  }
+
+  /* Compact glass card padding on small screens */
+  .glass-card-mobile-compact {
+    padding: 1.25rem !important;
+  }
+
+  /* Better readability for large titles on small viewports */
+  .hero-heading-mobile {
+    font-size: clamp(1.75rem, 8vw, 3rem) !important;
+    line-height: 1.15 !important;
+  }
+
+  /* Safe padding for fixed elements near bottom of screen */
+  .safe-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
 }

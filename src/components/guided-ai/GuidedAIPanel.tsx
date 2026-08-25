@@ -734,7 +734,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       <>
         {/* Floating Toggle Button */}
         {!isOpen && (
-          <div id="orion-floating-button" className="fixed bottom-6 right-6 z-50 w-14 h-14">
+          <div id="orion-floating-button" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14">
             {/* Ambient pulse shadow ring */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-purple)] opacity-40 blur-md animate-pulse"></div>
             
@@ -765,7 +765,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
         {/* Expanded Chat Panel */}
         {isOpen && (
           <div 
-            className={`!fixed bottom-6 right-6 z-50 w-[360px] sm:w-[410px] h-[580px] max-h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl ${isClosing ? 'animate-fade-out-down' : 'animate-fade-in-up'} border border-[var(--neon-cyan)]/30 backdrop-blur-xl`}
+            className={`!fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[410px] max-w-[410px] h-[580px] max-h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl ${isClosing ? 'animate-fade-out-down' : 'animate-fade-in-up'} border border-[var(--neon-cyan)]/30 backdrop-blur-xl`}
             style={{ background: 'linear-gradient(to bottom, var(--space-deep), var(--space-mid))', opacity: 0.98 }}
           >
             {/* Real chat panel contents */}

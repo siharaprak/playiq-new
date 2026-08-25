@@ -13,7 +13,7 @@ function SubmitButton() {
     <button 
       type="submit" 
       disabled={pending} 
-      className="btn-neon-filled w-full !rounded-none disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+      className="btn-neon-filled w-full !rounded-none min-h-[48px] font-display uppercase font-bold text-sm tracking-[0.15em] sm:tracking-[0.2em] disabled:opacity-50 disabled:cursor-not-allowed mt-4 sm:mt-6 active:scale-[0.98] transition-transform"
     >
       {pending ? "CREATING..." : "CREATE ACCOUNT"}
     </button>
@@ -24,79 +24,94 @@ function SignupContent() {
   const [state, formAction] = useActionState(signupAction, null);
   const searchParams = useSearchParams();
   const isBetaSuccess = searchParams.get('beta') === 'success';
+  const urlPromo = searchParams.get('promo') || searchParams.get('code') || searchParams.get('promoCode') || '';
 
   return (
-    <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-28 pb-12 px-6">
+    <main className="min-h-screen flex items-center justify-center bg-space-hero star-field relative overflow-hidden pt-20 sm:pt-28 pb-8 sm:pb-12 px-4 sm:px-6">
       {/* Background elements */}
       <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.08)] rounded-full blur-[140px] animate-drift pointer-events-none" />
       <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
 
       <div className="relative z-10 w-full max-w-md">
-        <div className="glass-card !border-t-4 !border-t-[#00c8ff] !rounded-none p-8">
+        <div className="glass-card !border-t-4 !border-t-[#00c8ff] !rounded-none p-5 sm:p-8">
           
-          {isBetaSuccess && (
-            <div className="mb-6 p-4 bg-[rgba(0,200,255,0.1)] border-l-4 border-[#00c8ff] text-[#00c8ff] font-display text-xs tracking-wider flex gap-3 shadow-[0_0_10px_rgba(0,200,255,0.2)] leading-relaxed">
+          {isBetaSuccess ? (
+            <div className="mb-4 sm:mb-6 p-3.5 sm:p-4 bg-[rgba(0,200,255,0.1)] border-l-4 border-[#00c8ff] text-[#00c8ff] font-display text-xs tracking-wider flex gap-3 shadow-[0_0_10px_rgba(0,200,255,0.2)] leading-relaxed">
                <CheckCircle2 className="w-5 h-5 flex-shrink-0 text-[#00c8ff]" />
-               <p><strong className="uppercase">Payment Successful!</strong><br/>Your pilot hardware kit is secured. Please create your parent account below to access your Proof Dashboard.</p>
+               <p><strong className="uppercase">Pilot Access Confirmed!</strong><br/>Your early access license is verified. Create your parent credentials below to access your Proof Dashboard.</p>
+            </div>
+          ) : (
+            <div className="mb-4 sm:mb-6 p-3 bg-[rgba(123,79,206,0.1)] border-l-4 border-[#7b4fce] text-slate-300 font-display text-[0.65rem] tracking-wider flex gap-2 items-center">
+              <span className="text-[#00c8ff] font-bold">[PILOT PHASE]</span> Enter your invite access code below to activate your account.
             </div>
           )}
 
-          <div className="mb-8 text-center flex flex-col items-center">
-             <Link href="/" className="inline-flex items-center font-display uppercase tracking-[0.2em] text-[0.65rem] text-slate-500 hover:text-[#7b4fce] mb-6 transition-colors">
+          <div className="mb-6 sm:mb-8 text-center flex flex-col items-center">
+             <Link href="/" className="inline-flex items-center font-display uppercase tracking-[0.2em] text-[0.65rem] text-slate-500 hover:text-[#7b4fce] mb-4 sm:mb-6 transition-colors min-h-[36px]">
               &lt; GO BACK
             </Link>
             
-            <div className="flex justify-center mb-5">
-               <h1 className="font-display font-black text-4xl tracking-[-0.05em] text-transparent bg-clip-text bg-gradient-to-br from-[#00c8ff] to-[#7b4fce] drop-shadow-[0_0_20px_rgba(0,200,255,0.6)]">
+            <div className="flex justify-center mb-3 sm:mb-5">
+               <h1 className="font-display font-black text-3xl sm:text-4xl tracking-[-0.05em] text-transparent bg-clip-text bg-gradient-to-br from-[#00c8ff] to-[#7b4fce] drop-shadow-[0_0_20px_rgba(0,200,255,0.6)]">
                  PLAY<span className="text-white">IQ</span>
                </h1>
             </div>
             
-            <h1 className="font-display text-xl font-bold text-white uppercase tracking-wider text-glow-cyan">
+            <h1 className="font-display text-lg sm:text-xl font-bold text-white uppercase tracking-wider text-glow-cyan">
               CREATE_ACCOUNT
             </h1>
-            <p className="text-slate-400 mt-3 font-display text-[0.65rem] uppercase tracking-[0.15em] leading-relaxed max-w-xs">
-              Please note: Pilot hardware must be purchased prior to creating a platform account.
+            <p className="text-slate-400 mt-2 sm:mt-3 font-display text-[0.65rem] uppercase tracking-[0.15em] leading-relaxed max-w-xs">
+              Parent account creation for Pilot & Beta testing participants.
             </p>
           </div>
 
-          <form action={formAction} className="space-y-6">
+          <form action={formAction} className="space-y-4 sm:space-y-6">
             {state?.error && (
                <div className="p-3 bg-[rgba(255,0,0,0.1)] border-l-4 border-red-500 text-red-400 font-display text-xs uppercase tracking-wider flex gap-2 items-center">
                  <AlertCircle className="w-4 h-4 flex-shrink-0" /> ERR: {state.error}
                </div>
             )}
              <div>
-              <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] mb-2 opacity-80">
+              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
                 &gt; FULL_NAME
               </label>
-              <input type="text" name="name" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase" placeholder="JANE DOE" />
+              <input type="text" name="name" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" placeholder="JANE DOE" />
             </div>
             <div>
-              <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] mb-2 opacity-80">
+              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
                 &gt; USER_ID [EMAIL]
               </label>
-              <input type="email" name="email" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase" placeholder="YOU@DOMAIN.COM" />
+              <input type="email" name="email" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" placeholder="YOU@DOMAIN.COM" />
             </div>
             <div>
-              <label className="block text-xs font-display uppercase tracking-[0.2em] text-[#00c8ff] mb-2 opacity-80">
+              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
                 &gt; PASSKEY
               </label>
-              <input type="password" name="password" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce]" placeholder="••••••••" />
+              <input type="password" name="password" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] min-h-[44px]" placeholder="••••••••" />
+            </div>
+            <div>
+              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
+                &gt; PROMO / ACCESS_CODE (OPTIONAL)
+              </label>
+              <input 
+                type="text" 
+                name="promoCode" 
+                defaultValue={urlPromo} 
+                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" 
+                placeholder="PROMO CODE" 
+              />
             </div>
             <SubmitButton />
           </form>
 
-          <div className="mt-8 text-center font-display text-[0.65rem] tracking-[0.1em] uppercase text-slate-500 space-y-3">
-            <Link href="/beta" className="text-[#7b4fce] font-bold hover:animate-pulse-glow block">
-              [ NEED HARDWARE? JOIN THE PILOT ]
+          <div className="mt-6 sm:mt-8 text-center font-display text-[0.65rem] tracking-[0.1em] uppercase text-slate-500">
+            ALREADY_HAVE_AN_ACCOUNT?{' '}
+            <Link
+              href="/login"
+              className="text-[#00c8ff] font-bold hover:animate-pulse-glow"
+            >
+              [SIGN_IN]
             </Link>
-            <div className="pt-2 border-t border-[rgba(255,255,255,0.1)]">
-              ALREADY_HAVE_AN_ACCOUNT?{' '}
-              <Link href="/login" className="text-[#00c8ff] font-bold hover:animate-pulse-glow">
-                [ SIGN_IN ]
-              </Link>
-            </div>
           </div>
         </div>
       </div>

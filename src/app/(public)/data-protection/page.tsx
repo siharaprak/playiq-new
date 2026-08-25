@@ -9,31 +9,31 @@ export const metadata: Metadata = {
 export default function DataProtectionPage() {
   return (
     <main className="w-full min-h-screen" style={{ background: '#020617' }}>
-      <section className="relative py-20 px-6 border-b border-slate-800/50 overflow-hidden">
+      <section className="relative py-12 sm:py-20 px-4 sm:px-6 border-b border-slate-800/50 overflow-hidden">
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-0 right-[10%] w-[400px] h-[400px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[120px]" />
         </div>
         <div className="relative z-10 mx-auto max-w-4xl text-center">
-          <p className="font-display text-xs uppercase tracking-[0.3em] text-[#7b4fce] mb-4">Legal</p>
-          <h1 className="font-display font-black text-4xl md:text-5xl text-white tracking-widest uppercase drop-shadow-[0_0_20px_rgba(123,79,206,0.3)]">
+          <p className="font-display text-xs uppercase tracking-[0.25em] sm:tracking-[0.3em] text-[#7b4fce] mb-3 sm:mb-4">Legal</p>
+          <h1 className="font-display font-black text-3xl sm:text-4xl md:text-5xl text-white tracking-wider sm:tracking-widest uppercase drop-shadow-[0_0_20px_rgba(123,79,206,0.3)]">
             Data <span className="text-[#7b4fce]">Protection</span>
           </h1>
-          <p className="mt-4 text-slate-500 text-sm">
+          <p className="mt-3 sm:mt-4 text-slate-500 text-xs sm:text-sm">
             Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
       </section>
 
-      <section className="py-16 px-6">
-        <div className="mx-auto max-w-3xl space-y-10 text-slate-400 leading-relaxed">
+      <section className="py-8 sm:py-16 px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl space-y-6 sm:space-y-10 text-slate-400 leading-relaxed text-xs sm:text-sm">
 
-          <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Overview</h2>
+          <div className="glass-card p-5 sm:p-8">
+            <h2 className="font-display text-xs sm:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] font-bold mb-3 sm:mb-4">Overview</h2>
             <p>PlayIQ Learning is committed to maintaining the highest standards of data security. This policy outlines the technical and administrative controls we employ to protect user data — particularly the data of minors using our platform.</p>
           </div>
 
-          <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Data Governance</h2>
+          <div className="glass-card p-5 sm:p-8">
+            <h2 className="font-display text-xs sm:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] font-bold mb-3 sm:mb-4">Data Governance</h2>
             <p>We have designated internal data stewardship responsibilities to ensure accountability across all data-handling processes. Data access is governed on a strict least-privilege basis — personnel only access what is necessary to perform their role.</p>
           </div>
 

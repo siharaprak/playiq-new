@@ -238,39 +238,41 @@ export default async function ParentDashboard({
   }
 
   return (
-    <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] p-6 md:p-12 star-field">
+    <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] p-4 sm:p-6 md:p-12 star-field">
       <div className="max-w-6xl mx-auto relative z-10">
 
         {/* ================================================================ */}
         {/* HEADER                                                           */}
         {/* ================================================================ */}
-        <header id="parent-header" className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
-          <div>
-            <p className="font-mono text-[#00c8ff] text-[0.6rem] uppercase tracking-[0.3em] mb-1">&gt; PARENT GATEWAY</p>
-            <h1 className="text-3xl font-display font-black text-[var(--text-primary)] uppercase tracking-widest">
+        <header id="parent-header" className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-12 border-b border-slate-800 pb-4 sm:pb-6">
+          <div className="w-full sm:w-auto">
+            <p className="font-mono text-[#00c8ff] text-[0.6rem] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-1">&gt; PARENT GATEWAY</p>
+            <h1 className="text-2xl sm:text-3xl font-display font-black text-[var(--text-primary)] uppercase tracking-wider sm:tracking-widest">
               Mission Control
             </h1>
-            <div className="text-slate-400 text-xs mt-1 font-mono flex items-center gap-2 flex-wrap">
-              &gt; ACTIVE LOG: {user.email}
-              <Link href="/settings" className="text-[#00c8ff] hover:text-white transition-colors flex items-center gap-1 ml-2 border border-[#00c8ff]/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-[#00c8ff]/10">
-                <Settings className="w-3.5 h-3.5" /> 2FA Shield
-              </Link>
-              <button 
-                id="replay-parent-tour-button"
-                className="text-slate-400 hover:text-white transition-colors flex items-center gap-1 ml-2 border border-[#7b4fce]/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-[#7b4fce]/10 cursor-pointer"
-              >
-                🗺️ Tour Dashboard
-              </button>
-              <form action="/auth/signout" method="post" className="inline">
-                <button type="submit" className="text-red-400 hover:text-white transition-colors flex items-center gap-1 ml-2 border border-red-500/30 px-2 py-0.5 text-[9px] uppercase font-bold tracking-widest bg-red-500/10 cursor-pointer">
-                  Logout
+            <div className="text-slate-400 text-xs mt-2 sm:mt-1 font-mono flex items-center gap-2 flex-wrap">
+              <span className="truncate max-w-[200px] sm:max-w-none">&gt; ACTIVE LOG: {user.email}</span>
+              <div className="flex items-center gap-2 flex-wrap mt-1 sm:mt-0">
+                <Link href="/settings" className="text-[#00c8ff] hover:text-white transition-colors flex items-center gap-1 border border-[#00c8ff]/30 px-2.5 py-1 min-h-[32px] text-[9px] uppercase font-bold tracking-widest bg-[#00c8ff]/10">
+                  <Settings className="w-3.5 h-3.5" /> 2FA Shield
+                </Link>
+                <button 
+                  id="replay-parent-tour-button"
+                  className="text-slate-400 hover:text-white transition-colors flex items-center gap-1 border border-[#7b4fce]/30 px-2.5 py-1 min-h-[32px] text-[9px] uppercase font-bold tracking-widest bg-[#7b4fce]/10 cursor-pointer"
+                >
+                  🗺️ Tour Dashboard
                 </button>
-              </form>
+                <form action="/auth/signout" method="post" className="inline">
+                  <button type="submit" className="text-red-400 hover:text-white transition-colors flex items-center gap-1 border border-red-500/30 px-2.5 py-1 min-h-[32px] text-[9px] uppercase font-bold tracking-widest bg-red-500/10 cursor-pointer">
+                    Logout
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-4">
+          <div className="flex items-center gap-4 w-full sm:w-auto justify-end">
             {rollups.length > 0 && (
-              <div className="glass-card px-4 py-2 border-l-2 border-[#00c8ff] text-center !rounded-none">
+              <div className="glass-card px-4 py-2 border-l-2 border-[#00c8ff] text-center !rounded-none w-full sm:w-auto">
                 <p className="text-xl font-display font-black text-[#00c8ff]">{overallPct}%</p>
                 <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Overall Progress</p>
               </div>

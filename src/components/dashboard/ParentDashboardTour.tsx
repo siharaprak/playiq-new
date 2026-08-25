@@ -134,15 +134,20 @@ export default function ParentDashboardTour({ parentId }: ParentDashboardTourPro
     }
 
     const tooltipEl = tooltipRef.current;
-    const tw = tooltipEl ? tooltipEl.getBoundingClientRect().width : 350;
+    const isMobile = window.innerWidth < 640;
+    const tw = tooltipEl ? tooltipEl.getBoundingClientRect().width : Math.min(350, window.innerWidth - 24);
     const th = tooltipEl ? tooltipEl.getBoundingClientRect().height : 220;
 
-    const pad = 20;
+    const pad = isMobile ? 12 : 20;
     let top = 0;
     let left = 0;
     const transform = '';
 
-    const placement = activeStep.placement;
+    // On mobile (<640px), prefer vertical placement (bottom or top) to prevent side clipping
+    let placement = activeStep.placement;
+    if (isMobile && (placement === 'left' || placement === 'right')) {
+      placement = highlightRect.bottom + th + pad < window.innerHeight ? 'bottom' : 'top';
+    }
 
     if (placement === 'bottom') {
       top = highlightRect.bottom + pad;
@@ -226,7 +231,7 @@ export default function ParentDashboardTour({ parentId }: ParentDashboardTourPro
       {tooltipPos && (
         <div 
           ref={tooltipRef}
-          className="fixed z-[1002] pointer-events-auto w-[350px] max-w-[calc(100vw-40px)] p-6 rounded-none border transition-all duration-300 shadow-[0_0_30px_rgba(0,0,0,0.6)]"
+          className="fixed z-[1002] pointer-events-auto w-[350px] max-w-[calc(100vw-24px)] p-4 sm:p-6 rounded-none border transition-all duration-300 shadow-[0_0_30px_rgba(0,0,0,0.6)]"
           style={{
             top: tooltipPos.top,
             left: tooltipPos.left,
@@ -243,29 +248,29 @@ export default function ParentDashboardTour({ parentId }: ParentDashboardTourPro
           {/* Close button */}
           <button 
             onClick={handleSkip}
-            className="absolute top-4 right-4 text-slate-500 hover:text-slate-200 transition-colors p-1"
+            className="absolute top-3 sm:top-4 right-3 sm:right-4 text-slate-500 hover:text-slate-200 transition-colors p-2 min-w-[36px] min-h-[36px] flex items-center justify-center cursor-pointer"
             aria-label="Skip Tour"
           >
             <X size={16} />
           </button>
 
           {/* Title */}
-          <div className="flex items-center gap-2 mb-3">
-            <Sparkles size={14} className="text-[#00c8ff]" />
-            <h4 className="text-sm font-bold uppercase tracking-widest font-display text-[#00c8ff]">
+          <div className="flex items-center gap-2 mb-2 sm:mb-3 pr-8">
+            <Sparkles size={14} className="text-[#00c8ff] flex-shrink-0" />
+            <h4 className="text-xs sm:text-sm font-bold uppercase tracking-widest font-display text-[#00c8ff]">
               {activeStep.title}
             </h4>
           </div>
 
           {/* Content */}
-          <p className="text-xs text-slate-300 leading-relaxed mb-6 font-sans">
+          <p className="text-xs text-slate-300 leading-relaxed mb-4 sm:mb-6 font-sans">
             {activeStep.content}
           </p>
 
           {/* Controls Footer */}
-          <div className="flex justify-between items-center text-xs pt-4 border-t border-slate-900">
+          <div className="flex justify-between items-center text-xs pt-3 sm:pt-4 border-t border-slate-900">
             {/* Step Counter */}
-            <span className="text-[10px] text-slate-500 uppercase">
+            <span className="text-[10px] text-slate-500 uppercase font-mono">
               Step {currentStepIndex + 1} of {steps.length}
             </span>
 
@@ -273,7 +278,7 @@ export default function ParentDashboardTour({ parentId }: ParentDashboardTourPro
             <div className="flex items-center gap-2">
               <button
                 onClick={handleSkip}
-                className="px-2.5 py-1.5 text-[10px] font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider"
+                className="px-2.5 py-1.5 min-h-[36px] text-[10px] font-bold text-slate-500 hover:text-slate-300 transition-colors uppercase tracking-wider cursor-pointer"
               >
                 Skip
               </button>
@@ -281,7 +286,7 @@ export default function ParentDashboardTour({ parentId }: ParentDashboardTourPro
               {currentStepIndex > 0 && (
                 <button
                   onClick={handleBack}
-                  className="p-1.5 rounded-none bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 transition-colors"
+                  className="p-2 min-w-[36px] min-h-[36px] rounded-none bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 transition-colors flex items-center justify-center cursor-pointer"
                   aria-label="Previous step"
                 >
                   <ChevronLeft size={14} />
@@ -290,12 +295,11 @@ export default function ParentDashboardTour({ parentId }: ParentDashboardTourPro
 
               <button
                 onClick={handleNext}
-                className="btn-neon-cyan px-3 py-1.5 rounded-none text-xs font-bold uppercase tracking-wider flex items-center gap-1 transition-all z-10 pointer-events-auto"
+                className="px-3 py-1.5 min-h-[36px] text-xs font-bold font-mono tracking-widest uppercase transition-all flex items-center gap-1 cursor-pointer active:scale-[0.98]"
                 style={{
-                  background: 'var(--neon-purple)',
+                  background: '#7b4fce',
                   color: '#fff',
-                  border: '1px solid var(--neon-purple)',
-                  padding: '6px 12px'
+                  border: '1px solid #7b4fce',
                 }}
               >
                 {currentStepIndex === steps.length - 1 ? 'Finish' : 'Next'}

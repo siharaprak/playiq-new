@@ -123,28 +123,28 @@ export default function SecuritySettings() {
   const isEnrolled = factors.length > 0;
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 p-6 md:p-12 star-field pt-36">
+    <div className="min-h-screen bg-[#020617] text-slate-100 p-4 sm:p-6 md:p-12 star-field pt-24 sm:pt-36">
       <div className="max-w-3xl mx-auto relative z-10">
-        <header className="mb-12 border-b border-slate-800 pb-6">
-          <p className="font-mono text-[#00c8ff] text-[0.6rem] uppercase tracking-[0.3em] mb-1">&gt; USER SECURITY SETTINGS</p>
-          <h1 className="text-3xl font-display font-black text-white uppercase tracking-widest">
+        <header className="mb-6 sm:mb-12 border-b border-slate-800 pb-4 sm:pb-6">
+          <p className="font-mono text-[#00c8ff] text-[0.6rem] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-1">&gt; USER SECURITY SETTINGS</p>
+          <h1 className="text-2xl sm:text-3xl font-display font-black text-white uppercase tracking-wider sm:tracking-widest">
             Security Shield
           </h1>
         </header>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-950/40 border border-red-500/30 text-red-400 font-mono text-xs uppercase tracking-wider">
+          <div className="mb-6 p-3.5 sm:p-4 bg-red-950/40 border border-red-500/30 text-red-400 font-mono text-xs uppercase tracking-wider">
             &gt; ERROR: {error}
           </div>
         )}
 
-        <div className="glass-card p-8 border border-slate-800 !rounded-none">
-          <div className="flex items-start gap-4 mb-8">
-            <div className={`p-3 rounded-none border ${isEnrolled ? 'bg-[#00c8ff]/10 border-[#00c8ff]' : 'bg-slate-900 border-slate-700'}`}>
-              <Shield className={`w-8 h-8 ${isEnrolled ? 'text-[#00c8ff]' : 'text-slate-500'}`} />
+        <div className="glass-card p-5 sm:p-8 border border-slate-800 !rounded-none">
+          <div className="flex items-start gap-3 sm:gap-4 mb-6 sm:mb-8">
+            <div className={`p-2.5 sm:p-3 rounded-none border flex-shrink-0 ${isEnrolled ? 'bg-[#00c8ff]/10 border-[#00c8ff]' : 'bg-slate-900 border-slate-700'}`}>
+              <Shield className={`w-6 h-6 sm:w-8 sm:h-8 ${isEnrolled ? 'text-[#00c8ff]' : 'text-slate-500'}`} />
             </div>
             <div>
-              <h2 className="text-xl font-display font-bold uppercase tracking-wider text-white">
+              <h2 className="text-lg sm:text-xl font-display font-bold uppercase tracking-wider text-white">
                 Two-Factor Authentication (2FA)
               </h2>
               <p className="text-xs text-slate-400 mt-1 leading-relaxed">
@@ -154,14 +154,14 @@ export default function SecuritySettings() {
           </div>
 
           {!isEnrolled && !mfaQr && (
-            <div className="bg-black/30 border border-slate-800 p-6 text-center">
+            <div className="bg-black/30 border border-slate-800 p-5 sm:p-6 text-center">
               <ShieldAlert className="w-8 h-8 text-slate-600 mx-auto mb-3" />
-              <p className="font-mono text-xs uppercase tracking-wider text-slate-400 mb-6">
+              <p className="font-mono text-xs uppercase tracking-wider text-slate-400 mb-5 sm:mb-6">
                 Two-Factor Shield is currently offline
               </p>
               <button
                 onClick={startEnrollment}
-                className="bg-transparent border border-[#00c8ff] hover:bg-[#00c8ff]/10 text-[#00c8ff] font-display font-bold px-6 py-3 text-xs transition-all uppercase tracking-widest shadow-[0_0_10px_rgba(0,200,255,0.1)] cursor-pointer"
+                className="w-full sm:w-auto bg-transparent border border-[#00c8ff] hover:bg-[#00c8ff]/10 text-[#00c8ff] font-display font-bold px-6 py-3.5 min-h-[48px] text-xs transition-all uppercase tracking-widest shadow-[0_0_10px_rgba(0,200,255,0.1)] cursor-pointer active:scale-[0.98]"
               >
                 Configure 2FA Shield
               </button>
@@ -169,15 +169,15 @@ export default function SecuritySettings() {
           )}
 
           {mfaQr && (
-            <div className="space-y-8 border-t border-slate-800 pt-8">
-              <div className="grid md:grid-cols-2 gap-8 items-center">
-                <div className="flex justify-center bg-white p-4 border-4 border-[#00c8ff] max-w-[240px] mx-auto">
+            <div className="space-y-6 sm:space-y-8 border-t border-slate-800 pt-6 sm:pt-8">
+              <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-center">
+                <div className="flex justify-center bg-white p-3 sm:p-4 border-4 border-[#00c8ff] max-w-[220px] sm:max-w-[240px] mx-auto">
                   {/* Render base64 image QR directly from Supabase */}
                   <img src={mfaQr} alt="Scan QR Code" className="w-full h-auto" />
                 </div>
 
-                <div className="space-y-4">
-                  <h3 className="font-display font-bold uppercase tracking-wider text-white text-sm">
+                <div className="space-y-3 sm:space-y-4">
+                  <h3 className="font-display font-bold uppercase tracking-wider text-white text-xs sm:text-sm">
                     Step 1: Scan Security QR Code
                   </h3>
                   <p className="text-xs text-slate-400 leading-relaxed font-mono">
@@ -187,9 +187,9 @@ export default function SecuritySettings() {
                   {mfaSecret && (
                     <div className="space-y-1">
                       <label className="block text-[10px] text-slate-500 uppercase tracking-widest font-mono">Or input secret key manually:</label>
-                      <div className="flex gap-2 bg-black/60 p-2 border border-slate-800">
-                        <span className="font-mono text-xs text-slate-300 select-all truncate flex-1">{mfaSecret}</span>
-                        <button onClick={copySecret} className="text-[#00c8ff] hover:text-white transition-colors cursor-pointer">
+                      <div className="flex gap-2 bg-black/60 p-2 border border-slate-800 items-center">
+                        <span className="font-mono text-xs text-slate-300 select-all break-all flex-1">{mfaSecret}</span>
+                        <button onClick={copySecret} className="text-[#00c8ff] hover:text-white transition-colors cursor-pointer min-w-[36px] min-h-[36px] flex items-center justify-center">
                           {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
                         </button>
                       </div>
@@ -198,11 +198,11 @@ export default function SecuritySettings() {
                 </div>
               </div>
 
-              <div className="border-t border-slate-800/60 pt-6">
-                <h3 className="font-display font-bold uppercase tracking-wider text-white text-sm mb-4">
+              <div className="border-t border-slate-800/60 pt-4 sm:pt-6">
+                <h3 className="font-display font-bold uppercase tracking-wider text-white text-xs sm:text-sm mb-3 sm:mb-4">
                   Step 2: Enter Verification Code
                 </h3>
-                <div className="flex flex-col sm:flex-row gap-4 items-end">
+                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-end">
                   <div className="flex-1 w-full">
                     <input
                       type="text"
@@ -210,13 +210,13 @@ export default function SecuritySettings() {
                       value={verifyCode}
                       onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
                       placeholder="000 000"
-                      className="neon-input !rounded-none !border-b-2 !border-b-slate-700 !bg-black/40 text-center font-mono text-lg tracking-[0.2em] text-white focus:!border-b-[#00c8ff] w-full"
+                      className="neon-input !rounded-none !border-b-2 !border-b-slate-700 !bg-black/40 text-center font-mono text-lg tracking-[0.2em] text-white focus:!border-b-[#00c8ff] w-full min-h-[48px]"
                     />
                   </div>
                   <button
                     onClick={confirmEnrollment}
                     disabled={isPending || verifyCode.length !== 6}
-                    className="btn-neon-filled whitespace-nowrap !py-3 !px-6 disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto cursor-pointer"
+                    className="btn-neon-filled whitespace-nowrap !py-3.5 !px-6 min-h-[48px] disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto cursor-pointer active:scale-[0.98]"
                   >
                     {isPending ? 'Verifying...' : 'Enable 2FA Shield'}
                   </button>
