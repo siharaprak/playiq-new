@@ -2,8 +2,8 @@ import { createClient } from '@/utils/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock } from 'lucide-react';
-import { deleteUser, suspendUser, restoreUser, updateLearningLevel } from './actions';
+import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock, RotateCcw } from 'lucide-react';
+import { deleteUser, suspendUser, restoreUser, updateLearningLevel, resetStudentProgress } from './actions';
 import { MODULES } from '@/lib/constants';
 import ConfirmButton from '@/components/admin/ConfirmButton';
 
@@ -308,6 +308,19 @@ export default async function AdminUsersPage({
                           </ConfirmButton>
                         </form>
                       )}
+                      {/* Reset Progress Action */}
+                      <form action={resetStudentProgress}>
+                        <input type="hidden" name="userId" value={student.id} />
+                        <ConfirmButton
+                          type="submit"
+                          title="Reset Student Progress"
+                          className="p-2 border border-[#00c8ff]/40 text-[#00c8ff] hover:bg-[#00c8ff]/10 transition-colors"
+                          confirmMessage={`Reset all course progress for ${student.email}? This will wipe their node progress, quizzes, and assessment profile back to Module 0.`}
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                        </ConfirmButton>
+                      </form>
+
                       <form action={deleteUser}>
                         <input type="hidden" name="userId" value={student.id} />
                         <ConfirmButton

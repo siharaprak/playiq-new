@@ -96,3 +96,54 @@ export async function updateLearningLevel(formData: FormData) {
   revalidatePath('/admin/users');
   redirect('/admin/users');
 }
+
+export async function resetStudentProgress(formData: FormData) {
+  await enforceAdmin();
+
+  const userId = formData.get('userId') as string;
+  if (!userId) return;
+
+  // 1. Delete student_assessment_profiles (resets Module 0)
+  await supabaseAdmin
+    .from('student_assessment_profiles')
+    .delete()
+    .eq('student_id', userId);
+
+  // 2. Delete student_node_progress (resets all module nodes)
+  await supabaseAdmin
+    .from('student_node_progress')
+    .delete()
+    .eq('student_id', userId);
+
+  // 3. Delete assessment_submissions (resets all quizzes and boss battles)
+  await supabaseAdmin
+    .from('assessment_submissions')
+    .delete()
+    .eq('student_id', userId);
+
+  // 4. Delete proof_artifact_submissions & proof_artifacts
+  await supabaseAdmin
+    .from('proof_artifact_submissions')
+    .delete()
+    .eq('student_id', userId);
+
+  await supabaseAdmin
+    .from('proof_artifacts')
+    .delete()
+    .eq('student_id', userId);
+
+  // 5. Delete tutor and knowledge files
+  await supabaseAdmin
+    .from('tutor_profiles')
+    .delete()
+    .eq('student_id', userId);
+
+  await supabaseAdmin
+    .from('knowledge_files')
+    .delete()
+    .eq('student_id', userId);
+
+  revalidatePath('/admin/users');
+  redirect('/admin/users');
+}
+
