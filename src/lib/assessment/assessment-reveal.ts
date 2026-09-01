@@ -138,7 +138,10 @@ Generate the personalized reveal summary.`;
       config: {
         systemInstruction,
         temperature: 0.7,
-        maxOutputTokens: 400,
+        maxOutputTokens: 2048,
+        thinkingConfig: {
+          thinkingBudget: 0,
+        },
       },
     });
 
