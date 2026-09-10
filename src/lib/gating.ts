@@ -33,13 +33,12 @@ export async function enforceNodeGating(
   }
 
   // Admin bypass: allow administrators to freely test and preview all student nodes
-  const { data: profile } = await supabase
-    .from('profiles')
+  const { data: roleRows } = await supabase
+    .from('user_roles')
     .select('role')
-    .eq('id', user.id)
-    .single();
+    .eq('user_id', user.id);
 
-  if (profile?.role === 'admin') {
+  if (roleRows?.some((r: any) => r.role === 'admin')) {
     return { user, progress: null, isAdmin: true };
   }
 
@@ -99,13 +98,12 @@ export async function enforceModuleGating(
   }
 
   // Admin bypass: allow administrators to freely test and preview all student modules and assessments
-  const { data: profile } = await supabase
-    .from('profiles')
+  const { data: roleRows } = await supabase
+    .from('user_roles')
     .select('role')
-    .eq('id', user.id)
-    .single();
+    .eq('user_id', user.id);
 
-  if (profile?.role === 'admin') {
+  if (roleRows?.some((r: any) => r.role === 'admin')) {
     return { user, isAdmin: true };
   }
 
