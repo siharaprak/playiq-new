@@ -33,14 +33,12 @@ export default async function AssessmentPage() {
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4 py-12"
+      className="min-h-screen flex items-center justify-center px-4 py-8 sm:py-12"
       style={{
         backgroundColor: 'var(--space-deep)',
-        marginTop: '-6rem', /* Counteract body pt-24 since navbar is hidden */
-        paddingTop: '3rem',
       }}
     >
-      <div className="w-full max-w-2xl">
+      <div className="w-full max-w-2xl pt-2 sm:pt-4">
         <OrionAssessment
           initialPhase={initialPhase}
           existingProfile={profile}

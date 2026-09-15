@@ -86,9 +86,13 @@ export async function ensureProfileExists(userId: string, email: string, fullNam
     console.error('Error fetching profile in ensureProfileExists:', fetchError);
   }
 
+  const isAdminEmail = email.toLowerCase() === 'teamsienvi@gmail.com' || metadataRole === 'admin';
+
   if (!profile) {
     let role = 'parent';
-    if (email.endsWith('@student.playiq.dev') || metadataRole === 'student') {
+    if (isAdminEmail) {
+      role = 'admin';
+    } else if (email.endsWith('@student.playiq.dev') || metadataRole === 'student') {
       role = 'student';
     }
 
@@ -108,7 +112,32 @@ export async function ensureProfileExists(userId: string, email: string, fullNam
       console.error('Failed to auto-create profile:', error);
       return null;
     }
+
+    if (role === 'admin') {
+      await adminClient
+        .from('user_roles')
+        .upsert({ user_id: userId, role: 'admin' }, { onConflict: 'user_id,role' })
+        .catch(() => {});
+    }
+
     return newProfile;
+  }
+
+  // Auto-heal admin role if email matches admin
+  if (isAdminEmail && profile.role !== 'admin') {
+    const { data: updatedProfile } = await adminClient
+      .from('profiles')
+      .update({ role: 'admin' })
+      .eq('id', userId)
+      .select()
+      .single();
+
+    await adminClient
+      .from('user_roles')
+      .upsert({ user_id: userId, role: 'admin' }, { onConflict: 'user_id,role' })
+      .catch(() => {});
+
+    return updatedProfile || profile;
   }
 
   return profile;

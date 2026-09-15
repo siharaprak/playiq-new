@@ -1457,12 +1457,24 @@ html[data-theme="light"] .drop-shadow-\[0_0_5px_\#7b4fce\] {
   text-align: left;
   cursor: pointer;
   transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.assessment-option-button:hover {
-  border-color: var(--neon-cyan);
-  background: rgba(0, 200, 255, 0.05);
-  color: var(--text-primary);
+@media (hover: hover) and (pointer: fine) {
+  .assessment-option-button:hover {
+    border-color: var(--neon-cyan);
+    background: rgba(0, 200, 255, 0.05);
+    color: var(--text-primary);
+  }
+}
+
+.assessment-option-button:focus {
+  outline: none;
+}
+
+.assessment-option-button:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
 }
 
 .assessment-option-selected {
@@ -1521,11 +1533,23 @@ html[data-theme="light"] .drop-shadow-\[0_0_5px_\#7b4fce\] {
   cursor: pointer;
   text-align: left;
   transition: all 0.25s;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.assessment-ai-answer-card:hover {
-  border-color: var(--neon-cyan);
-  background: rgba(0, 200, 255, 0.04);
+@media (hover: hover) and (pointer: fine) {
+  .assessment-ai-answer-card:hover {
+    border-color: var(--neon-cyan);
+    background: rgba(0, 200, 255, 0.04);
+  }
+}
+
+.assessment-ai-answer-card:focus {
+  outline: none;
+}
+
+.assessment-ai-answer-card:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
 }
 
 .assessment-ai-answer-selected {

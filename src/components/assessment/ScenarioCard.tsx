@@ -28,7 +28,7 @@ export default function ScenarioCard({
   onSelect,
 }: ScenarioCardProps) {
   return (
-    <div className="assessment-scenario-card">
+    <div className="assessment-scenario-card" key={`scenario-card-${questionNumber}`}>
       {/* Question indicator */}
       <div className="flex items-center gap-3 mb-5">
         <div className="assessment-question-badge">
@@ -50,11 +50,15 @@ export default function ScenarioCard({
           const isSelected = selectedOptionId === option.id;
           return (
             <button
-              key={option.id}
-              onClick={() => onSelect(option.id)}
+              key={`q${questionNumber}-opt-${option.id}`}
+              type="button"
+              onClick={(e) => {
+                e.currentTarget.blur();
+                onSelect(option.id);
+              }}
               className={`assessment-option-button ${isSelected ? 'assessment-option-selected' : ''}`}
             >
-              <span className="assessment-option-letter">
+              <span className={`assessment-option-letter ${isSelected ? 'assessment-option-letter-active' : ''}`}>
                 {option.id}
               </span>
               <span className="text-sm leading-relaxed flex-1 text-left">

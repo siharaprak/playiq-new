@@ -120,6 +120,14 @@ const ORION_VISION_LINES = [
   "You can learn to make ideas real — from a movie or game to an app, a useful assistant, or a learning dashboard. These are possibilities, not promises; your imagination, practice, judgment, and action make the difference.",
 ];
 
+function getInitialOptionId(questionIndex: number, signalValue?: string | null): string | null {
+  if (!signalValue) return null;
+  const question = DIAGNOSTIC_QUESTIONS[questionIndex];
+  if (!question) return null;
+  const entry = Object.entries(question.signalMap).find(([, sig]) => sig === signalValue);
+  return entry ? entry[0] : null;
+}
+
 // ── Main Component ──────────────────────────────────────────────────────────
 
 export default function OrionAssessment({
@@ -152,18 +160,24 @@ export default function OrionAssessment({
   // Phase 2 state
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [diagnosticAnswers, setDiagnosticAnswers] = useState<DiagnosticAnswers>({
-    q1: (existingProfile?.explanation_style as string) ? 'preset' : null,
-    q2: (existingProfile?.pacing_preference as string) ? 'preset' : null,
-    q3: (existingProfile?.challenge_response as string) ? 'preset' : null,
-    q4: (existingProfile?.ai_literacy_level as string) ? 'preset' : null,
-    q5: (existingProfile?.motivation_driver as string) ? 'preset' : null,
+    q1: getInitialOptionId(0, existingProfile?.explanation_style as string),
+    q2: getInitialOptionId(1, existingProfile?.pacing_preference as string),
+    q3: getInitialOptionId(2, existingProfile?.challenge_response as string),
+    q4: getInitialOptionId(3, existingProfile?.ai_literacy_level as string),
+    q5: getInitialOptionId(4, existingProfile?.motivation_driver as string),
   });
 
   // Phase 3 state
   const [baselineStep, setBaselineStep] = useState(0); // 0 = intro, 1-3 = tasks
-  const [task1Answer, setTask1Answer] = useState<string | null>(null);
-  const [task2Response, setTask2Response] = useState('');
-  const [task3Response, setTask3Response] = useState('');
+  const [task1Answer, setTask1Answer] = useState<string | null>(
+    (existingProfile?.baseline_task1_answer as string) || null,
+  );
+  const [task2Response, setTask2Response] = useState(
+    (existingProfile?.baseline_task2_response as string) || '',
+  );
+  const [task3Response, setTask3Response] = useState(
+    (existingProfile?.baseline_task3_response as string) || '',
+  );
   const [baselineIntroComplete, setBaselineIntroComplete] = useState(false);
   const [baselineIntroTyped, setBaselineIntroTyped] = useState(false);
 
@@ -220,10 +234,16 @@ export default function OrionAssessment({
 
     // Auto-advance to next question after brief delay
     setTimeout(() => {
-      if (currentQuestion < DIAGNOSTIC_QUESTIONS.length - 1) {
-        setCurrentQuestion((c) => c + 1);
+      if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
       }
-    }, 400);
+      setCurrentQuestion((c) => {
+        if (c < DIAGNOSTIC_QUESTIONS.length - 1) {
+          return c + 1;
+        }
+        return c;
+      });
+    }, 350);
   };
 
   const handlePhase2Submit = () => {
@@ -333,7 +353,7 @@ export default function OrionAssessment({
       {phase === 1 && (
         <div className="assessment-phase">
           {/* Orion avatar / brand mark */}
-          <div className="assessment-orion-avatar overflow-hidden relative">
+          <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
             <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
           </div>
 
@@ -351,6 +371,7 @@ export default function OrionAssessment({
                 If your parent or guardian has completed the setup checklist, continue here. Orion will guide the assessment inside PlayIQ; you do not need to open another AI chat or type a special phrase.
               </p>
               <button
+                type="button"
                 onClick={() => setWorkspaceReady(true)}
                 className="assessment-continue-button"
               >
@@ -388,7 +409,12 @@ export default function OrionAssessment({
                     ].map((opt) => (
                       <button
                         key={opt.value}
-                        onClick={() => { setGradeLevel(opt.value); setLearnerType(opt.value === 'adult' ? 'adult' : 'student'); }}
+                        type="button"
+                        onClick={(e) => {
+                          e.currentTarget.blur();
+                          setGradeLevel(opt.value);
+                          setLearnerType(opt.value === 'adult' ? 'adult' : 'student');
+                        }}
                         className={`assessment-option-button text-xs py-3 ${gradeLevel === opt.value ? 'assessment-option-selected' : ''}`}
                       >
                         {opt.label}
@@ -398,6 +424,7 @@ export default function OrionAssessment({
                 </div>
 
                 <button
+                  type="button"
                   onClick={handlePhase1Submit}
                   disabled={!displayName.trim() || !gradeLevel || isPending}
                   className="assessment-continue-button"
@@ -413,7 +440,7 @@ export default function OrionAssessment({
       {/* ═══ PHASE 2: Learning Style Diagnostic ═══════════════════════════ */}
       {phase === 2 && (
         <div className="assessment-phase">
-          <div className="assessment-orion-avatar overflow-hidden relative">
+          <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
             <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
           </div>
 
@@ -472,7 +499,7 @@ export default function OrionAssessment({
       {phase === 3 && (
         <div className="assessment-phase">
           {/* Orion avatar / brand mark */}
-          <div className="assessment-orion-avatar overflow-hidden relative">
+          <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
             <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
           </div>
 
@@ -564,7 +591,7 @@ export default function OrionAssessment({
       {/* ═══ PHASE 4: School Reality Check ═══════════════════════════════ */}
       {phase === 4 && (
         <div className="assessment-phase">
-          <div className="assessment-orion-avatar overflow-hidden relative">
+          <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
             <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
           </div>
 
@@ -645,7 +672,7 @@ export default function OrionAssessment({
       {/* ═══ PHASE 5: The Reveal ═════════════════════════════════════════ */}
       {phase === 5 && (
         <div className="assessment-phase assessment-reveal-phase">
-          <div className="assessment-orion-avatar assessment-reveal-orion overflow-hidden relative">
+          <div className="assessment-orion-avatar assessment-reveal-orion overflow-hidden relative flex-shrink-0">
             <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
           </div>
 

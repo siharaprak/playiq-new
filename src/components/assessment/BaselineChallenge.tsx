@@ -34,8 +34,12 @@ export function BaselineTask1({ selectedAnswer, onSelect }: Task1Props) {
           const isSelected = selectedAnswer === answer.label;
           return (
             <button
-              key={answer.label}
-              onClick={() => onSelect(answer.label)}
+              key={`task1-opt-${answer.label}`}
+              type="button"
+              onClick={(e) => {
+                e.currentTarget.blur();
+                onSelect(answer.label);
+              }}
               className={`assessment-ai-answer-card ${isSelected ? 'assessment-ai-answer-selected' : ''}`}
             >
               <div className="flex items-start gap-3">
