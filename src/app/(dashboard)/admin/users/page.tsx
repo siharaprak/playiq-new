@@ -228,6 +228,11 @@ export default async function AdminUsersPage({
                               Suspended
                             </span>
                           )}
+                          {(['teamsienvi-student@student.playiq.dev', 'teamsienvitest@gmail.com', 'jimboyaquino12@gmail.com', 'futurefaker01@gmail.com', 'blake14-test@student.playiq.dev', 'test_student@student.playiq.dev', 'student.tester@test.com'].includes((student.email || '').toLowerCase()) || (student.full_name || '').toLowerCase().includes('test')) && (
+                            <span className="text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              TEST ACCOUNT
+                            </span>
+                          )}
                           <span className={`text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 border ${
                             student.learning_level === 'elementary' ? 'text-[#00c8ff] border-[#00c8ff]/30 bg-[#00c8ff]/10' :
                             student.learning_level === 'middle' ? 'text-[#7b4fce] border-[#7b4fce]/30 bg-[#7b4fce]/10' :

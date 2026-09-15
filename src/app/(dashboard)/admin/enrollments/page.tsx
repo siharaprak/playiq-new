@@ -102,6 +102,11 @@ export default async function AdminEnrollmentsPage() {
                           <p className="font-display font-bold text-sm tracking-wide text-slate-200">
                             {studentName}
                           </p>
+                          {(['teamsienvi-student@student.playiq.dev', 'teamsienvitest@gmail.com', 'jimboyaquino12@gmail.com', 'futurefaker01@gmail.com', 'blake14-test@student.playiq.dev', 'test_student@student.playiq.dev', 'student.tester@test.com'].includes((studentEmail || '').toLowerCase()) || (studentName || '').toLowerCase().includes('test')) && (
+                            <span className="px-1.5 py-0.5 rounded font-mono text-[9px] font-bold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                              TEST
+                            </span>
+                          )}
                           <span className={`px-2 py-0.5 rounded font-mono text-[9px] font-bold uppercase tracking-wider ${
                             isActive ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
                           }`}>

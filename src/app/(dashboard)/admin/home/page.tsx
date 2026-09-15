@@ -383,9 +383,26 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                   {(applications || []).map((app: any) => {
                     const linkedStudents = emailToStudentsMap[app.email.toLowerCase()] || [];
                     const firstStudentName = linkedStudents[0]?.name;
+                    const emailLower = (app.email || '').toLowerCase().trim();
+                    const nameLower = (app.parent_full_name || '').toLowerCase().trim();
+                    const isTestAccount = app.source === 'test_account' || 
+                      emailLower === 'teamsienvitest@gmail.com' || 
+                      emailLower === 'jimboyaquino12@gmail.com' || 
+                      nameLower.includes('test') || 
+                      emailLower.includes('test@');
+
                     return (
                       <tr key={app.id} className="border-b border-slate-800 hover:bg-white/5 transition-colors">
-                        <td className="px-6 py-4 text-slate-200">{app.parent_full_name}</td>
+                        <td className="px-6 py-4 text-slate-200">
+                          <div className="flex items-center gap-2">
+                            <span>{app.parent_full_name}</span>
+                            {isTestAccount && (
+                              <span className="px-1.5 py-0.5 text-[9px] font-mono font-bold uppercase tracking-wider rounded border border-amber-500/40 bg-amber-500/10 text-amber-400 whitespace-nowrap">
+                                TEST ACCOUNT
+                              </span>
+                            )}
+                          </div>
+                        </td>
                         <td className="px-6 py-4 text-slate-400 text-xs">{app.email}</td>
                         <td className="px-6 py-4 text-xs font-mono">
                           {linkedStudents.length > 0 ? (
@@ -403,7 +420,11 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
                         <td className="px-6 py-4 text-[#00c8ff]">{app.child_age_band}</td>
                         <td className="px-6 py-4">
                           <span 
-                            className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest border border-slate-600 bg-slate-800/50 text-slate-300 cursor-help`}
+                            className={`px-2 py-1 text-[10px] uppercase font-bold tracking-widest border ${
+                              app.source === 'test_account'
+                                ? 'border-amber-500/50 bg-amber-500/10 text-amber-400'
+                                : 'border-slate-600 bg-slate-800/50 text-slate-300'
+                            } cursor-help`}
                             title={app.source === 'web_form' || !app.source ? 'Direct URL entry, untracked links, or historical data before tracking was enabled.' : 'Detected traffic source'}
                           >
                             {app.source === 'web_form' || !app.source ? 'direct_traffic' : app.source}
