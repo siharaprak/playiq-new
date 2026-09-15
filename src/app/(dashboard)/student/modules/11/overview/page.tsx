@@ -6,6 +6,7 @@ import { MODULES } from '@/lib/constants';
 import { Lock, ChevronRight, Award, Trophy } from 'lucide-react';
 import CapstoneForm from './CapstoneForm';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
 import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
 
 interface ModuleConfig {
@@ -151,6 +152,9 @@ export default async function Module11OverviewPage() {
       </header>
 
       <ModuleOpeningHook moduleNumber={11} title="the Capstone Master Trial" />
+
+      {/* Verified Capstone Student Guide PDF Download */}
+      <ModulePdfDownload moduleNumber={11} title="Capstone Guide: The Master Trial" />
 
       {/* Multi-step Form */}
       <CapstoneForm

@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
 
 import { module3Nodes } from '@/data/module3Content';
 const MODULE_NODES = Object.values(module3Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -76,6 +77,9 @@ export default async function Module3OverviewPage() {
       </header>
 
       <ModuleOpeningHook moduleNumber={3} title="Pre-Learn System" />
+
+      {/* Verified Student Guide PDF Download */}
+      <ModulePdfDownload moduleNumber={3} title="Module 3 Student Guide: Pre-Learn System" className="mb-8" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_3_intro.mp4" title="Pre-Learn System" />

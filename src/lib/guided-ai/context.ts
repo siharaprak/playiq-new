@@ -63,6 +63,10 @@ export async function getStaticModuleContent(moduleNumber: number): Promise<Modu
         const mod = await import('@/data/module10Content');
         return mod.module10Nodes;
       }
+      case 11: {
+        const mod = await import('@/data/module11Content');
+        return mod.module11Nodes;
+      }
       default:
         return null;
     }

@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
+import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
 
 import { module10Nodes } from '@/data/module10Content';
 const MODULE_NODES = Object.values(module10Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -65,6 +67,13 @@ export default async function Module10OverviewPage() {
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
 
+  const { data: existingFeedback } = await supabase
+    .from('module_feedback')
+    .select('rating, feedback_text')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULES.MODULE_10_ID)
+    .maybeSingle();
+
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
       
@@ -72,7 +81,7 @@ export default async function Module10OverviewPage() {
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
         <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Dashboard</span>
       </Link>
-<div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+      <div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
         Module 10 • Skill Tree: Highest Path
       </div>
 
@@ -81,10 +90,14 @@ export default async function Module10OverviewPage() {
           Build Your AI Assistant
         </h1>
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          Build a helpful AI assistant for yourself and one other person for a real task.</p>
+          Build a helpful AI assistant for yourself and one other person for a real task.
+        </p>
       </header>
 
       <ModuleOpeningHook moduleNumber={10} title="Build Your AI Assistant" />
+
+      {/* Verified Student Guide PDF Download */}
+      <ModulePdfDownload moduleNumber={10} title="Module 10 Student Guide: Build Your AI Assistant" className="mb-8" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_10_intro.mp4" title="Build Your AI Assistant" />
@@ -206,6 +219,11 @@ export default async function Module10OverviewPage() {
             </div>
           )}
         </div>
+      </section>
+
+      {/* Module Feedback Form */}
+      <section className="mt-4">
+        <ModuleFeedbackForm moduleId={MODULES.MODULE_10_ID} initialFeedback={existingFeedback} />
       </section>
     </div>
   );

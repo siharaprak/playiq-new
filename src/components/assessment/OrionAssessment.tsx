@@ -7,6 +7,7 @@ import OrionTypingEffect from './OrionTypingEffect';
 import ScenarioCard from './ScenarioCard';
 import { BaselineTask1, BaselineTask2, BaselineTask3 } from './BaselineChallenge';
 import LearningBlueprint from './LearningBlueprint';
+import AIWorkspaceTutorial from './AIWorkspaceTutorial';
 import {
   savePhase1,
   savePhase2,
@@ -762,12 +763,28 @@ export default function OrionAssessment({
               <LearningBlueprint blueprint={blueprint} studentName={displayName || 'Apprentice'} />
 
               <button
-                onClick={handleFinish}
+                type="button"
+                onClick={() => setRevealStep(4)}
                 className="assessment-begin-button mt-8"
               >
-                Let&apos;s Begin →
+                Set Up My AI Workshop →
               </button>
             </div>
+          )}
+
+          {/* Step 4: AI Workspace Tutorial & Handshake Verification */}
+          {revealStep === 4 && (
+            <AIWorkspaceTutorial
+              studentName={displayName || 'Apprentice'}
+              gradeLevel={gradeLevel}
+              rescueSubject={rescueSubject}
+              advanceSubject={advanceSubject}
+              explanationStyle={
+                DIAGNOSTIC_QUESTIONS[0].signalMap[diagnosticAnswers.q1 || 'A'] || 'visual'
+              }
+              onComplete={handleFinish}
+              isPending={isPending}
+            />
           )}
         </div>
       )}

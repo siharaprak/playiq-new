@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
+import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
 
 import { module8Nodes } from '@/data/module8Content';
 const MODULE_NODES = Object.values(module8Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -56,6 +58,13 @@ export default async function Module8OverviewPage() {
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
 
+  const { data: existingFeedback } = await supabase
+    .from('module_feedback')
+    .select('rating, feedback_text')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULES.MODULE_8_ID)
+    .maybeSingle();
+
   return (
     <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
       
@@ -63,7 +72,7 @@ export default async function Module8OverviewPage() {
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
         <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Dashboard</span>
       </Link>
-<div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+      <div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
         Module 8 • Skill Tree: Highest Path
       </div>
 
@@ -72,10 +81,14 @@ export default async function Module8OverviewPage() {
           Writing and Answer Clarity
         </h1>
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          Use AI as a writing coach to make answers clearer, without letting AI ghostwrite.</p>
+          Use AI as a writing coach to make answers clearer, without letting AI ghostwrite.
+        </p>
       </header>
 
       <ModuleOpeningHook moduleNumber={8} title="Writing and Answer Clarity" />
+
+      {/* Verified Student Guide PDF Download */}
+      <ModulePdfDownload moduleNumber={8} title="Module 8 Student Guide: Writing and Answer Clarity" className="mb-8" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_8_intro.mp4" title="Writing and Answer Clarity" />
@@ -131,72 +144,110 @@ export default async function Module8OverviewPage() {
                 <Link key={node.id} href={`/student/modules/8/nodes/${node.id}/lesson`}
                   className="p-4 rounded-lg flex items-center gap-3 transition-all group"
                   style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}>
-                  <span style={{ color: 'var(--neon-cyan)' }}>→</span>
-                  <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">Node {node.id}: {node.title}</span>
-                  {isNext && <span className="ml-auto text-xs px-2 py-1 rounded" style={{ background: 'transparent', border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>START</span>}
+                  <span style={{ color: 'var(--neon-cyan)' }}>○</span>
+                  <span className="text-sm font-mono" style={{ color: 'var(--neon-cyan)' }}>Node {node.id}: {node.title}</span>
+                  <span className="ml-auto text-xs px-2 py-1 rounded group-hover:bg-[rgba(0,200,255,0.1)] transition-colors" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>START</span>
                 </Link>
               );
             }
 
             return (
-              <div key={node.id} className="p-4 rounded-lg flex items-center gap-3 opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-                <span style={{ color: 'var(--text-muted)' }}>🔒</span>
-                <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Node {node.id}: {node.title} (Locked)</span>
+              <div key={node.id} className="p-4 rounded-lg flex items-center gap-3 opacity-40 cursor-not-allowed" style={{ background: 'transparent', border: '1px solid var(--glass-border)' }}>
+                <span style={{ color: 'var(--text-secondary)' }}>🔒</span>
+                <span className="text-sm font-mono" style={{ color: 'var(--text-secondary)' }}>Node {node.id}: {node.title}</span>
+                <span className="ml-auto text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--glass-border)', color: 'var(--text-secondary)' }}>LOCKED</span>
               </div>
             );
           })}
         </div>
       </section>
 
-      {/* Assessments */}
-      <section className="p-6 rounded-xl border" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-purple)' }}>
-        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
+      {/* Module Assessments */}
+      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--glass-border)' }}>
+        <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: 'var(--neon-yellow)' }}>
           Module Assessments
         </h2>
-        <div className="flex flex-col gap-3">
-          {quizUnlocked ? (
-            <Link href="/student/modules/8/quiz" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(0,200,255,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}>
-              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">Module Quiz — Module 8 Assessment Quiz</span>
-              {quizPassed ? (
-                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>PASSED ({quiz.score_numeric}%)</span>
-              ) : quiz ? (
-                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid #ef4444', color: '#ef4444' }}>FAILED ({quiz.score_numeric}%) - RETRY</span>
-              ) : (
-                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>START</span>
-              )}
-            </Link>
-          ) : (
-            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Module Quiz — Requires {MODULE_NODES.length} Nodes Mastered</span>
+        <div className="flex flex-col gap-4">
+          {/* Module Quiz */}
+          <div className="p-4 rounded-lg border flex flex-col md:flex-row md:items-center justify-between gap-4" style={{ borderColor: quizPassed ? 'var(--neon-green)' : quizUnlocked ? 'var(--neon-yellow)' : 'var(--glass-border)' }}>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold uppercase tracking-wider" style={{ color: quizPassed ? 'var(--neon-green)' : quizUnlocked ? 'var(--neon-yellow)' : 'var(--text-secondary)' }}>
+                  Module Quiz {quizPassed && '✓ PASSED'}
+                </span>
+                {quiz && (
+                  <span className="text-xs px-2 py-0.5 rounded font-mono" style={{ background: 'rgba(255,255,255,0.05)', color: quizPassed ? 'var(--neon-green)' : 'var(--neon-yellow)' }}>
+                    Score: {quiz.score_numeric}%
+                  </span>
+                )}
+              </div>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
+                Test your knowledge of all nodes in this module. 80% required to unlock Boss Battle.
+              </p>
             </div>
-          )}
+            {quizUnlocked ? (
+              <Link href="/student/modules/8/quiz" className="px-4 py-2 rounded text-xs font-bold uppercase tracking-wider text-center transition-all" style={{ background: 'var(--neon-yellow)', color: '#000' }}>
+                {quiz ? 'Retake Quiz' : 'Take Quiz'}
+              </Link>
+            ) : (
+              <span className="text-xs px-3 py-1.5 rounded text-center opacity-50" style={{ border: '1px solid var(--glass-border)', color: 'var(--text-secondary)' }}>
+                Locked (Master All Nodes)
+              </span>
+            )}
+          </div>
 
-          {bossBattleUnlocked ? (
-            <Link href="/student/modules/8/boss-battle" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-purple)' }}>
-              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors">Boss Battle — Module 8 Challenge</span>
-              {bossBattlePassed ? (
-                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>COMPLETED</span>
-              ) : (
-                <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-purple)', color: 'var(--neon-purple)' }}>START</span>
-              )}
-            </Link>
-          ) : (
-            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Boss Battle — Requires Quiz 80%+</span>
+          {/* Boss Battle */}
+          <div className="p-4 rounded-lg border flex flex-col md:flex-row md:items-center justify-between gap-4" style={{ borderColor: bossBattlePassed ? 'var(--neon-green)' : bossBattleUnlocked ? 'var(--neon-red)' : 'var(--glass-border)' }}>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold uppercase tracking-wider" style={{ color: bossBattlePassed ? 'var(--neon-green)' : bossBattleUnlocked ? 'var(--neon-red)' : 'var(--text-secondary)' }}>
+                  Boss Battle {bossBattlePassed && '✓ PASSED'}
+                </span>
+                {bossBattle && (
+                  <span className="text-xs px-2 py-0.5 rounded font-mono" style={{ background: 'rgba(255,255,255,0.05)', color: bossBattlePassed ? 'var(--neon-green)' : 'var(--neon-red)' }}>
+                    Score: {bossBattle.score_numeric}/5
+                  </span>
+                )}
+              </div>
+              <p className="text-xs mt-1" style={{ color: 'var(--text-secondary)' }}>
+                Face the ultimate challenge for this module. Requires passing the Module Quiz.
+              </p>
             </div>
-          )}
-
-          {artifactsUnlocked ? (
-            <Link href="/student/modules/8/proof-artifacts" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid #7b4fce' }}>
-              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[#7b4fce] transition-colors">Proof Artifacts — Submit Artifacts</span>
-              <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid #7b4fce', color: '#7b4fce' }}>OPEN</span>
-            </Link>
-          ) : (
-            <div className="p-4 rounded-lg opacity-50 cursor-not-allowed" style={{ border: '1px solid var(--glass-border)' }}>
-              <span className="text-sm font-mono" style={{ color: 'var(--text-muted)' }}>Proof Artifacts — Requires Boss Battle</span>
-            </div>
-          )}
+            {bossBattleUnlocked ? (
+              <Link href="/student/modules/8/boss-battle" className="px-4 py-2 rounded text-xs font-bold uppercase tracking-wider text-center transition-all" style={{ background: 'var(--neon-red)', color: '#fff' }}>
+                {bossBattle ? 'Replay Battle' : 'Enter Battle'}
+              </Link>
+            ) : (
+              <span className="text-xs px-3 py-1.5 rounded text-center opacity-50" style={{ border: '1px solid var(--glass-border)', color: 'var(--text-secondary)' }}>
+                Locked (Pass Quiz First)
+              </span>
+            )}
+          </div>
         </div>
+      </section>
+
+      {/* Proof Artifacts */}
+      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: artifactsUnlocked ? 'var(--neon-cyan)' : 'var(--glass-border)' }}>
+        <h2 className="text-xl font-bold mb-2 uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+          Proof Artifacts
+        </h2>
+        <p className="text-sm mb-4" style={{ color: 'var(--text-secondary)' }}>
+          Submit your work from this module to earn your badge.
+        </p>
+        {artifactsUnlocked ? (
+          <Link href="/student/modules/8/proof-artifacts" className="inline-block px-4 py-2 rounded text-xs font-bold uppercase tracking-wider transition-all" style={{ background: 'var(--neon-cyan)', color: '#000' }}>
+            View &amp; Submit Artifacts →
+          </Link>
+        ) : (
+          <span className="text-xs px-3 py-1.5 rounded opacity-50 inline-block" style={{ border: '1px solid var(--glass-border)', color: 'var(--text-secondary)' }}>
+            Locked (Complete Boss Battle)
+          </span>
+        )}
+      </section>
+
+      {/* Module Feedback Form */}
+      <section className="mt-4">
+        <ModuleFeedbackForm moduleId={MODULES.MODULE_8_ID} initialFeedback={existingFeedback} />
       </section>
     </div>
   );

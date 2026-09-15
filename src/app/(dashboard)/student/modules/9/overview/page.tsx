@@ -5,6 +5,10 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
+import Module9TutorGenerator from '@/components/modules/Module9TutorGenerator';
+import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
+import { getStudentStagedRules } from '@/lib/tutor/rule-staging';
 
 import { module9Nodes } from '@/data/module9Content';
 const MODULE_NODES = Object.values(module9Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -42,13 +46,14 @@ export default async function Module9OverviewPage() {
     .eq('module_id', MODULES.MODULE_9_ID)
     .order('created_at', { ascending: false });
 
-  // Check if admin
+  // Fetch profile for name and role
   const { data: profile } = await supabase
     .from('profiles')
-    .select('role')
+    .select('role, display_name, full_name')
     .eq('id', user.id)
     .single();
 
+  const studentName = profile?.display_name || profile?.full_name || 'Student';
   const isAdmin = profile?.role === 'admin';
 
   const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
@@ -65,32 +70,55 @@ export default async function Module9OverviewPage() {
   // Find first unlocked node (first not mastered)
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
 
+  // Fetch staged rules for generator
+  const stagedRules = await getStudentStagedRules(user.id);
+
+  const { data: existingFeedback } = await supabase
+    .from('module_feedback')
+    .select('rating, feedback_text')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULES.MODULE_9_ID)
+    .maybeSingle();
+
   return (
-    <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
+    <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto space-y-8">
       
-      <Link href="/student/home" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-8 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
+      <Link href="/student/home" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-2 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
         <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Dashboard</span>
       </Link>
-<div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+      
+      <div className="mb-2 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
         Module 9 • Skill Tree: Highest Path
       </div>
 
-      <header className="mb-10">
+      <header className="mb-4">
         <h1 className="text-4xl font-bold tracking-tight text-[var(--text-primary)] font-display">
           Build Your AI Tutor
         </h1>
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          Build your own Learning Supercharger using custom instructions and knowledge files.</p>
+          Build your own Learning Supercharger using custom instructions, staged learning rules, and knowledge files.
+        </p>
       </header>
 
       <ModuleOpeningHook moduleNumber={9} title="Build Your AI Tutor" />
 
+      {/* Verified Student Guide PDF Download */}
+      <ModulePdfDownload moduleNumber={9} title="Module 9 Student Guide: Build Your AI Tutor" />
+
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_9_intro.mp4" title="Build Your AI Tutor" />
 
+      {/* 5-File AI Tutor Project Generator */}
+      <section className="space-y-4">
+        <Module9TutorGenerator 
+          stagedRules={stagedRules} 
+          studentName={studentName}
+        />
+      </section>
+
       {/* What You'll Learn */}
-      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>
+      <section className="p-6 rounded-xl border" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}>
         <h2 className="text-xl font-bold mb-4 uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
           What You&apos;ll Learn
         </h2>
@@ -115,7 +143,7 @@ export default async function Module9OverviewPage() {
       </section>
 
       {/* Skill Tree Nodes */}
-      <section className="p-6 rounded-xl border mb-8" style={{ background: 'var(--space-card)', borderColor: 'var(--glass-border)' }}>
+      <section className="p-6 rounded-xl border" style={{ background: 'var(--space-card)', borderColor: 'var(--glass-border)' }}>
         <h2 className="text-xl font-bold mb-6 uppercase tracking-wider" style={{ color: 'var(--neon-purple)' }}>
           Skill Tree
         </h2>
@@ -206,6 +234,11 @@ export default async function Module9OverviewPage() {
             </div>
           )}
         </div>
+      </section>
+
+      {/* Module Feedback Form */}
+      <section className="mt-4">
+        <ModuleFeedbackForm moduleId={MODULES.MODULE_9_ID} initialFeedback={existingFeedback} />
       </section>
     </div>
   );

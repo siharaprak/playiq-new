@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
+import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
 import { module2Nodes } from '@/data/module2Content';
 
 const MODULE_NODES = Object.values(module2Nodes).map(n => ({ id: n.id, title: n.title }));
@@ -77,6 +78,9 @@ export default async function Module2OverviewPage() {
       </header>
 
       <ModuleOpeningHook moduleNumber={2} title="Digital Smarts & Human Responsibility" />
+
+      {/* Verified Student Guide PDF Download */}
+      <ModulePdfDownload moduleNumber={2} title="Module 2 Student Guide: Digital Smarts & Human Responsibility" className="mb-8" />
 
       {/* Intro Video */}
       <ModuleIntroVideo src="/videos/module_2_intro.mp4" title="Digital Smarts & Human Responsibility" />
