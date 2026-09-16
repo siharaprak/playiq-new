@@ -97,6 +97,28 @@ export async function updateLearningLevel(formData: FormData) {
   redirect('/admin/users');
 }
 
+export async function resetModule0(formData: FormData) {
+  await enforceAdmin();
+
+  const userId = formData.get('userId') as string;
+  if (!userId) return;
+
+  // Delete from student_assessment_profiles to reset Module 0
+  const { error } = await supabaseAdmin
+    .from('student_assessment_profiles')
+    .delete()
+    .eq('student_id', userId);
+
+  if (error) {
+    console.error('Reset Module 0 error:', error);
+  }
+
+  revalidatePath('/admin/users');
+  revalidatePath('/student/home');
+  revalidatePath('/student/assessment');
+  redirect('/admin/users');
+}
+
 export async function resetStudentProgress(formData: FormData) {
   await enforceAdmin();
 
@@ -144,6 +166,8 @@ export async function resetStudentProgress(formData: FormData) {
     .eq('student_id', userId);
 
   revalidatePath('/admin/users');
+  revalidatePath('/student/home');
+  revalidatePath('/student/assessment');
   redirect('/admin/users');
 }
 

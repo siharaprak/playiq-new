@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/utils/supabase/server';
 import OrionAssessment from '@/components/assessment/OrionAssessment';
+import Module0CompletedView from '@/components/assessment/Module0CompletedView';
 
 export const dynamic = 'force-dynamic';
 
@@ -17,10 +18,6 @@ export default async function AssessmentPage() {
     .eq('student_id', user.id)
     .maybeSingle();
 
-  if (profile?.assessment_completed) {
-    redirect('/student/home');
-  }
-
   // Get student name from profiles table
   const { data: userProfile } = await supabase
     .from('profiles')
@@ -29,6 +26,21 @@ export default async function AssessmentPage() {
     .single();
 
   const studentName = userProfile?.username || userProfile?.full_name || 'Apprentice';
+
+  // If completed, allow them to view their blueprint and AI workshop reference
+  if (profile?.assessment_completed) {
+    return (
+      <Module0CompletedView
+        studentName={studentName}
+        gradeLevel={profile.grade_level || 'high'}
+        rescueSubject={profile.rescue_target_subject || 'Mathematics'}
+        advanceSubject={profile.advance_target_subject || 'Computer Science'}
+        explanationStyle={profile.explanation_style || 'visual'}
+        blueprint={profile.learning_blueprint || null}
+      />
+    );
+  }
+
   const initialPhase = profile?.current_phase || 1;
 
   return (
@@ -48,4 +60,5 @@ export default async function AssessmentPage() {
     </div>
   );
 }
+
 

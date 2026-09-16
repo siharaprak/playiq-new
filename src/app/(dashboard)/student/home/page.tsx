@@ -213,7 +213,13 @@ export default async function StudentDashboard() {
                     <div className="flex justify-between"><span className="font-mono uppercase" style={{ color: 'var(--text-muted)' }}>Advance</span><span style={{ color: 'var(--neon-green)' }}>{assessmentProfile.advance_target_subject}</span></div>
                   )}
                 </div>
-                <p className="text-xs mt-3 italic" style={{ color: 'var(--text-muted)' }}>&ldquo;Orion is calibrated to you.&rdquo;</p>
+                <p className="text-xs mt-3 mb-4 italic" style={{ color: 'var(--text-muted)' }}>&ldquo;Orion is calibrated to you.&rdquo;</p>
+                <Link
+                  href="/student/assessment?view=true"
+                  className="inline-flex items-center justify-center w-full py-2.5 px-3 rounded-lg text-xs font-bold uppercase tracking-wider transition-all border border-[var(--neon-purple)] text-[var(--neon-purple-light)] hover:bg-[var(--neon-purple)]/10 hover:border-[var(--neon-cyan)] hover:text-[var(--neon-cyan)]"
+                >
+                  View Module 0 &amp; AI Workshop →
+                </Link>
               </div>
             ) : (
               <div className="p-6 rounded-2xl" style={{ background: 'var(--space-card)', border: '1px solid var(--glass-border)' }}>

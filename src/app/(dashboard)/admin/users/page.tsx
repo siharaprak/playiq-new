@@ -2,8 +2,8 @@ import { createClient } from '@/utils/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock, RotateCcw } from 'lucide-react';
-import { deleteUser, suspendUser, restoreUser, updateLearningLevel, resetStudentProgress } from './actions';
+import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock, RotateCcw, Sparkles } from 'lucide-react';
+import { deleteUser, suspendUser, restoreUser, updateLearningLevel, resetStudentProgress, resetModule0 } from './actions';
 import { MODULES } from '@/lib/constants';
 import ConfirmButton from '@/components/admin/ConfirmButton';
 
@@ -57,6 +57,22 @@ export default async function AdminUsersPage({
 
   if (progressError) {
     console.error('❌ Admin Roster Error (progress):', progressError);
+  }
+
+  // Fetch all student assessment profiles for Module 0 status
+  const { data: assessmentProfiles, error: assessmentError } = await supabaseAdmin
+    .from('student_assessment_profiles')
+    .select('student_id, assessment_completed');
+
+  if (assessmentError) {
+    console.error('❌ Admin Roster Error (assessments):', assessmentError);
+  }
+
+  const assessmentMap: Record<string, boolean> = {};
+  for (const row of (assessmentProfiles || [])) {
+    if (row.assessment_completed) {
+      assessmentMap[row.student_id] = true;
+    }
   }
 
   // Group progress per student per module
@@ -313,12 +329,25 @@ export default async function AdminUsersPage({
                           </ConfirmButton>
                         </form>
                       )}
+                      {/* Reset Module 0 Action */}
+                      <form action={resetModule0}>
+                        <input type="hidden" name="userId" value={student.id} />
+                        <ConfirmButton
+                          type="submit"
+                          title="Reset Module 0 Only"
+                          className="p-2 border border-[#7b4fce]/40 text-[#7b4fce] hover:bg-[#7b4fce]/10 transition-colors"
+                          confirmMessage={`Reset Module 0 for ${student.email}? This will require them to redo the Orion assessment & AI workshop on next login without touching other module progress.`}
+                        >
+                          <Sparkles className="w-4 h-4" />
+                        </ConfirmButton>
+                      </form>
+
                       {/* Reset Progress Action */}
                       <form action={resetStudentProgress}>
                         <input type="hidden" name="userId" value={student.id} />
                         <ConfirmButton
                           type="submit"
-                          title="Reset Student Progress"
+                          title="Reset All Progress"
                           className="p-2 border border-[#00c8ff]/40 text-[#00c8ff] hover:bg-[#00c8ff]/10 transition-colors"
                           confirmMessage={`Reset all course progress for ${student.email}? This will wipe their node progress, quizzes, and assessment profile back to Module 0.`}
                         >
@@ -343,6 +372,34 @@ export default async function AdminUsersPage({
                   {/* Module Progress Grid */}
                   <div className="px-6 py-4 overflow-x-auto">
                     <div className="flex gap-2 min-w-max">
+                      {/* Module 0 Status */}
+                      {(() => {
+                        const m0Complete = !!assessmentMap[student.id];
+                        return (
+                          <div className={`flex flex-col items-center gap-1 w-[68px] p-2 border transition-colors
+                            ${m0Complete ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5' : 'border-amber-500/30 bg-amber-500/5'}`}
+                          >
+                            {m0Complete ? (
+                              <CheckCircle2 className="w-4 h-4 text-[#00c8ff]" />
+                            ) : (
+                              <Circle className="w-4 h-4 text-amber-400" />
+                            )}
+                            <span className={`font-mono text-[9px] font-bold ${m0Complete ? 'text-[#00c8ff]' : 'text-amber-400'}`}>
+                              M0
+                            </span>
+                            <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full transition-all ${m0Complete ? 'bg-[#00c8ff]' : 'bg-amber-400'}`}
+                                style={{ width: m0Complete ? '100%' : '0%' }}
+                              />
+                            </div>
+                            <span className={`font-mono text-[8px] ${m0Complete ? 'text-[#00c8ff]' : 'text-amber-400'}`}>
+                              {m0Complete ? 'Calibrated' : 'Pending'}
+                            </span>
+                          </div>
+                        );
+                      })()}
+
                       {MODULE_LIST.map((mod) => {
                         const mastered = studentProgress[mod.id] || 0;
                         const pct = Math.round((mastered / mod.totalNodes) * 100);
