@@ -1,4 +1,4 @@
-import { Users, Truck, Activity, Filter, UserCog, FileCheck, UserCheck, MessageSquare, Cpu } from 'lucide-react';
+import { Users, Ticket, Activity, Filter, UserCog, FileCheck, UserCheck, MessageSquare, Cpu } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
@@ -145,11 +145,11 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
            
            <div className="glass-card p-6 border-b-[3px] border-b-amber-400 !rounded-none shadow-none flex flex-col justify-between h-full">
              <div className="flex items-center gap-4 mb-4">
-               <div className="text-amber-400"><Truck className="w-6 h-6" /></div>
-               <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Orders Pending Dispatch</p>
+               <div className="text-amber-400"><Ticket className="w-6 h-6" /></div>
+               <p className="text-xs font-mono tracking-widest text-slate-400 uppercase">Promo Redeemed</p>
              </div>
              <div>
-               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{(allApps || []).filter((a: any) => a.status === 'paid').length}</p>
+               <p className="font-display text-4xl font-black text-[var(--text-primary)]">{(allApps || []).filter((a: any) => a.status === 'paid' || a.status === 'fulfilled_promo').length}</p>
              </div>
            </div>
 
