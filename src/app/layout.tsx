@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { HideOnAssessment } from "@/components/layout/HideOnAssessment";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA4RouteTracker } from "@/components/analytics/GA4RouteTracker";
+import { EarlyAccessPopup } from "@/components/forms/EarlyAccessPopup";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -79,6 +80,7 @@ export default function RootLayout({
           <HideOnAssessment>
             <Footer />
           </HideOnAssessment>
+          <EarlyAccessPopup />
         </ThemeProvider>
       </body>
     </html>

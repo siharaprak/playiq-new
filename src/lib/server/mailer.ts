@@ -7,6 +7,8 @@ interface SendEmailOptions {
   html: string;
   text?: string;
   fromName?: string;
+  /** Overrides AWS_SES_FROM_EMAIL. Must be on an SES-verified domain. */
+  fromEmail?: string;
   replyTo?: string;
   attachments?: Array<{
     filename: string;
@@ -42,7 +44,7 @@ function getTransporter(): nodemailer.Transporter {
  * Sends an email via Amazon SES with HTML and attachment support.
  */
 export async function sendEmail(options: SendEmailOptions) {
-  const fromEmail = process.env.AWS_SES_FROM_EMAIL || 'sender@weplayiq.com';
+  const fromEmail = options.fromEmail || process.env.AWS_SES_FROM_EMAIL || 'sender@weplayiq.com';
   const fromName = options.fromName || 'WePlayIQ';
   const from = `"${fromName}" <${fromEmail}>`;
 

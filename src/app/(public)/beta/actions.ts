@@ -101,6 +101,14 @@ export async function submitBetaApplication(data: BetaApplicationData) {
       applicationId = insertData?.[0]?.id;
     }
 
+    // Link to Early Access popup lead (if any) for funnel tracking. Never blocks the application.
+    const { error: leadLinkError } = await supabaseAdmin
+      .from('early_access_leads')
+      .update({ status: 'applied', updated_at: new Date().toISOString() })
+      .ilike('email', cleanEmail)
+      .neq('status', 'unsubscribed');
+    if (leadLinkError) console.warn('[EarlyAccess] Could not mark lead as applied:', leadLinkError.message);
+
     // Trigger non-blocking user welcome + admin alerts
     sendBetaSignupNotifications({
       parentName: parsed.data.parentFullName,
