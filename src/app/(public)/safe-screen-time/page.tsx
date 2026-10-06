@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/safe-screen-time' },
   title: 'Safe Screen Time & Active Learning | PlayIQ',
   description: 'Transform zombie-scrolling into productive thinking. PlayIQ uses effort-gated hints and active recall tasks to keep teens focused and engaged.',
   keywords: ['safe screen time', 'digital focus', 'attention span', 'active recall', 'learning apps for teens'],

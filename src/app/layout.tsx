@@ -8,6 +8,7 @@ import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { HideOnAssessment } from "@/components/layout/HideOnAssessment";
 import { PublicOnlyAnalytics } from "@/components/analytics/PublicOnlyAnalytics";
 import { EarlyAccessPopup } from "@/components/forms/EarlyAccessPopup";
+import { ORGANIZATION_JSON_LD, SITE_NAME } from "@/lib/seo";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,12 +21,23 @@ const spaceGrotesk = Space_Grotesk({
   weight: ["400", "500", "600", "700"],
 });
 
+// Defaults for every page. Pages override title/description/canonical; openGraph is
+// replaced (not merged) by any page that sets it, so only shared fields live here.
 export const metadata: Metadata = {
   metadataBase: new URL("https://weplayiq.com"),
-  title: "PlayIQ | Imagine. Build. Grow.",
+  applicationName: SITE_NAME,
+  title: "PlayIQ | AI-Guided STEM Learning for Teens 13–17",
   description:
-    "PlayIQ is a next-generation Digital Learning Operating System. Future-proof learning with AI-powered STEM education, interactive study modules, and guided digital experiences.",
-  keywords: ["STEM", "education", "AI learning", "PlayIQ", "study coaching"],
+    "PlayIQ (We Play IQ) is AI-guided STEM learning for teens 13–17: effort-gated hints, active-recall worksheets and a Parent Proof Packet showing real progress.",
+  keywords: ["PlayIQ", "We Play IQ", "STEM learning for teens", "AI learning", "study coaching"],
+  openGraph: {
+    siteName: SITE_NAME,
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export const viewport: Viewport = {
@@ -64,6 +76,12 @@ export default function RootLayout({
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans min-h-screen flex flex-col pt-20 sm:pt-24 antialiased overflow-x-hidden`}
         suppressHydrationWarning
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(ORGANIZATION_JSON_LD).replace(/</g, "\\u003c"),
+          }}
+        />
         {gaId && <PublicOnlyAnalytics gaId={gaId} />}
         <ThemeProvider>
           <Navbar />

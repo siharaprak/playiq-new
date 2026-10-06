@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/terms' },
   title: 'Terms of Service | PlayIQ',
   description: 'Read the PlayIQ Terms of Service governing use of the platform, subscriptions, and digital learning content.',
 };

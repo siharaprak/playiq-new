@@ -1,4 +1,12 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'How It Works: Missions, Hints & Proof | PlayIQ',
+  description:
+    "Get a mission, ask for a hint (never a straight answer), complete active-recall worksheets and unlock the next level, with every step logged for parents.",
+  alternates: { canonical: '/how-it-works' },
+};
 
 export default function HowItWorks() {
   return (

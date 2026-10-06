@@ -1,4 +1,12 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'The Apprentice: AI Learning Course for Teens 13–17 | PlayIQ',
+  description:
+    "A guided AI learning and logic challenge for teens 13–17: an adaptive study pathway, the PlayIQ app guide and a Parent Proof Packet of verified progress.",
+  alternates: { canonical: '/apprentice' },
+};
 
 export default function Apprentice() {
   return (

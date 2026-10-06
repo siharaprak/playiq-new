@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/parents' },
   title: 'Parents | PlayIQ',
   description: 'Learn how PlayIQ delivers structured STEM outcomes, safer screen time, and verifiable academic progress for teenagers aged 13-17.',
 };

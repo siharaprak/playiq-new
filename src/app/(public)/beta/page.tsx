@@ -1,6 +1,14 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BetaForm } from '@/components/forms/BetaForm';
 import { headers } from 'next/headers';
+
+export const metadata: Metadata = {
+  title: 'Apply for the Founding Cohort Pilot | PlayIQ',
+  description:
+    "Apply to PlayIQ's founding cohort: 12 weeks of guided AI study coaching for teens, live Parent Proof progress reports and direct input into the next version.",
+  alternates: { canonical: '/beta' },
+};
 
 export default async function Beta({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> | { [key: string]: string | string[] | undefined } }) {
   const resolvedParams = await Promise.resolve(searchParams);

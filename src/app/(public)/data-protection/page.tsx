@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/data-protection' },
   title: 'Data Protection | PlayIQ',
   description: 'How PlayIQ safeguards your data with industry-standard security measures.',
 };

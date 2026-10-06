@@ -1,4 +1,12 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Our Approach: Effort Before Answers | PlayIQ',
+  description:
+    "PlayIQ's AI guide gives hints, not answers. Teens show what they tried before getting help, building problem-solving resilience instead of dependence on AI.",
+  alternates: { canonical: '/approach' },
+};
 
 export default function Approach() {
   return (

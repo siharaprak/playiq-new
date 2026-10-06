@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/future-skills' },
   title: 'Future Skills, AI Prompting & Focus | PlayIQ',
   description: 'Equip your teenager with the critical skills for an AI-driven economy. PlayIQ teaches prompt engineering, cognitive mapping, and digital safety.',
   keywords: ['future skills', 'AI prompting', 'prompt engineering for teens', 'digital literacy', 'career readiness'],

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/project-based-engineering' },
   title: 'Project-Based STEM & AI Engineering for Teens | PlayIQ',
   description: 'Learn project-based engineering with PlayIQ. Teens design logical prompts, construct custom AI assistants, and complete capstone mastery trials.',
   keywords: ['project-based engineering', 'AI prompt design', 'cognitive mapping', 'systems thinking', 'teen software projects'],

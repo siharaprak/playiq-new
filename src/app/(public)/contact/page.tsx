@@ -1,3 +1,12 @@
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact & FAQs | PlayIQ',
+  description:
+    "Questions about PlayIQ? Message our team (we aim to reply to parents within 24 hours) and read answers on shipping, returns and device requirements.",
+  alternates: { canonical: '/contact' },
+};
+
 export default function Contact() {
   return (
     <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">

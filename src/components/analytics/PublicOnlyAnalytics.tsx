@@ -1,8 +1,10 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { GA4RouteTracker } from "@/components/analytics/GA4RouteTracker";
+import { isTrackingExcluded } from "@/lib/analytics/trackingExclusion";
 
 /**
  * Logged-in areas where Google Analytics must never run.
@@ -27,7 +29,12 @@ export function isAnalyticsBlockedPath(pathname: string): boolean {
 
 export function PublicOnlyAnalytics({ gaId }: { gaId: string }) {
   const pathname = usePathname() ?? "/";
-  const blocked = isAnalyticsBlockedPath(pathname);
+  // Internal team traffic is checked in the browser after mount; until then GA stays off
+  const [excluded, setExcluded] = useState(true);
+  useEffect(() => {
+    setExcluded(isTrackingExcluded());
+  }, []);
+  const blocked = excluded || isAnalyticsBlockedPath(pathname);
 
   // Google's documented opt-out flag. It is set during render, which runs
   // before the router updates browser history, so the GA script (if it was

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/homeschool-enrichment' },
   title: 'Homeschool STEM Enrichment & Progress Logs | PlayIQ',
   description: 'Enrich your homeschool curriculum with self-paced, AI-guided learning. PlayIQ provides automated progress logs and portfolio packets.',
   keywords: ['homeschool enrichment', 'self-paced learning', 'STEM homeschool', 'homeschool portfolio logs', 'independent study'],

@@ -2,6 +2,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/proof' },
   title: 'Our Proof | PlayIQ',
   description: 'See how PlayIQ measures and logs actual cognitive progress, active retrieval scores, and effort ratios in the Parent Proof Packet.',
 };

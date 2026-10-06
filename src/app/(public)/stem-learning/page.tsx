@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  alternates: { canonical: '/stem-learning' },
   title: 'AI-Powered STEM Learning for Teens | PlayIQ',
   description: 'Future-proof your child\'s education with structured STEM learning. PlayIQ combines active thinking with AI-guided programming and engineering.',
   keywords: ['STEM learning', 'AI science education', 'coding for teens', 'critical thinking', 'logical reasoning'],
