@@ -74,11 +74,16 @@ export async function updateSession(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser()
 
-  const isProtectedRoute = (request.nextUrl.pathname.startsWith('/student') || 
-                            request.nextUrl.pathname.startsWith('/parent') ||
-                            request.nextUrl.pathname.startsWith('/admin') ||
-                            request.nextUrl.pathname.startsWith('/settings') ||
-                            request.nextUrl.pathname.startsWith('/login/mfa')) &&
+  // Match whole path segments so public pages like /parents are not caught by /parent
+  const pathname = request.nextUrl.pathname
+  const matchesSegment = (prefix: string) =>
+    pathname === prefix || pathname.startsWith(prefix + '/')
+
+  const isProtectedRoute = (matchesSegment('/student') || 
+                            matchesSegment('/parent') ||
+                            matchesSegment('/admin') ||
+                            matchesSegment('/settings') ||
+                            matchesSegment('/login/mfa')) &&
                            !request.nextUrl.pathname.startsWith('/admin/login')
 
   const isAuthRoute = request.nextUrl.pathname.startsWith('/login') || 

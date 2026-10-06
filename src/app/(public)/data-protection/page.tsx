@@ -19,7 +19,7 @@ export default function DataProtectionPage() {
             Data <span className="text-[#7b4fce]">Protection</span>
           </h1>
           <p className="mt-3 sm:mt-4 text-slate-500 text-xs sm:text-sm">
-            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            Last updated: October 6, 2026
           </p>
         </div>
       </section>
@@ -40,11 +40,11 @@ export default function DataProtectionPage() {
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Technical Security Measures</h2>
             <h3 className="text-white font-semibold mb-2">Encryption</h3>
-            <p>All data at rest is encrypted using AES-256. All data in transit is protected by TLS 1.2+. Build photos and student submissions are stored in encrypted, access-controlled object storage.</p>
+            <p>PlayIQ's database and file storage are provided by Supabase, which documents encryption of data at rest (AES-256) and in transit (TLS). Build photos and student submissions are stored in private, access-controlled storage.</p>
             <h3 className="text-white font-semibold mt-5 mb-2">Access Controls</h3>
             <p>Authentication is handled through Supabase Auth. Role-based access control (RBAC) ensures students, parents, and administrators each have appropriately scoped permissions.</p>
             <h3 className="text-white font-semibold mt-5 mb-2">Infrastructure</h3>
-            <p>PlayIQ is hosted on Google Cloud / Firebase App Hosting, benefiting from enterprise-grade security, global DDoS mitigation, and 99.9% uptime SLA.</p>
+            <p>PlayIQ is hosted on Google Cloud / Firebase App Hosting.</p>
           </div>
 
           <div className="glass-card p-8">
@@ -64,13 +64,8 @@ export default function DataProtectionPage() {
           </div>
 
           <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Data Retention</h2>
-            <p>We collect only the data necessary to provide PlayIQ. Student progress data is retained for the duration of active subscription plus 12 months. Upon account deletion, all personal data is purged within 30 days, except where legally required.</p>
-          </div>
-
-          <div className="glass-card p-8">
-            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Incident Response</h2>
-            <p>In the event of a data breach, we will notify affected users within 72 hours of becoming aware of the incident. Our plan includes immediate containment, root cause analysis, and remediation steps.</p>
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Data Retention &amp; Deletion</h2>
+            <p>We aim to collect only the data necessary to provide PlayIQ. Parents may request deletion of their account or their child's account and associated data by contacting <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline">support@weplayiq.com</a>.</p>
           </div>
 
           <div className="glass-card p-8">
@@ -78,7 +73,7 @@ export default function DataProtectionPage() {
             <p>For data protection inquiries or to report a security concern:</p>
             <div className="mt-4 space-y-1 text-sm">
               <p className="text-white font-semibold">PlayIQ Learning — Data Protection</p>
-              <p>Email: <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">hello@playiq.com</a></p>
+              <p>Email: <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline">support@weplayiq.com</a></p>
             </div>
           </div>
 

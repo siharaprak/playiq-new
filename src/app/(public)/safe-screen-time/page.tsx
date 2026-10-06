@@ -48,9 +48,9 @@ export default function SafeScreenTimePage() {
           </div>
 
           <div className="glass-card p-5 sm:p-8 border-r-4 border-r-[#7b4fce] text-center max-w-2xl mx-auto">
-            <h3 className="font-display text-xs sm:text-sm text-white mb-2 sm:mb-3 tracking-wider">COPPA CLARITY & PRIVACY</h3>
+            <h3 className="font-display text-xs sm:text-sm text-white mb-2 sm:mb-3 tracking-wider">PRIVACY & PARENT CONTROL</h3>
             <p className="text-[10px] sm:text-[11px] text-slate-400 leading-relaxed">
-              We collect zero location data, zero audio/video feeds, and run zero advertising. We only store active lesson progress coordinates. Parents hold permanent deletion rights.
+              We run zero advertising and never sell student data. Child profiles are created and managed by parents, who can request deletion of their child&apos;s data at any time. See our <Link href="/privacy" className="text-[#00c8ff] hover:underline">Privacy Policy</Link> for details.
             </p>
           </div>
         </section>

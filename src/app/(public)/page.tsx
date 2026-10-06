@@ -352,9 +352,9 @@ export default function Home() {
                 </p>
               </div>
               <div>
-                <h5 className="font-semibold text-white text-sm">&gt; Is PlayIQ COPPA compliant?</h5>
+                <h5 className="font-semibold text-white text-sm">&gt; How does PlayIQ protect my child's privacy?</h5>
                 <p className="text-slate-400 mt-2 leading-relaxed">
-                  Yes, fully. We restrict child data gathering to absolute learning needs, never sell or market pupil details to third parties, have zero advertising, and allow parents to delete account data instantly.
+                  Child profiles are created and managed by parents. We aim to collect only what learning requires, never sell student data, run no advertising, and parents can request deletion of their child's data at any time.
                 </p>
               </div>
               <div>

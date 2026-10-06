@@ -23,7 +23,7 @@ export default function PrivacyPage() {
             Privacy <span className="text-[#00c8ff]">Policy</span>
           </h1>
           <p className="mt-3 sm:mt-4 text-slate-500 text-xs sm:text-sm">
-            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            Last updated: October 6, 2026
           </p>
         </div>
       </section>
@@ -58,9 +58,9 @@ export default function PrivacyPage() {
             </p>
             <h3 className="text-white font-semibold mt-5 mb-2">Student & Child Data</h3>
             <p>
-              For minor users (under 18), we collect only the data necessary to deliver the learning experience —
-              course progress, mission completions, portfolio submissions, and achievement records. We do not
-              knowingly collect personal data from children under 13 without verifiable parental consent.
+              For minor users (under 18), we collect data used to deliver the learning experience, such as
+              course progress, mission completions, portfolio submissions, and achievement records. Profiles for
+              children under 13 are created and managed by a parent or guardian through their own account.
             </p>
             <h3 className="text-white font-semibold mt-5 mb-2">Usage Information</h3>
             <p>
@@ -128,12 +128,12 @@ export default function PrivacyPage() {
               <li>Lodge a complaint with your local data protection authority</li>
             </ul>
             <p className="mt-4 font-mono text-xs text-slate-500 uppercase">
-              &gt; Parents retain full rights over child accounts and may request instant deletion, which will purge the child's profile, lesson progress, and worksheet uploads from all databases.
+              &gt; Parents retain rights over child accounts and may request deletion of their child's account and associated data.
             </p>
             <p className="mt-3">
               To exercise any of these rights, contact us at{' '}
-              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline font-mono">
-                hello@playiq.com
+              <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline font-mono">
+                support@weplayiq.com
               </a>
               .
             </p>
@@ -141,20 +141,20 @@ export default function PrivacyPage() {
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">
-              7. Children's Privacy (COPPA) & Consent
+              7. Children's Privacy & Consent
             </h2>
             <p>
-              PlayIQ is committed to the protection of young learners. We fully comply with the Children's Online Privacy Protection Act (COPPA).
+              PlayIQ is designed for young learners and takes children's privacy seriously.
             </p>
             
             <h3 className="text-white font-semibold mt-4 mb-2">Data Collection Boundaries</h3>
             <p className="text-xs leading-relaxed mb-4">
-              We only collect information necessary to support the educational experience: account login details, lesson progress coordinates, retrieval worksheet responses, and custom AI coach configurations. We do <strong>not</strong> collect child images, biometric identifiers, voice records, location tracking, or third-party behavioral ads.
+              We aim to collect only information that supports the educational experience, such as account login details, lesson progress, worksheet responses, custom AI coach configurations, and files or photos submitted as part of learning activities. We do <strong>not</strong> run third-party behavioral advertising.
             </p>
 
-            <h3 className="text-white font-semibold mt-4 mb-2">Verifiable Parental Consent</h3>
+            <h3 className="text-white font-semibold mt-4 mb-2">Parent-Created Accounts</h3>
             <p className="text-xs leading-relaxed mb-4">
-              For users under 13, verifiable parental consent is required before registration. Parents must establish their account link first to authorize a child profile. If we learn we have collected data from a child under 13 without parental authorization, we will purge it immediately.
+              Child profiles are created by a parent or guardian through their own PlayIQ account. If we learn that we have collected personal information from a child under 13 without a parent's involvement, we will delete it.
             </p>
 
             <h3 className="text-white font-semibold mt-4 mb-2">Parental Rights & Deletion Protocol</h3>
@@ -167,11 +167,11 @@ export default function PrivacyPage() {
               <li>Refuse further collection or use of the child's data.</li>
             </ul>
             <p className="text-xs leading-relaxed">
-              To exercise these rights, or request an immediate profile deletion, please email our security officer at{' '}
-              <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline font-mono">
-                hello@playiq.com
+              To exercise these rights, or request deletion of a child's profile, please email{' '}
+              <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline font-mono">
+                support@weplayiq.com
               </a>
-              . Account purges are processed within 48 hours.
+              .
             </p>
           </div>
 
@@ -197,8 +197,8 @@ export default function PrivacyPage() {
               <p className="text-white font-semibold">PlayIQ Learning</p>
               <p>
                 Email:{' '}
-                <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">
-                  hello@playiq.com
+                <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline">
+                  support@weplayiq.com
                 </a>
               </p>
             </div>

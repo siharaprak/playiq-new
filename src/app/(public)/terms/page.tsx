@@ -19,7 +19,7 @@ export default function TermsPage() {
             Terms of <span className="text-[#00c8ff]">Service</span>
           </h1>
           <p className="mt-3 sm:mt-4 text-slate-500 text-xs sm:text-sm">
-            Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+            Last updated: October 6, 2026
           </p>
         </div>
       </section>
@@ -35,19 +35,19 @@ export default function TermsPage() {
 
           <div className="glass-card p-5 sm:p-8">
             <h2 className="font-display text-xs sm:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] font-bold mb-3 sm:mb-4">2. Eligibility</h2>
-            <p>You must be at least 18 years old to create an account. Minor users (ages 13–17) may access PlayIQ only with a parent or guardian who has created and manages the account. Users under 13 require verifiable parental consent in accordance with COPPA.</p>
+            <p>You must be at least 18 years old to create an account. Minor users (ages 13–17) may access PlayIQ only with a parent or guardian who has created and manages the account. Profiles for children under 13 may only be created by a parent or guardian through their own account.</p>
           </div>
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">3. Account Responsibilities</h2>
-            <p>You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. Notify us immediately at <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">hello@playiq.com</a> if you suspect unauthorized access.</p>
+            <p>You are responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account. Notify us immediately at <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline">support@weplayiq.com</a> if you suspect unauthorized access.</p>
           </div>
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">4. Subscriptions & Payments</h2>
             <p>PlayIQ offers subscription-based access to digital learning content. By subscribing, you authorize us to charge your payment method on a recurring basis at the selected billing interval.</p>
             <h3 className="text-white font-semibold mt-4 mb-2">Cancellation</h3>
-            <p>You may cancel your subscription at any time from your account settings. Cancellation takes effect at the end of the current billing period. We do not provide refunds for unused portions of a subscription period.</p>
+            <p>You may cancel your subscription at any time by contacting support@weplayiq.com. Cancellation takes effect at the end of the current billing period. We do not provide refunds for unused portions of a subscription period.</p>
 
           </div>
 
@@ -80,7 +80,7 @@ export default function TermsPage() {
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">9. Termination</h2>
-            <p>We reserve the right to suspend or terminate your account at our discretion if you violate these terms, engage in fraudulent activity, or misuse the platform. You may delete your account at any time from account settings.</p>
+            <p>We reserve the right to suspend or terminate your account at our discretion if you violate these terms, engage in fraudulent activity, or misuse the platform. You may request deletion of your account at any time by contacting support@weplayiq.com.</p>
           </div>
 
           <div className="glass-card p-8">
@@ -97,7 +97,7 @@ export default function TermsPage() {
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">12. Contact</h2>
             <div className="space-y-1 text-sm">
               <p className="text-white font-semibold">PlayIQ Learning</p>
-              <p>Email: <a href="mailto:hello@playiq.com" className="text-[#00c8ff] hover:underline">hello@playiq.com</a></p>
+              <p>Email: <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline">support@weplayiq.com</a></p>
             </div>
           </div>
 

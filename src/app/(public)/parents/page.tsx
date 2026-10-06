@@ -15,7 +15,7 @@ export default function Parents() {
 
       <div className="absolute top-[5%] left-[5%] font-display text-[0.6rem] tracking-[0.3em] text-[#7b4fce] opacity-60 uppercase text-left hidden sm:block pointer-events-none">
         VIEW_MODE: PARENT_INSIGHT<br/>
-        SECURE // COPPA_COMPLIANT
+        SECURE // PARENT_CONTROLLED
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-16 sm:pt-16 sm:pb-24 relative z-10 space-y-12 sm:space-y-20">
