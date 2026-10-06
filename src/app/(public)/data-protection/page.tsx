@@ -29,12 +29,7 @@ export default function DataProtectionPage() {
 
           <div className="glass-card p-5 sm:p-8">
             <h2 className="font-display text-xs sm:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] font-bold mb-3 sm:mb-4">Overview</h2>
-            <p>PlayIQ Learning is committed to maintaining the highest standards of data security. This policy outlines the technical and administrative controls we employ to protect user data — particularly the data of minors using our platform.</p>
-          </div>
-
-          <div className="glass-card p-5 sm:p-8">
-            <h2 className="font-display text-xs sm:text-sm uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] font-bold mb-3 sm:mb-4">Data Governance</h2>
-            <p>We have designated internal data stewardship responsibilities to ensure accountability across all data-handling processes. Data access is governed on a strict least-privilege basis — personnel only access what is necessary to perform their role.</p>
+            <p>This page describes the technical measures that protect PlayIQ user data, particularly the data of minors using our platform. For what we collect, who we share it with, and how deletion works, see our <Link href="/privacy" className="text-[#00c8ff] hover:underline">Privacy Policy</Link>.</p>
           </div>
 
           <div className="glass-card p-8">
@@ -49,12 +44,12 @@ export default function DataProtectionPage() {
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Student Data Protection</h2>
-            <p>Student data — including build submissions, AI mentor interactions, and mission progress — is treated with heightened sensitivity. This data is:</p>
+            <p>Student data, including build submissions, AI tutor designs, and mission progress, is treated with heightened sensitivity. This data is:</p>
             <ul className="space-y-2 list-disc list-inside mt-3">
               <li>Never sold to third parties</li>
               <li>Never used for advertising targeting</li>
-              <li>Accessible only by the student, their designated parent/guardian, and authorized PlayIQ personnel</li>
-              <li>Processed exclusively for educational improvement and Parent Proof Packet generation</li>
+              <li>Accessible to the student, their parent/guardian, and authorized PlayIQ staff. Discussion board posts are also visible to other signed-in PlayIQ members</li>
+              <li>Shared only with the service providers named in our Privacy Policy, and only to run PlayIQ</li>
             </ul>
           </div>
 
@@ -65,7 +60,7 @@ export default function DataProtectionPage() {
 
           <div className="glass-card p-8">
             <h2 className="font-display text-sm uppercase tracking-[0.2em] text-[#00c8ff] font-bold mb-4">Data Retention &amp; Deletion</h2>
-            <p>We aim to collect only the data necessary to provide PlayIQ. Parents may request deletion of their account or their child's account and associated data by contacting <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline">support@weplayiq.com</a>.</p>
+            <p>We aim to collect only the data necessary to provide PlayIQ. Parents may request deletion of their account or their child's account and associated data by contacting <a href="mailto:support@weplayiq.com" className="text-[#00c8ff] hover:underline">support@weplayiq.com</a>. See Section 9 of our <Link href="/privacy" className="text-[#00c8ff] hover:underline">Privacy Policy</Link> for details.</p>
           </div>
 
           <div className="glass-card p-8">

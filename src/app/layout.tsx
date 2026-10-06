@@ -6,8 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { SocialSidebar } from "@/components/layout/SocialSidebar";
 import { ThemeProvider } from "@/components/layout/ThemeProvider";
 import { HideOnAssessment } from "@/components/layout/HideOnAssessment";
-import { GoogleAnalytics } from "@next/third-parties/google";
-import { GA4RouteTracker } from "@/components/analytics/GA4RouteTracker";
+import { PublicOnlyAnalytics } from "@/components/analytics/PublicOnlyAnalytics";
 import { EarlyAccessPopup } from "@/components/forms/EarlyAccessPopup";
 
 const inter = Inter({
@@ -65,12 +64,7 @@ export default function RootLayout({
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans min-h-screen flex flex-col pt-20 sm:pt-24 antialiased overflow-x-hidden`}
         suppressHydrationWarning
       >
-        {gaId && (
-          <>
-            <GoogleAnalytics gaId={gaId} />
-            <GA4RouteTracker gaId={gaId} />
-          </>
-        )}
+        {gaId && <PublicOnlyAnalytics gaId={gaId} />}
         <ThemeProvider>
           <Navbar />
           <HideOnAssessment>
