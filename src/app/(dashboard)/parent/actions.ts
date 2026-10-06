@@ -9,9 +9,23 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
   const name = formData.get('name') as string;
   const username = formData.get('username') as string;
   const password = formData.get('password') as string;
+  const ageBand = formData.get('ageBand') as string;
 
   if (!username || !password || !name) {
     return { error: 'Name, Username, and Password are all required.' };
+  }
+
+  // Privacy remediation: new under-13 profiles are paused until the parental
+  // consent flow (Phase 3) is live. Checked before any account is created.
+  // Existing student accounts are not affected.
+  if (ageBand === 'under_13') {
+    return {
+      error:
+        "We're not able to add children under 13 right now while we finish our parental consent process. Please check back soon, or contact support@weplayiq.com.",
+    };
+  }
+  if (!['13_14', '15_17'].includes(ageBand)) {
+    return { error: "Please select your child's age." };
   }
 
   if (password.length < 6) {
@@ -78,13 +92,15 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     .limit(1)
     .maybeSingle() : { data: null };
 
-  // Map the child age band to learning level
+  // Map the child age band to learning level. The age the parent selected on this
+  // form takes priority over the band on their (possibly older) beta application.
   let initialLevel: 'elementary' | 'middle' | 'high' | 'adult' = 'high';
-  if (betaApp?.child_age_band) {
-    if (betaApp.child_age_band === 'under_13') initialLevel = 'elementary';
-    else if (betaApp.child_age_band === '13_14') initialLevel = 'middle';
-    else if (betaApp.child_age_band === '15_17') initialLevel = 'high';
-    else if (betaApp.child_age_band === 'over_17') initialLevel = 'adult';
+  const effectiveBand = ageBand || betaApp?.child_age_band;
+  if (effectiveBand) {
+    if (effectiveBand === 'under_13') initialLevel = 'elementary';
+    else if (effectiveBand === '13_14') initialLevel = 'middle';
+    else if (effectiveBand === '15_17') initialLevel = 'high';
+    else if (effectiveBand === 'over_17') initialLevel = 'adult';
   }
 
   // Step 3: Explicitly set profile role to 'student' and save the learning level

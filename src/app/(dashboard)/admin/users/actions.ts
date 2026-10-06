@@ -15,39 +15,30 @@ async function enforceAdmin() {
 }
 
 export async function deleteUser(formData: FormData) {
-  await enforceAdmin();
+  const admin = await enforceAdmin();
 
   const userId = formData.get('userId') as string;
   if (!userId) return;
 
-  // 1. Delete from audit_events first (since it has a foreign key to profiles without cascade)
-  const { error: auditError } = await supabaseAdmin
-    .from('audit_events')
-    .delete()
-    .eq('actor_user_id', userId);
-
-  if (auditError) {
-    console.error('Delete audit events error:', auditError);
+  // Privacy remediation (Phase 2): deletions must go through the tracked workflow,
+  // which deletes uploaded files and all records, not just the profile.
+  const { openDeletionRequest } = await import('@/lib/privacy/deletion');
+  let requestId: string;
+  try {
+    requestId = await openDeletionRequest({
+      subject: userId,
+      requesterEmail: admin.email || 'admin',
+      requesterRelationship: 'admin_initiated',
+      notes: 'Opened from the Student Roster delete button',
+      createdBy: admin.id,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Could not open deletion request';
+    redirect(`/admin/privacy?error=${encodeURIComponent(message)}`);
   }
 
-  // 2. Delete from profiles table (this deletes associated child records via CASCADE)
-  const { error: profileError } = await supabaseAdmin
-    .from('profiles')
-    .delete()
-    .eq('id', userId);
-
-  if (profileError) {
-    console.error('Delete profile error:', profileError);
-  }
-
-  // 3. Delete from auth.users (ignore user_not_found errors for mock profiles)
-  const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId);
-  if (authError) {
-    console.error('Delete auth user error (ignored for mock profiles):', authError);
-  }
-
-  revalidatePath('/admin/users');
-  redirect('/admin/users');
+  revalidatePath('/admin/privacy');
+  redirect(`/admin/privacy?focus=${requestId}&msg=${encodeURIComponent('Deletion request opened. Complete the steps below.')}`);
 }
 
 export async function suspendUser(formData: FormData) {

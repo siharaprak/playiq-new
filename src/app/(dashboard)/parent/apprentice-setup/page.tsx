@@ -60,6 +60,19 @@ export default function ApprenticeSetupPage() {
             </div>
 
             <div>
+              <label htmlFor="ageBand" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2">&gt; Child&apos;s Age</label>
+              <select id="ageBand" required name="ageBand" defaultValue="" className="neon-input w-full">
+                <option value="" disabled>Select age</option>
+                <option value="under_13">Under 13</option>
+                <option value="13_14">13–14</option>
+                <option value="15_17">15–17</option>
+              </select>
+              <p className="font-mono text-[10px] text-slate-600 mt-1.5">
+                Profiles for children under 13 are temporarily paused while we finish our parental consent process.
+              </p>
+            </div>
+
+            <div>
               <label className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2">&gt; Login Handle / Email</label>
               <input
                 required

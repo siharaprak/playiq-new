@@ -361,7 +361,7 @@ export default async function AdminUsersPage({
                           type="submit"
                           title="Delete User"
                           className="p-2 border border-red-500/40 text-red-400 hover:bg-red-400/10 transition-colors"
-                          confirmMessage={`Permanently delete ${student.email}? This cannot be undone.`}
+                          confirmMessage={`Open a deletion request for ${student.email}? You will complete the deletion steps on the Privacy page.`}
                         >
                           <Trash2 className="w-4 h-4" />
                         </ConfirmButton>

@@ -1,4 +1,4 @@
-import { Users, Ticket, Activity, Filter, UserCog, FileCheck, UserCheck, MessageSquare, Cpu } from 'lucide-react';
+import { Users, Ticket, Activity, Filter, UserCog, FileCheck, UserCheck, MessageSquare, Cpu, ShieldAlert } from 'lucide-react';
 import { createClient } from '@/utils/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
@@ -286,6 +286,18 @@ export default async function AdminDashboard({ searchParams }: { searchParams: {
               <p className="font-mono text-[10px] text-slate-500 mt-1">Audit student AI Tutors (M9) and AI Assistants (M10)</p>
             </div>
             <span className="ml-auto text-slate-600 group-hover:text-[#7b4fce] transition-colors">→</span>
+          </Link>
+
+          {/* Privacy: account deletion requests */}
+          <Link href="/admin/privacy" className="glass-card p-6 !rounded-none border border-slate-800 hover:border-red-400/60 transition-all group flex items-center gap-4">
+            <div className="w-12 h-12 flex items-center justify-center border border-red-400/40 bg-red-400/10 text-red-300 group-hover:shadow-[0_0_15px_rgba(248,113,113,0.4)] transition-all flex-shrink-0">
+              <ShieldAlert className="w-6 h-6" />
+            </div>
+            <div>
+              <p className="font-display font-bold text-[var(--text-primary)] tracking-wider uppercase text-sm">Privacy Requests</p>
+              <p className="font-mono text-[10px] text-slate-500 mt-1">Track and complete account deletion requests</p>
+            </div>
+            <span className="ml-auto text-slate-600 group-hover:text-red-300 transition-colors">→</span>
           </Link>
 
           {/* Card 5: Support Tickets */}
