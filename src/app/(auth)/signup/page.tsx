@@ -65,44 +65,64 @@ function SignupContent() {
             </p>
           </div>
 
-          <form action={formAction} className="space-y-4 sm:space-y-6">
-            {state?.error && (
-               <div className="p-3 bg-[rgba(255,0,0,0.1)] border-l-4 border-red-500 text-red-400 font-display text-xs uppercase tracking-wider flex gap-2 items-center">
-                 <AlertCircle className="w-4 h-4 flex-shrink-0" /> ERR: {state.error}
-               </div>
-            )}
-             <div>
-              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
-                &gt; FULL_NAME
-              </label>
-              <input type="text" name="name" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" placeholder="JANE DOE" />
+          {state?.needsEmailConfirmation ? (
+            <div className="space-y-6 py-2">
+              <div className="p-4 bg-[rgba(0,200,255,0.1)] border-l-4 border-[#00c8ff] text-[#00c8ff] font-display text-xs tracking-wider flex flex-col gap-3 text-left">
+                <div className="flex gap-3 items-center w-full">
+                  <CheckCircle2 className="w-6 h-6 flex-shrink-0 text-[#00c8ff]" />
+                  <strong className="uppercase font-mono text-sm">CONFIRMATION LINK DISPATCHED</strong>
+                </div>
+                <p className="text-slate-300 font-mono text-xs leading-relaxed">
+                  We&apos;ve sent a verification link to <span className="text-[#00c8ff] font-bold">{state.email}</span>. Please check your inbox and click the confirmation link to activate your parent account.
+                </p>
+              </div>
+              <Link
+                href="/login"
+                className="btn-neon-filled w-full !rounded-none min-h-[48px] font-display uppercase font-bold text-sm tracking-[0.15em] flex items-center justify-center"
+              >
+                PROCEED TO SIGN IN →
+              </Link>
             </div>
-            <div>
-              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
-                &gt; USER_ID [EMAIL]
-              </label>
-              <input type="email" name="email" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" placeholder="YOU@DOMAIN.COM" />
-            </div>
-            <div>
-              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
-                &gt; PASSKEY
-              </label>
-              <input type="password" name="password" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] min-h-[44px]" placeholder="••••••••" />
-            </div>
-            <div>
-              <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
-                &gt; PROMO / ACCESS_CODE (OPTIONAL)
-              </label>
-              <input 
-                type="text" 
-                name="promoCode" 
-                defaultValue={urlPromo} 
-                className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" 
-                placeholder="PROMO CODE" 
-              />
-            </div>
-            <SubmitButton />
-          </form>
+          ) : (
+            <form action={formAction} className="space-y-4 sm:space-y-6">
+              {state?.error && (
+                 <div className="p-3 bg-[rgba(255,0,0,0.1)] border-l-4 border-red-500 text-red-400 font-display text-xs uppercase tracking-wider flex gap-2 items-center">
+                   <AlertCircle className="w-4 h-4 flex-shrink-0" /> ERR: {state.error}
+                 </div>
+              )}
+               <div>
+                <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
+                  &gt; FULL_NAME
+                </label>
+                <input type="text" name="name" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" placeholder="JANE DOE" />
+              </div>
+              <div>
+                <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
+                  &gt; USER_ID [EMAIL]
+                </label>
+                <input type="email" name="email" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" placeholder="YOU@DOMAIN.COM" />
+              </div>
+              <div>
+                <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
+                  &gt; PASSKEY
+                </label>
+                <input type="password" name="password" required className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] min-h-[44px]" placeholder="••••••••" />
+              </div>
+              <div>
+                <label className="block text-xs font-display uppercase tracking-[0.15em] sm:tracking-[0.2em] text-[#00c8ff] mb-1.5 sm:mb-2 opacity-80">
+                  &gt; PROMO / ACCESS_CODE (OPTIONAL)
+                </label>
+                <input 
+                  type="text" 
+                  name="promoCode" 
+                  defaultValue={urlPromo} 
+                  className="neon-input !rounded-none !border-b-2 !border-b-slate-700 focus:!border-b-[#00c8ff] !bg-black/40 font-mono tracking-widest text-white selection:bg-[#7b4fce] uppercase min-h-[44px]" 
+                  placeholder="PROMO CODE" 
+                />
+              </div>
+              <SubmitButton />
+            </form>
+          )}
 
           <div className="mt-6 sm:mt-8 text-center font-display text-[0.65rem] tracking-[0.1em] uppercase text-slate-500">
             ALREADY_HAVE_AN_ACCOUNT?{' '}

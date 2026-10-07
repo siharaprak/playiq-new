@@ -27,7 +27,7 @@ export default function LessonContentRenderer({ sections }: LessonContentRendere
       {sections.map((section, sIdx) => {
         const title = section.title || '';
         const isHook = title.toLowerCase().includes('hook') || title.toLowerCase().includes('lightning') || title.toLowerCase().includes('30-second') || title.toLowerCase().includes('45-second');
-        const isDialogue = title.toLowerCase().includes('conversation') || title.toLowerCase().includes('dialogue') || section.content.some(c => c.startsWith('STUDENT:') || c.startsWith('ORION:'));
+        const isDialogue = title.toLowerCase().includes('conversation') || title.toLowerCase().includes('dialogue') || section.content.some((c: string) => c.startsWith('STUDENT:') || c.startsWith('ORION:'));
         const isComparison = title.toLowerCase().includes('vs') || title.toLowerCase().includes('comparison') || title.toLowerCase().includes('weak vs');
         const isSteps = title.toLowerCase().includes('step') || title.toLowerCase().includes('ladder') || title.toLowerCase().includes('ways') || title.toLowerCase().includes('rule');
 

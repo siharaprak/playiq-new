@@ -42,7 +42,7 @@ export async function createClient() {
           aud: 'authenticated',
           role: 'authenticated',
         };
-        client.auth.getUser = async () => {
+        (client.auth as any).getUser = async () => {
           return { data: { user: mockUser }, error: null };
         };
         client.auth.mfa = {
@@ -114,10 +114,11 @@ export async function ensureProfileExists(userId: string, email: string, fullNam
     }
 
     if (role === 'admin') {
-      await adminClient
-        .from('user_roles')
-        .upsert({ user_id: userId, role: 'admin' }, { onConflict: 'user_id,role' })
-        .catch(() => {});
+      try {
+        await adminClient
+          .from('user_roles')
+          .upsert({ user_id: userId, role: 'admin' }, { onConflict: 'user_id,role' });
+      } catch {}
     }
 
     return newProfile;
@@ -132,10 +133,11 @@ export async function ensureProfileExists(userId: string, email: string, fullNam
       .select()
       .single();
 
-    await adminClient
-      .from('user_roles')
-      .upsert({ user_id: userId, role: 'admin' }, { onConflict: 'user_id,role' })
-      .catch(() => {});
+    try {
+      await adminClient
+        .from('user_roles')
+        .upsert({ user_id: userId, role: 'admin' }, { onConflict: 'user_id,role' });
+    } catch {}
 
     return updatedProfile || profile;
   }
