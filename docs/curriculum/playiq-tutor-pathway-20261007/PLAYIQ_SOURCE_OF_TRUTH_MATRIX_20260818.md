@@ -148,11 +148,16 @@ Capstone), the current combined master, the Orion compilation instructions,
 the pathway alignment spec, and a QA record. This is course content for Iris
 to review and implement; it is not a website code change or deployment.
 
-The source package is committed and pushed to the public repository on branch
-`codex/playiq-tutor-pathway-20261007`, commit
-`fd861862865db07f33a24e3e1a5a62153f6d0f98`. The white-background combined
-print PDF was rendered and visually checked. Drive replacement/readback is the
-remaining publication check and will be recorded after it succeeds.
+The source package was committed as
+`fd861862865db07f33a24e3e1a5a62153f6d0f98` on public branch
+`codex/playiq-tutor-pathway-20261007` and pushed to GitHub. A follow-up release
+evidence commit was also pushed. The white-background combined print PDF was
+rendered, visually checked, and read back from Drive. The updated module
+Markdown, combined master, this matrix, and Orion compilation instructions
+were fetched back from Drive and matched against their local source checks;
+the two new alignment/QA records were uploaded to the active PlayIQ folder.
+Alignment spec: `1gBYbXA3_dGnc_hh1Ou0NzPxBzm3_5gma`; QA record:
+`1lYxj54lqVVYElsLN909Dk9BtHWRkfLyN`.
 Main-branch merge, production deployment, account integrations, and app code
 are out of scope.
 

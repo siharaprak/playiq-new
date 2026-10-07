@@ -33,7 +33,11 @@
 - [x] The light-print PDF is rendered and visually checked before delivery.
 - [x] Git commit `fd861862865db07f33a24e3e1a5a62153f6d0f98` is pushed on
       `codex/playiq-tutor-pathway-20261007`.
-- [ ] Drive file updates are read back.
+- [x] Drive file updates are read back: all 12 module texts, combined master,
+      source matrix, and Orion compilation instructions match their local
+      source checks; the alignment and QA records also match local sources.
+      The combined print PDF was fetched back and its byte count and 32-bit FNV
+      readback checksum match the local PDF.
 
 ## Evidence classification
 
