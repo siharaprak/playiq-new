@@ -31,7 +31,9 @@
 - [x] Authored alignment/compilation documents pass whitespace checks; source
       workbook files retain pre-existing Markdown hard-break formatting.
 - [x] The light-print PDF is rendered and visually checked before delivery.
-- [ ] Drive file updates are read back and the Git branch/commit is verified.
+- [x] Git commit `fd861862865db07f33a24e3e1a5a62153f6d0f98` is pushed on
+      `codex/playiq-tutor-pathway-20261007`.
+- [ ] Drive file updates are read back.
 
 ## Evidence classification
 

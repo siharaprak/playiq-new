@@ -148,9 +148,13 @@ Capstone), the current combined master, the Orion compilation instructions,
 the pathway alignment spec, and a QA record. This is course content for Iris
 to review and implement; it is not a website code change or deployment.
 
-The exact Git branch, commit, Drive file readbacks, and print-PDF verification
-must be recorded only after those operations succeed. Main-branch merge,
-production deployment, account integrations, and app code are out of scope.
+The source package is committed and pushed to the public repository on branch
+`codex/playiq-tutor-pathway-20261007`, commit
+`fd861862865db07f33a24e3e1a5a62153f6d0f98`. The white-background combined
+print PDF was rendered and visually checked. Drive replacement/readback is the
+remaining publication check and will be recorded after it succeeds.
+Main-branch merge, production deployment, account integrations, and app code
+are out of scope.
 
 The prior module-level verification reports and per-module PDFs document
 earlier drafts; they are not verification of this dated pathway change. For
