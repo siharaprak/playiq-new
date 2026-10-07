@@ -128,5 +128,14 @@ export async function signupAction(prevState: any, formData: FormData) {
 
   const role = profile?.role || 'parent';
 
+  // If email confirmation is required and no active session was returned
+  if (!authData.session && !authData.user.email_confirmed_at) {
+    return {
+      success: true,
+      needsEmailConfirmation: true,
+      email: authData.user.email || email,
+    };
+  }
+
   redirect(`/${role}/home`);
 }

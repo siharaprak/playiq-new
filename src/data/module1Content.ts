@@ -1,9 +1,11 @@
+export type LessonSection = { title?: string; content: string[] };
+
 export type NodeContent = {
   id: string;
   title: string;
   imageUrl?: string;
   bigIdea: string[];
-  sections: { title?: string; content: string[] }[];
+  sections: LessonSection[];
   activity: {
     title: string;
     instructions: string[];

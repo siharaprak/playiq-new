@@ -2,8 +2,8 @@
 
 import React, { useActionState } from 'react';
 import Link from 'next/link';
-import { provisionApprenticeAction } from '../actions';
-import { CheckCircle2, AlertCircle, Eye, EyeOff, Copy, ArrowLeft } from 'lucide-react';
+import { provisionApprenticeAction, resendParentVerificationEmailAction } from '../actions';
+import { CheckCircle2, AlertCircle, Eye, EyeOff, Copy, ArrowLeft, Mail, ShieldCheck } from 'lucide-react';
 import { useState } from 'react';
 
 export default function ApprenticeSetupPage() {
@@ -12,6 +12,25 @@ export default function ApprenticeSetupPage() {
   const [copied, setCopied] = useState<string | null>(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [selectedAgeBand, setSelectedAgeBand] = useState('');
+  const [resending, setResending] = useState(false);
+  const [resendStatus, setResendStatus] = useState<string | null>(null);
+
+  const handleResend = async () => {
+    setResending(true);
+    try {
+      const res = await resendParentVerificationEmailAction();
+      if (res?.error) {
+        setResendStatus(`ERR: ${res.error}`);
+      } else {
+        setResendStatus(res?.message || 'Verification link sent!');
+      }
+    } catch (err: any) {
+      setResendStatus(`ERR: ${err.message || 'Failed to send'}`);
+    } finally {
+      setResending(false);
+    }
+  };
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -40,9 +59,29 @@ export default function ApprenticeSetupPage() {
 
         {/* Error banner */}
         {state?.error && (
-          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/40 flex gap-3 items-start text-red-300 font-mono text-sm">
-            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
-            <p>{state.error}</p>
+          <div className="mb-6 p-4 bg-red-900/20 border border-red-500/40 flex flex-col gap-3 text-red-300 font-mono text-sm">
+            <div className="flex gap-3 items-start">
+              <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <p>{state.error}</p>
+            </div>
+            {state.unverified && (
+              <div className="mt-1 pl-8">
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={resending}
+                  className="btn-neon !py-1.5 !px-3 text-xs uppercase tracking-wider disabled:opacity-50 inline-flex items-center gap-2"
+                >
+                  <Mail className="w-3.5 h-3.5" />
+                  {resending ? 'RESENDING...' : 'RESEND VERIFICATION EMAIL'}
+                </button>
+                {resendStatus && (
+                  <p className={`text-xs mt-2 ${resendStatus.startsWith('ERR:') ? 'text-red-400' : 'text-[#39ff14]'}`}>
+                    {resendStatus}
+                  </p>
+                )}
+              </div>
+            )}
           </div>
         )}
 
@@ -61,16 +100,72 @@ export default function ApprenticeSetupPage() {
 
             <div>
               <label htmlFor="ageBand" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2">&gt; Child&apos;s Age</label>
-              <select id="ageBand" required name="ageBand" defaultValue="" className="neon-input w-full">
+              <select
+                id="ageBand"
+                required
+                name="ageBand"
+                value={selectedAgeBand}
+                onChange={e => setSelectedAgeBand(e.target.value)}
+                className="neon-input w-full"
+              >
                 <option value="" disabled>Select age</option>
-                <option value="under_13">Under 13</option>
+                <option value="under_13">Under 13 (Parental Consent Required)</option>
                 <option value="13_14">13–14</option>
                 <option value="15_17">15–17</option>
               </select>
-              <p className="font-mono text-[10px] text-slate-600 mt-1.5">
-                Profiles for children under 13 are temporarily paused while we finish our parental consent process.
-              </p>
             </div>
+
+            {selectedAgeBand === 'under_13' && (
+              <div className="p-4 bg-[rgba(0,200,255,0.05)] border border-[#00c8ff]/30 space-y-4">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-5 h-5 text-[#00c8ff]" />
+                  <p className="font-mono text-xs text-[#00c8ff] font-bold uppercase tracking-wider">
+                    Guardian Direct Notice &amp; Consent
+                  </p>
+                </div>
+                <p className="font-mono text-[11px] text-slate-300 leading-relaxed">
+                  As the verified parent or legal guardian, you control your child&apos;s learning account. Please review and confirm the following:
+                </p>
+
+                <div className="space-y-3 pt-1">
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="consentCollection"
+                      required
+                      className="mt-0.5 rounded border-slate-700 bg-black text-[#00c8ff] focus:ring-[#00c8ff]"
+                    />
+                    <span className="font-mono text-[11px] text-slate-300">
+                      <strong className="text-white">Educational Progress &amp; Work:</strong> I authorize PlayIQ to collect my child&apos;s lesson progress, quiz answers, and project photos for educational portfolios.
+                    </span>
+                  </label>
+
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="consentAI"
+                      required
+                      className="mt-0.5 rounded border-slate-700 bg-black text-[#00c8ff] focus:ring-[#00c8ff]"
+                    />
+                    <span className="font-mono text-[11px] text-slate-300">
+                      <strong className="text-white">AI-Assisted Learning:</strong> I consent to AI tutoring powered by Google&apos;s paid Gemini API (which does not train foundation models on student data).
+                    </span>
+                  </label>
+
+                  <label className="flex items-start gap-3 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      name="consentNotice"
+                      required
+                      className="mt-0.5 rounded border-slate-700 bg-black text-[#00c8ff] focus:ring-[#00c8ff]"
+                    />
+                    <span className="font-mono text-[11px] text-slate-300">
+                      <strong className="text-white">Parent Rights:</strong> I understand I can inspect my child&apos;s data or request full deletion anytime at <span className="text-[#00c8ff]">support@weplayiq.com</span>.
+                    </span>
+                  </label>
+                </div>
+              </div>
+            )}
 
             <div>
               <label className="block font-mono text-xs text-[#00c8ff] uppercase tracking-widest mb-2">&gt; Login Handle / Email</label>

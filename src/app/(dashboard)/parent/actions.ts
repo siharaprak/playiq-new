@@ -15,17 +15,19 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     return { error: 'Name, Username, and Password are all required.' };
   }
 
-  // Privacy remediation: new under-13 profiles are paused until the parental
-  // consent flow (Phase 3) is live. Checked before any account is created.
-  // Existing student accounts are not affected.
-  if (ageBand === 'under_13') {
-    return {
-      error:
-        "We're not able to add children under 13 right now while we finish our parental consent process. Please check back soon, or contact support@weplayiq.com.",
-    };
-  }
-  if (!['13_14', '15_17'].includes(ageBand)) {
+  if (!['under_13', '13_14', '15_17'].includes(ageBand)) {
     return { error: "Please select your child's age." };
+  }
+
+  // Phase 3B: If under-13, require parental consent confirmations
+  const consentCollection = formData.get('consentCollection') === 'on' || formData.get('consentCollection') === 'true';
+  const consentAI = formData.get('consentAI') === 'on' || formData.get('consentAI') === 'true';
+  const consentNotice = formData.get('consentNotice') === 'on' || formData.get('consentNotice') === 'true';
+
+  if (ageBand === 'under_13' && (!consentCollection || !consentAI || !consentNotice)) {
+    return {
+      error: 'Please review and accept all parental consent acknowledgments before adding a child under 13.',
+    };
   }
 
   if (password.length < 6) {
@@ -58,16 +60,32 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
   // Accept username handle or real email
   const email = username.includes('@') ? username : `${username}@student.playiq.dev`;
 
-  // Step 1: Create the Supabase auth user
+  // Check parent session & email verification first
+  const parentClient = await createServerClient();
+  const { data: parentSession } = await parentClient.auth.getUser();
+
+  if (!parentSession.user) {
+    return { error: 'Parent session expired during provisioning. Please log in again.' };
+  }
+
+  // Phase 3A: Enforce parent email verification before allowing child account creation
+  if (!parentSession.user.email_confirmed_at) {
+    return {
+      error: 'Please verify your parent email address before setting up an apprentice account. Check your inbox for the confirmation link, or click resend.',
+      unverified: true,
+      email: parentSession.user.email,
+    };
+  }
+
+  // Step 1: Create the Supabase auth user for student
   const { data: userData, error: signUpError } = await adminClient.auth.admin.createUser({
     email,
     password,
-    email_confirm: true, // Skip email verification for provisioned accounts
+    email_confirm: true, // Skip email verification for provisioned apprentice accounts
     user_metadata: { full_name: name }
   });
 
   if (signUpError || !userData.user) {
-    // Handle duplicate email gracefully
     if (signUpError?.message?.includes('already been registered')) {
       return { error: `That username "${username}" is already taken. Please choose another.` };
     }
@@ -77,13 +95,6 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
   const studentId = userData.user.id;
 
   // Step 2: Query the parent's beta application to find the target child age band
-  const parentClient = await createServerClient();
-  const { data: parentSession } = await parentClient.auth.getUser();
-
-  if (!parentSession.user) {
-    return { error: 'Parent session expired during provisioning. Please log in again.' };
-  }
-
   const { data: betaApp } = parentSession.user?.email ? await adminClient
     .from('beta_applications')
     .select('child_age_band')
@@ -92,8 +103,6 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     .limit(1)
     .maybeSingle() : { data: null };
 
-  // Map the child age band to learning level. The age the parent selected on this
-  // form takes priority over the band on their (possibly older) beta application.
   let initialLevel: 'elementary' | 'middle' | 'high' | 'adult' = 'high';
   const effectiveBand = ageBand || betaApp?.child_age_band;
   if (effectiveBand) {
@@ -103,25 +112,44 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     else if (effectiveBand === 'over_17') initialLevel = 'adult';
   }
 
-  // Step 3: Explicitly set profile role to 'student' and save the learning level
-  // The DB trigger may create the profile but default to 'parent' — we override it here.
+  // Step 3: Explicitly set profile role to 'student', age band, and consent status
   const { error: profileError } = await adminClient
     .from('profiles')
     .upsert({
       id: studentId,
       full_name: name,
       email: email,
-      role: 'student',   // ← Critical: this is what grants access to /student/home and modules
-      learning_level: initialLevel, // ← Initialize based on age band select
+      role: 'student',
+      learning_level: initialLevel,
+      age_band: ageBand,
+      consent_status: 'verified',
     }, { onConflict: 'id' });
 
   if (profileError) {
-    // Clean up the auth user if profile setup fails
     await adminClient.auth.admin.deleteUser(studentId);
     return { error: 'Failed to configure apprentice profile. Please try again.' };
   }
 
-  // Step 4: Link parent → student
+  // Step 4: Record parental consent record
+  const { error: consentError } = await adminClient
+    .from('parental_consents')
+    .insert({
+      parent_id: parentSession.user.id,
+      student_id: studentId,
+      policy_version: '2026-10-06',
+      consent_text: 'Direct Parental Consent: Guardian authorized collection of student educational progress, project artifact photos, and AI-assisted tutoring under PlayIQ Children Privacy Policy.',
+      verification_method: 'parent_verified_email',
+      verification_status: 'verified',
+      collection_consent: true,
+      ai_processing_consent: true,
+      third_party_disclosure_consent: true,
+    });
+
+  if (consentError) {
+    console.error('Failed to log parental consent:', consentError);
+  }
+
+  // Step 5: Link parent → student
   const { error: linkError } = await adminClient
     .from('parent_child_links')
     .insert({
@@ -130,7 +158,6 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
     });
 
   if (linkError) {
-    // Don't fail silently — student exists but isn't linked yet
     console.error('Link error:', linkError);
     return { error: 'Apprentice account created but could not link to your account. Please contact support.' };
   }
@@ -149,4 +176,29 @@ export async function provisionApprenticeAction(prevState: any, formData: FormDa
 
   // All done — redirect to parent home showing success
   redirect('/parent/home?provisioned=1');
+}
+
+export async function resendParentVerificationEmailAction() {
+  const parentClient = await createServerClient();
+  const { data: parentSession } = await parentClient.auth.getUser();
+
+  if (!parentSession.user || !parentSession.user.email) {
+    return { error: 'You must be logged in to resend verification email.' };
+  }
+
+  if (parentSession.user.email_confirmed_at) {
+    return { success: true, message: 'Your email is already verified.' };
+  }
+
+  const { error } = await parentClient.auth.resend({
+    type: 'signup',
+    email: parentSession.user.email,
+  });
+
+  if (error) {
+    console.error('Error resending parent verification email:', error);
+    return { error: error.message || 'Failed to resend verification email.' };
+  }
+
+  return { success: true, message: `Verification link resent to ${parentSession.user.email}. Please check your inbox.` };
 }

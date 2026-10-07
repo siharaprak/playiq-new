@@ -41,7 +41,7 @@ export async function updateSession(request: NextRequest) {
           aud: 'authenticated',
           role: 'authenticated',
         };
-        supabase.auth.getUser = async () => {
+        (supabase.auth as any).getUser = async () => {
           return { data: { user: mockUser }, error: null };
         };
         supabase.auth.mfa = {
