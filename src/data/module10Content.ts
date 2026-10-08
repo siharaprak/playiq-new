@@ -24,9 +24,10 @@ export const module10Nodes: Record<string, NodeContent> = {
       {
         title: 'Tutor vs assistant',
         content: [
-          'Your tutor from Module 9 helps you learn. An assistant helps a user do a specific task.',
+          'Your Tutor Project, which you began in Module 0 and integrated in Module 9, helps you learn. This module\'s assistant helps a different user do a specific task.',
           'Personal tutor: strengthens learning, uses your evidence, questions/hints/quizzes, protects your thinking.',
           'Real-user assistant: supports a defined task, uses only approved task context, organizes/drafts/compares/checks, protects user control and decisions.',
+          'Never copy the other person\'s private needs, answers, or examples into your own Tutor Project.',
         ],
       },
       {
@@ -412,7 +413,7 @@ export const module10Nodes: Record<string, NodeContent> = {
           'assistant_purpose: [Purpose Formula]',
           'evidence: interview_changed_design, user_feedback_improved_prototype',
           'confidence: [low|medium|high]',
-          'privacy: safe_for_tutor_project',
+          'privacy: general assistant-design reflection only; never copy another person\'s private data into your Tutor files',
         ],
       },
     ],

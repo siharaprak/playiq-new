@@ -367,18 +367,19 @@ export const module11Nodes: Record<string, NodeContent> = {
     imageUrl: '/images/modules/bright-mixed-playiq-01.png',
     title: 'Final Personal Tutor Project Pack',
     bigIdea: [
-      'Return to the personal tutor Project you built in Module 9. Orion compiles the approved evidence that arrived after each module. You review every change and update the Project yourself.',
+      'Return to the personal tutor Project you began in Module 0 and integrated in Module 9. Orion compiles the approved evidence that arrived after each module. You review every change and update the Project yourself.',
       'No password is shared with Orion. No silent upload, publication, or deployment is part of this course.',
     ],
     sections: [
       {
-        title: 'The Five Required Final Files',
+        title: 'The Six Required Final Files',
         content: [
           '1. Project Instruction Set (System Prompt)',
           '2. Student Tutor Profile Knowledge File (student_tutor_profile.yaml)',
           '3. Learning Rules Knowledge File (learning_rules.yaml)',
-          '4. Tutor Test and Revision Log (tutor_test_log.md)',
-          '5. Student Setup Checklist (student_setup_checklist.md)',
+          '4. Course Learning Record (course_learning_record.md)',
+          '5. Tutor Test and Revision Log (tutor_test_log.md)',
+          '6. Student Setup Checklist (student_setup_checklist.md)',
         ],
       },
       {
@@ -403,7 +404,7 @@ export const module11Nodes: Record<string, NodeContent> = {
     activity: {
       title: 'Review and Deploy Tutor Pack',
       instructions: [
-        'Review the 5 compiled files in Module 9 / Capstone.',
+        'Review the 6 compiled files in Module 9 / Capstone.',
         'Run the 7-point verification check.',
         'Update your frontier AI Project in your approved account.',
       ],

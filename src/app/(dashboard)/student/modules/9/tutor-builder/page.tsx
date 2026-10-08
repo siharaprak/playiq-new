@@ -58,17 +58,17 @@ export default async function TutorBuilderPage() {
 
       {/* Module breadcrumb */}
       <div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
-        Module 9 • Build Your AI Tutor
+        Module 9 • Integrate and Test Your Personal AI Tutor Project
       </div>
 
       {/* Page header */}
       <header className="mb-10">
         <h1 className="text-4xl font-bold tracking-tight text-[var(--text-primary)] font-display">
-          Tutor Builder
+          Integrate and Test Your Personal AI Tutor Project
         </h1>
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          Design, configure, and launch your own AI tutor. Combine custom instructions with
-          knowledge files to create a personalised learning supercharger.
+          Integrate, review, and test your persistent PlayIQ Tutor Project created in Module 0.
+          Combine your project instructions with verified knowledge files, learning rules, and course records to evaluate your tutor before finalization.
         </p>
       </header>
 
