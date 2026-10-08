@@ -6,7 +6,8 @@ export const module9Nodes: Record<string, NodeContent> = {
     imageUrl: '/images/modules/bright-mixed-playiq-01.png',
     title: 'What Makes a Personal Tutor Project Different',
     bigIdea: [
-      'Your mission: turn everything you discovered into a tutor that learns how to help you.',
+      'Your mission: turn the Tutor Project you have been building since Module 0 into a tested tutor.',
+      'You began this Project in Module 0 and have added small, approved evidence updates throughout the course. Now you will bring those parts together.',
       'Imagine opening one AI Project that already knows: how you prefer an explanation to begin, what to do when you are confused, when to give a hint instead of an answer, how to quiz you and help you learn from mistakes, and how to protect your voice, privacy, and independence.',
       'You are not wishing for a tutor. You are engineering one.',
     ],
@@ -34,7 +35,7 @@ export const module9Nodes: Record<string, NodeContent> = {
       {
         title: 'A Project holds instructions and files',
         content: [
-          'A normal chat starts with whatever you type in that moment. A Project can hold instructions and approved files that give the AI useful context across your work inside that Project.',
+          'A normal chat starts with whatever you type in that moment. The private Tutor Project you started in Module 0 can hold instructions and approved files that give the AI useful context across your work. Today you will check and improve that existing Project \u2014 not create a second tutor.',
           'Platform names and controls can change. Your parent should help you locate the feature called Project, workspace, custom assistant, or the closest approved equivalent.',
           'If the approved account does not offer Projects, complete the files and tests in a regular private conversation.',
           'Do not create a new account or purchase anything without your parent.',
@@ -79,11 +80,11 @@ export const module9Nodes: Record<string, NodeContent> = {
         content: [
           'Complete with your parent or guardian:',
           '\u2022 We are using the AI account and platform my parent approved.',
-          '\u2022 My parent showed me how to create a private Project or approved workspace.',
+          '\u2022 My parent showed me how to access our persistent Project or approved workspace from Module 0.',
           '\u2022 We reviewed history, sharing, attachment, and privacy settings.',
           '\u2022 We agree not to upload passwords, payment information, home addresses, private family messages, or another person\u2019s information.',
           '\u2022 We know that Orion prepares files, but I paste or upload them myself.',
-          '\u2022 We know how to remove a file or delete the Project if needed.',
+          '\u2022 We know how to remove a file or manage the Project if needed.',
           'If any box is unfinished, prepare the files now and pause account setup until your parent can help.',
         ],
       },
@@ -197,7 +198,7 @@ export const module9Nodes: Record<string, NodeContent> = {
   '4': {
     id: '4',
     imageUrl: '/images/modules/bright-mixed-playiq-04.png',
-    title: 'Blueprint Update & Compile the Five Final Files',
+    title: 'Blueprint Update & Compile the Six Final Files',
     bigIdea: [
       'Your Blueprint is now complete enough to generate your personal tutor\u2019s instruction set.',
       'Orion compiles \u2014 but does not invent. Every instruction must trace back to evidence you collected.',
@@ -220,13 +221,14 @@ export const module9Nodes: Record<string, NodeContent> = {
         ],
       },
       {
-        title: 'The five final files',
+        title: 'The six final files',
         content: [
           '1. Project Instructions: Role, session opening, explain behavior, hint and rescue behavior, quiz and verify, writing integrity, privacy and safety, adaptation rules.',
           '2. Student Tutor Profile Knowledge File: Explanation style, motivation, targets, subjects, focus block, and voice protection.',
           '3. Learning Rules Knowledge File: All module rules with provenance.',
-          '4. Tutor Test and Revision Log: Record of tests and improvements.',
-          '5. Student Setup Checklist: Verification that the Project is configured correctly.',
+          '4. Course Learning Record: Concise dated entries from completed modules.',
+          '5. Tutor Test and Revision Log: Record of tests and improvements.',
+          '6. Student Setup Checklist: Verification that the Project is configured correctly.',
         ],
       },
     ],
@@ -249,7 +251,7 @@ export const module9Nodes: Record<string, NodeContent> = {
       ],
     },
     miniCheck: [
-      'What are the five final files?',
+      'What are the six final files?',
       'What sections are in the Project Instructions?',
       'Why must Orion compile, not invent?',
     ],
@@ -259,21 +261,21 @@ export const module9Nodes: Record<string, NodeContent> = {
   '5': {
     id: '5',
     imageUrl: '/images/modules/bright-mixed-playiq-05.png',
-    title: 'Create the Project & Test It',
+    title: 'Open and Update Your Project & Test It',
     bigIdea: [
-      'You create the Project yourself inside the parent-approved account. Orion does not enter the account for you.',
+      'You update the persistent Project yourself inside the parent-approved account. Orion does not enter the account for you.',
       'Test your tutor by trying to break it \u2014 send confusing requests, test boundaries, and see if it follows your instructions.',
     ],
     sections: [
       {
-        title: 'Create the Project yourself',
+        title: 'Open and update the Project yourself',
         content: [
           'Step 1: Open the parent-approved AI platform.',
-          'Step 2: Create a new Project (or workspace or custom assistant).',
-          'Step 3: Paste or upload the Project Instructions.',
-          'Step 4: Add the Student Tutor Profile as a Knowledge File.',
+          'Step 2: Open your existing PlayIQ Tutor Project from Module 0 (or approved workspace).',
+          'Step 3: Paste or update the Project Instructions.',
+          'Step 4: Add or update the Student Tutor Profile as a Knowledge File.',
           'Step 5: Add the Learning Rules as a Knowledge File.',
-          'Step 6: Name the Project (e.g., "[Your Name]\u2019s Learning Tutor").',
+          'Step 6: Add Course Learning Record and Study Packs if approved.',
           'Step 7: Verify the setup using the Student Setup Checklist.',
           'Orion should never ask for your password, enter the account for you, or upload anything silently.',
         ],
@@ -299,10 +301,10 @@ export const module9Nodes: Record<string, NodeContent> = {
       },
     ],
     activity: {
-      title: 'Build & Stress Test Your Tutor',
+      title: 'Update & Stress Test Your Tutor',
       instructions: [
-        'Create the Project in your parent-approved account following the step-by-step guide.',
-        'Run all five tests.',
+        'Open your existing PlayIQ Tutor Project from Module 0 in your parent-approved account following the step-by-step guide.',
+        'Run all six stress tests.',
         'Update the Revision Log with results and improvements.',
       ],
       scenarios: [
@@ -318,11 +320,11 @@ export const module9Nodes: Record<string, NodeContent> = {
       ],
     },
     miniCheck: [
-      'What are the seven steps to create the Project?',
-      'What five tests should you run?',
+      'What are the seven steps to update your existing Project?',
+      'What six tests should you run?',
       'What should you do if a rule does not work?',
     ],
-    teachBack: 'Walk through how you created the Project and describe the results of your five tests.',
+    teachBack: 'Walk through how you updated your existing Project and describe the results of your tests.',
   },
 
   '6': {

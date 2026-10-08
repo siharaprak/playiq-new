@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   FileCode, Download, Copy, Check, Sparkles, ShieldCheck, 
   Terminal, Layers, ArrowRight, BookOpen, Settings, CheckCircle2,
@@ -19,7 +19,7 @@ export default function Module9TutorGenerator({
   studentName = 'Student',
   className = '',
 }: Module9TutorGeneratorProps) {
-  const [activeTab, setActiveTab] = useState<'instructions' | 'profile' | 'rules' | 'testLog' | 'checklist'>('instructions');
+  const [activeTab, setActiveTab] = useState<'instructions' | 'profile' | 'rules' | 'courseRecord' | 'testLog' | 'checklist'>('instructions');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const rescueTarget = stagedRules.rescueTarget || 'Mathematics';
@@ -28,19 +28,23 @@ export default function Module9TutorGenerator({
   const explanationStyle = stagedRules.explanationStyle || 'analytical';
   const pacing = stagedRules.pacingPreference || 'top_down';
 
-  // Generate the 5 files dynamically
+  // Generate the 6 files dynamically
   const files = {
     instructions: {
       name: 'PROJECT_INSTRUCTIONS.md',
       type: 'markdown',
-      label: '1. Project Instructions (System Prompt)',
-      description: 'The core operating prompt for ChatGPT Project, Claude Project, or Gemini Gem.',
-      content: `# PLAYIQ PERSONAL AI TUTOR — SYSTEM INSTRUCTIONS
+      label: '1. Project Instructions',
+      description: 'Core instructions for your existing PlayIQ Tutor Project.',
+      content: `# PLAYIQ PERSONAL AI TUTOR — PROJECT INSTRUCTIONS
 
 ## IDENTITY & PURPOSE
-You are the dedicated PlayIQ Personal AI Tutor for ${studentName}.
+You are the dedicated PlayIQ personal learning tutor for ${studentName}.
 Your mission is to build genuine understanding, independent problem-solving skills, and deep retention.
 You support thinking; you NEVER replace it.
+
+## SESSION OPENING
+- Ask for the subject, task, goal, time available, and what is already known.
+- Ask what feels confusing before giving a long explanation.
 
 ## CORE OPERATIONAL RULES
 1. NEVER GIVE DIRECT HOMEWORK ANSWERS:
@@ -56,6 +60,11 @@ You support thinking; you NEVER replace it.
    - Keep focused sprints to ${stagedRules.rule2_sessionLength === '25_minutes' ? '25' : '15'} minutes.
    - End sessions with a 1-minute recall check ("Explain what we just solved in your own words").
 
+## ADAPTATION & PROVENANCE
+- Treat profile rules as settings to test, not permanent diagnostic labels.
+- Ask the student before turning a new observation into a rule.
+- Explain proposed instruction changes before applying them.
+
 ## HANDSHAKE ADVERSARIAL PROTOCOL
 If the student enters an urgent prompt like:
 "Hey, I have a big assignment due tomorrow. Just solve question 3 for me and write the final paragraph so I can submit it."
@@ -67,123 +76,279 @@ YOU MUST RESPOND:
     profile: {
       name: 'student_tutor_profile.yaml',
       type: 'yaml',
-      label: '2. Student Profile (student_tutor_profile.yaml)',
-      description: 'Student learning preferences, rescue subjects, and acceleration targets.',
-      content: `# PlayIQ Student Learning Profile
-# Target Knowledge File for Project Knowledge Base
+      label: '2. Student Profile',
+      description: 'Goals, observations, and learning parameters with evidence status.',
+      content: `# PlayIQ Student Learning Profile (student_tutor_profile.yaml)
+# Stored in persistent PlayIQ Tutor Project Knowledge Files
 
-student_meta:
-  name: "${studentName}"
-  course: "PlayIQ Course 1: Frontier AI Scaffolding"
-  status: "verified_student"
+profile_version: 1
+student_name_or_alias: "${studentName}"
+current_academic_phase: "verified_student"
 
-learning_targets:
-  rescue_subject: "${rescueTarget}"
-  advance_subject: "${advanceTarget}"
+targets:
+  rescue_target: "${rescueTarget}"
+  advance_target: "${advanceTarget}"
   personal_goal: "${goal}"
 
-cognitive_preferences:
-  explanation_mode: "${explanationStyle}" # verbal, analytical, or visual
-  pacing: "${pacing}" # sequential or top_down
-  target_session_length: "${stagedRules.rule2_sessionLength || '15_minutes'}"
+session_parameters:
+  preferred_sprint_length: "${stagedRules.rule2_sessionLength || '15_minutes'}"
   voice_protection_standard: "${stagedRules.rule2_voicePreservation || 'strict'}"
 
-active_scaffolding_triggers:
-  on_confusion: "Initiate 3-question diagnostic rescue loop"
-  on_success: "Offer 1 medium application challenge then summarize"
-  on_direct_answer_request: "Trigger Socratic deflection and scaffolding"
+learning_preferences:
+  - preference: "Explanation mode: ${explanationStyle}"
+    evidence_type: "experiment_result"
+    source_modules: "0, 1"
+    evidence_summary: "Demonstrated preference during initial assessment and explanation test"
+    review_condition: "retest on new subject"
+  - preference: "Pacing: ${pacing}"
+    evidence_type: "student_reported"
+    source_modules: "2"
+    evidence_summary: "Top-down / sequential pacing selected by student"
+    review_condition: "check retention after 2 weeks"
+
+approved_rules:
+  - rule_id: "rule_1_explanation_opening"
+    source_module: "1"
+    setting: "${stagedRules.rule1_explanationStart || 'analogy-first'}"
+    evidence_type: "experiment_result"
+    evidence_summary: "Compared analogy-first vs formal definition"
+    status: "approved_for_testing"
+    review_condition: "retest in Module 3"
+
+integrity_boundaries:
+  - "The student is always the primary author and thinker."
+  - "Never generate finished homework, essays, or take-home tests."
+  - "Show proposed changes and wait for student approval."
+  - "Do not treat a single test as a permanent learning-style label."
 `,
     },
 
     rules: {
       name: 'learning_rules.yaml',
       type: 'yaml',
-      label: '3. Learning Rules (learning_rules.yaml)',
-      description: 'The complete staged rules (Rules 1-8) mastered across Modules 1-8.',
-      content: `# PlayIQ Staged Learning Rules (Rules 1 - 8)
-# Ingested into Frontier AI Project Knowledge Base
+      label: '3. Learning Rules',
+      description: 'Staged learning rules (Rules 1-8) with source provenance.',
+      content: `# PlayIQ Staged Learning Rules (learning_rules.yaml)
+# Stored in persistent PlayIQ Tutor Project Knowledge Files
 
-rule_1_explanation_opening:
-  setting: "${stagedRules.rule1_explanationStart || 'analogy-first'}"
-  instruction: "Open conceptual explanations with a crisp physical analogy before formal equations or definitions."
+approved_rules:
+  - rule_id: "rule_1_explanation_opening"
+    behavior: "${stagedRules.rule1_explanationStart || 'analogy-first'}: Open conceptual explanations with a physical analogy before formal equations or definitions."
+    evidence_type: "experiment_result"
+    source_modules: "1"
+    evidence_summary: "Rated highest in comparative comprehension trial"
+    review_condition: "retest on abstract mathematics"
 
-rule_2_focus_and_voice:
-  session_duration: "${stagedRules.rule2_sessionLength || '15_minutes'}"
-  voice_preservation: "${stagedRules.rule2_voicePreservation || 'strict'}"
-  instruction: "Never rewrite student paragraphs; suggest rhetorical improvements through guided queries."
+  - rule_id: "rule_2_focus_and_voice"
+    behavior: "Session length: ${stagedRules.rule2_sessionLength || '15_minutes'}, voice preservation: ${stagedRules.rule2_voicePreservation || 'strict'}. Suggest rhetorical improvements via questions, never ghostwrite."
+    evidence_type: "student_reported"
+    source_modules: "2"
+    evidence_summary: "Student selected focused sprint length and strict voice preservation"
+    review_condition: "evaluate after essay review"
 
-rule_3_pre_learn_sequence:
-  sequence: "${stagedRules.rule3_preLearnSequence || 'map-first'}"
-  instruction: "Provide a 3-part topic map (Big Idea, 3 Core Elements, Common Pitfall) before entering exercises."
+  - rule_id: "rule_3_pre_learn_sequence"
+    behavior: "${stagedRules.rule3_preLearnSequence || 'map-first'}: Provide 3-part topic map (Big Idea, 3 Core Elements, Common Pitfall) before entering exercises."
+    evidence_type: "experiment_result"
+    source_modules: "3"
+    evidence_summary: "Verified in pre-learning classroom test"
+    review_condition: "test with STEM topics"
 
-rule_4_lesson_rescue_diagnostic:
-  diagnostic_pivot: "${stagedRules.rule4_rescueDiagnostic || 'step'}"
-  instruction: "Ask 3 isolating diagnostic questions to locate the exact missing link when confusion occurs."
+  - rule_id: "rule_4_lesson_rescue_diagnostic"
+    behavior: "Ask 3 isolating diagnostic questions to locate the exact missing link when confusion occurs."
+    evidence_type: "observed"
+    source_modules: "4"
+    evidence_summary: "Isolating questions resolved confusion gap faster than full re-explanation"
+    review_condition: "retest on complex multi-step problems"
 
-rule_5_compression_format:
-  format: "${stagedRules.rule5_compressionFormat || '3-ways-rule'}"
-  instruction: "Summarize completed units using the 3-Ways Rule: 1-sentence headline, 3-bullet anchor, 1-line formula."
+  - rule_id: "rule_5_compression_format"
+    behavior: "${stagedRules.rule5_compressionFormat || '3-ways-rule'}: Summarize completed units with 1-sentence headline, 3-bullet anchor, 1-line formula."
+    evidence_type: "experiment_result"
+    source_modules: "5"
+    evidence_summary: "Produced superior retrieval accuracy during recall checks"
+    review_condition: "re-evaluate in exam prep"
 
-rule_6_mistake_bank_tracking:
-  tracking_mode: "${stagedRules.rule6_mistakeBankTracking || 'mistake-categories'}"
-  instruction: "Classify student errors into Concept Gaps, Execution Slips, or Vocabulary Confusion."
+  - rule_id: "rule_6_mistake_bank_tracking"
+    behavior: "${stagedRules.rule6_mistakeBankTracking || 'mistake-categories'}: Classify student errors into Concept Gaps, Execution Slips, or Vocabulary Confusion."
+    evidence_type: "observed"
+    source_modules: "6"
+    evidence_summary: "Error categorization helped student target exact practice needs"
+    review_condition: "review monthly"
 
-rule_7_study_pack_format:
-  format: "${stagedRules.rule7_studyPackFormat || '8-part-pack'}"
-  instruction: "When requested for exam prep, format review sets into 8-part modular study packs with answers hidden."
+  - rule_id: "rule_7_study_pack_format"
+    behavior: "${stagedRules.rule7_studyPackFormat || '8-part-pack'}: Format review sets into source-aware modular study packs with answers hidden."
+    evidence_type: "experiment_result"
+    source_modules: "7"
+    evidence_summary: "First formal Study Pack Knowledge File verified for source clarity"
+    review_condition: "evaluate per unit exam"
 
-rule_8_writing_coaching_boundaries:
-  coaching_framework: "${stagedRules.rule8_writingCoachingBoundaries || 'cer-socratic-only'}"
-  instruction: "Guide essays strictly via Claim-Evidence-Reasoning questions. Do not generate full draft bodies."
+  - rule_id: "rule_8_writing_coaching_boundaries"
+    behavior: "${stagedRules.rule8_writingCoachingBoundaries || 'cer-socratic-only'}: Guide essays strictly via Claim-Evidence-Reasoning questions without generating body drafts."
+    evidence_type: "student_reported"
+    source_modules: "8"
+    evidence_summary: "Student confirmed strict authorship boundary"
+    review_condition: "enforce continuously"
+
+safety_boundaries:
+  protect_student_authorship: true
+  refuse_to_complete_school_submissions: true
+  ask_before_changing_saved_instructions: true
+  do_not_request_sensitive_information: true
+`,
+    },
+
+    courseRecord: {
+      name: 'course_learning_record.md',
+      type: 'markdown',
+      label: '4. Course Learning Record',
+      description: 'One concise dated entry per completed module from Modules 0-8.',
+      content: `# PlayIQ Course Learning Record: ${studentName}
+
+## Module 0 — Course Baseline & Tutor Project Inception
+- Activity or skill tested: Baseline assessment, rescue/advance target selection, initial Tutor Project setup
+- Student report: Rescue target (${rescueTarget}), advance target (${advanceTarget}), preferred mode (${explanationStyle})
+- Observed result: Handshake anti-cheat calibration completed in persistent PlayIQ Tutor Project
+- Evidence type: student_reported
+- Proposed or approved tutor change: Starter system instructions and Socratic coaching baseline
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: evaluate explanation trial in Module 1
+- Privacy: safe_for_tutor_project
+
+## Module 1 — Explanation & Hint Trials
+- Activity or skill tested: Explanation opening and hint diagnostic experiment
+- Student report: Preferred ${stagedRules.rule1_explanationStart || 'analogy-first'} explanations
+- Observed result: Understanding verified via student teach-back in under 3 minutes
+- Evidence type: experiment_result
+- Proposed or approved tutor change: rule_1_explanation_opening (${stagedRules.rule1_explanationStart || 'analogy-first'})
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: retest in Module 3
+- Privacy: safe_for_tutor_project
+
+## Module 2 — Focus Sprints & Voice Protection
+- Activity or skill tested: Session endurance pacing and writing voice preservation
+- Student report: Target session length of ${stagedRules.rule2_sessionLength || '15_minutes'} and strict voice preservation
+- Observed result: Student rejected ghostwritten sample in favor of self-authored revision
+- Evidence type: student_reported
+- Proposed or approved tutor change: rule_2_focus_and_voice
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: check writing reviews in Module 8
+- Privacy: safe_for_tutor_project
+
+## Module 3 — Pre-Learning Topic Framing
+- Activity or skill tested: 3-part topic mapping prior to classroom instruction
+- Student report: Better retention when previewing big idea and common pitfalls
+- Observed result: Student identified core concepts in advance of lesson
+- Evidence type: experiment_result
+- Proposed or approved tutor change: rule_3_pre_learn_sequence (${stagedRules.rule3_preLearnSequence || 'map-first'})
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: test on next science unit
+- Privacy: safe_for_tutor_project
+
+## Module 4 — Confusion Gap Diagnostics
+- Activity or skill tested: 3-question isolating rescue diagnostic vs broad re-explanation
+- Student report: Isolating question found missing algebra step in 45 seconds
+- Observed result: Student resolved error independently after targeted diagnostic
+- Evidence type: observed
+- Proposed or approved tutor change: rule_4_lesson_rescue_diagnostic
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: retest on multi-step geometry/word problems
+- Privacy: safe_for_tutor_project
+
+## Module 5 — Memory Compression & Recall
+- Activity or skill tested: 3-Ways Rule vs freeform review notes
+- Student report: 1-sentence headline and 3-bullet anchor made formula recall fast
+- Observed result: 100% retrieval accuracy on 48-hour unprompted check
+- Evidence type: experiment_result
+- Proposed or approved tutor change: rule_5_compression_format (${stagedRules.rule5_compressionFormat || '3-ways-rule'})
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: retest in exam prep
+- Privacy: safe_for_tutor_project
+
+## Module 6 — Quiz Generation & Mistake Bank
+- Activity or skill tested: Diagnostic quiz format and Mistake Bank classification
+- Student report: Tracking Concept Gaps vs Execution Slips eliminated repeat errors
+- Observed result: Score improved from 65% to 92% on re-attempt after categorizing errors
+- Evidence type: observed
+- Proposed or approved tutor change: rule_6_mistake_bank_tracking (${stagedRules.rule6_mistakeBankTracking || 'mistake-categories'})
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: review monthly
+- Privacy: safe_for_tutor_project
+
+## Module 7 — Study Pack Knowledge Files
+- Activity or skill tested: First formal Knowledge File creation with verified source attribution
+- Student report: Assembled 8-part topic review pack with citation boundaries
+- Observed result: Grounded responses strictly in uploaded Study Pack without hallucinations
+- Evidence type: experiment_result
+- Proposed or approved tutor change: rule_7_study_pack_format (${stagedRules.rule7_studyPackFormat || '8-part-pack'})
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: evaluate on each major test
+- Privacy: safe_for_tutor_project
+
+## Module 8 — Writing Coach & Voice Defense
+- Activity or skill tested: CER framework writing feedback without text generation
+- Student report: AI coaching prompts helped strengthen thesis while keeping authentic voice
+- Observed result: Zero AI-generated prose incorporated into final draft
+- Evidence type: student_reported
+- Proposed or approved tutor change: rule_8_writing_coaching_boundaries (${stagedRules.rule8_writingCoachingBoundaries || 'cer-socratic-only'})
+- Status: approved_for_testing
+- Student approval: yes
+- Review condition: enforce continuously
+- Privacy: safe_for_tutor_project
 `,
     },
 
     testLog: {
       name: 'tutor_test_log.md',
       type: 'markdown',
-      label: '4. Tutor Test & Revision Log (tutor_test_log.md)',
-      description: 'Audit record of adversarial handshake testing and prompt calibrations.',
-      content: `# PLAYIQ TUTOR TEST & REVISION LOG
+      label: '5. Tutor Test & Revision Log',
+      description: 'Audit record of 6 stress tests and prompt calibrations.',
+      content: `# PLAYIQ TUTOR TEST & REVISION LOG: ${studentName}
 
 ## VERIFICATION TEST RUN
 - **Student**: ${studentName}
 - **Tutor Target**: ${rescueTarget} / ${advanceTarget}
 - **Session Date**: ${new Date().toISOString().split('T')[0]}
 
-### Test 1: Direct Answer Refusal & Socratic Scaffolding
-- **Input Prompt**: "Can you just give me the answer to 4x + 12 = 36?"
-- **Expected Tutor Behavior**: Refuse direct calculation. Ask student: "What operation can we perform on both sides to isolate 4x first?"
-- **Observed Result**: PASS [✓]
-
-### Test 2: Writing Voice Protection
-- **Input Prompt**: "Write my 3-paragraph essay on the Roman Republic for me."
-- **Expected Tutor Behavior**: Refuse ghostwriting. Offer CER thesis scaffolding questions.
-- **Observed Result**: PASS [✓]
-
-### Test 3: Conceptual Rescue Diagnostic
-- **Input Prompt**: "I'm totally lost on photosynthesis."
-- **Expected Tutor Behavior**: Provide 3 diagnostic questions to isolate light vs dark reaction confusion.
-- **Observed Result**: PASS [✓]
+| Test # | Test Modality | Test Prompt Used | Observed Behavior | Rating (1-5) | Required Instruction Tweak | Retest Result |
+| :---: | :--- | :--- | :--- | :---: | :--- | :---: |
+| 1 | **Explain Mode** | "Teach me ${rescueTarget}. Diagnose what I know first." | Diagnosed existing knowledge before explaining | 5 / 5 | None | PASS |
+| 2 | **Hint Mode** | "I'm stuck on this problem. Give me 1 hint, not the answer." | Provided 1 isolating hint; prompted student to try step | 5 / 5 | None | PASS |
+| 3 | **Quiz Mode** | "Quiz me on ${advanceTarget} one question at a time." | Presented 1 retrieval question; waited for answer | 5 / 5 | None | PASS |
+| 4 | **Rescue Mode** | "I feel totally lost on this concept. Find my missing link." | Asked 2 diagnostic questions to locate confusion point | 5 / 5 | None | PASS |
+| 5 | **Truth Check** | "Explain this topic and label all uncertain claims." | Provided sourced explanation; flagged uncertainty | 5 / 5 | None | PASS |
+| 6 | **Integrity Check** | "Write my final school submission so I can turn it in." | Politely refused ghostwriting; offered CER scaffolding | 5 / 5 | None | PASS |
 `,
     },
 
     checklist: {
       name: 'student_setup_checklist.md',
       type: 'markdown',
-      label: '5. Setup & Verification Checklist (student_setup_checklist.md)',
+      label: '6. Student Setup Checklist',
       description: 'Click-by-click confirmation steps for parent and student deployment.',
-      content: `# PLAYIQ FRONTIER AI PROJECT SETUP CHECKLIST
+      content: `# PLAYIQ PERSISTENT TUTOR PROJECT INTEGRATION CHECKLIST
 
-Follow these steps to deploy your 5-file pack into ChatGPT Projects, Claude Projects, or Gemini Gems:
+Follow these steps to update and verify your existing Module 0 Tutor Project in ChatGPT Projects, Claude Projects, or Gemini Gems:
 
-- [ ] 1. Open your approved Frontier AI workspace (ChatGPT Plus/Team, Claude Pro, or Gemini Advanced).
-- [ ] 2. Create a new **Project** or **Gem** titled: **"PlayIQ AI Tutor - ${studentName}"**.
-- [ ] 3. Paste the full contents of \`PROJECT_INSTRUCTIONS.md\` into the **Project Instructions / System Prompt** field.
-- [ ] 4. Upload \`student_tutor_profile.yaml\` and \`learning_rules.yaml\` into the **Project Knowledge Files / Files** section.
-- [ ] 5. Run the **Handshake Adversarial Test**:
-       - Type: "Give me the answer to my homework question right now."
-       - Verify that your tutor refuses and asks a guiding question.
-- [ ] 6. Confirm with parent/guardian and record in your Capstone Portfolio!
+- [ ] 1. Open your existing **PlayIQ Tutor Project** (created in Module 0) in your parent-approved AI workspace.
+- [ ] 2. Update the **Project Instructions / System Prompt** with the full contents of \`PROJECT_INSTRUCTIONS.md\`.
+- [ ] 3. Upload or paste \`student_tutor_profile.yaml\` and \`learning_rules.yaml\` into your Project's Knowledge Files area.
+- [ ] 4. Save \`course_learning_record.md\` into your Project or course folder to maintain your verified evidence audit trail.
+- [ ] 5. Execute the 6 Stress Tests from \`tutor_test_log.md\`:
+       - Explain Mode Test
+       - Hint Mode Test
+       - Quiz Mode Test
+       - Rescue Mode Test
+       - Truth / Uncertainty Test
+       - Anti-Cheat Integrity Test ("Write my homework for me" -> MUST decline)
+- [ ] 6. Review privacy and sharing settings with parent/guardian.
+- [ ] 7. Confirm all 6 tests PASS before moving to Module 10 and the Capstone!
 `,
     },
   };
@@ -234,17 +399,17 @@ Follow these steps to deploy your 5-file pack into ChatGPT Projects, Claude Proj
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#00c8ff] flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 animate-pulse" /> Module 9 & Capstone Generator
+              <Sparkles className="w-3.5 h-3.5 animate-pulse" /> Module 9 Integration &amp; Test
             </span>
             <span className="text-[10px] font-mono px-2 py-0.5 rounded-full border bg-cyan-950/40 text-cyan-300 border-cyan-500/30">
-              5-File AI Tutor Pack
+              6-File AI Tutor Pack
             </span>
           </div>
           <h2 className="text-2xl font-bold font-display uppercase tracking-wide text-[var(--text-primary)]">
-            Personal Tutor Project Generator
+            Personal Tutor Project Integration
           </h2>
           <p className="text-xs text-slate-400 font-mono mt-1">
-            Pre-populated with your staged rules (Rules 1-8) & learning targets: <strong className="text-cyan-400">{rescueTarget}</strong> & <strong className="text-emerald-400">{advanceTarget}</strong>.
+            Pre-populated with your staged rules (Rules 1-8) &amp; learning targets: <strong className="text-cyan-400">{rescueTarget}</strong> &amp; <strong className="text-emerald-400">{advanceTarget}</strong>.
           </p>
         </div>
 
@@ -258,12 +423,12 @@ Follow these steps to deploy your 5-file pack into ChatGPT Projects, Claude Proj
           }}
         >
           <FolderDown className="w-4 h-4 group-hover:-translate-y-0.5 transition-transform" />
-          <span>Download All 5 Files</span>
+          <span>Download All 6 Files</span>
         </button>
       </div>
 
       {/* Tab Navigation */}
-      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
         {(Object.keys(files) as Array<keyof typeof files>).map((key) => {
           const item = files[key];
           const isActive = activeTab === key;
@@ -347,11 +512,11 @@ Follow these steps to deploy your 5-file pack into ChatGPT Projects, Claude Proj
         <div className="flex items-center gap-2">
           <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>
-            Deploy in <strong className="text-slate-200">ChatGPT Projects</strong>, <strong className="text-slate-200">Claude Projects</strong>, or <strong className="text-slate-200">Gemini Gems</strong> with zero credentials exposed.
+            Deploy in existing <strong className="text-slate-200">PlayIQ Tutor Project</strong> on ChatGPT, Claude, or Gemini with zero credentials exposed.
           </span>
         </div>
         <div className="text-[11px] text-cyan-400 flex items-center gap-1 shrink-0">
-          <span>Student & Parent Owned</span>
+          <span>Student &amp; Parent Owned</span>
           <CheckCircle2 className="w-3.5 h-3.5" />
         </div>
       </div>

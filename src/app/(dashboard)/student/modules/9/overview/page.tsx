@@ -94,22 +94,22 @@ export default async function Module9OverviewPage() {
 
       <header className="mb-4">
         <h1 className="text-4xl font-bold tracking-tight text-[var(--text-primary)] font-display">
-          Build Your AI Tutor
+          Integrate and Test Your Personal AI Tutor Project
         </h1>
         <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          Build your own Learning Supercharger using custom instructions, staged learning rules, and knowledge files.
+          Integrate, review, and test your persistent PlayIQ Tutor Project created in Module 0 using custom instructions, staged learning rules, and verified course records.
         </p>
       </header>
 
-      <ModuleOpeningHook moduleNumber={9} title="Build Your AI Tutor" />
+      <ModuleOpeningHook moduleNumber={9} title="Integrate and Test Your Personal AI Tutor Project" />
 
       {/* Verified Student Guide PDF Download */}
-      <ModulePdfDownload moduleNumber={9} title="Module 9 Student Guide: Build Your AI Tutor" />
+      <ModulePdfDownload moduleNumber={9} title="Module 9 Student Guide: Integrate and Test Your Personal AI Tutor Project" />
 
       {/* Intro Video */}
-      <ModuleIntroVideo src="/videos/module_9_intro.mp4" title="Build Your AI Tutor" />
+      <ModuleIntroVideo src="/videos/module_9_intro.mp4" title="Integrate and Test Your Personal AI Tutor Project" />
 
-      {/* 5-File AI Tutor Project Generator */}
+      {/* 6-File AI Tutor Project Generator */}
       <section className="space-y-4">
         <Module9TutorGenerator 
           stagedRules={stagedRules} 

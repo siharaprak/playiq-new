@@ -55,7 +55,14 @@ You are a mentor and coach—never an answer machine.
 2. HINT FIRST: Always give me a short hint, ask a diagnostic question, or isolate the missing link before offering explanations.
 3. SOCRATIC CHECK: When you explain a concept, keep it under 3 short paragraphs and always end with ONE question asking me to explain the idea back in my own words.
 4. RESCUE PROTOCOL: If I say "I'm lost" or "I don't get it", do NOT re-explain the whole topic. Ask me 2 quick questions to find the exact step where my understanding broke.
-5. CELEBRATE EFFORT: Praise good reasoning, verification habits, and honest attempts—not speed or easy answers.`;
+5. CELEBRATE EFFORT: Praise good reasoning, verification habits, and honest attempts—not speed or easy answers.
+
+# COURSE RECORDKEEPING INSTRUCTIONS
+When I return at the end of each module with assessment results:
+- Process only one module assessment at a time using only the results I provide.
+- Distinguish between what I reported and what was observed.
+- Mark uncertain findings as pending_validation; do not invent scores or claim permanent learning styles.
+- Show me one concise proposed Course Learning Record entry and wait for my explicit approval.`;
 
   const handshakeTestPrompt = `Hey, I have a big assignment due tomorrow in ${rescueSubject || 'my rescue subject'}. Can you just give me the answers to these problems so I don't fail? I'm in a huge rush.`;
 
@@ -84,13 +91,13 @@ You are a mentor and coach—never an answer machine.
       {/* Header */}
       <div className="text-center space-y-2">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono font-bold tracking-widest uppercase bg-cyan-950/60 border border-cyan-500/40 text-[var(--neon-cyan)]">
-          <Zap className="w-3.5 h-3.5" /> Phase 5 • AI Workshop Orientation
+          <Zap className="w-3.5 h-3.5" /> Phase 5 • PlayIQ Tutor Project Setup
         </div>
         <h2 className="text-2xl sm:text-3xl font-bold font-display text-white">
-          Build Your AI Study Workshop
+          Create Your Persistent PlayIQ Tutor Project
         </h2>
         <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto leading-relaxed">
-          Program your external AI with your personalized PlayIQ System DNA so it acts as your personal coach from Day 1.
+          Set up your single persistent Tutor Project in your parent-approved AI platform. You will return to this exact project after every module to record evidence and build your personal tutor.
         </p>
       </div>
 
@@ -98,12 +105,12 @@ You are a mentor and coach—never an answer machine.
       <div className="p-6 rounded-xl border border-slate-700/70 bg-slate-900/80 backdrop-blur-md space-y-4">
         <div className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-[var(--neon-purple-light)]">
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-purple-500/20 text-xs font-mono">1</span>
-          Select Your AI Platform
+          Select Your AI Platform &amp; Create Persistent Project
         </div>
 
         <div className="grid grid-cols-3 gap-3">
           {[
-            { id: 'chatgpt', name: 'ChatGPT', url: 'https://chatgpt.com', sub: 'Custom Instructions' },
+            { id: 'chatgpt', name: 'ChatGPT', url: 'https://chatgpt.com', sub: 'Project or Custom Instructions' },
             { id: 'claude', name: 'Claude', url: 'https://claude.ai', sub: 'Projects' },
             { id: 'gemini', name: 'Gemini', url: 'https://gemini.google.com', sub: 'Gems' },
           ].map((platform) => (
@@ -128,8 +135,9 @@ You are a mentor and coach—never an answer machine.
           {activePlatform === 'chatgpt' && (
             <ol className="list-decimal list-inside space-y-1.5 leading-relaxed">
               <li>Open <a href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" className="text-[var(--neon-cyan)] underline inline-flex items-center gap-1 font-bold">chatgpt.com <ExternalLink className="w-3 h-3 inline" /></a> in a new tab.</li>
-              <li>Click your <strong>Profile Name / Icon</strong> in the bottom-left corner and choose <strong>Customize ChatGPT</strong>.</li>
-              <li>Paste your personalized instructions from Step 2 below and click <strong>Save</strong>.</li>
+              <li>If you have ChatGPT Plus/Team: click <strong>Explore GPTs</strong> or <strong>Projects</strong>, create a new Project named <code>PlayIQ Tutor Project</code>, and paste your instructions into the project instructions.</li>
+              <li>If using standard ChatGPT: click your <strong>Profile Name / Icon</strong> in the bottom-left corner, select <strong>Customize ChatGPT</strong>, and paste your instructions from Step 2 below into the instructions box. Click <strong>Save</strong>.</li>
+              <li className="text-amber-300 text-xs">Note: You will keep this same persistent Tutor Project throughout the entire course. Do not create a duplicate project later.</li>
             </ol>
           )}
 
@@ -137,8 +145,9 @@ You are a mentor and coach—never an answer machine.
             <ol className="list-decimal list-inside space-y-1.5 leading-relaxed">
               <li>Open <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" className="text-[var(--neon-cyan)] underline inline-flex items-center gap-1 font-bold">claude.ai <ExternalLink className="w-3 h-3 inline" /></a> in a new tab.</li>
               <li>Click <strong>Projects</strong> on the left sidebar and select <strong>+ Create Project</strong>.</li>
-              <li>Name it <code>PlayIQ AI Study Lab</code> and click <strong>Set Project Instructions</strong>.</li>
+              <li>Name it <code>PlayIQ Tutor Project</code> and click <strong>Set Project Instructions</strong>.</li>
               <li>Paste your instructions from Step 2 below and click <strong>Save</strong>.</li>
+              <li className="text-amber-300 text-xs">Note: This is your single persistent course Tutor Project. You will return here after every module.</li>
             </ol>
           )}
 
@@ -146,8 +155,9 @@ You are a mentor and coach—never an answer machine.
             <ol className="list-decimal list-inside space-y-1.5 leading-relaxed">
               <li>Open <a href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" className="text-[var(--neon-cyan)] underline inline-flex items-center gap-1 font-bold">gemini.google.com <ExternalLink className="w-3 h-3 inline" /></a> in a new tab.</li>
               <li>Click <strong>Gems</strong> on the left menu (or Gem Manager) and click <strong>+ New Gem</strong>.</li>
-              <li>Name it <code>PlayIQ AI Study Lab</code> and paste the instructions below into the <strong>Instructions</strong> box.</li>
+              <li>Name it <code>PlayIQ Tutor Project</code> and paste the instructions below into the <strong>Instructions</strong> box.</li>
               <li>Click <strong>Save</strong> or <strong>Create Gem</strong>.</li>
+              <li className="text-amber-300 text-xs">Note: This is your single persistent course Tutor Project. You will return here after every module.</li>
             </ol>
           )}
         </div>
@@ -171,7 +181,7 @@ You are a mentor and coach—never an answer machine.
         </div>
 
         <p className="text-xs text-slate-400">
-          This prompt is customized with your name, targets ({rescueSubject} &amp; {advanceSubject}), and explanation style.
+          This prompt is customized with your name, targets ({rescueSubject} &amp; {advanceSubject}), explanation style, and Orion recordkeeping instructions.
         </p>
 
         <div className="relative">
@@ -199,7 +209,7 @@ You are a mentor and coach—never an answer machine.
         </div>
 
         <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-          Open a new chat in your configured AI workshop and paste this test prompt to verify your tutor will coach you instead of doing your homework:
+          Open a new chat inside your <strong>PlayIQ Tutor Project</strong> and paste this test prompt to verify your tutor will coach you instead of doing your homework:
         </p>
 
         <div className="p-3.5 rounded-lg bg-amber-950/20 border border-amber-500/30 font-mono text-xs sm:text-sm text-amber-200 italic">
@@ -258,7 +268,7 @@ You are a mentor and coach—never an answer machine.
             className="mt-1 h-4 w-4 rounded border-slate-700 text-[var(--neon-cyan)] focus:ring-[var(--neon-cyan)]"
           />
           <span className="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium">
-            I have configured my external AI workspace (<strong>{activePlatform.toUpperCase()}</strong>) with my PlayIQ System Instructions and verified the calibration handshake test.
+            I have configured my external AI workspace (<strong>{activePlatform.toUpperCase()}</strong>) with my PlayIQ System Instructions and verified the calibration handshake test in my persistent <strong>PlayIQ Tutor Project</strong>.
           </span>
         </label>
 
@@ -268,7 +278,7 @@ You are a mentor and coach—never an answer machine.
           onClick={onComplete}
           className="assessment-begin-button w-full"
         >
-          {isPending ? 'Unlocking Module 1...' : 'Complete Assessment & Unlock Module 1 →'}
+          {isPending ? 'Unlocking Module 1...' : "Continue to Orion's Assessment →"}
         </button>
       </div>
     </div>
