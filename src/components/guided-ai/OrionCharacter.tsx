@@ -33,6 +33,10 @@ type SceneState = {
   keyboardClosed: number;
   keyboardOpen: number;
   arms: ArmRig[];
+  face: THREE.Mesh;
+  faceMaterial: THREE.MeshStandardMaterial;
+  concernedFaceMaterial: THREE.MeshStandardMaterial;
+  concernedFaceTexture: THREE.CanvasTexture;
 };
 
 const MODEL = '/character-assets/orion/orion-reference-v001.glb';
@@ -53,13 +57,76 @@ const captions: Record<CharacterAction, string> = {
   look_down: 'Orion looks down.',
 };
 
+const previewMovements: ReadonlyArray<{ action: CharacterAction; label: string }> = [
+  { action: 'wave', label: 'Wave' },
+  { action: 'thumbs_up', label: 'Thumbs up' },
+  { action: 'cheer', label: 'Cheer' },
+  { action: 'concerned', label: 'Concerned' },
+  { action: 'turn_around', label: 'Turn around' },
+  { action: 'stow_keyboard', label: 'Stow keyboard' },
+  { action: 'look_left', label: 'Look left' },
+  { action: 'look_right', label: 'Look right' },
+  { action: 'look_up', label: 'Look up' },
+  { action: 'look_down', label: 'Look down' },
+];
+
+function makeConcernedFaceTexture(
+  three: typeof import('three'),
+  source: THREE.Texture,
+): THREE.CanvasTexture {
+  const image = source.image as CanvasImageSource & { width: number; height: number };
+  if (!image?.width || !image?.height) throw new Error('Orion face texture is unavailable.');
+
+  const canvas = document.createElement('canvas');
+  canvas.width = image.width;
+  canvas.height = image.height;
+  const context = canvas.getContext('2d');
+  if (!context) throw new Error('Orion face canvas is unavailable.');
+
+  context.drawImage(image, 0, 0, canvas.width, canvas.height);
+  const background = context.getImageData(Math.round(canvas.width * 560 / 768), 0, 1, canvas.height).data;
+  context.scale(canvas.width / 768, canvas.height / 768);
+
+  // Preserve the authored eyes and display, replacing only the smile and adding brows.
+  for (let y = 468; y < 658; y += 1) {
+    const index = Math.min(canvas.height - 1, Math.round(y * canvas.height / 768)) * 4;
+    context.fillStyle = `rgb(${background[index]}, ${background[index + 1]}, ${background[index + 2]})`;
+    context.fillRect(220, y, 328, 1);
+  }
+  context.strokeStyle = '#b7ff40';
+  context.lineWidth = 20;
+  context.lineCap = 'round';
+  context.beginPath();
+  context.moveTo(105, 83);
+  context.lineTo(286, 44);
+  context.moveTo(482, 44);
+  context.lineTo(663, 83);
+  context.stroke();
+
+  context.fillStyle = '#061507';
+  context.beginPath();
+  context.ellipse(384, 558, 42, 49, 0, 0, Math.PI * 2);
+  context.fill();
+  context.strokeStyle = '#e8f3d3';
+  context.lineWidth = 6;
+  context.beginPath();
+  context.ellipse(384, 558, 30, 37, 0, Math.PI * 1.12, Math.PI * 1.88);
+  context.stroke();
+
+  const texture = new three.CanvasTexture(canvas);
+  texture.colorSpace = three.SRGBColorSpace;
+  texture.flipY = false;
+  texture.needsUpdate = true;
+  return texture;
+}
+
 function sendLocalAction(action: CharacterAction) {
   if (typeof window === 'undefined') return;
   const detail = parseCharacterActionEvent({ protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action });
   if (detail) window.dispatchEvent(new CustomEvent(CHARACTER_ACTION_EVENT_NAME, { detail }));
 }
 
-export function OrionCharacter() {
+export function OrionCharacter({ compact = false }: { compact?: boolean }) {
   const stageRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const reducedRef = useRef(true);
@@ -71,7 +138,7 @@ export function OrionCharacter() {
   const [textOnly, setTextOnly] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [degraded, setDegraded] = useState(false);
-  const [status, setStatus] = useState('Loading local Orion preview…');
+  const [status, setStatus] = useState('Loading Orion…');
   const [caption, setCaption] = useState('Orion is ready.');
 
   useEffect(() => {
@@ -188,6 +255,9 @@ export function OrionCharacter() {
       }
       currentAction = action;
       actionStart = performance.now();
+      renderState.face.material = action === 'concerned'
+        ? renderState.concernedFaceMaterial
+        : renderState.faceMaterial;
       if (action === 'turn_around') {
         facingRear = !facingRear;
         keyboardOpen = facingRear;
@@ -212,13 +282,15 @@ export function OrionCharacter() {
     const fail = () => {
       if (disposed) return;
       runtimeFailed = true;
+      renderState?.concernedFaceMaterial.dispose();
+      renderState?.concernedFaceTexture.dispose();
       renderState = null;
       renderer?.dispose();
       renderer = null;
       setLoaded(false);
       setDegraded(true);
-      setStatus('3D preview unavailable · showing the local static draft');
-      setCaption('The 3D model is unavailable. Orion’s static preview and chat remain available.');
+      setStatus('Animation unavailable');
+      setCaption('Orion’s picture is shown. Chat remains available.');
       if (raf) window.cancelAnimationFrame(raf);
       raf = 0;
     };
@@ -306,6 +378,17 @@ export function OrionCharacter() {
           };
         };
         const keyboard = pivot('Keyboard_Hinge_PIVOT_export');
+        const face = pivot(three.PropertyBinding.sanitizeNodeName('Face | curved emissive display_export'));
+        if (!(face instanceof three.Mesh) || Array.isArray(face.material) || !(face.material instanceof three.MeshStandardMaterial)) {
+          throw new Error('Orion face material is unavailable.');
+        }
+        const faceMaterial = face.material;
+        const sourceTexture = faceMaterial.emissiveMap ?? faceMaterial.map;
+        if (!sourceTexture) throw new Error('Orion face texture is unavailable.');
+        const concernedFaceTexture = makeConcernedFaceTexture(three, sourceTexture);
+        const concernedFaceMaterial = faceMaterial.clone();
+        concernedFaceMaterial.emissiveMap = concernedFaceTexture;
+        concernedFaceMaterial.needsUpdate = true;
         const arms = [makeArm(-1), makeArm(1)];
         for (const arm of arms) for (const finger of arm.fingers) finger.rotation.x = 0;
 
@@ -313,13 +396,13 @@ export function OrionCharacter() {
           three, renderer: activeRenderer, scene, camera, root, keyboard,
           keyboardClosed: keyboard.rotation.x,
           keyboardOpen: keyboard.rotation.x - three.MathUtils.degToRad(88),
-          arms,
+          arms, face, faceMaterial, concernedFaceMaterial, concernedFaceTexture,
         };
         runtimeFailed = false;
         setLoaded(true);
         setDegraded(false);
-        setStatus('3D preview ready · local draft · human likeness review pending');
-        setCaption('The local Orion draft is ready. Choose an action or continue the chat.');
+        setStatus('Ready to help');
+        setCaption('Orion is ready. Choose an action or continue the chat.');
 
         if (typeof ResizeObserver !== 'undefined') {
           resizeObserver = new ResizeObserver(onResize);
@@ -335,7 +418,8 @@ export function OrionCharacter() {
         } else {
           requestRender();
         }
-      } catch {
+      } catch (error) {
+        if (process.env.NODE_ENV === 'development') console.error('Orion 3D preview failed to start:', error);
         fail();
       }
     };
@@ -349,6 +433,8 @@ export function OrionCharacter() {
       canvas.removeEventListener('webglcontextlost', onContextLost);
       resizeObserver?.disconnect();
       if (raf) window.cancelAnimationFrame(raf);
+      renderState?.concernedFaceMaterial.dispose();
+      renderState?.concernedFaceTexture.dispose();
       renderer?.dispose();
       redrawRef.current = () => {};
     };
@@ -365,36 +451,63 @@ export function OrionCharacter() {
     setTextOnly(enabled);
     setCaption(enabled
       ? 'Text-only mode is on. Orion stays still while chat remains available.'
-      : 'Orion’s local draft preview is visible; chat remains available.');
+      : 'Orion’s 3D preview is visible; chat remains available.');
     redrawRef.current();
   };
 
-  return (
-    <section className="mb-4 rounded-xl border border-[var(--neon-cyan)]/20 bg-[var(--space-deep)]/60 p-3" aria-label="Orion character preview">
-      <div className="flex gap-3">
-        <div ref={stageRef} className="relative h-32 w-28 shrink-0 overflow-hidden rounded-lg border border-[var(--glass-border)] bg-[radial-gradient(circle_at_50%_40%,rgba(0,200,255,0.12),transparent_72%)]">
-          <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" hidden={!loaded || degraded || textOnly} />
-          <Image src={POSTER} alt="Draft static view of Orion; human likeness review is pending." fill sizes="112px" className="object-contain" hidden={(loaded && !degraded) || textOnly} />
-          {textOnly && <div className="absolute inset-0 flex items-center justify-center p-3 text-center text-xs text-[var(--text-secondary)]">Text-only mode<br />Chat remains available.</div>}
-        </div>
-        <div className="min-w-0 flex-1 space-y-2">
-          <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-primary)]">Orion · local character preview</h4>
-            <p className="text-[10px] leading-snug text-[var(--text-muted)]">Draft asset · likeness and rights review pending</p>
-          </div>
-          <p className="text-[10px] leading-snug text-[var(--text-secondary)]" role="status" aria-live="polite">{status}</p>
-          <div className="flex flex-wrap gap-1.5">
-            <button type="button" onClick={() => sendLocalAction('show_keyboard')} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-1 text-[9px] text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">Show rear keyboard</button>
-            <button type="button" onClick={() => sendLocalAction('idle')} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-1 text-[9px] text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">Return to front</button>
-          </div>
-        </div>
+  const controls = (
+    <>
+      <div className="mt-2 grid grid-cols-2 gap-2">
+        <button type="button" onClick={() => sendLocalAction('show_keyboard')} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-2 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">View keyboard</button>
+        <button type="button" onClick={() => sendLocalAction('idle')} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-2 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">Front view</button>
       </div>
+      {process.env.NODE_ENV === 'development' && !compact && (
+        <details className="mt-2 text-xs text-[var(--text-secondary)]">
+          <summary className="cursor-pointer rounded-md px-1 py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Test movements</summary>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {previewMovements.map(({ action, label }) => (
+              <button key={action} type="button" onClick={() => sendLocalAction(action)} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-1.5 text-left text-xs text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">{label}</button>
+            ))}
+          </div>
+        </details>
+      )}
       <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--glass-border)] pt-2 text-[10px] text-[var(--text-secondary)]">
         <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={reducedMotion} onChange={(event) => changeReducedMotion(event.currentTarget.checked)} className="accent-cyan-400" />Reduced motion</label>
         <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={captionsEnabled} onChange={(event) => setCaptionsEnabled(event.currentTarget.checked)} className="accent-cyan-400" />Captions</label>
         <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={textOnly} onChange={(event) => changeTextOnly(event.currentTarget.checked)} className="accent-cyan-400" />Text-only</label>
       </div>
-      {captionsEnabled && <p className="mt-1 text-[10px] leading-snug text-[var(--text-muted)]" aria-live="polite" aria-atomic="true">Caption: {caption}</p>}
+    </>
+  );
+
+  return (
+    <section className={compact ? 'border-b border-[var(--glass-border)] px-1 pb-2' : 'mb-4 rounded-xl border border-[var(--neon-cyan)]/20 bg-[var(--space-deep)]/60 p-3'} aria-label="Orion character preview">
+      <div className="flex items-center gap-3">
+        <div ref={stageRef} className={`relative shrink-0 overflow-hidden rounded-lg border border-[var(--glass-border)] bg-[radial-gradient(circle_at_50%_40%,rgba(0,200,255,0.12),transparent_72%)] ${compact ? 'h-24 w-24' : 'h-28 w-24'}`}>
+          <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" hidden={!loaded || degraded || textOnly} />
+          <Image src={POSTER} alt="Orion character illustration" fill sizes="96px" className="object-contain" hidden={(loaded && !degraded) || textOnly} />
+          {textOnly && <div className="absolute inset-0 flex items-center justify-center p-3 text-center text-xs text-[var(--text-secondary)]">Text-only mode<br />Chat remains available.</div>}
+        </div>
+        <div className="min-w-0 flex-1 space-y-1">
+          {compact ? (
+            <p className="text-sm font-semibold text-[var(--text-primary)]" role="status" aria-live="polite">{status}</p>
+          ) : (
+            <>
+              <h4 className="text-sm font-bold text-[var(--text-primary)]">Orion</h4>
+              <p className="text-xs leading-snug text-[var(--text-secondary)]" role="status" aria-live="polite">{status}</p>
+            </>
+          )}
+          {compact && captionsEnabled && <p className="text-[11px] leading-snug text-[var(--text-muted)]" aria-live="polite" aria-atomic="true">{caption}</p>}
+        </div>
+      </div>
+      {compact ? (
+        <details className="mt-2 text-xs text-[var(--text-secondary)]">
+          <summary className="cursor-pointer rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Orion options</summary>
+          <div className="mt-2 rounded-lg border border-[var(--glass-border)] bg-[var(--space-deep)] p-2">
+            {controls}
+          </div>
+        </details>
+      ) : controls}
+      {!compact && captionsEnabled && <p className="mt-1 text-[10px] leading-snug text-[var(--text-muted)]" aria-live="polite" aria-atomic="true">Caption: {caption}</p>}
     </section>
   );
 }

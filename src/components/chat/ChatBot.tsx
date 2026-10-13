@@ -188,7 +188,7 @@ export function ChatBot() {
           <div className="flex items-center justify-between p-4 border-b border-[#00c8ff]/20 bg-[#020617]/80">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full overflow-hidden border border-[#7b4fce] flex items-center justify-center shadow-[0_0_10px_rgba(123,79,206,0.3)] bg-slate-950">
-                <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
+                <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion" className="orion-avatar-image" />
               </div>
               <div>
                 <h3 className="font-display font-bold text-sm tracking-wider text-[#e2e8f0]"><span className="text-[#00c8ff]">ORION</span></h3>
@@ -219,7 +219,7 @@ export function ChatBot() {
                   </div>
                 ) : (
                   <div className="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden border border-[#7b4fce] flex items-center justify-center bg-slate-950 animate-fade-in">
-                    <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
+                    <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion" className="orion-avatar-image" />
                   </div>
                 )}
                 <div className={`p-3 rounded-xl text-sm leading-relaxed ${
@@ -234,7 +234,7 @@ export function ChatBot() {
             {isLoading && (
               <div className="flex gap-3 max-w-[85%]">
                 <div className="flex-shrink-0 w-8 h-8 rounded-full overflow-hidden border border-[#7b4fce] flex items-center justify-center bg-slate-950">
-                  <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
+                  <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion" className="orion-avatar-image" />
                 </div>
                 <div className="p-3 rounded-xl bg-[#7b4fce]/10 border border-[#7b4fce]/30 text-slate-200 rounded-tl-none flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-[#7b4fce] rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>

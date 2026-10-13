@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import path from "path";
 
 const nextConfig: NextConfig = {
+  ...(process.env.PLAYIQ_PREVIEW_BUILD === "1" ? { distDir: "build" } : {}),
   typescript: {
     ignoreBuildErrors: true,
   },

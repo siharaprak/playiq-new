@@ -355,7 +355,7 @@ export default function OrionAssessment({
         <div className="assessment-phase">
           {/* Orion avatar / brand mark */}
           <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
-            <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
+            <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion AI" className="orion-avatar-image" />
           </div>
 
           <OrionTypingEffect
@@ -442,7 +442,7 @@ export default function OrionAssessment({
       {phase === 2 && (
         <div className="assessment-phase">
           <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
-            <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
+            <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion AI" className="orion-avatar-image" />
           </div>
 
           <p className="text-center text-sm mb-6 font-mono" style={{ color: 'var(--text-muted)' }}>
@@ -501,7 +501,7 @@ export default function OrionAssessment({
         <div className="assessment-phase">
           {/* Orion avatar / brand mark */}
           <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
-            <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
+            <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion AI" className="orion-avatar-image" />
           </div>
 
           {/* Baseline intro typing */}
@@ -593,7 +593,7 @@ export default function OrionAssessment({
       {phase === 4 && (
         <div className="assessment-phase">
           <div className="assessment-orion-avatar overflow-hidden relative flex-shrink-0">
-            <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
+            <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion AI" className="orion-avatar-image" />
           </div>
 
           {schoolQuestionStep === 0 && (
@@ -674,7 +674,7 @@ export default function OrionAssessment({
       {phase === 5 && (
         <div className="assessment-phase assessment-reveal-phase">
           <div className="assessment-orion-avatar assessment-reveal-orion overflow-hidden relative flex-shrink-0">
-            <img src="/images/orion-avatar.png" alt="Orion AI" className="w-full h-full object-cover rounded-full" />
+            <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion AI" className="orion-avatar-image" />
           </div>
 
           {/* Step 0: Generating */}

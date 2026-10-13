@@ -1246,6 +1246,14 @@ html[data-theme="light"] .drop-shadow-\[0_0_5px_\#7b4fce\] {
 
 /* ── Orion Avatar ────────────────────────────────────────────────────────── */
 
+.orion-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(2);
+  transform-origin: center;
+}
+
 .assessment-orion-avatar {
   width: 64px;
   height: 64px;

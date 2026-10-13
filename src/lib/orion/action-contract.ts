@@ -59,3 +59,14 @@ export function parseCharacterActionForGuidedAiResponse(
     return null;
   }
 }
+
+/** Dispatches visual metadata from an allowed response; prose never becomes an action. */
+export function dispatchCharacterActionForGuidedAiResponse(
+  data: Parameters<typeof parseCharacterActionForGuidedAiResponse>[0],
+  target: EventTarget | null = typeof window === 'undefined' ? null : window,
+): boolean {
+  const detail = parseCharacterActionForGuidedAiResponse(data);
+  if (!detail || !target) return false;
+  target.dispatchEvent(new CustomEvent(CHARACTER_ACTION_EVENT_NAME, { detail }));
+  return true;
+}

@@ -7,10 +7,7 @@ import { ModeSelector } from './ModeSelector';
 import { GuidedAiResponse } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
 import { OrionCharacter } from './OrionCharacter';
-import {
-  CHARACTER_ACTION_EVENT_NAME,
-  parseCharacterActionForGuidedAiResponse,
-} from '@/lib/orion/action-contract';
+import { CHARACTER_ACTION_EVENT_PROTOCOL, dispatchCharacterActionForGuidedAiResponse } from '@/lib/orion/action-contract';
 
 interface GuidedAIPanelProps {
   moduleNumber?: number;
@@ -44,13 +41,6 @@ const MODE_WELCOME_MESSAGES: Record<GuidedAiModeId, string> = {
   lesson_rescue: "Spotted a confusing sentence or concept in the lesson? Paste it below or describe it, and let's get you back on track."
 };
 
-function dispatchOrionCharacterAction(data: GuidedAiResponseData) {
-  if (typeof window === 'undefined') return;
-  const detail = parseCharacterActionForGuidedAiResponse(data);
-  if (!detail) return;
-  window.dispatchEvent(new CustomEvent(CHARACTER_ACTION_EVENT_NAME, { detail }));
-}
-
 const HINT_LEVEL_LABELS: Record<1 | 2 | 3, { name: string; color: string }> = {
   1: { name: 'Nudge', color: 'var(--neon-green)' },
   2: { name: 'Direction', color: 'var(--neon-cyan)' },
@@ -81,7 +71,7 @@ export function GuidedAIPanel({
   const [showSelectedTextField, setShowSelectedTextField] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messageScrollRef = useRef<HTMLDivElement>(null);
 
   // Sprint 4C: ephemeral local state for hint ladder + retry + teach-back
   const [hintLevel, setHintLevel] = useState<1 | 2 | 3>(1);
@@ -122,9 +112,10 @@ export function GuidedAIPanel({
     }
   }
 
-  // Auto-scroll to bottom of conversation
+  // Scroll only the conversation, leaving the character visible above it.
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const container = messageScrollRef.current;
+    if (container) container.scrollTop = container.scrollHeight;
   };
 
   useEffect(() => {
@@ -193,6 +184,41 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   };
 
   const latestResponse = messages.length > 0 ? messages[messages.length - 1].response : undefined;
+
+  const simulateGuidedAiReply = (refused: boolean) => {
+    const data: GuidedAiResponseData = {
+      mode: 'chat',
+      response: refused
+        ? 'I can help you work through the problem, but I cannot provide the completed answer.'
+        : 'Let’s take this one step at a time. What part feels unclear?',
+      integrityAction: refused ? 'refused' : 'allowed',
+      // The refusal intentionally carries an action to check the fail-closed boundary.
+      characterAction: { protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action: refused ? 'cheer' : 'wave' },
+    };
+    setActiveMode('chat');
+    setMessages((previous) => [
+      ...previous.filter((item) => !item.id.startsWith('orion-simulated-')),
+      { id: `orion-simulated-${crypto.randomUUID()}`, role: 'model', content: data.response, response: data },
+    ]);
+    dispatchCharacterActionForGuidedAiResponse(data);
+  };
+
+  const resetTestChat = () => {
+    if (isLoading) return;
+    setMessages([]);
+    setActiveMode(null);
+    setMessage('');
+    setStudentAttempt('');
+    setSelectedText('');
+    setTeachBackInput('');
+    setTeachBackActive(false);
+    setShowAttemptField(false);
+    setShowSelectedTextField(false);
+    setHintLevel(1);
+    setRetryCount(0);
+    setError(null);
+    messageScrollRef.current?.scrollTo({ top: 0 });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -268,7 +294,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
 
       const data = json.data as GuidedAiResponseData;
-      dispatchOrionCharacterAction(data);
+      dispatchCharacterActionForGuidedAiResponse(data);
       
       setMessages(prev => prev.map(m => m.id === botMsgId ? {
         ...m,
@@ -359,7 +385,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
 
       const data = json.data as GuidedAiResponseData;
-      dispatchOrionCharacterAction(data);
+      dispatchCharacterActionForGuidedAiResponse(data);
       setMessages(prev => prev.map(m => m.id === botMsgId ? {
         ...m,
         content: data.response,
@@ -438,7 +464,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
           }
 
           const data = json.data as GuidedAiResponseData;
-          dispatchOrionCharacterAction(data);
+          dispatchCharacterActionForGuidedAiResponse(data);
           setMessages(prev => prev.map(m => m.id === botMsgId ? {
             ...m,
             content: data.response,
@@ -467,39 +493,18 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   const renderMessageThread = () => {
     if (!activeMode) {
       return (
-        <div className="text-center py-10 px-4 space-y-6 animate-fade-in">
-          {/* Avatar with spinning neon ring */}
-          <div className="relative w-20 h-20 mx-auto">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] via-transparent to-[var(--neon-purple)] animate-spin" style={{ animationDuration: '6s', padding: '1.5px' }}>
-              <div className="w-full h-full rounded-full" style={{ backgroundColor: 'var(--space-deep)' }}></div>
-            </div>
-            <div className="absolute inset-1 rounded-full overflow-hidden border border-[var(--neon-purple)]/40 shadow-[0_0_15px_rgba(123,79,206,0.3)]" style={{ backgroundColor: 'var(--space-deep)' }}>
-              <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
-            </div>
-            {/* Active glow dot */}
-            <span className="absolute bottom-0 right-0 w-4 h-4 rounded-full bg-[var(--neon-green)] border-4 shadow-[0_0_8px_var(--neon-green)] animate-pulse" style={{ borderColor: 'var(--space-deep)' }}></span>
-          </div>
-
+        <div className="space-y-4 animate-fade-in">
+          <p className="text-xs leading-relaxed text-[var(--text-secondary)]">
+            Choose a study tool to get started. Orion will help you work through the lesson step by step.
+          </p>
           <div className="space-y-2">
-            <span className="text-[9px] uppercase tracking-[0.25em] font-mono text-[var(--neon-cyan)] font-bold text-glow-cyan block">
-              AI Study System Active
-            </span>
-            <h4 className="text-xl font-bold font-display uppercase tracking-wider text-[var(--text-primary)]">
-              Meet <span className="gradient-text-cyan text-glow-cyan">Orion</span>
-            </h4>
-            <div className="max-w-[280px] mx-auto p-3.5 rounded-xl border border-[var(--glass-border)] text-xs text-[var(--text-secondary)] leading-relaxed shadow-[inset_0_2px_8px_rgba(0,0,0,0.2)]" style={{ backgroundColor: 'var(--space-deep)', opacity: 0.85 }}>
-              🧠 Orion helps you active-recall study concepts, practice queries, analyze code, or rescue tricky lesson steps without giving away homework answers.
-            </div>
-          </div>
-
-          <div className="space-y-3 pt-1">
             <div className="flex items-center justify-between px-1">
               <span className="text-[10px] font-bold uppercase tracking-wider font-mono text-[var(--text-muted)]">
                 Select Study Tool
               </span>
               <span className="h-[1px] bg-[var(--glass-border)] flex-grow ml-3 opacity-50"></span>
             </div>
-            <div className="p-3.5 rounded-xl border border-[var(--glass-border)] shadow-inner" style={{ backgroundColor: 'rgba(0,0,0,0.04)' }}>
+            <div className="p-3 rounded-xl border border-[var(--glass-border)] shadow-inner" style={{ backgroundColor: 'rgba(0,0,0,0.04)' }}>
               <ModeSelector
                 activeMode={activeMode}
                 onSelectMode={handleModeSelect}
@@ -538,7 +543,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
           return (
             <div key={msg.id} className="flex gap-3 animate-fade-in items-start">
               <div className="w-8 h-8 rounded-full overflow-hidden border border-[var(--neon-purple)] flex-shrink-0 shadow-[0_0_8px_rgba(123,79,206,0.3)] mt-0.5" style={{ backgroundColor: 'var(--space-deep)' }}>
-                <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
+                <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion" className="orion-avatar-image" />
               </div>
               <div className="flex-1 max-w-[85%] space-y-1">
                 <div className="text-[9px] text-[var(--text-muted)] font-mono tracking-widest uppercase font-bold pl-1">
@@ -725,10 +730,19 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   const renderPanelContents = () => {
     return (
       <div className="flex flex-col h-full">
-        <OrionCharacter />
-        {/* Sticky Mode selector */}
+        {process.env.NODE_ENV === 'development' && (
+          <details className="mb-3 rounded-lg border border-[var(--glass-border)] px-3 py-2 text-xs text-[var(--text-secondary)]">
+            <summary className="cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Simulate a Guided AI reply</summary>
+            <p className="mt-2 leading-relaxed">Local test responses. No AI or database request is sent. Use Return to front before checking the refusal.</p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <button type="button" onClick={() => simulateGuidedAiReply(false)} className="rounded-md border border-[var(--glass-border)] px-2 py-1.5 text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Allowed reply: wave</button>
+              <button type="button" onClick={() => simulateGuidedAiReply(true)} className="rounded-md border border-[var(--glass-border)] px-2 py-1.5 text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Refused reply: no gesture</button>
+            </div>
+          </details>
+        )}
+        {/* Mode selector stays within the message area. */}
         {activeMode && (
-          <div className="sticky top-0 pb-3 z-10 border-b border-[var(--glass-border)] mb-4 flex items-center justify-between" style={{ backgroundColor: 'var(--space-deep)' }}>
+          <div className="pb-3 border-b border-[var(--glass-border)] mb-4 flex items-center justify-between" style={{ backgroundColor: 'var(--space-deep)' }}>
             <ModeSelector
               activeMode={activeMode}
               onSelectMode={handleModeSelect}
@@ -744,6 +758,12 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       </div>
     );
   };
+
+  const renderCharacterSection = () => (
+    <div className="relative z-20 flex-none p-3 pb-0">
+      <OrionCharacter compact={activeMode !== null} />
+    </div>
+  );
 
   if (isFloating) {
     return (
@@ -767,9 +787,9 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
               <div className="absolute inset-0.5 rounded-full border border-[var(--neon-purple)]/30 group-hover:border-[var(--neon-cyan)]/50 transition-colors z-10"></div>
               
               <img 
-                src="/images/orion-avatar.png" 
+                src="/character-assets/orion/orion-reference-v001-hero.png"
                 alt="Orion AI"
-                className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-300"
+                className="orion-avatar-image"
               />
             </button>
             
@@ -789,9 +809,6 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 {/* Cyber Header */}
                 <div className="flex items-center justify-between p-4 border-b border-[var(--neon-cyan)]/20 backdrop-blur-md" style={{ backgroundColor: 'var(--space-deep)' }}>
                   <div className="flex items-center gap-2.5">
-                    <div className="relative w-8 h-8 rounded-full overflow-hidden border border-[var(--neon-purple)] flex items-center justify-center shadow-[0_0_8px_rgba(123,79,206,0.3)]" style={{ backgroundColor: 'var(--space-deep)' }}>
-                      <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
-                    </div>
                     <div>
                       <h3 className="font-display font-bold text-sm tracking-widest" style={{ color: 'var(--text-primary)' }}>
                         <span className="gradient-text-cyan text-glow-cyan font-bold">ORION</span>
@@ -802,32 +819,32 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                       </div>
                     </div>
                   </div>
-                  <button 
-                    type="button"
-                    onClick={() => {
-                      setIsClosing(true);
-                      setTimeout(() => {
-                        setIsOpen(false);
-                        setIsClosing(false);
-                      }, 400);
-                    }}
-                    className="text-[var(--text-muted)] hover:text-[var(--neon-purple)] transition-colors p-1 transform hover:rotate-90 duration-300 bg-transparent border-0"
-                    aria-label="Close Chat"
-                  >
-                    <X size={18} />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {process.env.NODE_ENV === 'development' && messages.length > 0 && (
+                      <button type="button" onClick={resetTestChat} disabled={isLoading} className="text-xs text-[var(--neon-cyan)] hover:underline disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Reset chat</button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsClosing(true);
+                        setTimeout(() => {
+                          setIsOpen(false);
+                          setIsClosing(false);
+                        }, 400);
+                      }}
+                      className="text-[var(--text-muted)] hover:text-[var(--neon-purple)] transition-colors p-1 transform hover:rotate-90 duration-300 bg-transparent border-0"
+                      aria-label="Close Chat"
+                    >
+                      <X size={18} />
+                    </button>
+                  </div>
                 </div>
 
-                {/* Scrollable Body Container with Ambient Blurs */}
-                <div className="flex-1 overflow-y-auto p-4 relative overflow-hidden custom-scrollbar" style={{ backgroundColor: 'var(--glass-bg)' }}>
-                  {/* Cyber light blur circles */}
-                  <div className="absolute -top-12 -left-12 w-36 h-36 rounded-full bg-[var(--neon-cyan)]/5 blur-3xl pointer-events-none"></div>
-                  <div className="absolute -bottom-12 -right-12 w-36 h-36 rounded-full bg-[var(--neon-purple)]/5 blur-3xl pointer-events-none"></div>
-                  
-                  <div className="relative z-10 flex flex-col min-h-full">
+                <div className="flex-1 min-h-0 flex flex-col" style={{ backgroundColor: 'var(--glass-bg)' }}>
+                  {renderCharacterSection()}
+                  <div ref={messageScrollRef} className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar">
                     {renderPanelContents()}
                   </div>
-                  <div ref={messagesEndRef} />
                 </div>
 
                 {/* Sticky Bottom Input Area */}
@@ -926,7 +943,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       >
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-full overflow-hidden border border-[var(--neon-purple)] flex-shrink-0 shadow-[0_0_5px_rgba(123,79,206,0.2)]" style={{ backgroundColor: 'var(--space-deep)' }}>
-            <img src="/images/orion-avatar.png" alt="Orion" className="w-full h-full object-cover" />
+            <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion" className="orion-avatar-image" />
           </div>
           <span className="text-xs font-bold uppercase tracking-wider font-display" style={{ color: 'var(--text-primary)' }}>
             Orion Panel
@@ -946,9 +963,9 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
           <div className="absolute -top-12 -left-12 w-28 h-28 rounded-full bg-[var(--neon-cyan)]/3 blur-2xl pointer-events-none"></div>
           <div className="absolute -bottom-12 -right-12 w-28 h-28 rounded-full bg-[var(--neon-purple)]/3 blur-2xl pointer-events-none"></div>
 
-          <div className="flex-1 overflow-y-auto p-4 custom-scrollbar relative z-10">
+          {renderCharacterSection()}
+          <div ref={messageScrollRef} className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar relative z-10">
             {renderPanelContents()}
-            <div ref={messagesEndRef} />
           </div>
           
           {activeMode && (

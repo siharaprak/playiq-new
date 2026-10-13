@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import {
   CHARACTER_ACTIONS,
+  CHARACTER_ACTION_EVENT_NAME,
   CHARACTER_ACTION_EVENT_PROTOCOL,
+  dispatchCharacterActionForGuidedAiResponse,
   parseCharacterActionForGuidedAiResponse,
   parseCharacterActionEvent,
 } from '../src/lib/orion/action-contract.ts';
@@ -43,4 +45,17 @@ test('dispatches only allowed actions from non-routed allowed responses', () => 
   assert.equal(parseCharacterActionForGuidedAiResponse({ integrityAction: 'allowed', safetyRoute: { target: 'blocked' }, characterAction }), null);
   assert.equal(parseCharacterActionForGuidedAiResponse({ integrityAction: 'modified', characterAction }), null);
   assert.equal(parseCharacterActionForGuidedAiResponse({ integrityAction: 'allowed', response: 'wave' }), null);
+});
+
+test('automatic response metadata emits one event; prose and safety responses emit none', () => {
+  const target = new EventTarget();
+  const actions = [];
+  target.addEventListener(CHARACTER_ACTION_EVENT_NAME, (event) => actions.push(event.detail.action));
+  const characterAction = { protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action: 'concerned' };
+
+  assert.equal(dispatchCharacterActionForGuidedAiResponse({ integrityAction: 'allowed', response: 'Let us slow down.', characterAction }, target), true);
+  assert.equal(dispatchCharacterActionForGuidedAiResponse({ integrityAction: 'allowed', response: 'wave' }, target), false);
+  assert.equal(dispatchCharacterActionForGuidedAiResponse({ integrityAction: 'refused', characterAction }, target), false);
+  assert.equal(dispatchCharacterActionForGuidedAiResponse({ integrityAction: 'allowed', safetyRoute: { target: 'blocked' }, characterAction }, target), false);
+  assert.deepEqual(actions, ['concerned']);
 });
