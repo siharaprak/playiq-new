@@ -6,6 +6,11 @@ import { ChevronDown, ChevronUp, Sparkles, Loader2, AlertCircle, MessageSquare, 
 import { ModeSelector } from './ModeSelector';
 import { GuidedAiResponse } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
+import { OrionCharacter } from './OrionCharacter';
+import {
+  CHARACTER_ACTION_EVENT_NAME,
+  parseCharacterActionForGuidedAiResponse,
+} from '@/lib/orion/action-contract';
 
 interface GuidedAIPanelProps {
   moduleNumber?: number;
@@ -38,6 +43,13 @@ const MODE_WELCOME_MESSAGES: Record<GuidedAiModeId, string> = {
   lesson_rescue_stub: "Lesson Rescue is in preview. Describe what is confusing you, and we will figure it out.",
   lesson_rescue: "Spotted a confusing sentence or concept in the lesson? Paste it below or describe it, and let's get you back on track."
 };
+
+function dispatchOrionCharacterAction(data: GuidedAiResponseData) {
+  if (typeof window === 'undefined') return;
+  const detail = parseCharacterActionForGuidedAiResponse(data);
+  if (!detail) return;
+  window.dispatchEvent(new CustomEvent(CHARACTER_ACTION_EVENT_NAME, { detail }));
+}
 
 const HINT_LEVEL_LABELS: Record<1 | 2 | 3, { name: string; color: string }> = {
   1: { name: 'Nudge', color: 'var(--neon-green)' },
@@ -256,6 +268,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
 
       const data = json.data as GuidedAiResponseData;
+      dispatchOrionCharacterAction(data);
       
       setMessages(prev => prev.map(m => m.id === botMsgId ? {
         ...m,
@@ -346,6 +359,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
 
       const data = json.data as GuidedAiResponseData;
+      dispatchOrionCharacterAction(data);
       setMessages(prev => prev.map(m => m.id === botMsgId ? {
         ...m,
         content: data.response,
@@ -424,6 +438,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
           }
 
           const data = json.data as GuidedAiResponseData;
+          dispatchOrionCharacterAction(data);
           setMessages(prev => prev.map(m => m.id === botMsgId ? {
             ...m,
             content: data.response,
@@ -497,7 +512,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
     }
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-4" role="log" aria-label="Orion chat messages" aria-live="polite" aria-relevant="additions text">
         {messages.map((msg) => {
           if (msg.role === 'user') {
             return (
@@ -710,6 +725,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   const renderPanelContents = () => {
     return (
       <div className="flex flex-col h-full">
+        <OrionCharacter />
         {/* Sticky Mode selector */}
         {activeMode && (
           <div className="sticky top-0 pb-3 z-10 border-b border-[var(--glass-border)] mb-4 flex items-center justify-between" style={{ backgroundColor: 'var(--space-deep)' }}>

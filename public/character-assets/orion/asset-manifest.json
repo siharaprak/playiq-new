@@ -1,0 +1,24 @@
+{
+  "character_id": "orion-playiq",
+  "package_version": "0.3.0",
+  "status": "LOCAL_DRAFT_PREVIEW",
+  "assets": {
+    "model": {
+      "path": "/character-assets/orion/orion-reference-v001.glb",
+      "sha256": "0d9ff6cec0fac6c5a909a66885d08aab2680b28af2772115f5c023a1bff2d4d9",
+      "source": "Sienvi Character Systems Foundry isolated PlayIQ fixture, art/blender/model-v001/orion-reference-v001.glb",
+      "review_status": "DRAFT_AWAITING_HUMAN_LIKENESS_REVIEW",
+      "embedded_animation_clips": 0,
+      "rig": "named mechanical pivots"
+    },
+    "static_fallback": {
+      "path": "/character-assets/orion/orion-reference-v001-hero.png",
+      "sha256": "569d7d248bde15549f5a88b23c552e1a5b225e71a3ef83312bc06ad60d4d496d",
+      "review_status": "DRAFT_AWAITING_HUMAN_LIKENESS_REVIEW"
+    }
+  },
+  "action_protocol": "sienvi.character-action.v1",
+  "production_release": "NOT_APPROVED",
+  "human_likeness_review": "PENDING",
+  "asset_rights": "UNVERIFIED_PENDING_REAL_DATA"
+}

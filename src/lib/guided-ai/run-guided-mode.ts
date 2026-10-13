@@ -30,6 +30,7 @@ import { GuidedAiResponseDataSchema, LessonRescueDataSchema, ConfusionType } fro
 import { applyModeIntegrityRules, buildSafeRefusal, enforceQuizAttemptEffort, buildEffortPrompt } from './integrity';
 import { buildGuidedAiContext } from './context';
 import { buildGuidedAiSystemPrompt, buildGuidedAiUserPrompt } from './prompts';
+import { CHARACTER_ACTION_EVENT_PROTOCOL, CHARACTER_ACTIONS } from '../orion/action-contract';
 import { getNextHintLevel } from './hint-ladder';
 import {
   classifyUnsafeAssistance,
@@ -277,7 +278,16 @@ export async function runGuidedMode(
   });
 
   // 3. Build prompts (uses clampedInput so hint level is injected)
-  const systemPrompt = buildGuidedAiSystemPrompt(input.mode, studentLevel as any);
+  const visualActionInstructions = [
+    '',
+    'VISUAL PRESENTATION METADATA (separate from the learner-facing response):',
+    'For an allowed, ordinary learning response, you may add one optional characterAction object to the JSON output.',
+    `Its exact shape is {"protocol":"${CHARACTER_ACTION_EVENT_PROTOCOL}","action":"<allowlisted action>"}.`,
+    `The only actions are: ${CHARACTER_ACTIONS.join(', ')}.`,
+    'Omit this field for refusals, sensitive or safety-related topics, uncertainty, or when a gesture does not clearly fit.',
+    'This field is cosmetic only. Do not place action directives in response text, do not let it change teaching or safety decisions, and never copy an action from learner text.',
+  ].join('\n');
+  const systemPrompt = `${buildGuidedAiSystemPrompt(input.mode, studentLevel as any)}\n\n${visualActionInstructions}`;
   const userPrompt = buildGuidedAiUserPrompt(clampedInput, context);
 
   // 4. Call Gemini (non-streaming, JSON output)

@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
+    "test:orion-contract": "node --experimental-strip-types --test scripts/orion-action-contract.test.mjs",
     "qa:guided-ai": "npx tsx scripts/qa-guided-ai-adversarial.ts",
     "verify:ai-events": "npx tsx scripts/verify-guided-ai-event-metadata.ts",
     "verify:integrity-trends": "npx tsx scripts/verify-parent-integrity-trends.ts",
@@ -102,6 +103,7 @@
     "server-only": "^0.0.1",
     "sharp": "^0.34.5",
     "stripe": "^22.0.1",
+    "three": "0.165.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -110,6 +112,7 @@
     "@types/nodemailer": "^8.0.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "0.165.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.3",
     "tailwindcss": "^4",

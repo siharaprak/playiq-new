@@ -16,6 +16,7 @@
  */
 
 import { z } from 'zod';
+import { CHARACTER_ACTIONS, CHARACTER_ACTION_EVENT_PROTOCOL } from '../orion/action-contract';
 
 // ---------------------------------------------------------------------------
 // Mode identifiers
@@ -162,11 +163,18 @@ export const LessonRescueDataSchema = z.object({
 
 export type LessonRescueData = z.infer<typeof LessonRescueDataSchema>;
 
+const CharacterActionEventSchema = z.object({
+  protocol: z.literal(CHARACTER_ACTION_EVENT_PROTOCOL),
+  action: z.enum(CHARACTER_ACTIONS),
+}).strict();
+
 export const GuidedAiResponseDataSchema = z.object({
   mode: GuidedAiModeId,
   response: z.string(),
   suggestedNextStep: z.string().optional(),
   integrityAction: z.enum(['allowed', 'refused', 'modified', 'flagged']),
+  // Visual metadata only; never derived from or executed out of response text.
+  characterAction: CharacterActionEventSchema.optional(),
   followUpQuestion: z.string().optional(),
   practiceItems: z.array(PracticeItemSchema).optional(),
   preferenceSummary: LearnYourWayPreferences.optional(),
