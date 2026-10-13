@@ -30,7 +30,7 @@ import { GuidedAiResponseDataSchema, LessonRescueDataSchema, ConfusionType } fro
 import { applyModeIntegrityRules, buildSafeRefusal, enforceQuizAttemptEffort, buildEffortPrompt } from './integrity';
 import { buildGuidedAiContext } from './context';
 import { buildGuidedAiSystemPrompt, buildGuidedAiUserPrompt } from './prompts';
-import { CHARACTER_ACTION_EVENT_PROTOCOL, CHARACTER_ACTIONS } from '../orion/action-contract';
+import { CHARACTER_ACTION_EVENT_PROTOCOL, CHARACTER_ACTIONS, selectCharacterActionForGuidedAiResponse } from '../orion/action-contract';
 import { getNextHintLevel } from './hint-ladder';
 import {
   classifyUnsafeAssistance,
@@ -514,6 +514,7 @@ export async function runGuidedMode(
       }).catch(() => {});
     }
 
+    result.characterAction = selectCharacterActionForGuidedAiResponse(result) ?? undefined;
     return result;
   } catch (err) {
     console.error('[runGuidedMode] Gemini call failed:', err instanceof Error ? err.message : err);

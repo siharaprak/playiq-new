@@ -14,6 +14,17 @@ export type CharacterActionEvent = Readonly<{
 
 const allowedActions = new Set<string>(CHARACTER_ACTIONS);
 
+const defaultGuidedAiActions: Readonly<Record<string, CharacterAction>> = Object.freeze({
+  chat: 'wave',
+  explain: 'wave',
+  hint: 'concerned',
+  quiz: 'thumbs_up',
+  coach: 'thumbs_up',
+  learn_your_way: 'wave',
+  lesson_rescue_stub: 'concerned',
+  lesson_rescue: 'concerned',
+});
+
 /** Strictly parses the versioned event envelope. This never inspects chat prose. */
 export function parseCharacterActionEvent(value: unknown): CharacterActionEvent | null {
   if (value === null || typeof value !== 'object' || Array.isArray(value)) return null;
@@ -58,6 +69,23 @@ export function parseCharacterActionForGuidedAiResponse(
   } catch {
     return null;
   }
+}
+
+/** Supplies a visible fallback for validated, allowed replies when the model omits visual metadata. */
+export function selectCharacterActionForGuidedAiResponse(
+  data: {
+    mode: string;
+    integrityAction: unknown;
+    safetyRoute?: unknown;
+    effortRequired?: unknown;
+    retryRequired?: unknown;
+    characterAction?: unknown;
+  } | null | undefined,
+): CharacterActionEvent | null {
+  if (!data || data.integrityAction !== 'allowed' || data.safetyRoute || data.effortRequired || data.retryRequired) return null;
+  if (data.characterAction !== undefined) return parseCharacterActionForGuidedAiResponse(data);
+  const action = defaultGuidedAiActions[data.mode];
+  return action ? Object.freeze({ protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action }) : null;
 }
 
 /** Dispatches visual metadata from an allowed response; prose never becomes an action. */

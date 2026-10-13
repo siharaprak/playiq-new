@@ -7,6 +7,7 @@ import {
   dispatchCharacterActionForGuidedAiResponse,
   parseCharacterActionForGuidedAiResponse,
   parseCharacterActionEvent,
+  selectCharacterActionForGuidedAiResponse,
 } from '../src/lib/orion/action-contract.ts';
 
 test('accepts every exact action envelope from the allowlist', () => {
@@ -58,4 +59,22 @@ test('automatic response metadata emits one event; prose and safety responses em
   assert.equal(dispatchCharacterActionForGuidedAiResponse({ integrityAction: 'refused', characterAction }, target), false);
   assert.equal(dispatchCharacterActionForGuidedAiResponse({ integrityAction: 'allowed', safetyRoute: { target: 'blocked' }, characterAction }, target), false);
   assert.deepEqual(actions, ['concerned']);
+});
+
+test('validated allowed replies get a visual action when metadata is omitted', () => {
+  const allowed = { mode: 'chat', integrityAction: 'allowed', response: 'Let us work through it.' };
+  assert.deepEqual(selectCharacterActionForGuidedAiResponse(allowed), {
+    protocol: CHARACTER_ACTION_EVENT_PROTOCOL,
+    action: 'wave',
+  });
+  assert.deepEqual(selectCharacterActionForGuidedAiResponse({ ...allowed, response: 'Please do not wave' }), selectCharacterActionForGuidedAiResponse(allowed));
+  assert.equal(selectCharacterActionForGuidedAiResponse({ ...allowed, integrityAction: 'refused' }), null);
+  assert.equal(selectCharacterActionForGuidedAiResponse({ ...allowed, safetyRoute: { target: 'blocked' } }), null);
+  assert.equal(selectCharacterActionForGuidedAiResponse({ ...allowed, effortRequired: true }), null);
+  assert.equal(selectCharacterActionForGuidedAiResponse({ ...allowed, retryRequired: true }), null);
+  assert.equal(selectCharacterActionForGuidedAiResponse({ ...allowed, characterAction: { protocol: 'wrong', action: 'cheer' } }), null);
+  assert.deepEqual(selectCharacterActionForGuidedAiResponse({ ...allowed, characterAction: { protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action: 'look_left' } }), {
+    protocol: CHARACTER_ACTION_EVENT_PROTOCOL,
+    action: 'look_left',
+  });
 });
