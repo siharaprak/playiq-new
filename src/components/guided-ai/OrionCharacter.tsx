@@ -187,9 +187,10 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
             let finger = 0;
             let thumb = arm.thumbBase.z;
             if (currentAction === 'wave' && arm.side > 0) {
-              shoulder += 1.85;
-              elbow += 0.36;
-              wrist += Math.sin(elapsed * 9) * 0.28;
+              const wave = Math.sin(elapsed * 9);
+              shoulder += 1.85 + wave * 0.32;
+              elbow += 0.36 + wave * 0.2;
+              wrist += wave * 0.35;
             } else if (currentAction === 'thumbs_up' && arm.side > 0) {
               shoulder += 1.48; elbow -= 0.24; finger = 0.72; thumb += 0.34;
             } else if (currentAction === 'cheer') {
@@ -496,7 +497,7 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
               <p className="text-xs leading-snug text-[var(--text-secondary)]" role="status" aria-live="polite">{status}</p>
             </>
           )}
-          {compact && captionsEnabled && <p className="text-[11px] leading-snug text-[var(--text-muted)]" aria-live="polite" aria-atomic="true">{caption}</p>}
+          {compact && captionsEnabled && <p className="text-[11px] leading-snug text-[var(--text-muted)]" aria-live="polite" aria-atomic="true">{caption}{reducedMotion && loaded && !textOnly ? ' Motion reduced to a still pose.' : ''}</p>}
         </div>
       </div>
       {compact ? (
