@@ -6,6 +6,7 @@ import type * as THREE from 'three';
 import {
   CHARACTER_ACTION_EVENT_NAME,
   CHARACTER_ACTION_EVENT_PROTOCOL,
+  CHARACTER_NEUTRAL_EVENT_NAME,
   parseCharacterActionEvent,
   type CharacterAction,
 } from '@/lib/orion/action-contract';
@@ -156,6 +157,7 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
     let resizeObserver: ResizeObserver | null = null;
     let pendingAction: CharacterAction | null = null;
     let currentAction: CharacterAction = 'idle';
+    let actionTimeout = 0;
     let actionStart = performance.now();
     let facingRear = false;
     let keyboardOpen = false;
@@ -241,6 +243,8 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
     redrawRef.current = requestRender;
 
     const applyAction = (action: CharacterAction) => {
+      window.clearTimeout(actionTimeout);
+      actionTimeout = 0;
       if (runtimeFailed) {
         setCaption('The 3D preview is unavailable. Orion’s static preview and chat remain available.');
         return;
@@ -271,6 +275,9 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
       }
       setCaption(captions[action]);
       requestRender();
+      if (action !== 'idle' && action !== 'turn_around' && action !== 'show_keyboard' && action !== 'stow_keyboard') {
+        actionTimeout = window.setTimeout(() => applyAction('idle'), 1800);
+      }
     };
 
     const onAction = (event: Event) => {
@@ -279,6 +286,8 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
       if (detail) applyAction(detail.action);
     };
     window.addEventListener(CHARACTER_ACTION_EVENT_NAME, onAction);
+    const onNeutral = () => applyAction('idle');
+    window.addEventListener(CHARACTER_NEUTRAL_EVENT_NAME, onNeutral);
 
     const fail = () => {
       if (disposed) return;
@@ -429,6 +438,8 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
     return () => {
       disposed = true;
       window.removeEventListener(CHARACTER_ACTION_EVENT_NAME, onAction);
+      window.removeEventListener(CHARACTER_NEUTRAL_EVENT_NAME, onNeutral);
+      window.clearTimeout(actionTimeout);
       window.removeEventListener('resize', onResize);
       media.removeEventListener('change', onMedia);
       canvas.removeEventListener('webglcontextlost', onContextLost);

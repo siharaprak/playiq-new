@@ -7,7 +7,7 @@ import { ModeSelector } from './ModeSelector';
 import { GuidedAiResponse } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
 import { OrionCharacter } from './OrionCharacter';
-import { CHARACTER_ACTION_EVENT_PROTOCOL, dispatchCharacterActionForGuidedAiResponse } from '@/lib/orion/action-contract';
+import { CHARACTER_ACTION_EVENT_PROTOCOL, syncCharacterWithGuidedAiResponse } from '@/lib/orion/action-contract';
 
 interface GuidedAIPanelProps {
   moduleNumber?: number;
@@ -200,7 +200,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       ...previous.filter((item) => !item.id.startsWith('orion-simulated-')),
       { id: `orion-simulated-${crypto.randomUUID()}`, role: 'model', content: data.response, response: data },
     ]);
-    dispatchCharacterActionForGuidedAiResponse(data);
+    syncCharacterWithGuidedAiResponse(data);
   };
 
   const resetTestChat = () => {
@@ -294,7 +294,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
 
       const data = json.data as GuidedAiResponseData;
-      dispatchCharacterActionForGuidedAiResponse(data);
+      syncCharacterWithGuidedAiResponse(data);
       
       setMessages(prev => prev.map(m => m.id === botMsgId ? {
         ...m,
@@ -385,7 +385,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
 
       const data = json.data as GuidedAiResponseData;
-      dispatchCharacterActionForGuidedAiResponse(data);
+      syncCharacterWithGuidedAiResponse(data);
       setMessages(prev => prev.map(m => m.id === botMsgId ? {
         ...m,
         content: data.response,
@@ -464,7 +464,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
           }
 
           const data = json.data as GuidedAiResponseData;
-          dispatchCharacterActionForGuidedAiResponse(data);
+          syncCharacterWithGuidedAiResponse(data);
           setMessages(prev => prev.map(m => m.id === botMsgId ? {
             ...m,
             content: data.response,

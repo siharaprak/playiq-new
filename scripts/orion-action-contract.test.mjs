@@ -4,10 +4,12 @@ import {
   CHARACTER_ACTIONS,
   CHARACTER_ACTION_EVENT_NAME,
   CHARACTER_ACTION_EVENT_PROTOCOL,
+  CHARACTER_NEUTRAL_EVENT_NAME,
   dispatchCharacterActionForGuidedAiResponse,
   parseCharacterActionForGuidedAiResponse,
   parseCharacterActionEvent,
   selectCharacterActionForGuidedAiResponse,
+  syncCharacterWithGuidedAiResponse,
 } from '../src/lib/orion/action-contract.ts';
 
 test('accepts every exact action envelope from the allowlist', () => {
@@ -77,4 +79,19 @@ test('validated allowed replies get a visual action when metadata is omitted', (
     protocol: CHARACTER_ACTION_EVENT_PROTOCOL,
     action: 'look_left',
   });
+});
+
+test('a reply without a permitted action clears the previous pose without a gesture', () => {
+  const target = new EventTarget();
+  const actions = [];
+  let neutralCount = 0;
+  target.addEventListener(CHARACTER_ACTION_EVENT_NAME, (event) => actions.push(event.detail.action));
+  target.addEventListener(CHARACTER_NEUTRAL_EVENT_NAME, () => { neutralCount += 1; });
+  const characterAction = { protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action: 'wave' };
+
+  assert.equal(syncCharacterWithGuidedAiResponse({ integrityAction: 'allowed', characterAction }, target), true);
+  assert.equal(syncCharacterWithGuidedAiResponse({ integrityAction: 'refused', characterAction }, target), false);
+  assert.equal(syncCharacterWithGuidedAiResponse({ integrityAction: 'allowed', safetyRoute: { target: 'blocked' } }, target), false);
+  assert.deepEqual(actions, ['wave']);
+  assert.equal(neutralCount, 2);
 });

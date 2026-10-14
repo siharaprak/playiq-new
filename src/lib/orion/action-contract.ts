@@ -1,4 +1,5 @@
 export const CHARACTER_ACTION_EVENT_NAME = 'sienvi:character-action' as const;
+export const CHARACTER_NEUTRAL_EVENT_NAME = 'sienvi:character-neutral' as const;
 export const CHARACTER_ACTION_EVENT_PROTOCOL = 'sienvi.character-action.v1' as const;
 
 export const CHARACTER_ACTIONS = [
@@ -97,4 +98,14 @@ export function dispatchCharacterActionForGuidedAiResponse(
   if (!detail || !target) return false;
   target.dispatchEvent(new CustomEvent(CHARACTER_ACTION_EVENT_NAME, { detail }));
   return true;
+}
+
+/** Clears a prior pose when the reply has no permitted visual action. */
+export function syncCharacterWithGuidedAiResponse(
+  data: Parameters<typeof parseCharacterActionForGuidedAiResponse>[0],
+  target: EventTarget | null = typeof window === 'undefined' ? null : window,
+): boolean {
+  const dispatched = dispatchCharacterActionForGuidedAiResponse(data, target);
+  if (!dispatched && target) target.dispatchEvent(new Event(CHARACTER_NEUTRAL_EVENT_NAME));
+  return dispatched;
 }
