@@ -1,15 +1,40 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import type * as THREE from 'three';
 import {
+  CHARACTER_ACTIONS,
   CHARACTER_ACTION_EVENT_NAME,
   CHARACTER_ACTION_EVENT_PROTOCOL,
   CHARACTER_NEUTRAL_EVENT_NAME,
   parseCharacterActionEvent,
   type CharacterAction,
 } from '@/lib/orion/action-contract';
+import {
+  POSES,
+  applyHover,
+  applyIdleLife,
+  cloneFrame,
+  dampFrame,
+  evaluatePose,
+  neutralFrame,
+  shouldInterrupt,
+  type LocalPose,
+  type OrionPose,
+  type PoseFrame,
+} from '@/lib/orion/poses';
+import { drawOrionFace, faceKey } from '@/lib/orion/face';
+import {
+  ORION_LOCAL_EVENT_NAME,
+  DEFAULT_ORION_PREFERENCES,
+  greetingFor,
+  loadOrionPreferences,
+  parseOrionLocalEvent,
+  pickOrionLine,
+  saveOrionPreferences,
+  type OrionPreferences,
+} from '@/lib/orion/local-events';
+import { loadOrionAssets } from '@/lib/orion/scene-cache';
 
 type ArmRig = {
   side: -1 | 1;
@@ -18,14 +43,16 @@ type ArmRig = {
   wrist: THREE.Object3D;
   fingers: THREE.Object3D[];
   thumb: THREE.Object3D;
-  shoulderBase: THREE.Euler;
-  elbowBase: THREE.Euler;
-  wristBase: THREE.Euler;
-  thumbBase: THREE.Euler;
+  shoulderBase: number;
+  elbowBase: number;
+  wristBase: number;
+  thumbBase: number;
 };
 
+type AntennaRig = { side: -1 | 1; pivot: THREE.Object3D; base: number };
+type PodRig = { pivot: THREE.Object3D; baseY: number; baseX: number };
+
 type SceneState = {
-  three: typeof import('three');
   renderer: THREE.WebGLRenderer;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
@@ -34,92 +61,33 @@ type SceneState = {
   keyboardClosed: number;
   keyboardOpen: number;
   arms: ArmRig[];
-  face: THREE.Mesh;
-  faceMaterial: THREE.MeshStandardMaterial;
-  concernedFaceMaterial: THREE.MeshStandardMaterial;
-  concernedFaceTexture: THREE.CanvasTexture;
+  antennae: AntennaRig[];
+  pods: PodRig[];
+  thrusterMaterials: { material: THREE.MeshStandardMaterial; base: number }[];
+  faceCanvas: HTMLCanvasElement;
+  faceContext: CanvasRenderingContext2D;
+  faceTexture: THREE.CanvasTexture;
+  ownedMaterials: THREE.Material[];
+  lastFaceKey: string;
 };
 
-const MODEL = '/character-assets/orion/orion-reference-v001.glb';
-const POSTER = '/character-assets/orion/orion-reference-v001-hero.png';
-
-const captions: Record<CharacterAction, string> = {
-  idle: 'Orion is ready.',
-  wave: 'Orion waves hello.',
-  thumbs_up: 'Orion gives a thumbs up.',
-  cheer: 'Orion celebrates with you.',
-  concerned: 'Orion acknowledges that something may be unclear.',
-  turn_around: 'Orion turns to show the reversible rear design.',
-  show_keyboard: 'Orion shows the rear display and fold-down keyboard.',
-  stow_keyboard: 'Orion stows the keyboard.',
-  look_left: 'Orion looks left.',
-  look_right: 'Orion looks right.',
-  look_up: 'Orion looks up.',
-  look_down: 'Orion looks down.',
+type EngineApi = {
+  request: (pose: OrionPose) => void;
+  poke: () => void;
+  redraw: () => void;
 };
 
-const previewMovements: ReadonlyArray<{ action: CharacterAction; label: string }> = [
-  { action: 'wave', label: 'Wave' },
-  { action: 'thumbs_up', label: 'Thumbs up' },
-  { action: 'cheer', label: 'Cheer' },
-  { action: 'concerned', label: 'Concerned' },
-  { action: 'turn_around', label: 'Turn around' },
-  { action: 'stow_keyboard', label: 'Stow keyboard' },
-  { action: 'look_left', label: 'Look left' },
-  { action: 'look_right', label: 'Look right' },
-  { action: 'look_up', label: 'Look up' },
-  { action: 'look_down', label: 'Look down' },
+const AVATAR_256 = '/character-assets/orion/orion-avatar-256.webp';
+const SLEEP_AFTER_MS = 120_000;
+const GAZE_TIMEOUT_MS = 2_500;
+const FACE_TEXTURE_SIZE = 512;
+const POKE_REACTIONS: readonly LocalPose[] = ['hop', 'giggle', 'wink', 'spin'];
+
+const TEST_POSES: ReadonlyArray<OrionPose> = [
+  'wave', 'thumbs_up', 'cheer', 'concerned', 'look_up', 'look_left', 'look_right', 'look_down',
+  'turn_around', 'show_keyboard', 'stow_keyboard', 'think', 'encourage', 'proud', 'hop', 'spin',
+  'wink', 'giggle', 'barrel_roll', 'sleepy', 'wake', 'idle',
 ];
-
-function makeConcernedFaceTexture(
-  three: typeof import('three'),
-  source: THREE.Texture,
-): THREE.CanvasTexture {
-  const image = source.image as CanvasImageSource & { width: number; height: number };
-  if (!image?.width || !image?.height) throw new Error('Orion face texture is unavailable.');
-
-  const canvas = document.createElement('canvas');
-  canvas.width = image.width;
-  canvas.height = image.height;
-  const context = canvas.getContext('2d');
-  if (!context) throw new Error('Orion face canvas is unavailable.');
-
-  context.drawImage(image, 0, 0, canvas.width, canvas.height);
-  const background = context.getImageData(Math.round(canvas.width * 560 / 768), 0, 1, canvas.height).data;
-  context.scale(canvas.width / 768, canvas.height / 768);
-
-  // Preserve the authored eyes and display, replacing only the smile and adding brows.
-  for (let y = 468; y < 658; y += 1) {
-    const index = Math.min(canvas.height - 1, Math.round(y * canvas.height / 768)) * 4;
-    context.fillStyle = `rgb(${background[index]}, ${background[index + 1]}, ${background[index + 2]})`;
-    context.fillRect(220, y, 328, 1);
-  }
-  context.strokeStyle = '#b7ff40';
-  context.lineWidth = 20;
-  context.lineCap = 'round';
-  context.beginPath();
-  context.moveTo(105, 83);
-  context.lineTo(286, 44);
-  context.moveTo(482, 44);
-  context.lineTo(663, 83);
-  context.stroke();
-
-  context.fillStyle = '#061507';
-  context.beginPath();
-  context.ellipse(384, 558, 42, 49, 0, 0, Math.PI * 2);
-  context.fill();
-  context.strokeStyle = '#e8f3d3';
-  context.lineWidth = 6;
-  context.beginPath();
-  context.ellipse(384, 558, 30, 37, 0, Math.PI * 1.12, Math.PI * 1.88);
-  context.stroke();
-
-  const texture = new three.CanvasTexture(canvas);
-  texture.colorSpace = three.SRGBColorSpace;
-  texture.flipY = false;
-  texture.needsUpdate = true;
-  return texture;
-}
 
 function sendLocalAction(action: CharacterAction) {
   if (typeof window === 'undefined') return;
@@ -127,20 +95,55 @@ function sendLocalAction(action: CharacterAction) {
   if (detail) window.dispatchEvent(new CustomEvent(CHARACTER_ACTION_EVENT_NAME, { detail }));
 }
 
-export function OrionCharacter({ compact = false }: { compact?: boolean }) {
-  const stageRef = useRef<HTMLDivElement>(null);
+export function OrionCharacter({
+  compact = false,
+  active = true,
+  enable3d = true,
+  studentName,
+}: {
+  compact?: boolean;
+  /** False while the surrounding panel is hidden; rendering pauses entirely. */
+  active?: boolean;
+  /** Server-controlled release gate for the draft 3D asset. */
+  enable3d?: boolean;
+  studentName?: string;
+}) {
+  const stageRef = useRef<HTMLButtonElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const reducedRef = useRef(true);
+  const engineRef = useRef<EngineApi | null>(null);
+  const movingRef = useRef(false);
   const textOnlyRef = useRef(false);
-  const reducedOverrideRef = useRef(false);
-  const redrawRef = useRef<() => void>(() => {});
-  const [reducedMotion, setReducedMotion] = useState(true);
-  const [captionsEnabled, setCaptionsEnabled] = useState(true);
-  const [textOnly, setTextOnly] = useState(false);
+  const activeRef = useRef(active);
+  const studentNameRef = useRef(studentName);
+
+  const [prefs, setPrefs] = useState<OrionPreferences>(DEFAULT_ORION_PREFERENCES);
+  const [systemReduced, setSystemReduced] = useState(true);
   const [loaded, setLoaded] = useState(false);
-  const [degraded, setDegraded] = useState(false);
-  const [status, setStatus] = useState('Loading Orion…');
-  const [caption, setCaption] = useState('Orion is ready.');
+  const [degraded, setDegraded] = useState(!enable3d);
+  const [mood, setMood] = useState<'loading' | 'ready' | 'thinking' | 'sleeping' | 'static'>(enable3d ? 'loading' : 'static');
+  const [caption, setCaption] = useState('');
+  const [captionId, setCaptionId] = useState(0);
+
+  const reducedMotion = prefs.reducedMotion ?? systemReduced;
+  const textOnly = prefs.textOnly;
+
+  // Preferences and the OS motion setting are read after mount to avoid hydration mismatches.
+  useEffect(() => {
+    setPrefs(loadOrionPreferences());
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setSystemReduced(media.matches);
+    const onMedia = (event: MediaQueryListEvent) => setSystemReduced(event.matches);
+    media.addEventListener('change', onMedia);
+    return () => media.removeEventListener('change', onMedia);
+  }, []);
+
+  useEffect(() => {
+    movingRef.current = !reducedMotion && !textOnly;
+    textOnlyRef.current = textOnly;
+    activeRef.current = active;
+    studentNameRef.current = studentName;
+    engineRef.current?.redraw();
+  }, [reducedMotion, textOnly, active, studentName]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -148,166 +151,321 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
     if (!canvas || !stage) return;
 
     let disposed = false;
-    let runtimeFailed = false;
     let raf = 0;
-    let dirty = true;
+    let expiryTimer = 0;
     let lastFrame = 0;
+    let lastRender = 0;
     let renderState: SceneState | null = null;
-    let renderer: THREE.WebGLRenderer | null = null;
     let resizeObserver: ResizeObserver | null = null;
-    let pendingAction: CharacterAction | null = null;
-    let currentAction: CharacterAction = 'idle';
-    let actionTimeout = 0;
-    let actionStart = performance.now();
-    let facingRear = false;
-    let keyboardOpen = false;
+    let lastCaption = '';
+    let wasActive = false;
+    let greeted = false;
+    let loadFailed = false;
 
-    const frame = (now: number) => {
+    const engine = {
+      pose: 'idle' as OrionPose,
+      poseStart: performance.now(),
+      queue: [] as OrionPose[],
+      thinking: false,
+      sleeping: false,
+      facingRear: false,
+      keyboardOpen: false,
+      current: neutralFrame() as PoseFrame,
+      facingAngle: 0,
+      keyboardAngle: 0,
+      gaze: null as { x: number; y: number } | null,
+      gazeAt: 0,
+      lastInteraction: performance.now(),
+      pokeTimes: [] as number[],
+      lastPokePose: '' as string,
+      lastPokeAt: 0,
+    };
+
+    const say = (line: string) => {
+      lastCaption = line;
+      setCaption(line);
+      setCaptionId((id) => id + 1);
+    };
+
+    const clearCaption = () => {
+      lastCaption = '';
+      setCaption('');
+      setCaptionId((id) => id + 1);
+    };
+
+    const syncMood = () => {
+      if (!renderState && !disposed && enable3d && !loadFailed) return;
+      setMood(engine.thinking ? 'thinking' : engine.sleeping ? 'sleeping' : renderState ? 'ready' : 'static');
+    };
+
+    const basePose = (): OrionPose => (engine.thinking ? 'think' : engine.sleeping ? 'sleepy' : 'idle');
+
+    const startPose = (pose: OrionPose, options: { quiet?: boolean } = {}) => {
+      const def = POSES[pose];
+      engine.pose = pose;
+      engine.poseStart = performance.now();
+      if (def.facing === 'front') engine.facingRear = false;
+      else if (def.facing === 'rear') engine.facingRear = true;
+      else if (def.facing === 'toggle') engine.facingRear = !engine.facingRear;
+      if (def.keyboard === 'open') engine.keyboardOpen = true;
+      else if (def.keyboard === 'closed') engine.keyboardOpen = false;
+      else if (def.keyboard === 'follow-facing') engine.keyboardOpen = engine.facingRear;
+      if (!options.quiet && pose !== 'idle') say(pickOrionLine(pose, lastCaption));
+      else if (pose === 'idle') clearCaption();
+      window.clearTimeout(expiryTimer);
+      if (def.durationMs !== null) expiryTimer = window.setTimeout(requestRender, def.durationMs + 20);
+      syncMood();
+      requestRender();
+    };
+
+    const request = (pose: OrionPose) => {
+      if (pose === 'sleepy') {
+        engine.sleeping = true;
+      } else if (engine.sleeping) {
+        engine.sleeping = false;
+      }
+      const elapsed = performance.now() - engine.poseStart;
+      if (shouldInterrupt(engine.pose, elapsed, pose)) {
+        startPose(pose);
+      } else if (!engine.queue.includes(pose)) {
+        engine.queue.push(pose);
+        if (engine.queue.length > 3) engine.queue.shift();
+      }
+    };
+
+    const advance = (now: number) => {
+      const def = POSES[engine.pose];
+      if (def.durationMs !== null && now - engine.poseStart >= def.durationMs) {
+        const next = engine.queue.shift() ?? basePose();
+        startPose(next, { quiet: next === 'think' || next === 'sleepy' ? false : next === 'idle' });
+      }
+      const base = basePose();
+      const idleish = engine.pose === 'idle' || engine.pose === 'think' || engine.pose === 'sleepy';
+      if (idleish && engine.pose !== base && POSES[engine.pose].durationMs === null) {
+        // Base state changed (thinking finished, woke up) while holding an idle pose.
+        startPose(base, { quiet: base === 'idle' });
+      }
+      if (
+        activeRef.current && !engine.thinking && !engine.sleeping && engine.pose === 'idle'
+        && now - engine.lastInteraction > SLEEP_AFTER_MS
+      ) {
+        engine.sleeping = true;
+        startPose('sleepy');
+      }
+    };
+
+    const wake = () => {
+      engine.lastInteraction = performance.now();
+      if (engine.sleeping) {
+        engine.sleeping = false;
+        engine.queue = [];
+        startPose('wake');
+      }
+    };
+
+    const applyToScene = (state: SceneState, frame: PoseFrame) => {
+      state.root.rotation.set(frame.pitch, engine.facingAngle + frame.yaw + frame.spinYaw, frame.roll + frame.spinRoll);
+      state.root.position.y = frame.lift;
+      state.keyboard.rotation.x = engine.keyboardAngle;
+
+      for (const armRig of state.arms) {
+        const target = armRig.side < 0 ? frame.armL : frame.armR;
+        armRig.shoulder.rotation.z = armRig.shoulderBase + armRig.side * target.shoulder;
+        armRig.elbow.rotation.z = armRig.elbowBase + armRig.side * target.elbow;
+        armRig.wrist.rotation.z = armRig.wristBase + armRig.side * target.wrist;
+        armRig.thumb.rotation.z = armRig.thumbBase + armRig.side * target.thumb;
+        for (const finger of armRig.fingers) finger.rotation.x = target.finger;
+      }
+      for (const antenna of state.antennae) {
+        const outward = frame.antennaSpread + (antenna.side < 0 ? frame.antennaL : frame.antennaR);
+        antenna.pivot.rotation.z = antenna.base - antenna.side * outward;
+      }
+      state.pods.forEach((pod, index) => {
+        const phase = index === 0 ? 1 : -1;
+        pod.pivot.position.y = pod.baseY + frame.podLift * (index === 0 ? 1 : 0.8) * 1.5;
+        pod.pivot.rotation.x = pod.baseX + frame.podTilt * phase;
+      });
+      for (const { material, base } of state.thrusterMaterials) {
+        material.emissiveIntensity = base * Math.max(0.2, frame.thruster);
+      }
+
+      const key = faceKey(frame.face);
+      if (key !== state.lastFaceKey) {
+        drawOrionFace(state.faceContext, FACE_TEXTURE_SIZE, frame.face);
+        state.faceTexture.needsUpdate = true;
+        state.lastFaceKey = key;
+      }
+    };
+
+    const frameLoop = (now: number) => {
       raf = 0;
+      if (disposed) return;
+      advance(now);
+
       const state = renderState;
-      if (!state || disposed) return;
+      const visible = activeRef.current && !textOnlyRef.current;
+      if (!state || !visible) { lastFrame = 0; return; }
 
-      const moving = !reducedRef.current && !textOnlyRef.current;
-      const delta = lastFrame ? Math.min((now - lastFrame) / 1000, 0.05) : 1 / 60;
+      const moving = movingRef.current;
+      const idleLike = engine.pose === 'idle' || engine.pose === 'sleepy';
+      // Idle animation runs at ~30fps to save battery; gestures run at full rate.
+      if (moving && idleLike && lastRender && now - lastRender < 32) {
+        raf = window.requestAnimationFrame(frameLoop);
+        return;
+      }
+      const dt = lastFrame ? Math.min((now - lastFrame) / 1000, 0.05) : 1 / 60;
       lastFrame = now;
-      if (!textOnlyRef.current && (moving || dirty)) {
-        const damp = (current: number, target: number, rate: number) =>
-          state.three.MathUtils.damp(current, target, rate, delta);
+      lastRender = now;
 
-        if (moving) {
-          const elapsed = (now - actionStart) / 1000;
-          const yaw = currentAction === 'look_left' ? 0.22 : currentAction === 'look_right' ? -0.22 : 0;
-          state.root.rotation.y = damp(state.root.rotation.y, (facingRear ? Math.PI : 0) + yaw, 5);
-          state.root.rotation.x = damp(state.root.rotation.x, currentAction === 'look_up' ? -0.08 : currentAction === 'look_down' ? 0.08 : 0, 5);
-          state.root.position.y = damp(state.root.position.y, Math.sin(now / 1000 * 2.1) * 0.025, 3.5);
-          state.keyboard.rotation.x = damp(state.keyboard.rotation.x, keyboardOpen ? state.keyboardOpen : state.keyboardClosed, 5);
+      const nowSeconds = now / 1000;
+      const target = evaluatePose(engine.pose, (now - engine.poseStart) / 1000, moving);
+      if (moving) {
+        const gazeActive = engine.gaze && now - engine.gazeAt < GAZE_TIMEOUT_MS ? engine.gaze : null;
+        if (engine.pose === 'idle') applyIdleLife(target, nowSeconds, gazeActive);
+        applyHover(target, nowSeconds, engine.pose === 'sleepy');
+      }
 
-          for (const arm of state.arms) {
-            let shoulder = arm.shoulderBase.z;
-            let elbow = arm.elbowBase.z;
-            let wrist = arm.wristBase.z;
-            let finger = 0;
-            let thumb = arm.thumbBase.z;
-            if (currentAction === 'wave' && arm.side > 0) {
-              const wave = Math.sin(elapsed * 9);
-              shoulder += 1.85 + wave * 0.32;
-              elbow += 0.36 + wave * 0.2;
-              wrist += wave * 0.35;
-            } else if (currentAction === 'thumbs_up' && arm.side > 0) {
-              shoulder += 1.48; elbow -= 0.24; finger = 0.72; thumb += 0.34;
-            } else if (currentAction === 'cheer') {
-              shoulder += arm.side * 2.2; elbow += arm.side * -0.12;
-            } else if (currentAction === 'concerned') {
-              shoulder += arm.side * 1.36; elbow += arm.side * -0.38; wrist += arm.side * 0.14;
-            }
-            arm.shoulder.rotation.z = damp(arm.shoulder.rotation.z, shoulder, 10);
-            arm.elbow.rotation.z = damp(arm.elbow.rotation.z, elbow, 10);
-            arm.wrist.rotation.z = damp(arm.wrist.rotation.z, wrist, 10);
-            arm.thumb.rotation.z = damp(arm.thumb.rotation.z, thumb, 10);
-            for (const item of arm.fingers) item.rotation.x = damp(item.rotation.x, finger, 10);
-          }
-        } else {
-          state.root.rotation.y = (facingRear ? Math.PI : 0)
-            + (currentAction === 'look_left' ? 0.22 : currentAction === 'look_right' ? -0.22 : 0);
-          state.root.rotation.x = currentAction === 'look_up' ? -0.08 : currentAction === 'look_down' ? 0.08 : 0;
-          state.root.position.y = 0;
-          state.keyboard.rotation.x = keyboardOpen ? state.keyboardOpen : state.keyboardClosed;
-          for (const arm of state.arms) {
-            arm.shoulder.rotation.z = arm.shoulderBase.z
-              + (currentAction === 'wave' && arm.side > 0 ? 1.85 : 0)
-              + (currentAction === 'thumbs_up' && arm.side > 0 ? 1.48 : 0)
-              + (currentAction === 'cheer' ? arm.side * 2.2 : 0)
-              + (currentAction === 'concerned' ? arm.side * 1.36 : 0);
-            arm.elbow.rotation.z = arm.elbowBase.z
-              + (currentAction === 'wave' && arm.side > 0 ? 0.36 : 0)
-              + (currentAction === 'thumbs_up' && arm.side > 0 ? -0.24 : 0)
-              + (currentAction === 'cheer' ? arm.side * -0.12 : 0)
-              + (currentAction === 'concerned' ? arm.side * -0.38 : 0);
-            arm.wrist.rotation.z = arm.wristBase.z
-              + (currentAction === 'wave' && arm.side > 0 ? 0.15 : 0)
-              + (currentAction === 'concerned' ? arm.side * 0.14 : 0);
-            arm.thumb.rotation.z = arm.thumbBase.z + (currentAction === 'thumbs_up' && arm.side > 0 ? 0.34 : 0);
-            for (const item of arm.fingers) item.rotation.x = currentAction === 'thumbs_up' && arm.side > 0 ? 0.72 : 0;
+      const facingTarget = engine.facingRear ? Math.PI : 0;
+      const keyboardTarget = engine.keyboardOpen ? state.keyboardOpen : state.keyboardClosed;
+      if (moving) {
+        engine.current = dampFrame(engine.current, target, dt);
+        const k = 1 - Math.exp(-5 * dt);
+        engine.facingAngle += (facingTarget - engine.facingAngle) * k;
+        engine.keyboardAngle += (keyboardTarget - engine.keyboardAngle) * k;
+      } else {
+        engine.current = cloneFrame(target);
+        engine.facingAngle = facingTarget;
+        engine.keyboardAngle = keyboardTarget;
+      }
+
+      applyToScene(state, engine.current);
+      state.renderer.render(state.scene, state.camera);
+      if (moving) raf = window.requestAnimationFrame(frameLoop);
+    };
+
+    function requestRender() {
+      if (!raf && !disposed) raf = window.requestAnimationFrame(frameLoop);
+    }
+
+    const poke = () => {
+      const now = performance.now();
+      engine.lastInteraction = now;
+      if (engine.sleeping) { wake(); return; }
+      engine.pokeTimes = [...engine.pokeTimes.filter((time) => now - time < 2_000), now];
+      if (engine.pokeTimes.length >= 5) {
+        engine.pokeTimes = [];
+        engine.lastPokeAt = now;
+        startPose('barrel_roll');
+        return;
+      }
+      if (now - engine.lastPokeAt < 350) return;
+      engine.lastPokeAt = now;
+      const options = POKE_REACTIONS.filter((pose) => pose !== engine.lastPokePose);
+      const pose = options[Math.floor(Math.random() * options.length)] ?? 'hop';
+      engine.lastPokePose = pose;
+      request(pose);
+    };
+
+    engineRef.current = {
+      request,
+      poke,
+      redraw: () => {
+        if (activeRef.current && !wasActive) {
+          engine.lastInteraction = performance.now();
+          if (!greeted) {
+            greeted = true;
+            say(greetingFor(studentNameRef.current));
+            if (shouldInterrupt(engine.pose, performance.now() - engine.poseStart, 'wave')) startPose('wave', { quiet: true });
           }
         }
-        state.renderer.render(state.scene, state.camera);
-      }
-      dirty = false;
-      if (moving) raf = window.requestAnimationFrame(frame);
-    };
-
-    const requestRender = () => {
-      dirty = true;
-      if (!raf && renderState && !disposed) raf = window.requestAnimationFrame(frame);
-    };
-    redrawRef.current = requestRender;
-
-    const applyAction = (action: CharacterAction) => {
-      window.clearTimeout(actionTimeout);
-      actionTimeout = 0;
-      if (runtimeFailed) {
-        setCaption('The 3D preview is unavailable. Orion’s static preview and chat remain available.');
-        return;
-      }
-      if (textOnlyRef.current) {
-        setCaption('Text-only mode is on. Orion stays still while chat remains available.');
-        return;
-      }
-      if (!renderState) {
-        pendingAction = action;
-        setCaption('Orion’s 3D preview is loading. Chat remains available.');
-        return;
-      }
-      currentAction = action;
-      actionStart = performance.now();
-      renderState.face.material = action === 'concerned'
-        ? renderState.concernedFaceMaterial
-        : renderState.faceMaterial;
-      if (action === 'turn_around') {
-        facingRear = !facingRear;
-        keyboardOpen = facingRear;
-      } else if (action === 'show_keyboard') {
-        facingRear = true; keyboardOpen = true;
-      } else if (action === 'stow_keyboard') {
-        keyboardOpen = false;
-      } else if (action === 'idle') {
-        facingRear = false; keyboardOpen = false;
-      }
-      setCaption(captions[action]);
-      requestRender();
-      if (action !== 'idle' && action !== 'turn_around' && action !== 'show_keyboard' && action !== 'stow_keyboard') {
-        actionTimeout = window.setTimeout(() => applyAction('idle'), 1800);
-      }
+        wasActive = activeRef.current;
+        requestRender();
+      },
     };
 
     const onAction = (event: Event) => {
       if (!(event instanceof CustomEvent)) return;
       const detail = parseCharacterActionEvent(event.detail);
-      if (detail) applyAction(detail.action);
+      if (detail) request(detail.action);
     };
-    window.addEventListener(CHARACTER_ACTION_EVENT_NAME, onAction);
-    const onNeutral = () => applyAction('idle');
-    window.addEventListener(CHARACTER_NEUTRAL_EVENT_NAME, onNeutral);
+    const onNeutral = () => {
+      engine.queue = [];
+      clearCaption();
+      startPose(basePose(), { quiet: true });
+    };
+    const onLocal = (event: Event) => {
+      if (!(event instanceof CustomEvent)) return;
+      const detail = parseOrionLocalEvent(event.detail);
+      if (!detail) return;
+      engine.lastInteraction = performance.now();
+      if (detail.kind === 'thinking') {
+        engine.thinking = detail.on;
+        if (detail.on) {
+          engine.sleeping = false;
+          engine.queue = [];
+          startPose('think');
+        } else {
+          clearCaption();
+          if (engine.pose === 'think') {
+            startPose('idle', { quiet: true });
+          }
+        }
+        syncMood();
+        return;
+      }
+      request(detail.pose);
+    };
+    const onPointerMove = (event: PointerEvent) => {
+      const box = stage.getBoundingClientRect();
+      if (box.width <= 0) return;
+      const cx = box.left + box.width / 2;
+      const cy = box.top + box.height / 2;
+      const clampUnit = (value: number) => Math.max(-1, Math.min(1, value));
+      engine.gaze = {
+        x: clampUnit((event.clientX - cx) / (window.innerWidth * 0.35)),
+        y: clampUnit((event.clientY - cy) / (window.innerHeight * 0.35)),
+      };
+      engine.gazeAt = performance.now();
+      if (!engine.sleeping) {
+        engine.lastInteraction = engine.gazeAt;
+      }
+    };
+    const onStagePointerEnter = () => {
+      if (engine.sleeping) wake();
+    };
+    const onKeyDown = () => {
+      if (engine.sleeping) wake();
+    };
 
-    const fail = () => {
+    window.addEventListener(CHARACTER_ACTION_EVENT_NAME, onAction);
+    window.addEventListener(CHARACTER_NEUTRAL_EVENT_NAME, onNeutral);
+    window.addEventListener(ORION_LOCAL_EVENT_NAME, onLocal);
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    window.addEventListener('keydown', onKeyDown);
+    stage.addEventListener('pointerenter', onStagePointerEnter);
+    const sleepCheck = window.setInterval(requestRender, 5_000);
+
+    const fail = (error?: unknown) => {
       if (disposed) return;
-      runtimeFailed = true;
-      renderState?.concernedFaceMaterial.dispose();
-      renderState?.concernedFaceTexture.dispose();
-      renderState = null;
-      renderer?.dispose();
-      renderer = null;
+      if (error && process.env.NODE_ENV === 'development') console.error('Orion 3D preview failed to start:', error);
+      loadFailed = true;
+      disposeScene();
       setLoaded(false);
       setDegraded(true);
-      setStatus('Animation unavailable');
-      setCaption('Orion’s picture is shown. Chat remains available.');
-      if (raf) window.cancelAnimationFrame(raf);
-      raf = 0;
+      setMood('static');
+    };
+
+    const disposeScene = () => {
+      if (!renderState) return;
+      renderState.faceTexture.dispose();
+      for (const material of renderState.ownedMaterials) material.dispose();
+      renderState.renderer.dispose();
+      renderState = null;
     };
 
     const onResize = () => {
       if (!renderState) return;
-      const box = stage.getBoundingClientRect();
+      const box = canvas.getBoundingClientRect();
       if (box.width <= 0 || box.height <= 0) return;
       renderState.renderer.setSize(box.width, box.height, false);
       renderState.camera.aspect = box.width / box.height;
@@ -317,29 +475,14 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
     const onContextLost = (event: Event) => { event.preventDefault(); fail(); };
     canvas.addEventListener('webglcontextlost', onContextLost);
 
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    reducedRef.current = media.matches;
-    setReducedMotion(media.matches);
-    const onMedia = (event: MediaQueryListEvent) => {
-      if (reducedOverrideRef.current) return;
-      reducedRef.current = event.matches;
-      setReducedMotion(event.matches);
-      requestRender();
-    };
-    media.addEventListener('change', onMedia);
-
     const start = async () => {
       try {
-        const [three, { GLTFLoader }] = await Promise.all([
-          import('three'),
-          import('three/addons/loaders/GLTFLoader.js'),
-        ]);
+        const { three, gltf } = await loadOrionAssets();
         if (disposed) return;
-        const activeRenderer = new three.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
-        renderer = activeRenderer;
-        activeRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-        activeRenderer.outputColorSpace = three.SRGBColorSpace;
-        activeRenderer.toneMapping = three.ACESFilmicToneMapping;
+        const renderer = new three.WebGLRenderer({ canvas, alpha: true, antialias: true, powerPreference: 'low-power' });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+        renderer.outputColorSpace = three.SRGBColorSpace;
+        renderer.toneMapping = three.ACESFilmicToneMapping;
 
         const scene = new three.Scene();
         scene.background = null;
@@ -354,10 +497,9 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
         scene.add(rimLight);
 
         const root = new three.Group();
+        root.rotation.order = 'YXZ';
         scene.add(root);
-        const gltf = await new GLTFLoader().loadAsync(MODEL);
-        if (disposed) { activeRenderer.dispose(); return; }
-        const model = gltf.scene;
+        const model = gltf.scene.clone(true);
         const box = new three.Box3().setFromObject(model);
         if (box.isEmpty()) throw new Error('Orion GLB has no visible geometry.');
         const center = box.getCenter(new three.Vector3());
@@ -378,148 +520,219 @@ export function OrionCharacter({ compact = false }: { compact?: boolean }) {
           const elbow = pivot(prefix + '_Elbow_PIVOT_export');
           const wrist = pivot(prefix + '_Wrist_PIVOT_export');
           const thumb = pivot(prefix + '_Thumb_PIVOT_export');
+          const fingers = [0, 1, 2].map((index) => pivot(prefix + '_Finger_' + index + '_PIVOT_export'));
+          for (const finger of fingers) finger.rotation.x = 0;
           return {
-            side, shoulder, elbow, wrist, thumb,
-            fingers: [0, 1, 2].map((index) => pivot(prefix + '_Finger_' + index + '_PIVOT_export')),
-            shoulderBase: shoulder.rotation.clone(),
-            elbowBase: elbow.rotation.clone(),
-            wristBase: wrist.rotation.clone(),
-            thumbBase: thumb.rotation.clone(),
+            side, shoulder, elbow, wrist, thumb, fingers,
+            shoulderBase: shoulder.rotation.z,
+            elbowBase: elbow.rotation.z,
+            wristBase: wrist.rotation.z,
+            thumbBase: thumb.rotation.z,
           };
         };
+        const makeAntenna = (side: -1 | 1): AntennaRig => {
+          const antennaPivot = pivot((side < 0 ? 'L' : 'R') + '_Antenna_PIVOT_export');
+          return { side, pivot: antennaPivot, base: antennaPivot.rotation.z };
+        };
+        const makePod = (side: -1 | 1): PodRig => {
+          const podPivot = pivot((side < 0 ? 'L' : 'R') + '_HoverPod_PIVOT_export');
+          return { pivot: podPivot, baseY: podPivot.position.y, baseX: podPivot.rotation.x };
+        };
+
+        const ownedMaterials: THREE.Material[] = [];
+        const thrusterClones = new Map<THREE.Material, THREE.MeshStandardMaterial>();
+        model.traverse((object) => {
+          if (!(object instanceof three.Mesh) || Array.isArray(object.material)) return;
+          const material = object.material;
+          if (!(material instanceof three.MeshStandardMaterial) || material.name !== 'Thruster plasma core') return;
+          let clone = thrusterClones.get(material);
+          if (!clone) {
+            clone = material.clone();
+            thrusterClones.set(material, clone);
+            ownedMaterials.push(clone);
+          }
+          object.material = clone;
+        });
+
         const keyboard = pivot('Keyboard_Hinge_PIVOT_export');
         const face = pivot(three.PropertyBinding.sanitizeNodeName('Face | curved emissive display_export'));
         if (!(face instanceof three.Mesh) || Array.isArray(face.material) || !(face.material instanceof three.MeshStandardMaterial)) {
           throw new Error('Orion face material is unavailable.');
         }
-        const faceMaterial = face.material;
-        const sourceTexture = faceMaterial.emissiveMap ?? faceMaterial.map;
-        if (!sourceTexture) throw new Error('Orion face texture is unavailable.');
-        const concernedFaceTexture = makeConcernedFaceTexture(three, sourceTexture);
-        const concernedFaceMaterial = faceMaterial.clone();
-        concernedFaceMaterial.emissiveMap = concernedFaceTexture;
-        concernedFaceMaterial.needsUpdate = true;
-        const arms = [makeArm(-1), makeArm(1)];
-        for (const arm of arms) for (const finger of arm.fingers) finger.rotation.x = 0;
+        const faceCanvas = document.createElement('canvas');
+        faceCanvas.width = FACE_TEXTURE_SIZE;
+        faceCanvas.height = FACE_TEXTURE_SIZE;
+        const faceContext = faceCanvas.getContext('2d');
+        if (!faceContext) throw new Error('Orion face canvas is unavailable.');
+        const faceTexture = new three.CanvasTexture(faceCanvas);
+        faceTexture.colorSpace = three.SRGBColorSpace;
+        faceTexture.flipY = false;
+        const faceMaterial = face.material.clone();
+        faceMaterial.emissiveMap = faceTexture;
+        faceMaterial.needsUpdate = true;
+        face.material = faceMaterial;
+        ownedMaterials.push(faceMaterial);
 
+        const keyboardClosed = keyboard.rotation.x;
         renderState = {
-          three, renderer: activeRenderer, scene, camera, root, keyboard,
-          keyboardClosed: keyboard.rotation.x,
-          keyboardOpen: keyboard.rotation.x - three.MathUtils.degToRad(88),
-          arms, face, faceMaterial, concernedFaceMaterial, concernedFaceTexture,
+          renderer, scene, camera, root, keyboard,
+          keyboardClosed,
+          keyboardOpen: keyboardClosed - three.MathUtils.degToRad(88),
+          arms: [makeArm(-1), makeArm(1)],
+          antennae: [makeAntenna(-1), makeAntenna(1)],
+          pods: [makePod(-1), makePod(1)],
+          thrusterMaterials: [...thrusterClones.values()].map((material) => ({ material, base: material.emissiveIntensity })),
+          faceCanvas, faceContext, faceTexture, ownedMaterials,
+          lastFaceKey: '',
         };
-        runtimeFailed = false;
+        engine.keyboardAngle = keyboardClosed;
+
         setLoaded(true);
         setDegraded(false);
-        setStatus('Ready to help');
-        setCaption('Orion is ready. Choose an action or continue the chat.');
+        syncMood();
 
         if (typeof ResizeObserver !== 'undefined') {
           resizeObserver = new ResizeObserver(onResize);
-          resizeObserver.observe(stage);
+          resizeObserver.observe(canvas);
         } else {
           window.addEventListener('resize', onResize);
         }
         onResize();
-        if (pendingAction) {
-          const next = pendingAction;
-          pendingAction = null;
-          applyAction(next);
-        } else {
-          requestRender();
-        }
+        requestRender();
       } catch (error) {
-        if (process.env.NODE_ENV === 'development') console.error('Orion 3D preview failed to start:', error);
-        fail();
+        fail(error);
       }
     };
-    void start();
+
+    if (enable3d) void start();
+    else setMood('static');
 
     return () => {
       disposed = true;
+      engineRef.current = null;
       window.removeEventListener(CHARACTER_ACTION_EVENT_NAME, onAction);
       window.removeEventListener(CHARACTER_NEUTRAL_EVENT_NAME, onNeutral);
-      window.clearTimeout(actionTimeout);
+      window.removeEventListener(ORION_LOCAL_EVENT_NAME, onLocal);
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('keydown', onKeyDown);
+      stage.removeEventListener('pointerenter', onStagePointerEnter);
       window.removeEventListener('resize', onResize);
-      media.removeEventListener('change', onMedia);
+      window.clearInterval(sleepCheck);
+      window.clearTimeout(expiryTimer);
       canvas.removeEventListener('webglcontextlost', onContextLost);
       resizeObserver?.disconnect();
       if (raf) window.cancelAnimationFrame(raf);
-      renderState?.concernedFaceMaterial.dispose();
-      renderState?.concernedFaceTexture.dispose();
-      renderer?.dispose();
-      redrawRef.current = () => {};
+      disposeScene();
     };
-  }, []);
+  }, [enable3d]);
 
-  const changeReducedMotion = (enabled: boolean) => {
-    reducedOverrideRef.current = true;
-    reducedRef.current = enabled;
-    setReducedMotion(enabled);
-    redrawRef.current();
-  };
-  const changeTextOnly = (enabled: boolean) => {
-    textOnlyRef.current = enabled;
-    setTextOnly(enabled);
-    setCaption(enabled
-      ? 'Text-only mode is on. Orion stays still while chat remains available.'
-      : 'Orion’s 3D preview is visible; chat remains available.');
-    redrawRef.current();
+  // Greets on first activation and resumes rendering whenever the panel opens.
+  useEffect(() => {
+    engineRef.current?.redraw();
+  }, [active, loaded]);
+
+  const updatePrefs = (next: Partial<OrionPreferences>) => {
+    setPrefs((previous) => {
+      const merged = { ...previous, ...next };
+      saveOrionPreferences(merged);
+      return merged;
+    });
   };
 
-  const controls = (
-    <>
-      <div className="mt-2 grid grid-cols-2 gap-2">
-        <button type="button" onClick={() => sendLocalAction('show_keyboard')} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-2 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">View keyboard</button>
-        <button type="button" onClick={() => sendLocalAction('idle')} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-2 text-xs font-medium text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">Front view</button>
-      </div>
-      {process.env.NODE_ENV === 'development' && !compact && (
-        <details className="mt-2 text-xs text-[var(--text-secondary)]">
-          <summary className="cursor-pointer rounded-md px-1 py-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Test movements</summary>
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            {previewMovements.map(({ action, label }) => (
-              <button key={action} type="button" onClick={() => sendLocalAction(action)} disabled={textOnly} className="rounded-md border border-[var(--glass-border)] px-2 py-1.5 text-left text-xs text-[var(--text-primary)] hover:border-[var(--neon-cyan)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:opacity-50">{label}</button>
-            ))}
-          </div>
-        </details>
-      )}
-      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 border-t border-[var(--glass-border)] pt-2 text-[10px] text-[var(--text-secondary)]">
-        <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={reducedMotion} onChange={(event) => changeReducedMotion(event.currentTarget.checked)} className="accent-cyan-400" />Reduced motion</label>
-        <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={captionsEnabled} onChange={(event) => setCaptionsEnabled(event.currentTarget.checked)} className="accent-cyan-400" />Captions</label>
-        <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={textOnly} onChange={(event) => changeTextOnly(event.currentTarget.checked)} className="accent-cyan-400" />Text-only</label>
-      </div>
-    </>
+  const status = {
+    loading: 'Warming up thrusters…',
+    ready: 'Ready to help',
+    thinking: 'Thinking…',
+    sleeping: 'Napping — poke to wake',
+    static: 'Ready to help',
+  }[mood];
+
+  const showCanvas = loaded && !degraded && !textOnly;
+  const stageSize = compact ? 'h-[140px] w-[140px]' : 'h-36 w-32';
+
+  const settings = (
+    <div className="flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-[var(--text-secondary)]">
+      <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={reducedMotion} onChange={(event) => updatePrefs({ reducedMotion: event.currentTarget.checked })} className="accent-cyan-400" />Reduced motion</label>
+      <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={prefs.captions} onChange={(event) => updatePrefs({ captions: event.currentTarget.checked })} className="accent-cyan-400" />Speech bubbles</label>
+      <label className="inline-flex items-center gap-1.5"><input type="checkbox" checked={textOnly} onChange={(event) => updatePrefs({ textOnly: event.currentTarget.checked })} className="accent-cyan-400" />Text-only</label>
+    </div>
   );
 
   return (
-    <section className={compact ? 'border-b border-[var(--glass-border)] px-1 pb-2' : 'mb-4 rounded-xl border border-[var(--neon-cyan)]/20 bg-[var(--space-deep)]/60 p-3'} aria-label="Orion character preview">
+    <section
+      className={compact ? 'border-b border-[var(--glass-border)] px-1 pb-2' : 'mb-4 rounded-xl border border-[var(--neon-cyan)]/20 bg-[var(--space-deep)]/60 p-3'}
+      aria-label="Orion, your study buddy"
+    >
       <div className="flex items-center gap-3">
-        <div ref={stageRef} className={`relative shrink-0 overflow-hidden rounded-lg border border-[var(--glass-border)] bg-[radial-gradient(circle_at_50%_40%,rgba(0,200,255,0.12),transparent_72%)] ${compact ? 'h-24 w-24' : 'h-28 w-24'}`}>
-          <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" hidden={!loaded || degraded || textOnly} />
-          <Image src={POSTER} alt="Orion character illustration" fill sizes="96px" className="object-contain" hidden={(loaded && !degraded) || textOnly} />
-          {textOnly && <div className="absolute inset-0 flex items-center justify-center p-3 text-center text-xs text-[var(--text-secondary)]">Text-only mode<br />Chat remains available.</div>}
-        </div>
-        <div className="min-w-0 flex-1 space-y-1">
-          {compact ? (
-            <p className="text-sm font-semibold text-[var(--text-primary)]" role="status" aria-live="polite">{status}</p>
-          ) : (
-            <>
-              <h4 className="text-sm font-bold text-[var(--text-primary)]">Orion</h4>
-              <p className="text-xs leading-snug text-[var(--text-secondary)]" role="status" aria-live="polite">{status}</p>
-            </>
+        <button
+          ref={stageRef}
+          type="button"
+          onClick={() => engineRef.current?.poke()}
+          disabled={textOnly}
+          aria-label="Poke Orion"
+          title="Poke me!"
+          className={`orion-stage group relative shrink-0 overflow-hidden rounded-xl border border-[var(--glass-border)] bg-[radial-gradient(circle_at_50%_40%,rgba(0,200,255,0.16),transparent_72%)] transition-[border-color,box-shadow] duration-300 hover:border-[var(--neon-cyan)]/60 hover:shadow-[0_0_18px_rgba(0,200,255,0.25)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)] disabled:cursor-default ${stageSize} ${mood === 'thinking' ? 'orion-stage-thinking' : ''}`}
+        >
+          <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-hidden="true" hidden={!showCanvas} />
+          {!showCanvas && !textOnly && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={AVATAR_256} alt="" aria-hidden="true" className={`absolute inset-0 h-full w-full object-contain p-1 ${mood === 'loading' ? 'animate-pulse' : ''}`} />
           )}
-          {compact && captionsEnabled && <p className="text-[11px] leading-snug text-[var(--text-muted)]" aria-live="polite" aria-atomic="true">{caption}{reducedMotion && loaded && !textOnly ? ' Motion reduced to a still pose.' : ''}</p>}
+          {textOnly && <span className="absolute inset-0 flex items-center justify-center p-3 text-center text-xs text-[var(--text-secondary)]">Text-only mode</span>}
+        </button>
+
+        <div className="min-w-0 flex-1 space-y-1.5">
+          <div className="flex items-center gap-1.5">
+            {!compact && <h4 className="text-sm font-bold text-[var(--text-primary)]">Orion</h4>}
+            <span
+              className={`h-1.5 w-1.5 rounded-full ${mood === 'thinking' ? 'bg-[var(--neon-cyan)] animate-pulse' : mood === 'sleeping' ? 'bg-amber-300' : 'bg-[var(--neon-green)]'}`}
+              aria-hidden="true"
+            />
+            <p className="text-xs font-semibold text-[var(--text-secondary)]" role="status" aria-live="polite">{status}</p>
+          </div>
+          {prefs.captions && caption && (
+            <p
+              key={captionId}
+              className="orion-bubble relative rounded-xl rounded-tl-sm border border-[var(--neon-cyan)]/25 bg-[rgba(0,200,255,0.08)] px-2.5 py-1.5 text-xs leading-snug text-[var(--text-primary)]"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              {caption}
+            </p>
+          )}
         </div>
       </div>
-      {compact ? (
-        <details className="mt-2 text-xs text-[var(--text-secondary)]">
-          <summary className="cursor-pointer rounded-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Orion options</summary>
-          <div className="mt-2 rounded-lg border border-[var(--glass-border)] bg-[var(--space-deep)] p-2">
-            {controls}
-          </div>
-        </details>
-      ) : controls}
-      {!compact && captionsEnabled && <p className="mt-1 text-[10px] leading-snug text-[var(--text-muted)]" aria-live="polite" aria-atomic="true">Caption: {caption}</p>}
+
+      <details className="mt-2 text-xs text-[var(--text-secondary)]">
+        <summary className="cursor-pointer rounded-md px-1 text-[10px] uppercase tracking-wider focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">⚙️ Orion settings</summary>
+        <div className="custom-scrollbar mt-2 max-h-[min(11rem,30vh)] space-y-2 overflow-y-auto overscroll-contain rounded-lg border border-[var(--glass-border)] bg-[var(--space-deep)] p-2">
+          {settings}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="border-t border-[var(--glass-border)] pt-2">
+              <p className="mb-1 text-[10px] uppercase tracking-wider text-[var(--text-muted)]">Test movements (dev only)</p>
+              <div className="grid grid-cols-3 gap-1">
+                {TEST_POSES.map((pose) => (
+                  <button
+                    key={pose}
+                    type="button"
+                    onClick={() => {
+                      // AI-allowlisted actions go through the real contract; local poses go straight to the engine.
+                      if ((CHARACTER_ACTIONS as readonly string[]).includes(pose)) {
+                        sendLocalAction(pose as CharacterAction);
+                      } else {
+                        engineRef.current?.request(pose);
+                      }
+                    }}
+                    className="rounded border border-[var(--glass-border)] px-1 py-1 text-left text-[10px] text-[var(--text-primary)] hover:border-[var(--neon-cyan)]"
+                  >
+                    {pose}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </details>
     </section>
   );
 }

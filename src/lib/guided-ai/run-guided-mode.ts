@@ -27,7 +27,7 @@ import { GoogleGenAI } from '@google/genai';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import type { GuidedAiRequest, GuidedAiResponseData, LearnYourWayPreferences, HintLevel } from './types';
 import { GuidedAiResponseDataSchema, LessonRescueDataSchema, ConfusionType } from './types';
-import { applyModeIntegrityRules, buildSafeRefusal, enforceQuizAttemptEffort, buildEffortPrompt } from './integrity';
+import { applyModeIntegrityRules, buildSafeRefusal, enforceQuizAttemptEffort, buildEffortPrompt, classifyGuidedAiRequest } from './integrity';
 import { buildGuidedAiContext } from './context';
 import { buildGuidedAiSystemPrompt, buildGuidedAiUserPrompt } from './prompts';
 import { CHARACTER_ACTION_EVENT_PROTOCOL, CHARACTER_ACTIONS, selectCharacterActionForGuidedAiResponse } from '../orion/action-contract';
@@ -515,6 +515,9 @@ export async function runGuidedMode(
     }
 
     result.characterAction = selectCharacterActionForGuidedAiResponse(result) ?? undefined;
+    if (result.characterAction?.action === 'wave' && classifyGuidedAiRequest(input.message) !== 'safe') {
+      result.characterAction = undefined;
+    }
     return result;
   } catch (err) {
     console.error('[runGuidedMode] Gemini call failed:', err instanceof Error ? err.message : err);

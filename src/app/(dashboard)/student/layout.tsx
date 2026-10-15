@@ -44,6 +44,11 @@ export default async function StudentLayout({ children }: { children: React.Reac
 
   const showOrion = assessmentCompleted || isAdmin;
 
+  // The 3D Orion asset is still a draft (see public/character-assets/orion/asset-manifest.json).
+  // ORION_3D_MODE: 'admin' (prod default) | 'all' (dev default / everyone) | 'off' (static avatar for everyone).
+  const orion3dMode = process.env.ORION_3D_MODE ?? (process.env.NODE_ENV === 'development' ? 'all' : 'admin');
+  const orion3d = orion3dMode === 'all' || (orion3dMode === 'admin' && isAdmin);
+
   return (
     <>
       {children}
@@ -54,6 +59,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
           hasProgress={hasProgress}
           studentName={name}
           studentId={userId}
+          orion3d={orion3d}
         />
       )}
     </>

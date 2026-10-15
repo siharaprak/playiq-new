@@ -18,7 +18,8 @@ const allowedActions = new Set<string>(CHARACTER_ACTIONS);
 const defaultGuidedAiActions: Readonly<Record<string, CharacterAction>> = Object.freeze({
   chat: 'wave',
   explain: 'wave',
-  hint: 'concerned',
+  // Asking for a hint is a good thing: Orion looks curious, not worried.
+  hint: 'look_up',
   quiz: 'thumbs_up',
   coach: 'thumbs_up',
   learn_your_way: 'wave',
@@ -84,7 +85,11 @@ export function selectCharacterActionForGuidedAiResponse(
   } | null | undefined,
 ): CharacterActionEvent | null {
   if (!data || data.integrityAction !== 'allowed' || data.safetyRoute || data.effortRequired || data.retryRequired) return null;
-  if (data.characterAction !== undefined) return parseCharacterActionForGuidedAiResponse(data);
+  if (data.characterAction !== undefined) {
+    const parsed = parseCharacterActionForGuidedAiResponse(data);
+    if (!parsed) return null;
+    if (parsed.action !== 'idle') return parsed;
+  }
   const action = defaultGuidedAiActions[data.mode];
   return action ? Object.freeze({ protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action }) : null;
 }

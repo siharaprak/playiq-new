@@ -15,6 +15,19 @@
       "path": "/character-assets/orion/orion-reference-v001-hero.png",
       "sha256": "569d7d248bde15549f5a88b23c552e1a5b225e71a3ef83312bc06ad60d4d496d",
       "review_status": "DRAFT_AWAITING_HUMAN_LIKENESS_REVIEW"
+    },
+    "runtime_model": {
+      "path": "/character-assets/orion/orion-reference-v001.meshopt.glb",
+      "derived_from": "/character-assets/orion/orion-reference-v001.glb",
+      "process": "gltf-transform 4.5.1 optimize --compress meshopt --flatten false --join false --instance false --palette false --simplify false --prune false --texture-compress false",
+      "note": "Node graph and all *_PIVOT_export names preserved; requires EXT_meshopt_compression decoder."
+    },
+    "avatar_thumbnails": {
+      "paths": [
+        "/character-assets/orion/orion-avatar-128.webp",
+        "/character-assets/orion/orion-avatar-256.webp"
+      ],
+      "derived_from": "/character-assets/orion/orion-reference-v001-hero.png"
     }
   },
   "action_protocol": "sienvi.character-action.v1",

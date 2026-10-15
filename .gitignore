@@ -45,4 +45,5 @@ docs/
 
 # local media & temporary frames
 *.mp4
-scratch/frames/
+scratch/
+artifacts/

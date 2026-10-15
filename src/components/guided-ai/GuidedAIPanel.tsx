@@ -8,6 +8,8 @@ import { GuidedAiResponse } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
 import { OrionCharacter } from './OrionCharacter';
 import { CHARACTER_ACTION_EVENT_PROTOCOL, syncCharacterWithGuidedAiResponse } from '@/lib/orion/action-contract';
+import { emitOrionCharacterAction, emitOrionReaction, selectLocalReactionForGuidedAiResponse, setOrionThinking } from '@/lib/orion/local-events';
+import { ORION_AVATAR_URL, preloadOrion } from '@/lib/orion/scene-cache';
 
 interface GuidedAIPanelProps {
   moduleNumber?: number;
@@ -17,6 +19,8 @@ interface GuidedAIPanelProps {
   hasProgress?: boolean;
   studentName?: string;
   studentId?: string;
+  /** Release gate for the draft 3D Orion asset; false shows the static avatar. */
+  orion3d?: boolean;
 }
 
 interface ChatMessage {
@@ -47,6 +51,14 @@ const HINT_LEVEL_LABELS: Record<1 | 2 | 3, { name: string; color: string }> = {
   3: { name: 'Micro-example', color: 'var(--neon-purple)' },
 };
 
+const ORION_NUDGES: Record<string, string> = {
+  activity: 'Stuck? I’ve got hint fuel ⚡',
+  lesson: 'Confusing bit? I can explain it another way 💡',
+  boss_battle: 'Boss fight! Want a strategy nudge? ⚔️',
+};
+const NUDGE_DELAY_MS = 90_000;
+const NUDGE_COOLDOWN_MS = 10 * 60_000;
+
 export function GuidedAIPanel({ 
   moduleNumber, 
   nodeId, 
@@ -54,7 +66,8 @@ export function GuidedAIPanel({
   isFloating = false,
   hasProgress = true,
   studentName = 'Student',
-  studentId
+  studentId,
+  orion3d = true,
 }: GuidedAIPanelProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -123,6 +136,32 @@ export function GuidedAIPanel({
       scrollToBottom();
     }
   }, [messages, isOpen, isLoading, teachBackActive]);
+
+  // Contextual launcher nudge: only on module pages, after a quiet spell, rate-limited per session.
+  const [nudge, setNudge] = useState<{ path: string; text: string } | null>(null);
+  useEffect(() => {
+    if (!isFloating || isOpen || !pathname?.startsWith('/student/modules')) return;
+    const text = activePageType ? ORION_NUDGES[activePageType] : undefined;
+    if (!text) return;
+    const timer = window.setTimeout(() => {
+      try {
+        const key = 'playiq_orion_last_nudge';
+        const last = Number(window.sessionStorage.getItem(key) || 0);
+        if (Date.now() - last < NUDGE_COOLDOWN_MS) return;
+        window.sessionStorage.setItem(key, String(Date.now()));
+      } catch {
+        // sessionStorage unavailable: still show the nudge once for this page.
+      }
+      setNudge({ path: pathname, text });
+    }, NUDGE_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [isFloating, isOpen, pathname, activePageType]);
+  const visibleNudge = nudge && nudge.path === pathname && !isOpen ? nudge.text : null;
+
+  const openOrion = () => {
+    setNudge(null);
+    setIsOpen(true);
+  };
 
   useEffect(() => {
     // If it's a new student on the dashboard and they manually open Orion, greet them with the onboarding walkthrough
@@ -220,6 +259,73 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
     messageScrollRef.current?.scrollTo({ top: 0 });
   };
 
+  /**
+   * Single Guided AI round-trip shared by ask, teach-back and next-hint.
+   * Drives Orion's thinking state, the fail-closed gesture sync and the
+   * trusted local reactions (encourage / proud).
+   */
+  const requestGuidedAi = async (
+    body: Record<string, unknown>,
+    botMsgId: string,
+    context: 'reply' | 'teach_back',
+    onData?: (data: GuidedAiResponseData) => void,
+  ) => {
+    setIsLoading(true);
+    setError(null);
+    setOrionThinking(true);
+
+    try {
+      if (activeNodeId) body.nodeId = activeNodeId;
+      const res = await fetch('/api/guided-ai', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok || !json.ok) {
+        const errorText = json.error || 'Something went wrong. Please try again.';
+        setError(errorText);
+        setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
+        setOrionThinking(false);
+        emitOrionCharacterAction('concerned');
+        return;
+      }
+
+      const data = json.data as GuidedAiResponseData;
+      setOrionThinking(false);
+      const gestured = syncCharacterWithGuidedAiResponse(data);
+      const localReaction = selectLocalReactionForGuidedAiResponse(data, context);
+      if (localReaction && (!gestured || context === 'teach_back')) emitOrionReaction(localReaction);
+
+      setMessages(prev => prev.map(m => m.id === botMsgId ? {
+        ...m,
+        content: data.response,
+        response: data
+      } : m));
+
+      if (data.effortRequired) {
+        setShowAttemptField(true);
+      }
+      setTeachBackActive(Boolean(data.teachBackRequired));
+      onData?.(data);
+    } catch {
+      const errorText = 'Connection error. Please check your internet and try again.';
+      setError(errorText);
+      setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
+      emitOrionCharacterAction('concerned');
+    } finally {
+      setOrionThinking(false);
+      setIsLoading(false);
+    }
+  };
+
+  const newMessageIds = () => [
+    Math.random().toString(36).substring(7),
+    Math.random().toString(36).substring(7),
+  ] as const;
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!activeMode || !message.trim() || isLoading) return;
@@ -232,8 +338,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
     setSelectedText('');
     setStudentAttempt('');
 
-    const userMsgId = Math.random().toString(36).substring(7);
-    const botMsgId = Math.random().toString(36).substring(7);
+    const [userMsgId, botMsgId] = newMessageIds();
 
     setMessages(prev => [
       ...prev,
@@ -251,75 +356,33 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
     ]);
 
-    setIsLoading(true);
-    setError(null);
+    const body: Record<string, unknown> = {
+      mode: activeMode,
+      moduleNumber: activeModuleNumber,
+      message: userMsgText,
+      pageType: activePageType || 'lesson',
+    };
 
-    try {
-      const body: Record<string, unknown> = {
-        mode: activeMode,
-        moduleNumber: activeModuleNumber,
-        message: userMsgText,
-        pageType: activePageType || 'lesson',
-      };
+    if (userAttemptText) body.studentAttempt = userAttemptText;
+    if (userSelectedText) body.selectedText = userSelectedText;
 
-      if (activeNodeId) body.nodeId = activeNodeId;
-      if (userAttemptText) body.studentAttempt = userAttemptText;
-      if (userSelectedText) body.selectedText = userSelectedText;
+    if (activeMode === 'hint') {
+      body.hintLevel = hintLevel;
+      body.retryCount = retryCount;
+    }
+    if (activeMode === 'quiz') {
+      body.retryCount = retryCount;
+    }
 
-      if (activeMode === 'hint') {
-        body.hintLevel = hintLevel;
-        body.retryCount = retryCount;
-      }
-      if (activeMode === 'quiz') {
-        body.retryCount = retryCount;
-      }
+    if (activeMode === 'learn_your_way' && Object.keys(lywPrefs).length > 0) {
+      body.preferences = lywPrefs;
+    }
 
-      if (activeMode === 'learn_your_way' && Object.keys(lywPrefs).length > 0) {
-        body.preferences = lywPrefs;
-      }
-
-      const res = await fetch('/api/guided-ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      const json = await res.json();
-
-      if (!res.ok || !json.ok) {
-        const errorText = json.error || 'Something went wrong. Please try again.';
-        setError(errorText);
-        setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
-        return;
-      }
-
-      const data = json.data as GuidedAiResponseData;
-      syncCharacterWithGuidedAiResponse(data);
-      
-      setMessages(prev => prev.map(m => m.id === botMsgId ? {
-        ...m,
-        content: data.response,
-        response: data
-      } : m));
-
-      if (data.effortRequired) {
-        setShowAttemptField(true);
-      }
-      if (data.teachBackRequired) {
-        setTeachBackActive(true);
-      } else {
-        setTeachBackActive(false);
-      }
+    await requestGuidedAi(body, botMsgId, 'reply', (data) => {
       if (data.integrityAction === 'refused') {
         setRetryCount(prev => prev + 1);
       }
-    } catch {
-      const errorText = 'Connection error. Please check your internet and try again.';
-      setError(errorText);
-      setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
-    } finally {
-      setIsLoading(false);
-    }
+    });
   };
 
   const handleTeachBackSubmit = async () => {
@@ -329,8 +392,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
     setTeachBackInput('');
     setTeachBackActive(false);
 
-    const userMsgId = Math.random().toString(36).substring(7);
-    const botMsgId = Math.random().toString(36).substring(7);
+    const [userMsgId, botMsgId] = newMessageIds();
 
     setMessages(prev => [
       ...prev,
@@ -347,66 +409,25 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       }
     ]);
 
-    setIsLoading(true);
-    setError(null);
     setRetryCount(prev => prev + 1);
 
-    try {
-      const body: Record<string, unknown> = {
-        mode: activeMode,
-        moduleNumber: activeModuleNumber,
-        message: inputVal,
-        studentAttempt: inputVal,
-        pageType: activePageType || 'lesson',
-      };
+    const body: Record<string, unknown> = {
+      mode: activeMode,
+      moduleNumber: activeModuleNumber,
+      message: inputVal,
+      studentAttempt: inputVal,
+      pageType: activePageType || 'lesson',
+    };
 
-      if (activeNodeId) body.nodeId = activeNodeId;
-      if (activeMode === 'hint') {
-        body.hintLevel = hintLevel;
-        body.retryCount = retryCount + 1;
-      }
-      if (activeMode === 'quiz') {
-        body.retryCount = retryCount + 1;
-      }
-
-      const res = await fetch('/api/guided-ai', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      const json = await res.json();
-
-      if (!res.ok || !json.ok) {
-        const errorText = json.error || 'Something went wrong. Please try again.';
-        setError(errorText);
-        setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
-        return;
-      }
-
-      const data = json.data as GuidedAiResponseData;
-      syncCharacterWithGuidedAiResponse(data);
-      setMessages(prev => prev.map(m => m.id === botMsgId ? {
-        ...m,
-        content: data.response,
-        response: data
-      } : m));
-
-      if (data.effortRequired) {
-        setShowAttemptField(true);
-      }
-      if (data.teachBackRequired) {
-        setTeachBackActive(true);
-      } else {
-        setTeachBackActive(false);
-      }
-    } catch {
-      const errorText = 'Connection error. Please check your internet and try again.';
-      setError(errorText);
-      setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
-    } finally {
-      setIsLoading(false);
+    if (activeMode === 'hint') {
+      body.hintLevel = hintLevel;
+      body.retryCount = retryCount + 1;
     }
+    if (activeMode === 'quiz') {
+      body.retryCount = retryCount + 1;
+    }
+
+    await requestGuidedAi(body, botMsgId, 'teach_back');
   };
 
   const handleNextHint = () => {
@@ -416,8 +437,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       setTeachBackActive(false);
       setTeachBackInput('');
 
-      const userMsgId = Math.random().toString(36).substring(7);
-      const botMsgId = Math.random().toString(36).substring(7);
+      const [userMsgId, botMsgId] = newMessageIds();
 
       setMessages(prev => [
         ...prev,
@@ -433,60 +453,14 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
         }
       ]);
 
-      setIsLoading(true);
-      setError(null);
-
-      setTimeout(async () => {
-        try {
-          const body: Record<string, unknown> = {
-            mode: 'hint',
-            moduleNumber: activeModuleNumber,
-            message: `Hint Level ${nextLevel}`,
-            pageType: activePageType || 'lesson',
-            hintLevel: nextLevel,
-            retryCount: retryCount,
-          };
-          if (activeNodeId) body.nodeId = activeNodeId;
-
-          const res = await fetch('/api/guided-ai', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body),
-          });
-
-          const json = await res.json();
-
-          if (!res.ok || !json.ok) {
-            const errorText = json.error || 'Something went wrong. Please try again.';
-            setError(errorText);
-            setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
-            return;
-          }
-
-          const data = json.data as GuidedAiResponseData;
-          syncCharacterWithGuidedAiResponse(data);
-          setMessages(prev => prev.map(m => m.id === botMsgId ? {
-            ...m,
-            content: data.response,
-            response: data
-          } : m));
-
-          if (data.effortRequired) {
-            setShowAttemptField(true);
-          }
-          if (data.teachBackRequired) {
-            setTeachBackActive(true);
-          } else {
-            setTeachBackActive(false);
-          }
-        } catch {
-          const errorText = 'Connection error. Please check your internet and try again.';
-          setError(errorText);
-          setMessages(prev => prev.map(m => m.id === botMsgId ? { ...m, error: errorText } : m));
-        } finally {
-          setIsLoading(false);
-        }
-      }, 50);
+      void requestGuidedAi({
+        mode: 'hint',
+        moduleNumber: activeModuleNumber,
+        message: `Hint Level ${nextLevel}`,
+        pageType: activePageType || 'lesson',
+        hintLevel: nextLevel,
+        retryCount: retryCount,
+      }, botMsgId, 'reply');
     }
   };
 
@@ -543,7 +517,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
           return (
             <div key={msg.id} className="flex gap-3 animate-fade-in items-start">
               <div className="w-8 h-8 rounded-full overflow-hidden border border-[var(--neon-purple)] flex-shrink-0 shadow-[0_0_8px_rgba(123,79,206,0.3)] mt-0.5" style={{ backgroundColor: 'var(--space-deep)' }}>
-                <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion" className="orion-avatar-image" />
+                <img src={ORION_AVATAR_URL} alt="Orion" className="orion-avatar-image" />
               </div>
               <div className="flex-1 max-w-[85%] space-y-1">
                 <div className="text-[9px] text-[var(--text-muted)] font-mono tracking-widest uppercase font-bold pl-1">
@@ -761,7 +735,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
 
   const renderCharacterSection = () => (
     <div className="relative z-20 flex-none p-3 pb-0">
-      <OrionCharacter compact={activeMode !== null} />
+      <OrionCharacter compact={activeMode !== null} active={isOpen} enable3d={orion3d} studentName={studentName} />
     </div>
   );
 
@@ -770,16 +744,28 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       <>
         {/* Floating Toggle Button */}
         {!isOpen && (
-          <div id="orion-floating-button" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14">
+          <div id="orion-floating-button" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 orion-launcher-bob">
+            {visibleNudge && (
+              <div className="orion-nudge absolute bottom-[4.25rem] right-0 w-56 rounded-2xl rounded-br-sm border border-[var(--neon-cyan)]/40 px-3 py-2 text-xs leading-snug text-[var(--text-primary)] shadow-[0_6px_24px_rgba(0,0,0,0.35)]" style={{ backgroundColor: 'var(--space-deep)' }}>
+                <button type="button" onClick={openOrion} className="block w-full pr-4 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">
+                  {visibleNudge}
+                </button>
+                <button type="button" onClick={() => setNudge(null)} className="absolute right-1.5 top-1.5 p-0.5 text-[var(--text-muted)] hover:text-[var(--text-primary)]" aria-label="Dismiss Orion tip">
+                  <X size={12} />
+                </button>
+              </div>
+            )}
+
             {/* Ambient pulse shadow ring */}
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-purple)] opacity-40 blur-md animate-pulse"></div>
             
             <button
               type="button"
-              onClick={() => {
-                setIsOpen(true);
-              }}
-              className="w-full h-full rounded-full border-2 border-[var(--neon-cyan)] text-[var(--neon-cyan)] shadow-[0_0_18px_rgba(0,200,255,0.4)] hover:shadow-[0_0_25px_rgba(123,79,206,0.7)] hover:border-[var(--neon-purple)] transition-all duration-300 group focus:outline-none transform hover:-translate-y-0.5 flex items-center justify-center overflow-hidden relative cursor-pointer"
+              onClick={openOrion}
+              onPointerEnter={orion3d ? preloadOrion : undefined}
+              onFocus={orion3d ? preloadOrion : undefined}
+              onTouchStart={orion3d ? preloadOrion : undefined}
+              className="w-full h-full rounded-full border-2 border-[var(--neon-cyan)] text-[var(--neon-cyan)] shadow-[0_0_18px_rgba(0,200,255,0.4)] hover:shadow-[0_0_25px_rgba(123,79,206,0.7)] hover:border-[var(--neon-purple)] transition-all duration-300 group focus:outline-none transform hover:-translate-y-0.5 hover:scale-105 flex items-center justify-center overflow-hidden relative cursor-pointer"
               style={{ backgroundColor: 'var(--space-deep)' }}
               aria-label="Open Orion Chat"
             >
@@ -787,7 +773,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
               <div className="absolute inset-0.5 rounded-full border border-[var(--neon-purple)]/30 group-hover:border-[var(--neon-cyan)]/50 transition-colors z-10"></div>
               
               <img 
-                src="/character-assets/orion/orion-reference-v001-hero.png"
+                src="/character-assets/orion/orion-avatar-256.webp"
                 alt="Orion AI"
                 className="orion-avatar-image"
               />
@@ -798,8 +784,8 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
           </div>
         )}
 
-        {/* Expanded Chat Panel */}
-        {isOpen && (
+        {/* Expanded Chat Panel: stays mounted while hidden so Orion keeps his state and WebGL context. */}
+        <div hidden={!isOpen}>
           <div 
             className={`!fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[410px] max-w-[410px] h-[580px] max-h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl ${isClosing ? 'animate-fade-out-down' : 'animate-fade-in-up'} border border-[var(--neon-cyan)]/30 backdrop-blur-xl`}
             style={{ background: 'linear-gradient(to bottom, var(--space-deep), var(--space-mid))', opacity: 0.98 }}
@@ -842,7 +828,14 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
 
                 <div className="flex-1 min-h-0 flex flex-col" style={{ backgroundColor: 'var(--glass-bg)' }}>
                   {renderCharacterSection()}
-                  <div ref={messageScrollRef} className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar">
+                  <div
+                    ref={messageScrollRef}
+                    className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar"
+                    style={{
+                      maskImage: 'linear-gradient(to bottom, transparent 0, #000 1.25rem)',
+                      WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, #000 1.25rem)',
+                    }}
+                  >
                     {renderPanelContents()}
                   </div>
                 </div>
@@ -917,7 +910,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 )}
               </>
           </div>
-        )}
+        </div>
       </>
     );
   }
@@ -943,7 +936,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       >
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-full overflow-hidden border border-[var(--neon-purple)] flex-shrink-0 shadow-[0_0_5px_rgba(123,79,206,0.2)]" style={{ backgroundColor: 'var(--space-deep)' }}>
-            <img src="/character-assets/orion/orion-reference-v001-hero.png" alt="Orion" className="orion-avatar-image" />
+            <img src={ORION_AVATAR_URL} alt="Orion" className="orion-avatar-image" />
           </div>
           <span className="text-xs font-bold uppercase tracking-wider font-display" style={{ color: 'var(--text-primary)' }}>
             Orion Panel

@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test:orion-contract": "node --experimental-strip-types --test scripts/orion-action-contract.test.mjs",
+    "test:orion-character": "npx tsx --test scripts/orion-character.test.ts",
     "qa:guided-ai": "npx tsx scripts/qa-guided-ai-adversarial.ts",
     "verify:ai-events": "npx tsx scripts/verify-guided-ai-event-metadata.ts",
     "verify:integrity-trends": "npx tsx scripts/verify-parent-integrity-trends.ts",

@@ -79,6 +79,10 @@ test('validated allowed replies get a visual action when metadata is omitted', (
     protocol: CHARACTER_ACTION_EVENT_PROTOCOL,
     action: 'look_left',
   });
+  assert.deepEqual(selectCharacterActionForGuidedAiResponse({ ...allowed, characterAction: { protocol: CHARACTER_ACTION_EVENT_PROTOCOL, action: 'idle' } }), {
+    protocol: CHARACTER_ACTION_EVENT_PROTOCOL,
+    action: 'wave',
+  });
 });
 
 test('a reply without a permitted action clears the previous pose without a gesture', () => {
