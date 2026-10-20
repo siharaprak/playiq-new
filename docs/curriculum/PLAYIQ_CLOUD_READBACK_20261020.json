@@ -1,0 +1,186 @@
+{
+  "evidence": "authenticated_google_drive_raw_byte_readback",
+  "files": [
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_3_Student_Text.md",
+      "bytes": 24010,
+      "sha256": "4fb5b1ad8d856668e6a6f1d0c4efe4766273ae34198e6768779941084849f4a2",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Capstone_Student_Text.md",
+      "bytes": 35154,
+      "sha256": "f723250406a4112678fbdf7a233d57d16b7252bf7c62f2acb42dfc83c86cb080",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/ORION_STUDENT_TUTOR_PROJECT_COMPILATION_INSTRUCTIONS.md",
+      "bytes": 9245,
+      "sha256": "b697ec6a93565f8347d0b96b5b9591fd60e813ea80e27163931c4fc4e934bd90",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_4_Student_Text.md",
+      "bytes": 22649,
+      "sha256": "d65a98dcb70255201b033c44f8f5a482625a8354a643a4799a014e495bf48cd3",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/VERIFICATION_RESULTS.json",
+      "bytes": 14035,
+      "sha256": "86c3c325d947f5e402be41783cce9a0315c5c4de6a72c321c1f14dd6d60eb3d8",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/.gitattributes",
+      "bytes": 156,
+      "sha256": "bc9f88f03a26e481ee34d8fc90ea9d7e5e9d28d1ebfbd09ec8169ceb362fc8b0",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/PLAYIQ_CURRENT_COMBINED_COURSE_MASTER_20261020.html",
+      "bytes": 368388,
+      "sha256": "27738fbed7f6092b3696039fe1757f0e9a4aba6c3382d999f3f6ca55288e48da",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/REVISION_NOTES_20261020.md",
+      "bytes": 5028,
+      "sha256": "6b865c784129879871ea362e6ea442e1cae47f43bc420873ae2062a93b2c25ea",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_5_Student_Text.md",
+      "bytes": 23052,
+      "sha256": "e2776f0d1303ef71b1f9b4b235dd7138df493beddccd670a813ca508a1ab462c",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/PLAYIQ_CURRENT_COMBINED_COURSE_MASTER_20261020.md",
+      "bytes": 342761,
+      "sha256": "f04f08affeab571dcfce77e4d88254b2b8b40209fe1e18a779f10188f2c2de66",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/build_combined_master.mjs",
+      "bytes": 4859,
+      "sha256": "70bfada7835963ff04fe828b0df4005a984957a34aa56b1ae9854cae19720686",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_2_Student_Text.md",
+      "bytes": 25670,
+      "sha256": "e36ded9c4263205a5612ae04b4ac48e96b7d8193d79026ab505b8795b6d33c3a",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_10_Student_Text.md",
+      "bytes": 22115,
+      "sha256": "8f94f9ea3cc22d6a83dc18fcefbc905e239825aa626e4bcee5a714722f17ef97",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/QA_COPYBACK_20261020.md",
+      "bytes": 4280,
+      "sha256": "681c2f4b9a10321145baa0003d7bf0a9671ae1d98e9d955c55bcbd8fbd0c0fde",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/README.md",
+      "bytes": 2865,
+      "sha256": "1f6da2c9ba301d817b29a01d882de2e64d1816d716023942abb869f280ed4b45",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_7_Student_Text.md",
+      "bytes": 26278,
+      "sha256": "df1f6bf85cafff7f91192612db7261908fbbb39f60fe81823d81edcf354af9b1",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_8_Student_Text.md",
+      "bytes": 29509,
+      "sha256": "add9dd6f3b6c11cc5e23d253691049165ebb142b0bf578fdcb9365ea9951c338",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/verify_revision.py",
+      "bytes": 6673,
+      "sha256": "4ee7bad9177abbe70b12eebea0d47f4d7a0e55c8f0f212ca5e21e8d7568e0caf",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/make_reading_html.mjs",
+      "bytes": 5916,
+      "sha256": "b26582a871db11a10ca22299fff875765be4c6c32d43ccf03e3f8a585c20517c",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_0_Student_Text.md",
+      "bytes": 38215,
+      "sha256": "a68e807d8004ce5a6e5647ad728c38e94791b9c5b10fde0c94bfa7d60e9de67d",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/LOCAL_READING_CHECK.json",
+      "bytes": 423,
+      "sha256": "c6b7b534a0699ae4d7c3c3d2c63a6556f28cd6a8ac2723191fa141aaeb3fd85b",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/make_light_print_pdf.py",
+      "bytes": 12339,
+      "sha256": "98d91114385b645e89d31d321dabe38e6ee48398d3f82e53ea9da8de2385559e",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_1_Student_Text.md",
+      "bytes": 39482,
+      "sha256": "66549eabdaa5b119f2f8437d0c09307794552e19ee8b15b2eceb4caead43a57d",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/SOURCE_MANIFEST.json",
+      "bytes": 3013,
+      "sha256": "9dc8542c1102bff20dac82c0da4a2a1d592d20edff7c53c6eb7fc1551908419c",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/ARTIFACT_RENDER_RESULTS.json",
+      "bytes": 240,
+      "sha256": "1fbd82d204f7b155d0099f293e11e6a2ad4ddd37489acd2e87bf03daf8fe538e",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_6_Student_Text.md",
+      "bytes": 25861,
+      "sha256": "6e7f3c7ba0ceff810df791160e7270ced49f28fa61ed5c43fcda9c39684994d8",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/Module_9_Student_Text.md",
+      "bytes": 26419,
+      "sha256": "787ad28345445a53f06e6af51c1abda18c0647a2bc33151f06c1365500d0345d",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/assets/orion-reference.png",
+      "bytes": 928691,
+      "sha256": "46c38b05a2848d3f4cdabb7f62d1d9b738c3f6efa66fb26bcace46121aa25b54",
+      "exact_match": true
+    },
+    {
+      "path": "docs/curriculum/playiq-character-tutorial-20261020/output/pdf/PLAYIQ_CURRENT_COMBINED_COURSE_LIGHT_PRINT_20261020.pdf",
+      "bytes": 1672258,
+      "sha256": "447ba4c68842b64371f489d484c2ca4941fd81201b8889ec54cfd22c6ecc4161",
+      "exact_match": true
+    },
+    {
+      "path": "PLAYIQ_CURRENT_COURSE_INDEX.md",
+      "bytes": 1594,
+      "sha256": "b928885b21104ae29440d55a3d0774c11eec1af33873c42730e389bde05face5",
+      "exact_match": true
+    }
+  ],
+  "all_matched": true
+}
