@@ -1,0 +1,21 @@
+{
+  "moduleSections": 12,
+  "navLinks": 12,
+  "copyButtons": 75,
+  "codeBlocks": 75,
+  "images": [
+    {
+      "src": "assets/orion-reference.png",
+      "loaded": true
+    }
+  ],
+  "background": "rgb(255, 255, 255)",
+  "bodyOverflow": false,
+  "referenceLinks": [
+    "assets/orion-reference.png"
+  ],
+  "copyFallback": "Selected: press Ctrl/Cmd+C",
+  "selectionMatches": true,
+  "mobileOverflow": false,
+  "errors": []
+}

@@ -1,0 +1,4 @@
+# Preserve Markdown hard line breaks and classify generated PDF bytes correctly.
+*.md whitespace=-blank-at-eol
+*.html whitespace=-blank-at-eol
+*.pdf binary

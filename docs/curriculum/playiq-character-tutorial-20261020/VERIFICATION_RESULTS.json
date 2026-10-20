@@ -1,0 +1,452 @@
+{
+  "revision": "2026-10-20",
+  "baseline_commit": "01cc75552ad9221db41af1c99853e09b52defd32",
+  "evidence_classification": "source_and_local_artifacts_only",
+  "runtime_or_student_beta_verified": false,
+  "pdf_pages": 125,
+  "modules": {
+    "Module_0_Student_Text.md": {
+      "baseline_sha256": "3d66b344cdf20e7e0db39eff6c8b452f14d6f356e8704b9fea688be02ff0477b",
+      "sha256": "a68e807d8004ce5a6e5647ad728c38e94791b9c5b10fde0c94bfa7d60e9de67d",
+      "added_nonempty_lines": 5,
+      "removed_nonempty_lines": []
+    },
+    "Module_1_Student_Text.md": {
+      "baseline_sha256": "65677cd8b8605b86e708c51e591a54304477281d19e7f5c8b9c4b3f6713cddd9",
+      "sha256": "66549eabdaa5b119f2f8437d0c09307794552e19ee8b15b2eceb4caead43a57d",
+      "added_nonempty_lines": 198,
+      "removed_nonempty_lines": [
+        "# PlayIQ Module 1: The AI Learning Code",
+        "Your brain builds neural pathways only when it encounters productive friction\u2014when you struggle to recall a formula, when you search for the right word, or when you troubleshoot a logic error. If you let the AI do that heavy lifting, your brain atrophies while the AI stays smart."
+      ]
+    },
+    "Module_2_Student_Text.md": {
+      "baseline_sha256": "141903e227575d7b40f47f8d35e394413006b8e791e10996877ef3c87e7122c1",
+      "sha256": "e36ded9c4263205a5612ae04b4ac48e96b7d8193d79026ab505b8795b6d33c3a",
+      "added_nonempty_lines": 38,
+      "removed_nonempty_lines": [
+        "If you feed it genuine curiosity, disciplined questions, and a desire to understand, AI can accelerate your learning faster than any private tutor in history. But if you feed it laziness, avoidance, and short-term panic, AI will accelerate your dependence, erode your focus, and replace your own voice with robotic prose."
+      ]
+    },
+    "Module_3_Student_Text.md": {
+      "baseline_sha256": "b36cfe02e1d568f66302848eb5c36675134e036cdf58ad6bc639025404b4cdc1",
+      "sha256": "4fb5b1ad8d856668e6a6f1d0c4efe4766273ae34198e6768779941084849f4a2",
+      "added_nonempty_lines": 17,
+      "removed_nonempty_lines": []
+    },
+    "Module_4_Student_Text.md": {
+      "baseline_sha256": "3a53752e67a26cf2b365910f62d662bb0161a635bcbbec9d6b58042284469420",
+      "sha256": "d65a98dcb70255201b033c44f8f5a482625a8354a643a4799a014e495bf48cd3",
+      "added_nonempty_lines": 20,
+      "removed_nonempty_lines": []
+    },
+    "Module_5_Student_Text.md": {
+      "baseline_sha256": "b85ec528e4cdba6401a1c46bbea9306426dc0ac4744bfb8bc42af1ed64e4ad81",
+      "sha256": "e2776f0d1303ef71b1f9b4b235dd7138df493beddccd670a813ca508a1ab462c",
+      "added_nonempty_lines": 9,
+      "removed_nonempty_lines": []
+    },
+    "Module_6_Student_Text.md": {
+      "baseline_sha256": "7eb2eaa1c5e7bea3c9aa288ba475c14956ca52a86f675f2c38fb850ae5267b13",
+      "sha256": "6e7f3c7ba0ceff810df791160e7270ced49f28fa61ed5c43fcda9c39684994d8",
+      "added_nonempty_lines": 9,
+      "removed_nonempty_lines": []
+    },
+    "Module_7_Student_Text.md": {
+      "baseline_sha256": "2b5d9875c21a19a7ff983c1bc95cfff9ab17028859f1657ff3e7de3018e7e7d1",
+      "sha256": "df1f6bf85cafff7f91192612db7261908fbbb39f60fe81823d81edcf354af9b1",
+      "added_nonempty_lines": 8,
+      "removed_nonempty_lines": []
+    },
+    "Module_8_Student_Text.md": {
+      "baseline_sha256": "a05c77be62a61844e38b6a7a21b476ea29c01b7819790561dd2b6193074188bc",
+      "sha256": "add9dd6f3b6c11cc5e23d253691049165ebb142b0bf578fdcb9365ea9951c338",
+      "added_nonempty_lines": 9,
+      "removed_nonempty_lines": []
+    },
+    "Module_9_Student_Text.md": {
+      "baseline_sha256": "1ac88840b7fa8b62835f1d63b6b5babd147095d85a3b5afb4055b1ebe9ca4ac7",
+      "sha256": "787ad28345445a53f06e6af51c1abda18c0647a2bc33151f06c1365500d0345d",
+      "added_nonempty_lines": 15,
+      "removed_nonempty_lines": []
+    },
+    "Module_10_Student_Text.md": {
+      "baseline_sha256": "0d4b209c66d5a58155c645ba5f58984a734b4911cac3039d64c697e7ca879115",
+      "sha256": "8f94f9ea3cc22d6a83dc18fcefbc905e239825aa626e4bcee5a714722f17ef97",
+      "added_nonempty_lines": 14,
+      "removed_nonempty_lines": []
+    },
+    "Capstone_Student_Text.md": {
+      "baseline_sha256": "c69fd35c3f9cb03d00f86094c70457ce2cf43b9c9dba123ca7d9f22f543adf96",
+      "sha256": "f723250406a4112678fbdf7a233d57d16b7252bf7c62f2acb42dfc83c86cb080",
+      "added_nonempty_lines": 10,
+      "removed_nonempty_lines": []
+    }
+  },
+  "checks": [
+    {
+      "check": "Module_0_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_0_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_0_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_0_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_0_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_1_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_1_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_1_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_1_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_1_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_1_Student_Text.md: local link exists: assets/orion-reference.png",
+      "passed": true
+    },
+    {
+      "check": "Module_1_Student_Text.md: local link exists: assets/orion-reference.png",
+      "passed": true
+    },
+    {
+      "check": "Module_2_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_2_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_2_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_2_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_2_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_3_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_3_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_3_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_3_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_3_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_4_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_4_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_4_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_4_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_4_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_5_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_5_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_5_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_5_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_5_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_6_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_6_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_6_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_6_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_6_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_7_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_7_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_7_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_7_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_7_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_8_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_8_Student_Text.md: every original line retained",
+      "passed": true
+    },
+    {
+      "check": "Module_8_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_8_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_8_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_8_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_9_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_9_Student_Text.md: every original line retained",
+      "passed": true
+    },
+    {
+      "check": "Module_9_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_9_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_9_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_9_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Capstone_Student_Text.md: no unapproved content removed",
+      "passed": true
+    },
+    {
+      "check": "Capstone_Student_Text.md: exact source appears in combined reading copy",
+      "passed": true
+    },
+    {
+      "check": "Capstone_Student_Text.md: code fences balanced",
+      "passed": true
+    },
+    {
+      "check": "Capstone_Student_Text.md: one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Capstone_Student_Text.md: beta feedback is final section",
+      "passed": true
+    },
+    {
+      "check": "Module 1: ten interview questions",
+      "passed": true
+    },
+    {
+      "check": "Module 1: creative first win precedes school lessons",
+      "passed": true
+    },
+    {
+      "check": "Module 1: no algebra opener",
+      "passed": true
+    },
+    {
+      "check": "Module 1: exact save, reuse, and capability fallback steps",
+      "passed": true
+    },
+    {
+      "check": "Module 1: prompt exercise is not presented as LoRA training",
+      "passed": true
+    },
+    {
+      "check": "Module 5: no recurring character connection activity",
+      "passed": true
+    },
+    {
+      "check": "Module 6: no recurring character connection activity",
+      "passed": true
+    },
+    {
+      "check": "Module 7: no recurring character connection activity",
+      "passed": true
+    },
+    {
+      "check": "Module 8: no recurring character connection activity",
+      "passed": true
+    },
+    {
+      "check": "Module 9: no recurring character connection activity",
+      "passed": true
+    },
+    {
+      "check": "Module 10: no recurring character connection activity",
+      "passed": true
+    },
+    {
+      "check": "Module 9: six-file integration preserved",
+      "passed": true
+    },
+    {
+      "check": "Module 9: existing Project update preserved",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_0_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_1_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_2_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_3_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_4_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_5_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_6_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_7_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_8_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_9_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Module_10_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Capstone_Student_Text.md",
+      "passed": true
+    },
+    {
+      "check": "PDF contains the new tutorial",
+      "passed": true
+    },
+    {
+      "check": "Orion reference matches the pinned existing site asset",
+      "passed": true
+    }
+  ]
+}
