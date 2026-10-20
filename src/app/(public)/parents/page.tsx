@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -34,9 +35,16 @@ export default function Parents() {
         {/* Core methodology differences */}
         <section className="glass-card p-5 sm:p-8 md:p-10 !rounded-none !border-t-0 !border-b-0 border-x-4 border-l-[#00c8ff] border-r-[#7b4fce]">
           <div className="grid md:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center">
-            <div className="border border-[rgba(123,79,206,0.3)] bg-black h-56 sm:h-72 md:h-80 relative overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-0 bg-[url('/images/tier2-parent-proof-packet.png')] bg-cover bg-center opacity-30 mix-blend-screen"></div>
-              <span className="font-display tracking-[0.3em] sm:tracking-[0.4em] text-[10px] sm:text-xs text-[#7b4fce] z-10">[ DASHBOARD_PREVIEW ]</span>
+            <div className="group border border-[rgba(123,79,206,0.3)] bg-black aspect-[4/3] relative overflow-hidden shadow-[0_0_30px_rgba(0,200,255,0.12)]">
+              <Image
+                src="/images/parents-proof-packet-dashboard.jpg"
+                alt="Parent reviewing their teen's verified PlayIQ Parent Proof Packet on a laptop"
+                fill
+                sizes="(min-width: 768px) 480px, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/70 via-transparent to-transparent pointer-events-none" />
+              <span className="absolute bottom-3 left-3 font-display tracking-[0.25em] text-[10px] sm:text-xs text-[#00c8ff] bg-black/60 border border-[#00c8ff]/40 px-2 py-1">[ PARENT_PROOF_PACKET ]</span>
             </div>
             <div className="font-mono text-xs text-slate-300 uppercase tracking-widest leading-[1.8] sm:leading-[2]">
               <h2 className="font-display text-lg sm:text-xl text-glow-cyan text-white mb-4 sm:mb-6 tracking-[0.15em] sm:tracking-[0.2em] border-b border-[#00c8ff] pb-3 sm:pb-4 inline-block">&gt; WHY THIS IS DIFFERENT</h2>

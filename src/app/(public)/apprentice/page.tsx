@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
   title: 'The Apprentice: AI Learning Course for Teens 13–17 | PlayIQ',
@@ -41,9 +42,16 @@ export default function Apprentice() {
             <p className="text-xs sm:text-sm font-mono text-slate-300 leading-relaxed uppercase mb-4 sm:mb-6 opacity-80">
               BUILT FOR AGES 13-17. BRIDGING THE GAP BETWEEN SCROLLING ON A SCREEN AND ACTUAL TACTILE ENGINEERING.
             </p>
-            <div className="w-full h-40 sm:h-48 border border-[rgba(123,79,206,0.3)] bg-[rgba(0,0,0,0.5)] relative overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-0 bg-[url('/images/tier3-apprentice-teen.png')] bg-cover bg-center opacity-40 mix-blend-luminosity"></div>
-              <span className="font-display text-xs tracking-widest text-[#7b4fce]">[ IMAGE_DATA_MISSING ]</span>
+            <div className="group w-full aspect-[16/9] border border-[rgba(123,79,206,0.3)] bg-black relative overflow-hidden shadow-[0_0_25px_rgba(123,79,206,0.15)]">
+              <Image
+                src="/images/apprentice-teen-ai-tutor.jpg"
+                alt="Teen building a custom AI tutor in the PlayIQ app"
+                fill
+                sizes="(min-width: 768px) 460px, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#020617]/60 via-transparent to-transparent pointer-events-none" />
+              <span className="absolute bottom-2.5 left-2.5 font-display text-[10px] sm:text-xs tracking-widest text-[#7b4fce] bg-black/60 border border-[#7b4fce]/50 px-2 py-1">[ APPRENTICE_ONLINE ]</span>
             </div>
           </div>
 

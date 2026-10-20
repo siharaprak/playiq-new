@@ -4,6 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PlayIQLogo } from '@/components/layout/PlayIQLogo';
+import { VslPlayer } from '@/components/marketing/VslPlayer';
 
 export default function HomeContent() {
   const [selectedPath, setSelectedPath] = useState<'none' | 'physical' | 'digital' | 'both'>('digital');
@@ -109,6 +110,61 @@ export default function HomeContent() {
                 <li>• Continuous Parent Proof Packet portfolios</li>
               </ul>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════ 2b. VSL — SEE IT IN ACTION ═══════════ */}
+      <section id="vsl" className="relative px-4 sm:px-6 py-12 sm:py-16 md:py-24 overflow-hidden bg-[#020617] star-field border-b border-slate-800/50 scroll-mt-16">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-[15%] right-[8%] w-[420px] h-[420px] bg-[rgba(0,200,255,0.06)] rounded-full blur-[120px] animate-drift" />
+          <div className="absolute bottom-[10%] left-[5%] w-[360px] h-[360px] bg-[rgba(123,79,206,0.07)] rounded-full blur-[110px] animate-drift" style={{ animationDelay: '2s' }} />
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-6xl grid lg:grid-cols-[minmax(0,1fr)_auto] gap-10 lg:gap-16 xl:gap-24 items-center">
+          {/* Copy */}
+          <div className="text-center lg:text-left order-1">
+            <h2 className="font-display text-xs uppercase tracking-[0.25em] text-[#00c8ff] text-glow-cyan mb-3 sm:mb-4">
+              See It In Action
+            </h2>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white leading-tight">
+              100 seconds. <span className="text-[#7b4fce] text-glow-magenta">The whole PlayIQ story.</span>
+            </h3>
+            <p className="mt-3 sm:mt-4 text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto lg:mx-0">
+              Watch how teens go from passive scrolling to building their own AI tutor — and how parents get real proof of progress along the way.
+            </p>
+
+            <ul className="mt-6 sm:mt-8 space-y-3 font-mono text-xs text-slate-300 uppercase tracking-widest text-left max-w-md mx-auto lg:mx-0">
+              {[
+                'Meet your AI study companion',
+                'Build a personal AI tutor, step by step',
+                'Boss Battles that prove real understanding',
+                'Real proof of progress for parents',
+              ].map((item) => (
+                <li key={item} className="flex gap-3 items-start">
+                  <span className="text-[#00c8ff] shrink-0">&gt;&gt;</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 sm:mt-10 hidden lg:flex gap-4">
+              <Link href="/beta" className="btn-neon-filled min-h-[48px] inline-flex items-center px-8">
+                Apply for Pilot Access
+              </Link>
+            </div>
+          </div>
+
+          {/* Video */}
+          <div className="order-2 w-full max-w-[300px] sm:max-w-[340px] xl:max-w-[360px] mx-auto">
+            <VslPlayer src="/videos/playiq-vsl.mp4" poster="/videos/playiq-vsl-poster.jpg" orientation="portrait" />
+          </div>
+
+          {/* Mobile CTA (under video) */}
+          <div className="order-3 lg:hidden text-center">
+            <Link href="/beta" className="btn-neon-filled min-h-[48px] inline-flex items-center px-8">
+              Apply for Pilot Access
+            </Link>
           </div>
         </div>
       </section>
