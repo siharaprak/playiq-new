@@ -29,46 +29,81 @@ export default function HomeContent() {
           STATUS: ONLINE
         </div>
 
-        <div className="relative z-10 w-full max-w-7xl px-4 pt-8 sm:pt-16 pb-8 sm:pb-12 flex flex-col items-center justify-center">
-          {/* MASSIVE Logo */}
+        <div className="relative z-10 w-full max-w-7xl px-4 sm:px-6 lg:px-8 pt-4 sm:pt-8 pb-8 sm:pb-12 flex flex-col items-center justify-center">
+          {/* Hero Logo */}
           <div className="animate-fade-in-up mb-4 sm:mb-6 w-full text-center">
-            <PlayIQLogo variant="hero" className="mx-auto" />
+            <PlayIQLogo variant="hero" className="mx-auto max-w-[320px] sm:max-w-[420px] md:max-w-[460px]" />
           </div>
 
-          <div className="glass-card !bg-transparent !border-none !backdrop-blur-none text-center max-w-4xl mx-auto flex flex-col items-center gap-4 sm:gap-6 mt-[-0.5rem] md:mt-[-2rem]">
-            <p className="animate-fade-in-up font-display font-bold text-xs md:text-sm uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#7b4fce] text-glow-magenta bg-black/50 px-3 sm:px-4 py-1 border border-[#7b4fce]"
-               style={{ animationDelay: '0.2s' }}>
-              IMAGINE &gt; BUILD &gt; CONQUER
-            </p>
+          {/* 2-Column Hero Grid */}
+          <div className="w-full grid lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-12 items-center">
+            {/* Left Column: Value Prop & Actions */}
+            <div className="lg:col-span-7 flex flex-col items-center lg:items-start text-center lg:text-left">
+              <p
+                className="animate-fade-in-up font-display font-bold text-xs md:text-sm uppercase tracking-[0.3em] sm:tracking-[0.4em] text-[#7b4fce] text-glow-magenta bg-black/50 px-3 sm:px-4 py-1 border border-[#7b4fce] mb-4 sm:mb-6 inline-block"
+                style={{ animationDelay: '0.2s' }}
+              >
+                IMAGINE &gt; BUILD &gt; CONQUER
+              </p>
 
-            <div className="text-center animate-fade-in-up w-full" style={{ animationDelay: '0.4s' }}>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-extrabold text-white leading-tight uppercase font-display tracking-wider sm:tracking-widest drop-shadow-[2px_2px_0_#7b4fce]">
-                Master Your <br/>
-                <span className="text-[#00c8ff] text-glow-cyan text-[1.2em]">Learning</span>
-              </h2>
-              <p className="mt-6 sm:mt-8 text-sm md:text-lg text-slate-300 font-bold max-w-2xl mx-auto uppercase tracking-wide">
+              <h1
+                className="animate-fade-in-up text-2xl sm:text-3xl md:text-4xl xl:text-5xl font-extrabold text-white leading-tight uppercase font-display tracking-wider sm:tracking-widest drop-shadow-[2px_2px_0_#7b4fce]"
+                style={{ animationDelay: '0.3s' }}
+              >
+                Master Your <br className="hidden sm:inline" />
+                <span className="text-[#00c8ff] text-glow-cyan text-[1.15em]">Learning</span>
+              </h1>
+
+              <p
+                className="animate-fade-in-up mt-4 sm:mt-6 text-sm md:text-base xl:text-lg text-slate-300 font-bold max-w-xl uppercase tracking-wide"
+                style={{ animationDelay: '0.4s' }}
+              >
                 Where advanced cognitive strategy meets AI-powered mentorship.
               </p>
-              <p className="mt-3 sm:mt-4 text-xs md:text-sm text-slate-400 font-mono max-w-2xl mx-auto uppercase tracking-wider">
+
+              <p
+                className="animate-fade-in-up mt-3 text-xs md:text-sm text-slate-400 font-mono max-w-xl uppercase tracking-wider"
+                style={{ animationDelay: '0.5s' }}
+              >
                 &gt; Optimized for ages 13–17. Providing safer screen time, structured STEM learning, and cognitive development.
               </p>
-              
-              <div className="mt-8 sm:mt-12 flex flex-col items-center justify-center gap-6">
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full justify-center max-w-md sm:max-w-none">
-                  <Link 
-                    href="/beta"
-                    className="w-full sm:w-auto font-display uppercase font-bold text-sm tracking-[0.1em] px-8 py-3.5 min-h-[48px] flex items-center justify-center transition-all border-2 bg-[#00c8ff] text-[#020617] border-[#00c8ff] shadow-[0_0_20px_#00c8ff] hover:bg-white hover:border-white hover:text-black active:scale-[0.98]"
-                  >
-                    Apply for Pilot Access
-                  </Link>
-                  <Link 
-                    href="/how-it-works"
-                    className="w-full sm:w-auto font-display uppercase font-bold text-sm tracking-[0.1em] px-8 py-3.5 min-h-[48px] flex items-center justify-center transition-all border-2 bg-transparent text-white border-white/30 hover:border-[#7b4fce] hover:shadow-[0_0_15px_#7b4fce] active:scale-[0.98]"
-                  >
-                    See How It Works
-                  </Link>
-                </div>
+
+              <div
+                className="animate-fade-in-up mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto"
+                style={{ animationDelay: '0.6s' }}
+              >
+                <Link
+                  href="/beta"
+                  className="font-display uppercase font-bold text-sm tracking-[0.1em] px-8 py-3.5 min-h-[48px] flex items-center justify-center transition-all border-2 bg-[#00c8ff] text-[#020617] border-[#00c8ff] shadow-[0_0_20px_#00c8ff] hover:bg-white hover:border-white hover:text-black active:scale-[0.98]"
+                >
+                  Apply for Pilot Access
+                </Link>
+                <Link
+                  href="/how-it-works"
+                  className="font-display uppercase font-bold text-sm tracking-[0.1em] px-8 py-3.5 min-h-[48px] flex items-center justify-center transition-all border-2 bg-transparent text-white border-white/30 hover:border-[#7b4fce] hover:shadow-[0_0_15px_#7b4fce] active:scale-[0.98]"
+                >
+                  See How It Works
+                </Link>
               </div>
+            </div>
+
+            {/* Right Column: VSL Player */}
+            <div
+              id="vsl"
+              className="lg:col-span-5 flex flex-col items-center justify-center w-full animate-fade-in-up scroll-mt-24"
+              style={{ animationDelay: '0.4s' }}
+            >
+              <div className="w-full max-w-[260px] sm:max-w-[300px] md:max-w-[320px] xl:max-w-[340px]">
+                <VslPlayer
+                  src="/videos/playiq-vsl.mp4"
+                  poster="/videos/playiq-vsl-poster.jpg"
+                  orientation="portrait"
+                  label="Watch: 100-Sec Overview"
+                />
+              </div>
+              <p className="mt-3 text-[11px] font-mono uppercase tracking-widest text-slate-400 text-center">
+                &gt; See PlayIQ in Action (100s)
+              </p>
             </div>
           </div>
         </div>
@@ -110,61 +145,6 @@ export default function HomeContent() {
                 <li>• Continuous Parent Proof Packet portfolios</li>
               </ul>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ═══════════ 2b. VSL — SEE IT IN ACTION ═══════════ */}
-      <section id="vsl" className="relative px-4 sm:px-6 py-12 sm:py-16 md:py-24 overflow-hidden bg-[#020617] star-field border-b border-slate-800/50 scroll-mt-16">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-[15%] right-[8%] w-[420px] h-[420px] bg-[rgba(0,200,255,0.06)] rounded-full blur-[120px] animate-drift" />
-          <div className="absolute bottom-[10%] left-[5%] w-[360px] h-[360px] bg-[rgba(123,79,206,0.07)] rounded-full blur-[110px] animate-drift" style={{ animationDelay: '2s' }} />
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-6xl grid lg:grid-cols-[minmax(0,1fr)_auto] gap-10 lg:gap-16 xl:gap-24 items-center">
-          {/* Copy */}
-          <div className="text-center lg:text-left order-1">
-            <h2 className="font-display text-xs uppercase tracking-[0.25em] text-[#00c8ff] text-glow-cyan mb-3 sm:mb-4">
-              See It In Action
-            </h2>
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white leading-tight">
-              100 seconds. <span className="text-[#7b4fce] text-glow-magenta">The whole PlayIQ story.</span>
-            </h3>
-            <p className="mt-3 sm:mt-4 text-slate-400 text-xs sm:text-sm md:text-base leading-relaxed max-w-xl mx-auto lg:mx-0">
-              Watch how teens go from passive scrolling to building their own AI tutor — and how parents get real proof of progress along the way.
-            </p>
-
-            <ul className="mt-6 sm:mt-8 space-y-3 font-mono text-xs text-slate-300 uppercase tracking-widest text-left max-w-md mx-auto lg:mx-0">
-              {[
-                'Meet your AI study companion',
-                'Build a personal AI tutor, step by step',
-                'Boss Battles that prove real understanding',
-                'Real proof of progress for parents',
-              ].map((item) => (
-                <li key={item} className="flex gap-3 items-start">
-                  <span className="text-[#00c8ff] shrink-0">&gt;&gt;</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-
-            <div className="mt-8 sm:mt-10 hidden lg:flex gap-4">
-              <Link href="/beta" className="btn-neon-filled min-h-[48px] inline-flex items-center px-8">
-                Apply for Pilot Access
-              </Link>
-            </div>
-          </div>
-
-          {/* Video */}
-          <div className="order-2 w-full max-w-[300px] sm:max-w-[340px] xl:max-w-[360px] mx-auto">
-            <VslPlayer src="/videos/playiq-vsl.mp4" poster="/videos/playiq-vsl-poster.jpg" orientation="portrait" />
-          </div>
-
-          {/* Mobile CTA (under video) */}
-          <div className="order-3 lg:hidden text-center">
-            <Link href="/beta" className="btn-neon-filled min-h-[48px] inline-flex items-center px-8">
-              Apply for Pilot Access
-            </Link>
           </div>
         </div>
       </section>
