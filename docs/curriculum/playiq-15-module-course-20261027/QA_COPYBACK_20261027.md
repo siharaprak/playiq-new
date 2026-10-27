@@ -19,6 +19,7 @@
 - **PlayIQ checkout:** `/private/tmp/playiq-course-expansion-20261027`
 - **Git remote:** `https://github.com/siharaprak/playiq-new.git`
 - **Branch:** `codex/playiq-course-expansion-20261027`
+- **Course package commit:** `d74f89b9676639859c2fe0de8b70de94ec28f5d0`
 - **Base revision:** `bca04d16b435b4359867fd99ef06448eadd558db`
 - **Drive revision folder:** `PlayIQ_15_Module_Course_20261027`
 - **Drive folder ID:** `1NyhtAiUq8e3gfYTOyT1WFB5yowcVaGOb`
@@ -46,6 +47,14 @@ separate source as part of this package.
   one existing Project plus six files.
 - Source hashes are recorded in `SOURCE_MANIFEST.json`; the 15 module hashes
   are repeated below for copyback integrity.
+- The focused course branch was pushed to GitHub. The push created only the
+  named topic branch; no pull request, merge, Iris message, or deployment was
+  created.
+- Drive readback shows 26 package files in the revision folder, plus the
+  `assets` and `output` subfolders. The asset and print-PDF listings each show
+  one file in the expected location. Module 9 was fetched back and confirms
+  the same existing Project plus six files. Drive reports the PDF at
+  1,684,469 bytes, matching the local artifact.
 
 | Source | SHA-256 |
 |---|---|
@@ -71,10 +80,11 @@ separate source as part of this package.
 - **Not verified:** student beta outcomes, learner completion, external AI
   account behavior, website integration, parent-dashboard behavior, or live
   production deployment.
-- **Git publication:** pending this local QA record and the focused topic-branch
-  commit/push.
-- **Drive publication:** the dated revision folder is created; file upload and
-  readback verification are pending.
-- **Next step:** complete exact-file Git staging, commit/push this branch, then
-  upload the package into the new Drive folder and verify the uploaded file
-  listing. Create a site-integration handoff only if the operator asks.
+- **Git publication:** topic branch pushed; course content is in commit
+  `d74f89b9676639859c2fe0de8b70de94ec28f5d0`.
+- **Drive publication:** 28 package files uploaded in the dated revision
+  folder with the expected folder layout; direct folder listing and selected
+  content readback completed.
+- **Next step:** site integration and a handoff to Iris remain separate work;
+  create either only if the operator asks. Production deployment is not part
+  of this course-source change.
