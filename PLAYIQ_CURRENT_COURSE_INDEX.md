@@ -1,24 +1,24 @@
-# Current PlayIQ Course - October 20, 2026
+# Current PlayIQ Course - October 27, 2026
 
-The new complete source revision is in:
+The active course revision is the complete 15-section structure:
 
-`PlayIQ course/Character_Tutorial_Revision_20261020/`
+- Module 00
+- Modules 1 through 14, with Module 14 as the Capstone
 
-- [Read the full course in a browser](<PlayIQ course/Character_Tutorial_Revision_20261020/PLAYIQ_CURRENT_COMBINED_COURSE_MASTER_20261020.html>)
-- [Open the white-background print PDF](<PlayIQ course/Character_Tutorial_Revision_20261020/output/pdf/PLAYIQ_CURRENT_COMBINED_COURSE_LIGHT_PRINT_20261020.pdf>)
-- [Read the complete Markdown](<PlayIQ course/Character_Tutorial_Revision_20261020/PLAYIQ_CURRENT_COMBINED_COURSE_MASTER_20261020.md>)
-- [Review the decisions and source reconciliation](<PlayIQ course/Character_Tutorial_Revision_20261020/REVISION_NOTES_20261020.md>)
-- [Read the verification and remaining site work](<PlayIQ course/Character_Tutorial_Revision_20261020/QA_COPYBACK_20261020.md>)
+The editable source, full reading edition, and light-print PDF are in
+`docs/curriculum/playiq-15-module-course-20261027/`.
 
-This index is for the active PlayIQ Drive root. The source revision preserves
-Module 0, Modules 1-10, and Capstone. It adds the Module 1 character and
-guardrail tutorial, light character connections in Modules 2-4, and engaging
-hooks/progress markers while preserving the teaching in Modules 8 and 9.
+- [Open the complete course HTML](<docs/curriculum/playiq-15-module-course-20261027/PLAYIQ_COMPLETE_COURSE_MASTER_20261027.html>)
+- [Read the full combined Markdown](<docs/curriculum/playiq-15-module-course-20261027/PLAYIQ_COMPLETE_COURSE_MASTER_20261027.md>)
+- [Open the white-background print PDF](<docs/curriculum/playiq-15-module-course-20261027/output/pdf/PLAYIQ_COMPLETE_COURSE_LIGHT_PRINT_20261027.pdf>)
+- [Read the revision notes](<docs/curriculum/playiq-15-module-course-20261027/REVISION_NOTES_20261027.md>)
+- [Review the QA and publication status](<docs/curriculum/playiq-15-module-course-20261027/QA_COPYBACK_20261027.md>)
 
-Edit the individual module sources inside the new dated revision folder.
-The older Reconstructed_Batch1/2/3 files and October 7 combined edition remain
-recoverable prior versions. Do not combine edits across those dated sources.
+Modules 00-8 are preserved from the October 20 course source. Modules 9-14
+separate the Tutor build from its tests, add a Personal Assistant build/test
+pair, keep the character-to-cartoon path as an optional future possibility,
+and end with the Master Trial Capstone in Module 14.
 
-Website integration and deployment are separate. In particular, the site's
-older five-file/new-Project Module 9 copy needs alignment with the source's
-six-output/existing-Project pathway before a live rollout is claimed.
+The October 20 edition remains unchanged as a prior revision. This index
+points to the new source package; website integration, parent dashboard
+changes, and production deployment remain separate work.
