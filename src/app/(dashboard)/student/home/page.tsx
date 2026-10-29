@@ -1,4 +1,4 @@
-import { Layers, HelpCircle, UploadCloud, Lock, CheckCircle2, Settings } from 'lucide-react';
+import { Layers, HelpCircle, Lock, CheckCircle2, Settings } from 'lucide-react';
 import { createClient, ensureProfileExists } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
@@ -262,13 +262,15 @@ export default async function StudentDashboard() {
               <span className="inline-block mt-3 text-xs font-bold" style={{ color: 'var(--neon-cyan)' }}>Open Discussions →</span>
             </Link>
 
-            {/* Need Help */}
+            {/* Beta Support & Bug Reporting */}
             <div id="need-help-card" className="p-6 rounded-2xl" style={{ background: 'var(--space-card)', border: '1px solid var(--neon-purple)' }}>
               <div className="flex items-center gap-3 mb-4">
                 <HelpCircle style={{ color: 'var(--neon-gold)' }} className="w-6 h-6" />
-                <h3 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Need Help?</h3>
+                <h3 className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Beta Feedback & Bug Report</h3>
               </div>
-              <p className="text-sm mb-4" style={{ color: 'var(--text-muted)' }}>The guide requires you to explain your attempted approach before providing secondary hints.</p>
+              <p className="text-sm mb-4 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
+                Encountered a platform glitch or have ideas to improve PlayIQ? Share your beta feedback or log technical issues directly to our engineering team.
+              </p>
               <RequestFeedbackButton />
               <SupportIssueForm />
             </div>

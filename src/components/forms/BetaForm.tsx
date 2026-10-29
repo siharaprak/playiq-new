@@ -41,15 +41,28 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
 
   if (serverState.type === 'success') {
     return (
-      <div className="bg-emerald-50 border border-emerald-100 p-8 rounded-2xl text-center">
-        <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-emerald-900 mb-2">Application Received</h3>
-        <p className="text-emerald-700">
-          {serverState.message}
+      <div className="p-6 sm:p-8 bg-black/60 border-2 border-[#00c8ff] text-center space-y-4 shadow-[0_0_25px_rgba(0,200,255,0.25)]">
+        <CheckCircle2 className="w-14 h-14 text-[#00c8ff] mx-auto animate-pulse" />
+        <div className="inline-block bg-[rgba(0,200,255,0.15)] border border-[#00c8ff] px-3 py-1 font-mono text-[10px] text-[#00c8ff] uppercase tracking-widest font-bold">
+          100% FREE PILOT RESERVED
+        </div>
+        <h3 className="text-xl sm:text-2xl font-bold font-display uppercase tracking-wider text-white">
+          Application Confirmed
+        </h3>
+        <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-mono">
+          {serverState.message || "Your spot in the Founding Cohort has been confirmed at zero cost. We've sent your Parent Setup Guide PDF to your inbox."}
         </p>
+        <div className="pt-2">
+          <a
+            href="/signup?beta=success&promo=PLAYIQ2025"
+            className="btn-neon-filled w-full font-display uppercase font-bold text-sm tracking-[0.15em] py-3.5 inline-flex items-center justify-center gap-2"
+          >
+            PROCEED TO ACCOUNT SETUP →
+          </a>
+        </div>
         <button 
            onClick={() => setServerState({type: 'idle'})}
-           className="mt-6 text-sm text-emerald-600 font-semibold hover:underline"
+           className="mt-4 text-xs font-mono text-slate-400 hover:text-white underline block mx-auto transition-colors"
         >
           Submit another application
         </button>
@@ -58,13 +71,21 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 form-cyberpunk" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 form-cyberpunk" noValidate>
       {serverState.type === 'error' && (
-        <div className="p-4 bg-[rgba(255,0,0,0.1)] border border-red-500/50 rounded-none flex gap-3 text-red-400 font-mono text-sm">
+        <div className="p-4 bg-[rgba(255,0,0,0.1)] border border-red-500/50 rounded-none flex gap-3 text-red-400 font-mono text-xs sm:text-sm">
           <AlertCircle className="w-5 h-5 flex-shrink-0" />
           <p>{serverState.message}</p>
         </div>
       )}
+
+      {/* Free badge callout inside form */}
+      <div className="p-3 bg-[rgba(0,200,255,0.08)] border-l-4 border-[#00c8ff] flex items-center justify-between text-[11px] font-mono uppercase tracking-wider text-[#00c8ff]">
+        <span className="font-bold flex items-center gap-1.5">
+          <CheckCircle2 className="w-4 h-4 text-[#00c8ff]" /> FOUNDING COHORT: FREE ($0)
+        </span>
+        <span className="text-slate-400 text-[10px]">NO CC REQUIRED</span>
+      </div>
 
       <input type="hidden" {...register('source')} value={source} />
 
@@ -81,7 +102,7 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
       </div>
 
       <div>
-        <label htmlFor="emailAddress" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">Email Address</label>
+        <label htmlFor="emailAddress" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">Email Address (For Parent Setup Guide)</label>
         <input 
           id="emailAddress"
           type="email"
@@ -110,26 +131,30 @@ export function BetaForm({ source, initialPromo }: { source?: string; initialPro
       </div>
 
       <div>
-        <label htmlFor="promoCode" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">Promo / Access Code (Optional)</label>
+        <label htmlFor="promoCode" className="block font-mono text-xs text-[#00c8ff] uppercase tracking-wider sm:tracking-widest mb-1.5 sm:mb-2 opacity-80">
+          Invite / Partner Code <span className="text-slate-400 lowercase">(optional — beta is 100% free)</span>
+        </label>
         <input 
           id="promoCode"
           {...register('promoCode')}
           className={`neon-input min-h-[44px] ${errors.promoCode ? 'border-[rgba(255,0,0,0.5)] bg-[rgba(255,0,0,0.05)]' : ''}`}
-          placeholder="Enter code to bypass payment" 
+          placeholder="Enter invite code or leave blank" 
         />
         {errors.promoCode && <p className="mt-1 text-xs font-mono text-red-400">{errors.promoCode.message}</p>}
       </div>
 
-      <div className="pt-4 sm:pt-6">
+      <div className="pt-2">
          <button 
           type="submit" 
           disabled={isSubmitting}
-          className="btn-neon-filled w-full font-display text-base sm:text-lg py-3.5 sm:py-4 min-h-[48px] gap-2 !rounded-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-transform"
+          className="btn-neon-filled w-full font-display text-sm sm:text-base py-3.5 sm:py-4 min-h-[48px] gap-2 !rounded-none disabled:opacity-50 disabled:cursor-not-allowed active:scale-[0.98] transition-transform"
          >
             {isSubmitting ? <Loader2 className="w-5 h-5 animate-spin mr-3 inline-block" /> : null}
-            {isSubmitting ? "PROCESSING..." : "PROCEED TO ENTRY"}
+            {isSubmitting ? "RESERVING YOUR FREE SPOT..." : "CLAIM 100% FREE PILOT SPOT →"}
          </button>
-         <p className="font-mono text-[9px] sm:text-[10px] text-center text-slate-500 mt-3 sm:mt-4 uppercase tracking-wider sm:tracking-[0.2em]">By applying, you acknowledge this is an early access pilot program.</p>
+         <p className="font-mono text-[9px] sm:text-[10px] text-center text-slate-400 mt-3 uppercase tracking-wider sm:tracking-[0.15em]">
+           100% Free for founding cohort families. Instant setup upon submission.
+         </p>
       </div>
     </form>
   );

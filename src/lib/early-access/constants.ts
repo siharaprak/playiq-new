@@ -17,13 +17,13 @@ export const EARLY_ACCESS_COPY = {
     'Learn to verify AI answers and catch mistakes',
     'Develop skills that transfer beyond the classroom',
   ],
-  cta: 'Get Early Access',
-  trustLine: ['Free during Early Access', 'Ages 13–17', 'Parent or guardian signup'],
+  cta: 'Get Free Early Access',
+  trustLine: ['100% Free Pilot ($0)', 'Ages 13–17', 'Parent or guardian signup'],
   confirmation: {
     headline: 'You’re One Step Closer to PlayIQ Early Access',
-    body: 'Check your email to see how PlayIQ helps teens build AI tutors, study systems, and practical problem-solving skills—and what to expect before applying.',
-    primaryCta: { label: 'See PlayIQ in Action', href: '/how-it-works' },
-    secondaryCta: { label: 'Continue to Early Access', href: '/beta' },
+    body: 'Check your email for your Parent Setup Guide and course details. You can also watch the 100-second overview or proceed directly to claim your free pilot spot.',
+    primaryCta: { label: 'Watch Video & Apply (Free)', href: '/beta#vsl' },
+    secondaryCta: { label: 'Claim Free Pilot Spot', href: '/beta#apply-form' },
   },
 } as const;
 

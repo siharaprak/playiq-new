@@ -54,8 +54,8 @@ const steps: TourStep[] = [
   },
   {
     target: '#need-help-card',
-    title: 'Support & Feedback Channel',
-    content: 'Stuck? Request human feedback or open support tickets here. Remember: before asking for hints, you must outline your attempted approach!',
+    title: 'Beta Feedback & Bug Reporting',
+    content: 'Encountered a platform glitch, UI bug, or have ideas to improve PlayIQ? Use this channel to report technical issues and submit beta feedback directly to our engineering team.',
     placement: 'left'
   }
 ];

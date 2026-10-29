@@ -38,7 +38,7 @@ export default function RequestFeedbackButton() {
         className="w-full py-3 rounded-lg text-sm font-bold transition-colors hover:bg-[rgba(123,79,206,0.25)]" 
         style={{ background: 'rgba(123,79,206,0.15)', border: '1px solid rgba(123,79,206,0.3)', color: '#9b6fe8' }}
       >
-        Request Feedback
+        Submit Beta Feedback
       </button>
 
       {isOpen && (
@@ -51,21 +51,21 @@ export default function RequestFeedbackButton() {
               <X className="w-5 h-5" />
             </button>
             
-            <h2 className="text-xl font-bold mb-2 font-display text-[var(--text-primary)]">Request Feedback</h2>
+            <h2 className="text-xl font-bold mb-2 font-display text-[var(--text-primary)]">Beta Platform Feedback</h2>
             <p className="text-sm mb-6" style={{ color: 'var(--text-secondary)' }}>
-              Explain your attempted approach before providing secondary hints. What are you stuck on?
+              Help us improve PlayIQ! Share your suggestions, feedback on modules, or what we can do better.
             </p>
 
             {success ? (
               <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/30 text-green-400 text-sm mb-4">
-                Feedback request submitted successfully! We'll get back to you soon.
+                Thank you! Your feedback has been sent to our development team.
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
                 <textarea
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  placeholder="I am trying to solve the module 2 quiz but..."
+                  placeholder="What worked well, what was confusing, or what feature would you like to see?"
                   className="w-full h-32 p-3 rounded-lg mb-4 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-[#7b4fce]/50 transition-all"
                   style={{ background: 'rgba(17,24,39,0.8)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
                   required
@@ -82,7 +82,7 @@ export default function RequestFeedbackButton() {
                   className="w-full py-3 rounded-lg text-sm font-bold transition-colors disabled:opacity-50"
                   style={{ background: '#7b4fce', color: 'white' }}
                 >
-                  {isSubmitting ? 'Submitting...' : 'Submit Request'}
+                  {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
                 </button>
               </form>
             )}

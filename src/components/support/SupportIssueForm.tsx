@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { submitSupportIssue } from './actions';
-import { HelpCircle, Check, Loader2 } from 'lucide-react';
+import { Check, Loader2 } from 'lucide-react';
 
 /**
  * SupportIssueForm — Allows students to file manual support tickets.
@@ -42,15 +42,15 @@ export default function SupportIssueForm() {
     return (
       <div className="border border-green-500/30 bg-green-950/20 rounded-xl p-4 text-center space-y-2 mt-4">
         <Check className="w-8 h-8 text-green-400 mx-auto" />
-        <p className="font-mono text-xs text-green-400 font-bold uppercase tracking-wider">Ticket Submitted</p>
+        <p className="font-mono text-xs text-green-400 font-bold uppercase tracking-wider">Bug Report Submitted</p>
         <p className="text-[10px] text-slate-400 leading-relaxed font-mono">
-          Your support ticket has been logged in the admin queue. An instructor will review your request shortly.
+          Your bug report has been logged in the support queue. Our engineering team will review and resolve it promptly.
         </p>
         <button
           onClick={() => setStatus('idle')}
           className="text-[10px] font-mono text-slate-500 hover:text-slate-300 underline mt-1 block w-full"
         >
-          Submit another ticket
+          Report another issue
         </button>
       </div>
     );
@@ -60,14 +60,14 @@ export default function SupportIssueForm() {
     <form onSubmit={handleSubmit} className="space-y-3 mt-4 pt-4 border-t border-slate-800">
       <div className="space-y-1">
         <label className="block font-mono text-[10px] uppercase tracking-widest text-slate-400 font-bold">
-          Submit Support Ticket
+          Report a Bug / Technical Issue
         </label>
         <textarea
           rows={2}
           value={issueText}
           disabled={isSubmitting}
           onChange={(e) => setIssueText(e.target.value)}
-          placeholder="Describe your issue or question for instructors..."
+          placeholder="Describe any bug, glitch, or technical error you ran into..."
           className="w-full bg-black/40 border border-slate-800 focus:border-[#00c8ff] rounded p-2 text-slate-200 text-xs font-mono outline-none resize-none min-h-[60px]"
         />
       </div>
@@ -87,7 +87,7 @@ export default function SupportIssueForm() {
             Submitting...
           </>
         ) : (
-          'Submit Ticket'
+          'Report Bug'
         )}
       </button>
     </form>
