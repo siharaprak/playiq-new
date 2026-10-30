@@ -1,0 +1,11 @@
+Iris, please prepare the fully updated PlayIQ course for Sihara's weekend beta test.
+
+Repository: https://github.com/siharaprak/playiq-new
+Branch: codex/playiq-weekend-test-20261030
+Implementation commit: 5a3ea59a693e9ce15781431b93dc1dbece5ea1e3
+
+Fetch that branch in a clean checkout and first read docs/HANDOFF_IRIS_PLAYIQ_WEEKEND_TEST_20261030.md and docs/PLAYIQ_WEEKEND_RELEASE_QA_20261030.md. The full 15-section course, 143-page print edition, inline saved choices, Personal Learning Knowledge File download, beta blocker reports, assessment fixes and responsive Orion changes are committed there.
+
+Follow the handoff to deploy only to the approved staging/beta test environment, apply the two specified migrations in order, enroll the approved existing test students and complete real authenticated/mobile/download acceptance. Keep final-course activation and production unchanged. Do not use the synthetic preview as proof of live saves. If the staging target is not already authorized or a test fails, stop and ask/report the exact issue.
+
+Return the actual staging URL, deployed commit, migration/test receipts and remaining blockers in a dated PlayIQ mailbox copyback. Do not shorten the curriculum or add assignments. Module 13 stays optional and Capstone is Module 14. This is release activation and verification, not another rewrite.
