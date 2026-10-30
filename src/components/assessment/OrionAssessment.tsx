@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useCallback, useTransition } from 'react';
+import React, { useState, useCallback, useEffect, useRef, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import OrionTypingEffect from './OrionTypingEffect';
@@ -11,12 +11,15 @@ import AIWorkspaceTutorial from './AIWorkspaceTutorial';
 import {
   savePhase1,
   savePhase2,
+  saveDiagnosticAnswer,
+  saveAssessmentAnswer,
   savePhase3,
   savePhase4,
   completeAssessment,
   finishAssessmentAction,
 } from '@/app/(dashboard)/student/assessment/actions';
 import type { LearningBlueprintData } from '@/lib/assessment/assessment-reveal';
+import { firstUnansweredDiagnostic } from '@/lib/assessment/assessment-flow';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -159,7 +162,9 @@ export default function OrionAssessment({
   const [workspaceReady, setWorkspaceReady] = useState(false);
 
   // Phase 2 state
-  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(() => firstUnansweredDiagnostic(existingProfile));
+  const [answerStatus, setAnswerStatus] = useState('');
+  const diagnosticSaving = useRef(false);
   const [diagnosticAnswers, setDiagnosticAnswers] = useState<DiagnosticAnswers>({
     q1: getInitialOptionId(0, existingProfile?.explanation_style as string),
     q2: getInitialOptionId(1, existingProfile?.pacing_preference as string),
@@ -169,7 +174,7 @@ export default function OrionAssessment({
   });
 
   // Phase 3 state
-  const [baselineStep, setBaselineStep] = useState(0); // 0 = intro, 1-3 = tasks
+  const [baselineStep, setBaselineStep] = useState(existingProfile?.baseline_task2_response ? 3 : existingProfile?.baseline_task1_answer ? 2 : 0);
   const [task1Answer, setTask1Answer] = useState<string | null>(
     (existingProfile?.baseline_task1_answer as string) || null,
   );
@@ -192,13 +197,15 @@ export default function OrionAssessment({
   const [personalGoal, setPersonalGoal] = useState(
     (existingProfile?.personal_goal as string) || '',
   );
-  const [schoolQuestionStep, setSchoolQuestionStep] = useState(0);
+  const [schoolQuestionStep, setSchoolQuestionStep] = useState(existingProfile?.advance_target_subject ? 2 : existingProfile?.rescue_target_subject ? 1 : 0);
 
   // Phase 5 state
-  const [revealSummary, setRevealSummary] = useState('');
-  const [visionOutcomes, setVisionOutcomes] = useState<string[]>([]);
-  const [blueprint, setBlueprint] = useState<LearningBlueprintData | null>(null);
-  const [revealStep, setRevealStep] = useState(0); // 0=generating, 1=summary, 2=vision, 3=blueprint
+  const [revealSummary, setRevealSummary] = useState((existingProfile?.reveal_summary as string) || '');
+  const savedBlueprint = existingProfile?.learning_blueprint as (LearningBlueprintData & {visionOutcomes?: string[]}) | null;
+  const [visionOutcomes, setVisionOutcomes] = useState<string[]>(savedBlueprint?.visionOutcomes || []);
+  const [blueprint, setBlueprint] = useState<LearningBlueprintData | null>(savedBlueprint || null);
+  const [revealStep, setRevealStep] = useState(existingProfile?.reveal_summary ? 1 : 0);
+  const revealRequested = useRef(false);
   const [postBaselineComplete, setPostBaselineComplete] = useState(false);
   const [postBaselineTyped, setPostBaselineTyped] = useState(false);
 
@@ -231,20 +238,24 @@ export default function OrionAssessment({
   // ── Phase 2 Submit ────────────────────────────────────────────────────────
 
   const handleDiagnosticSelect = (questionId: string, optionId: string) => {
-    setDiagnosticAnswers((prev) => ({ ...prev, [questionId]: optionId }));
-
-    // Auto-advance to next question after brief delay
-    setTimeout(() => {
-      if (typeof document !== 'undefined' && document.activeElement instanceof HTMLElement) {
-        document.activeElement.blur();
+    if (diagnosticSaving.current) return;
+    diagnosticSaving.current = true;
+    setError(null);
+    setAnswerStatus('Saving your answer…');
+    startTransition(async () => {
+      try {
+        await saveDiagnosticAnswer(questionId, optionId);
+        setDiagnosticAnswers((prev) => ({ ...prev, [questionId]: optionId }));
+        setAnswerStatus('Answer saved. You can return to it using the question buttons.');
+        const index = DIAGNOSTIC_QUESTIONS.findIndex((question) => question.id === questionId);
+        setCurrentQuestion(Math.min(index + 1, DIAGNOSTIC_QUESTIONS.length - 1));
+      } catch {
+        setAnswerStatus('Answer not saved. Select your choice again to retry.');
+        setError('Your answer was not saved. Please retry before continuing.');
+      } finally {
+        diagnosticSaving.current = false;
       }
-      setCurrentQuestion((c) => {
-        if (c < DIAGNOSTIC_QUESTIONS.length - 1) {
-          return c + 1;
-        }
-        return c;
-      });
-    }, 350);
+    });
   };
 
   const handlePhase2Submit = () => {
@@ -277,6 +288,7 @@ export default function OrionAssessment({
     setError(null);
     startTransition(async () => {
       try {
+        await saveAssessmentAnswer('baseline_task3_response', task3Response.trim());
         await savePhase3({
           task1Answer,
           task2Response: task2Response.trim(),
@@ -285,6 +297,25 @@ export default function OrionAssessment({
         setBaselineStep(4); // show post-baseline Orion message
       } catch {
         setError('Failed to save. Please try again.');
+      }
+    });
+  };
+
+  const saveDraftAndContinue = (field: string, value: string, advance: () => void) => {
+    if (diagnosticSaving.current) return;
+    diagnosticSaving.current = true;
+    setError(null);
+    setAnswerStatus('Saving your answer…');
+    startTransition(async () => {
+      try {
+        await saveAssessmentAnswer(field, value);
+        setAnswerStatus('Answer saved.');
+        advance();
+      } catch {
+        setAnswerStatus('Answer not saved. Please retry.');
+        setError('Your answer was not saved. Stay here and try again.');
+      } finally {
+        diagnosticSaving.current = false;
       }
     });
   };
@@ -302,6 +333,10 @@ export default function OrionAssessment({
           advanceTargetSubject: advanceSubject.trim(),
           personalGoal: personalGoal.trim(),
         });
+        setRevealSummary('');
+        setBlueprint(null);
+        setRevealStep(0);
+        revealRequested.current = false;
         transitionTo(5);
       } catch {
         setError('Failed to save. Please try again.');
@@ -311,7 +346,7 @@ export default function OrionAssessment({
 
   // ── Phase 5 Complete ──────────────────────────────────────────────────────
 
-  const handleGenerateReveal = () => {
+  const handleGenerateReveal = useCallback(() => {
     setError(null);
     setRevealStep(0);
     startTransition(async () => {
@@ -325,7 +360,14 @@ export default function OrionAssessment({
         setError('Failed to generate your reveal. Please try again.');
       }
     });
-  };
+  }, [startTransition]);
+
+  useEffect(() => {
+    if (phase === 5 && !revealSummary && !revealRequested.current) {
+      revealRequested.current = true;
+      handleGenerateReveal();
+    }
+  }, [phase, revealSummary, handleGenerateReveal]);
 
   const handleFinish = () => {
     setError(null);
@@ -344,11 +386,12 @@ export default function OrionAssessment({
   return (
     <div className={`assessment-container ${isTransitioning ? 'assessment-fade-out' : 'assessment-fade-in'}`}>
       {error && (
-        <div className="assessment-error">
+        <div className="assessment-error" role="alert">
           <span>⚠️ {error}</span>
           <button onClick={() => setError(null)} className="ml-2 font-bold">×</button>
         </div>
       )}
+      {phase >= 3 && phase <= 4 && <p role="status" aria-live="polite" className="text-center text-sm mb-4">{answerStatus || 'Your answer saves when you select Continue or Next. Wait for saving to finish before leaving.'}</p>}
 
       {/* ═══ PHASE 1: Orion Opens ═══════════════════════════════════════════ */}
       {phase === 1 && (
@@ -457,13 +500,19 @@ export default function OrionAssessment({
             onSelect={(optionId) =>
               handleDiagnosticSelect(DIAGNOSTIC_QUESTIONS[currentQuestion].id, optionId)
             }
+            disabled={isPending}
           />
+          <p role="status" aria-live="polite" className="text-center text-sm mt-4">{answerStatus}</p>
 
           {/* Question navigation dots */}
           <div className="flex justify-center gap-2 mt-6">
             {DIAGNOSTIC_QUESTIONS.map((_, idx) => (
               <button
                 key={idx}
+                type="button"
+                disabled={isPending}
+                aria-label={`Review question ${idx + 1}`}
+                aria-current={idx === currentQuestion ? 'step' : undefined}
                 onClick={() => setCurrentQuestion(idx)}
                 className="w-2.5 h-2.5 rounded-full transition-all"
                 style={{
@@ -490,7 +539,7 @@ export default function OrionAssessment({
                 disabled={isPending}
                 className="assessment-continue-button mt-6"
               >
-                {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Lock In My Signals →'}
+                {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Continue →'}
               </button>
             )}
         </div>
@@ -530,9 +579,12 @@ export default function OrionAssessment({
             <>
               <BaselineTask1
                 selectedAnswer={task1Answer}
+                disabled={isPending}
                 onSelect={(answer) => {
-                  setTask1Answer(answer);
-                  setTimeout(() => setBaselineStep(2), 500);
+                  saveDraftAndContinue('baseline_task1_answer', answer, () => {
+                    setTask1Answer(answer);
+                    setBaselineStep(2);
+                  });
                 }}
               />
             </>
@@ -543,8 +595,8 @@ export default function OrionAssessment({
             <>
               <BaselineTask2 response={task2Response} onChange={setTask2Response} />
               <button
-                onClick={() => setBaselineStep(3)}
-                disabled={task2Response.trim().length < 10}
+                onClick={() => saveDraftAndContinue('baseline_task2_response', task2Response, () => setBaselineStep(3))}
+                disabled={task2Response.trim().length < 10 || isPending}
                 className="assessment-continue-button mt-4"
               >
                 Next Challenge →
@@ -611,8 +663,8 @@ export default function OrionAssessment({
                 autoFocus
               />
               <button
-                onClick={() => setSchoolQuestionStep(1)}
-                disabled={!rescueSubject.trim()}
+                onClick={() => saveDraftAndContinue('rescue_target_subject', rescueSubject, () => setSchoolQuestionStep(1))}
+                disabled={!rescueSubject.trim() || isPending}
                 className="assessment-continue-button mt-4"
               >
                 Next →
@@ -635,8 +687,8 @@ export default function OrionAssessment({
                 autoFocus
               />
               <button
-                onClick={() => setSchoolQuestionStep(2)}
-                disabled={!advanceSubject.trim()}
+                onClick={() => saveDraftAndContinue('advance_target_subject', advanceSubject, () => setSchoolQuestionStep(2))}
+                disabled={!advanceSubject.trim() || isPending}
                 className="assessment-continue-button mt-4"
               >
                 Next →
@@ -681,16 +733,16 @@ export default function OrionAssessment({
           {revealStep === 0 && !revealSummary && (
             <div className="text-center">
               <p className="text-sm font-mono mb-4" style={{ color: 'var(--neon-cyan)' }}>
-                Orion is calibrating to your profile...
+                {error ? 'Your results are not ready yet. Nothing has been lost.' : 'Preparing your results. They will appear here automatically.'}
               </p>
-              {isPending ? (
+              {!error ? (
                 <Loader2 className="w-8 h-8 animate-spin mx-auto" style={{ color: 'var(--neon-purple)' }} />
               ) : (
                 <button
                   onClick={handleGenerateReveal}
                   className="assessment-reveal-button"
                 >
-                  Show Me What Orion Found →
+                  Retry preparing my results
                 </button>
               )}
             </div>
@@ -713,7 +765,7 @@ export default function OrionAssessment({
                 onClick={() => setRevealStep(2)}
                 className="assessment-continue-button mt-6"
               >
-                What&apos;s possible? →
+                Continue →
               </button>
             </div>
           )}
@@ -752,7 +804,7 @@ export default function OrionAssessment({
                 onClick={() => setRevealStep(3)}
                 className="assessment-continue-button"
               >
-                See My Blueprint →
+                Continue →
               </button>
             </div>
           )}
@@ -767,7 +819,7 @@ export default function OrionAssessment({
                 onClick={() => setRevealStep(4)}
                 className="assessment-begin-button mt-8"
               >
-                Set Up My AI Workshop →
+                Continue to my AI workspace →
               </button>
             </div>
           )}

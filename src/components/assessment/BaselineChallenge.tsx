@@ -8,9 +8,10 @@ import { BASELINE_TASK1_CONTENT, BASELINE_TASK2_PROMPT, BASELINE_TASK3_CONTENT }
 interface Task1Props {
   selectedAnswer: string | null;
   onSelect: (answer: string) => void;
+  disabled?: boolean;
 }
 
-export function BaselineTask1({ selectedAnswer, onSelect }: Task1Props) {
+export function BaselineTask1({ selectedAnswer, onSelect, disabled = false }: Task1Props) {
   const content = BASELINE_TASK1_CONTENT;
 
   return (
@@ -36,6 +37,8 @@ export function BaselineTask1({ selectedAnswer, onSelect }: Task1Props) {
             <button
               key={`task1-opt-${answer.label}`}
               type="button"
+              disabled={disabled}
+              aria-pressed={isSelected}
               onClick={(e) => {
                 e.currentTarget.blur();
                 onSelect(answer.label);

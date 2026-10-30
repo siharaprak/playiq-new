@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useId } from 'react';
 import { usePathname } from 'next/navigation';
-import { ChevronDown, ChevronUp, Sparkles, Loader2, AlertCircle, MessageSquare, X } from 'lucide-react';
+import { ChevronDown, ChevronUp, AlertCircle, Maximize2, Minimize2, X } from 'lucide-react';
 import { ModeSelector } from './ModeSelector';
 import { GuidedAiResponse } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
@@ -10,6 +10,8 @@ import { OrionCharacter } from './OrionCharacter';
 import { CHARACTER_ACTION_EVENT_PROTOCOL, syncCharacterWithGuidedAiResponse } from '@/lib/orion/action-contract';
 import { emitOrionCharacterAction, emitOrionReaction, selectLocalReactionForGuidedAiResponse, setOrionThinking } from '@/lib/orion/local-events';
 import { ORION_AVATAR_URL, preloadOrion } from '@/lib/orion/scene-cache';
+import { getOrionPanelLayout, type OrionViewport } from './panel-layout';
+import styles from './GuidedAIPanel.module.css';
 
 interface GuidedAIPanelProps {
   moduleNumber?: number;
@@ -71,8 +73,17 @@ export function GuidedAIPanel({
 }: GuidedAIPanelProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [isClosing, setIsClosing] = useState(false);
-  const [showAwakeAnimation, setShowAwakeAnimation] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [characterCollapsed, setCharacterCollapsed] = useState<boolean | null>(null);
+  const [viewport, setViewport] = useState<OrionViewport | null>(null);
+  const panelId = useId();
+  const titleId = `${panelId}-title`;
+  const characterId = `${panelId}-character`;
+  const contentId = `${panelId}-content`;
+  const panelRef = useRef<HTMLDivElement>(null);
+  const launcherRef = useRef<HTMLButtonElement>(null);
+  const layout = viewport ? getOrionPanelLayout(viewport, isExpanded) : null;
+  const isCharacterCollapsed = characterCollapsed ?? layout?.autoCollapseCharacter ?? false;
   const [activeMode, setActiveMode] = useState<GuidedAiModeId | null>(null);
   const [message, setMessage] = useState('');
   const [studentAttempt, setStudentAttempt] = useState('');
@@ -85,6 +96,40 @@ export function GuidedAIPanel({
   const [selectedText, setSelectedText] = useState('');
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const messageScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const visual = window.visualViewport;
+    const updateViewport = () => {
+      const next = {
+        width: visual?.width ?? window.innerWidth,
+        height: visual?.height ?? window.innerHeight,
+        offsetLeft: visual?.offsetLeft ?? 0,
+        offsetTop: visual?.offsetTop ?? 0,
+      };
+      setViewport(previous => previous && Object.keys(next).every(key => previous[key as keyof OrionViewport] === next[key as keyof OrionViewport]) ? previous : next);
+    };
+    updateViewport();
+    visual?.addEventListener('resize', updateViewport);
+    visual?.addEventListener('scroll', updateViewport);
+    window.addEventListener('resize', updateViewport);
+    return () => {
+      visual?.removeEventListener('resize', updateViewport);
+      visual?.removeEventListener('scroll', updateViewport);
+      window.removeEventListener('resize', updateViewport);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen || !isFloating) return;
+    // Focus the dialog, not the textarea: opening must not summon a phone keyboard.
+    panelRef.current?.focus({ preventScroll: true });
+  }, [isOpen, isFloating]);
+
+  const minimizeOrion = () => {
+    setIsOpen(false);
+    // Hiding keeps component state, messages, drafts, and the character mounted.
+    window.requestAnimationFrame(() => launcherRef.current?.focus({ preventScroll: true }));
+  };
 
   // Sprint 4C: ephemeral local state for hint ladder + retry + teach-back
   const [hintLevel, setHintLevel] = useState<1 | 2 | 3>(1);
@@ -555,7 +600,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
 
   const renderInputForm = () => {
     return (
-      <form id="guided-ai-form" onSubmit={handleSubmit} className="space-y-3">
+      <form id={`${panelId}-form`} onSubmit={handleSubmit} className="space-y-3">
         {/* Learn Your Way preference selectors */}
         {activeMode === 'learn_your_way' && messages.length === 1 && (
           <div className="grid grid-cols-2 gap-2 bg-[rgba(0,0,0,0.2)] p-3 rounded-lg border border-[var(--glass-border)] shadow-inner">
@@ -564,6 +609,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 Explain with
               </label>
               <select
+                aria-label="Explain with"
                 value={lywPrefs.explanation_style || ''}
                 onChange={(e) => setLywPrefs(p => ({ ...p, explanation_style: e.target.value as LearnYourWayPreferences['explanation_style'] || undefined }))}
                 className="w-full bg-[var(--space-mid)] border border-[var(--glass-border)] rounded-md px-2 py-1.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-cyan)]"
@@ -580,6 +626,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 Pace
               </label>
               <select
+                aria-label="Pace"
                 value={lywPrefs.pace_preference || ''}
                 onChange={(e) => setLywPrefs(p => ({ ...p, pace_preference: e.target.value as LearnYourWayPreferences['pace_preference'] || undefined }))}
                 className="w-full bg-[var(--space-mid)] border border-[var(--glass-border)] rounded-md px-2 py-1.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-cyan)]"
@@ -595,6 +642,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 Support style
               </label>
               <select
+                aria-label="Support style"
                 value={lywPrefs.support_preference || ''}
                 onChange={(e) => setLywPrefs(p => ({ ...p, support_preference: e.target.value as LearnYourWayPreferences['support_preference'] || undefined }))}
                 className="w-full bg-[var(--space-mid)] border border-[var(--glass-border)] rounded-md px-2 py-1.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-cyan)]"
@@ -610,6 +658,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 Start with
               </label>
               <select
+                aria-label="Start with"
                 value={lywPrefs.practice_preference || ''}
                 onChange={(e) => setLywPrefs(p => ({ ...p, practice_preference: e.target.value as LearnYourWayPreferences['practice_preference'] || undefined }))}
                 className="w-full bg-[var(--space-mid)] border border-[var(--glass-border)] rounded-md px-2 py-1.5 text-xs text-[var(--text-primary)] focus:outline-none focus:border-[var(--neon-cyan)]"
@@ -629,6 +678,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
               Confusing Excerpt
             </label>
             <textarea
+              aria-label="Confusing excerpt"
               value={selectedText}
               onChange={(e) => setSelectedText(e.target.value)}
               placeholder="Paste the confusing sentence or paragraph here..."
@@ -647,6 +697,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
               {latestResponse?.effortRequired ? '✏️ Your attempt (required for answer lock release)' : 'Your attempt (optional)'}
             </label>
             <textarea
+              aria-label="Your attempt"
               value={studentAttempt}
               onChange={(e) => setStudentAttempt(e.target.value)}
               placeholder={latestResponse?.effortRequired
@@ -670,6 +721,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
         <div className="relative">
           <textarea
             ref={inputRef}
+            aria-label="Message to Orion"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder={getPlaceholder(activeMode)}
@@ -734,8 +786,20 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   };
 
   const renderCharacterSection = () => (
-    <div className="relative z-20 flex-none p-3 pb-0">
-      <OrionCharacter compact={activeMode !== null} active={isOpen} enable3d={orion3d} studentName={studentName} />
+    <div className={styles.characterSection}>
+      <button
+        type="button"
+        className={styles.characterToggle}
+        aria-controls={characterId}
+        aria-expanded={!isCharacterCollapsed}
+        onClick={() => setCharacterCollapsed(!isCharacterCollapsed)}
+      >
+        {isCharacterCollapsed ? <ChevronDown size={16} aria-hidden="true" /> : <ChevronUp size={16} aria-hidden="true" />}
+        {isCharacterCollapsed ? 'Show Orion character' : 'Hide character for more reading space'}
+      </button>
+      <div id={characterId} hidden={isCharacterCollapsed} className={styles.characterContent}>
+        <OrionCharacter compact={activeMode !== null} active={isOpen && !isCharacterCollapsed} enable3d={orion3d} studentName={studentName} />
+      </div>
     </div>
   );
 
@@ -744,7 +808,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       <>
         {/* Floating Toggle Button */}
         {!isOpen && (
-          <div id="orion-floating-button" className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 orion-launcher-bob">
+          <div id="orion-floating-button" className={`${styles.launcher} fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 orion-launcher-bob`}>
             {visibleNudge && (
               <div className="orion-nudge absolute bottom-[4.25rem] right-0 w-56 rounded-2xl rounded-br-sm border border-[var(--neon-cyan)]/40 px-3 py-2 text-xs leading-snug text-[var(--text-primary)] shadow-[0_6px_24px_rgba(0,0,0,0.35)]" style={{ backgroundColor: 'var(--space-deep)' }}>
                 <button type="button" onClick={openOrion} className="block w-full pr-4 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">
@@ -760,14 +824,18 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
             <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[var(--neon-cyan)] to-[var(--neon-purple)] opacity-40 blur-md animate-pulse"></div>
             
             <button
+              ref={launcherRef}
               type="button"
               onClick={openOrion}
               onPointerEnter={orion3d ? preloadOrion : undefined}
               onFocus={orion3d ? preloadOrion : undefined}
               onTouchStart={orion3d ? preloadOrion : undefined}
-              className="w-full h-full rounded-full border-2 border-[var(--neon-cyan)] text-[var(--neon-cyan)] shadow-[0_0_18px_rgba(0,200,255,0.4)] hover:shadow-[0_0_25px_rgba(123,79,206,0.7)] hover:border-[var(--neon-purple)] transition-all duration-300 group focus:outline-none transform hover:-translate-y-0.5 hover:scale-105 flex items-center justify-center overflow-hidden relative cursor-pointer"
+              className="w-full h-full rounded-full border-2 border-[var(--neon-cyan)] text-[var(--neon-cyan)] shadow-[0_0_18px_rgba(0,200,255,0.4)] hover:shadow-[0_0_25px_rgba(123,79,206,0.7)] hover:border-[var(--neon-purple)] transition-all duration-300 group focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--neon-cyan)] transform hover:-translate-y-0.5 hover:scale-105 flex items-center justify-center overflow-hidden relative cursor-pointer"
               style={{ backgroundColor: 'var(--space-deep)' }}
               aria-label="Open Orion Chat"
+              aria-expanded={isOpen}
+              aria-controls={panelId}
+              aria-haspopup="dialog"
             >
               {/* Concentric border ring */}
               <div className="absolute inset-0.5 rounded-full border border-[var(--neon-purple)]/30 group-hover:border-[var(--neon-cyan)]/50 transition-colors z-10"></div>
@@ -786,17 +854,37 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
 
         {/* Expanded Chat Panel: stays mounted while hidden so Orion keeps his state and WebGL context. */}
         <div hidden={!isOpen}>
-          <div 
-            className={`!fixed bottom-3 right-3 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-1.5rem)] sm:w-[410px] max-w-[410px] h-[580px] max-h-[85vh] flex flex-col rounded-2xl overflow-hidden shadow-2xl ${isClosing ? 'animate-fade-out-down' : 'animate-fade-in-up'} border border-[var(--neon-cyan)]/30 backdrop-blur-xl`}
-            style={{ background: 'linear-gradient(to bottom, var(--space-deep), var(--space-mid))', opacity: 0.98 }}
+          <div
+            ref={panelRef}
+            id={panelId}
+            role="dialog"
+            aria-modal="false"
+            aria-labelledby={titleId}
+            tabIndex={-1}
+            className={styles.panel}
+            data-expanded={isExpanded}
+            data-viewport-ready={Boolean(layout)}
+            onKeyDown={event => {
+              if (event.key === 'Escape') {
+                event.stopPropagation();
+                minimizeOrion();
+              }
+            }}
+            style={layout ? {
+              '--orion-panel-left': `${layout.left}px`,
+              '--orion-panel-top': `${layout.top}px`,
+              '--orion-panel-width': `${layout.width}px`,
+              '--orion-panel-height': `${layout.height}px`,
+              '--orion-viewport-height': `${viewport!.height}px`,
+            } as React.CSSProperties : undefined}
           >
             {/* Real chat panel contents */}
             <>
                 {/* Cyber Header */}
-                <div className="flex items-center justify-between p-4 border-b border-[var(--neon-cyan)]/20 backdrop-blur-md" style={{ backgroundColor: 'var(--space-deep)' }}>
+                <div className={styles.header}>
                   <div className="flex items-center gap-2.5">
                     <div>
-                      <h3 className="font-display font-bold text-sm tracking-widest" style={{ color: 'var(--text-primary)' }}>
+                      <h3 id={titleId} className="font-display font-bold text-sm tracking-widest" style={{ color: 'var(--text-primary)' }}>
                         <span className="gradient-text-cyan text-glow-cyan font-bold">ORION</span>
                       </h3>
                       <div className="flex items-center gap-1">
@@ -805,23 +893,29 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className={styles.headerActions}>
                     {process.env.NODE_ENV === 'development' && messages.length > 0 && (
                       <button type="button" onClick={resetTestChat} disabled={isLoading} className="text-xs text-[var(--neon-cyan)] hover:underline disabled:opacity-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[var(--neon-cyan)]">Reset chat</button>
                     )}
                     <button
                       type="button"
-                      onClick={() => {
-                        setIsClosing(true);
-                        setTimeout(() => {
-                          setIsOpen(false);
-                          setIsClosing(false);
-                        }, 400);
-                      }}
-                      className="text-[var(--text-muted)] hover:text-[var(--neon-purple)] transition-colors p-1 transform hover:rotate-90 duration-300 bg-transparent border-0"
-                      aria-label="Close Chat"
+                      onClick={() => setIsExpanded(previous => !previous)}
+                      className={`${styles.iconButton} ${styles.expandButton}`}
+                      hidden={layout ? !layout.canExpand : false}
+                      aria-pressed={isExpanded}
+                      aria-label={isExpanded ? 'Restore Orion chat size' : 'Expand Orion chat'}
+                      title={isExpanded ? 'Restore chat size' : 'Expand for more reading space'}
                     >
-                      <X size={18} />
+                      {isExpanded ? <Minimize2 size={18} aria-hidden="true" /> : <Maximize2 size={18} aria-hidden="true" />}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={minimizeOrion}
+                      className={styles.iconButton}
+                      aria-label="Minimize Orion chat"
+                      title="Minimize chat — your conversation stays here"
+                    >
+                      <X size={18} aria-hidden="true" />
                     </button>
                   </div>
                 </div>
@@ -830,11 +924,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                   {renderCharacterSection()}
                   <div
                     ref={messageScrollRef}
-                    className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar"
-                    style={{
-                      maskImage: 'linear-gradient(to bottom, transparent 0, #000 1.25rem)',
-                      WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, #000 1.25rem)',
-                    }}
+                    className={`${styles.conversation} custom-scrollbar`}
                   >
                     {renderPanelContents()}
                   </div>
@@ -842,7 +932,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
 
                 {/* Sticky Bottom Input Area */}
                 {activeMode && (
-                  <div className="p-3.5 border-t border-[var(--glass-border)] backdrop-blur-md space-y-3.5 z-20" style={{ backgroundColor: 'var(--space-deep)' }}>
+                  <div className={`${styles.composer} space-y-3.5 z-20`}>
                     {/* Ephemeral actions/cards */}
                     {teachBackActive && latestResponse?.teachBackPrompt && !isLoading && (
                       <div
@@ -855,6 +945,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                           {latestResponse.teachBackPrompt}
                         </p>
                         <textarea
+                          aria-label="Teach it back in your own words"
                           value={teachBackInput}
                           onChange={(e) => setTeachBackInput(e.target.value)}
                           placeholder="Explain this concept in your own words..."
@@ -920,7 +1011,8 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   // Non-floating layout
   return (
     <div
-      className="rounded-xl border overflow-hidden transition-all duration-300 flex flex-col h-[520px]"
+      className={`${styles.inlinePanel} rounded-xl border overflow-hidden`}
+      data-open={isOpen}
       style={{
         background: 'var(--space-card)',
         borderColor: isOpen ? 'var(--neon-purple)' : 'var(--glass-border)',
@@ -930,9 +1022,9 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-4 border-b border-[var(--glass-border)] transition-colors hover:bg-[rgba(123,79,206,0.05)] focus:outline-none bg-transparent"
+        className="w-full flex flex-none items-center justify-between p-4 border-b border-[var(--glass-border)] transition-colors hover:bg-[rgba(123,79,206,0.05)] bg-transparent"
         aria-expanded={isOpen}
-        aria-controls="guided-ai-panel-content"
+        aria-controls={contentId}
       >
         <div className="flex items-center gap-2">
           <div className="w-5 h-5 rounded-full overflow-hidden border border-[var(--neon-purple)] flex-shrink-0 shadow-[0_0_5px_rgba(123,79,206,0.2)]" style={{ backgroundColor: 'var(--space-deep)' }}>
@@ -950,19 +1042,18 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
       </button>
 
       {/* Panel content */}
-      {isOpen && (
-        <div id="guided-ai-panel-content" className="flex-1 flex flex-col min-h-0 relative overflow-hidden" style={{ backgroundColor: 'var(--glass-bg)' }}>
+        <div id={contentId} hidden={!isOpen} className={`${styles.inlineContent} relative`} style={{ backgroundColor: 'var(--glass-bg)' }}>
           {/* Subtle light spots */}
           <div className="absolute -top-12 -left-12 w-28 h-28 rounded-full bg-[var(--neon-cyan)]/3 blur-2xl pointer-events-none"></div>
           <div className="absolute -bottom-12 -right-12 w-28 h-28 rounded-full bg-[var(--neon-purple)]/3 blur-2xl pointer-events-none"></div>
 
           {renderCharacterSection()}
-          <div ref={messageScrollRef} className="flex-1 min-h-0 overflow-y-auto p-4 custom-scrollbar relative z-10">
+          <div ref={messageScrollRef} className={`${styles.conversation} custom-scrollbar relative z-10`}>
             {renderPanelContents()}
           </div>
           
           {activeMode && (
-            <div className="p-3 border-t border-[var(--glass-border)] space-y-3 z-10" style={{ backgroundColor: 'var(--space-deep)' }}>
+            <div className={`${styles.composer} space-y-3 z-10`}>
               {teachBackActive && latestResponse?.teachBackPrompt && !isLoading && (
                 <div className="p-3 rounded-xl border space-y-2 bg-[rgba(123,79,206,0.06)] border-[var(--neon-purple)] card-accent-purple shadow-sm">
                   <p className="text-[10px] font-bold uppercase tracking-wider font-mono text-[var(--neon-purple-light)]">
@@ -972,6 +1063,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                     {latestResponse.teachBackPrompt}
                   </p>
                   <textarea
+                    aria-label="Teach it back in your own words"
                     value={teachBackInput}
                     onChange={(e) => setTeachBackInput(e.target.value)}
                     placeholder="Explain this concept in your own words..."
@@ -1014,7 +1106,6 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
             </div>
           )}
         </div>
-      )}
     </div>
   );
 }

@@ -13,6 +13,7 @@ interface ScenarioCardProps {
   options: ScenarioOption[];
   selectedOptionId: string | null;
   onSelect: (optionId: string) => void;
+  disabled?: boolean;
 }
 
 /**
@@ -26,6 +27,7 @@ export default function ScenarioCard({
   options,
   selectedOptionId,
   onSelect,
+  disabled = false,
 }: ScenarioCardProps) {
   return (
     <div className="assessment-scenario-card" key={`scenario-card-${questionNumber}`}>
@@ -52,6 +54,8 @@ export default function ScenarioCard({
             <button
               key={`q${questionNumber}-opt-${option.id}`}
               type="button"
+              disabled={disabled}
+              aria-pressed={isSelected}
               onClick={(e) => {
                 e.currentTarget.blur();
                 onSelect(option.id);

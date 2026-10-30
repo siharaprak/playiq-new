@@ -26,7 +26,8 @@ function track(event: string, params: Record<string, unknown> = {}) {
 }
 
 function isExcluded(pathname: string) {
-  return RULES.excludedPrefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
+  return pathname === '/course-release-preview' ||
+    RULES.excludedPrefixes.some((p) => pathname === p || pathname.startsWith(`${p}/`));
 }
 
 function isSuppressed(): boolean {

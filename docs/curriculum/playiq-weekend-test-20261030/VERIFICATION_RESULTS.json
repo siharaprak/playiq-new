@@ -1,0 +1,1041 @@
+{
+  "revision": "2026-10-30",
+  "course_sections": 15,
+  "capstone_module": 14,
+  "source_package_base": "playiq-15-module-course-20261027",
+  "evidence_classification": "source_and_local_artifacts_only",
+  "runtime_or_student_beta_verified": false,
+  "website_or_parent_dashboard_deployed": false,
+  "pdf_pages": 143,
+  "module_sha256": {
+    "Module_00_Student_Text.md": "05d0a0b09743556e36243ebc0d4429abe6d0a51d745df5eb556b046cc588369f",
+    "Module_01_Student_Text.md": "47921e93fd40df964aa918a1b994543e1cc08601ed9f9d20b759e71dd9676f62",
+    "Module_02_Student_Text.md": "e40df9cb710a52cf589c51d56a32ab264dc0ce0563d9ca606afb4a5b2a891a85",
+    "Module_03_Student_Text.md": "957a90f4f4a2643e293530eb31f209c7bfad9cbc5ebaaa7575e0a4babce4b33e",
+    "Module_04_Student_Text.md": "e52d868535b80331d972710d5b53e3296f489bb019b6d21a66738f739bc0753f",
+    "Module_05_Student_Text.md": "caeed6e45ddd4a9b2e94ba7bc326b6b5906db35c124745c5de601e9b85a4363c",
+    "Module_06_Student_Text.md": "dbe3ec2230a020be8aef39272b2313f2a302bd9085a6919b092f74d0a0bccf6e",
+    "Module_07_Student_Text.md": "b9fd686c726366f5b6ccc811b1aa431559e5b9b80df8aa6e49753109a085548f",
+    "Module_08_Student_Text.md": "2cf976b0b3ad234c8068104502f5eb85b00d8692cb7eb3238e96e2ba8baf3b3a",
+    "Module_09_Student_Text.md": "cf856bf384c42a61d83e245d82086edd68d359a3cdc245ee4b28a81ba7de0963",
+    "Module_10_Student_Text.md": "05665eb53d6fdf2e2f08bc69771ec05b545d48c0d63e571450bc476d2192dfe4",
+    "Module_11_Student_Text.md": "f196c4064a4cedbffb0637d07334da90f1c582751c17236b9c6c2604ad9b66b7",
+    "Module_12_Student_Text.md": "a7cfef4779a53871c3a8b9de07c9ccb0c7347d5dfe030be9456ca2ae343daf13",
+    "Module_13_Student_Text.md": "7c00e21181bebe82d432c65d9abb1778f5b1688fd3010737d22ec59b3a7cf721",
+    "Module_14_Student_Text.md": "017508a7da87c5561693edcf2bf7da117aec5760bb6fa97b2ee7412ea00960dc"
+  },
+  "checks": [
+    {
+      "check": "exactly 15 source sections exist",
+      "passed": true
+    },
+    {
+      "check": "Module 14 is the Capstone",
+      "passed": true
+    },
+    {
+      "check": "no separate Capstone source remains",
+      "passed": true
+    },
+    {
+      "check": "combined Markdown exists",
+      "passed": true
+    },
+    {
+      "check": "reading HTML exists",
+      "passed": true
+    },
+    {
+      "check": "print PDF exists",
+      "passed": true
+    },
+    {
+      "check": "combined edition states 15 sections",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_00_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: local link exists (assets/orion-reference.png)",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: local link exists (assets/orion-reference.png)",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_01_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_02_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_03_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_04_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_05_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_06_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_07_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_08_Student_Text.md: explicit website save and reopen checkpoint",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_09_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_10_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_11_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_12_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_13_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: included verbatim in combined edition",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: balanced code fences",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: exactly one beta-only feedback section",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: feedback is the final module section",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: at least original substantive word count retained",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: substantive lesson sections retained",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: no legacy profile filename or label",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: no unserved internal verification-note link in student text",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: digital controls have confirmation/next and workbook distinction",
+      "passed": true
+    },
+    {
+      "check": "Module_14_Student_Text.md: beta blocker reporting precedes completion, distinct from final survey",
+      "passed": true
+    },
+    {
+      "check": "Module 9 builds the existing Module 00 Tutor Project",
+      "passed": true
+    },
+    {
+      "check": "Module 9 keeps a continuous build, not split visits",
+      "passed": true
+    },
+    {
+      "check": "Module 9 does not claim Tutor tests already passed",
+      "passed": true
+    },
+    {
+      "check": "Module 9 replaces profile as one of six and retains exactly six file sections",
+      "passed": true
+    },
+    {
+      "check": "Module 9 has explicit website review and local Markdown download",
+      "passed": true
+    },
+    {
+      "check": "Module 9 uploads and read-checks in the existing external Project",
+      "passed": true
+    },
+    {
+      "check": "Module 9 external compiler preserves website File 2",
+      "passed": true
+    },
+    {
+      "check": "Module 1 original discovery/image/reuse tutorial step 2 retained",
+      "passed": true
+    },
+    {
+      "check": "Module 1 original discovery/image/reuse tutorial step 3 retained",
+      "passed": true
+    },
+    {
+      "check": "Module 1 original discovery/image/reuse tutorial step 5 retained",
+      "passed": true
+    },
+    {
+      "check": "Module 1 original discovery/image/reuse tutorial step 6 retained",
+      "passed": true
+    },
+    {
+      "check": "Module 1 attachment route uses fetched official composer/image guidance",
+      "passed": true
+    },
+    {
+      "check": "Module 1 original first-win reflection retained",
+      "passed": true
+    },
+    {
+      "check": "Module 1 teaches one reusable approved-build packaging prompt",
+      "passed": true
+    },
+    {
+      "check": "Module 9 reuses packaging without replacing or adding to six outputs",
+      "passed": true
+    },
+    {
+      "check": "Module 11 packaging stays a separate existing assistant build",
+      "passed": true
+    },
+    {
+      "check": "Module 10: entire baseline lesson body preserved in order",
+      "passed": true
+    },
+    {
+      "check": "Module 11: entire baseline lesson body preserved in order",
+      "passed": true
+    },
+    {
+      "check": "Module 12: entire baseline lesson body preserved in order",
+      "passed": true
+    },
+    {
+      "check": "Module 13 original creative path and reflection preserved",
+      "passed": true
+    },
+    {
+      "check": "Module 14: entire baseline lesson body preserved in order",
+      "passed": true
+    },
+    {
+      "check": "Module 10 owns all six Tutor behavior tests",
+      "passed": true
+    },
+    {
+      "check": "Module 10 teaches the repeatable new-idea learning loop",
+      "passed": true
+    },
+    {
+      "check": "learning preferences are not presented as fixed or guaranteed styles",
+      "passed": true
+    },
+    {
+      "check": "Module 11 builds the student's own assistant in a separate Project",
+      "passed": true
+    },
+    {
+      "check": "Module 12 tests reminders and explains platform limits",
+      "passed": true
+    },
+    {
+      "check": "Module 13 is explicitly optional and creates no required artifact",
+      "passed": true
+    },
+    {
+      "check": "Module 13 optional separate story Project uses only the actual character kit",
+      "passed": true
+    },
+    {
+      "check": "Module 00 removes guessed profile path and separates all three platforms",
+      "passed": true
+    },
+    {
+      "check": "Module 9: platform instructions editor distinct from source upload",
+      "passed": true
+    },
+    {
+      "check": "Module 11: platform instructions editor distinct from source upload",
+      "passed": true
+    },
+    {
+      "check": "Module 13: platform instructions editor distinct from source upload",
+      "passed": true
+    },
+    {
+      "check": "Official-platform verification records fetched primary sources and limits",
+      "passed": true
+    },
+    {
+      "check": "Module 14 includes performance system and Learning Dashboard",
+      "passed": true
+    },
+    {
+      "check": "Module 14 makes follow-up price proposed and parent-facing",
+      "passed": true
+    },
+    {
+      "check": "Module 9: names its Skill Tree",
+      "passed": true
+    },
+    {
+      "check": "Module 9: contains a quick check or quiz",
+      "passed": true
+    },
+    {
+      "check": "Module 9: includes a mastery/boss check",
+      "passed": true
+    },
+    {
+      "check": "Module 10: names its Skill Tree",
+      "passed": true
+    },
+    {
+      "check": "Module 10: contains a quick check or quiz",
+      "passed": true
+    },
+    {
+      "check": "Module 10: includes a mastery/boss check",
+      "passed": true
+    },
+    {
+      "check": "Module 11: names its Skill Tree",
+      "passed": true
+    },
+    {
+      "check": "Module 11: contains a quick check or quiz",
+      "passed": true
+    },
+    {
+      "check": "Module 11: includes a mastery/boss check",
+      "passed": true
+    },
+    {
+      "check": "Module 12: names its Skill Tree",
+      "passed": true
+    },
+    {
+      "check": "Module 12: contains a quick check or quiz",
+      "passed": true
+    },
+    {
+      "check": "Module 12: includes a mastery/boss check",
+      "passed": true
+    },
+    {
+      "check": "Module 13: names its Skill Tree",
+      "passed": true
+    },
+    {
+      "check": "Module 13: contains a quick check or quiz",
+      "passed": true
+    },
+    {
+      "check": "Module 13: includes a mastery/boss check",
+      "passed": true
+    },
+    {
+      "check": "Module 14: names its Skill Tree",
+      "passed": true
+    },
+    {
+      "check": "Module 14: contains a quick check or quiz",
+      "passed": true
+    },
+    {
+      "check": "Module 14: includes a mastery/boss check",
+      "passed": true
+    },
+    {
+      "check": "Orion instructions separate Tutor and Personal Assistant evidence",
+      "passed": true
+    },
+    {
+      "check": "Compiler separates website collection and external context with explicit approval",
+      "passed": true
+    },
+    {
+      "check": "Compiler includes exactly six initial output definitions",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 0",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 1",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 2",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 3",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 4",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 5",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 6",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 7",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 8",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 9",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 10",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 11",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 12",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 13",
+      "passed": true
+    },
+    {
+      "check": "HTML includes navigation and content for module 14",
+      "passed": true
+    },
+    {
+      "check": "HTML provides all 15 module sections",
+      "passed": true
+    },
+    {
+      "check": "HTML points to the current light print PDF",
+      "passed": true
+    },
+    {
+      "check": "HTML light reading edition keeps responsive and copy controls",
+      "passed": true
+    },
+    {
+      "check": "PDF contains all 15 module titles",
+      "passed": true
+    },
+    {
+      "check": "PDF contains Tutor build and test sequence",
+      "passed": true
+    },
+    {
+      "check": "PDF contains personal assistant build and test",
+      "passed": true
+    },
+    {
+      "check": "PDF contains optional character preview and final Capstone",
+      "passed": true
+    },
+    {
+      "check": "PDF contains the actual learning-file download and upload instructions",
+      "passed": true
+    },
+    {
+      "check": "PDF contains approved packaging lesson and optional character Project steps",
+      "passed": true
+    },
+    {
+      "check": "PDF new packaging headings and optional prompt have no leaked Markdown tokens",
+      "passed": true
+    },
+    {
+      "check": "PDF renders original lower-level headings without raw heading markers",
+      "passed": true
+    },
+    {
+      "check": "PDF includes official platform caveats and pre-completion technical reporting",
+      "passed": true
+    },
+    {
+      "check": "PDF final beta survey is not reduced to a stranded final question",
+      "passed": true
+    },
+    {
+      "check": "Orion reference image matches the pinned site asset",
+      "passed": true
+    }
+  ]
+}

@@ -12,6 +12,9 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  outputFileTracingIncludes: {
+    '/student/course*': ['./docs/curriculum/playiq-weekend-test-20261030/PLAYIQ_COMPLETE_COURSE_MASTER_20261030.html'],
+  },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },

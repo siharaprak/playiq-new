@@ -9,6 +9,7 @@
 
 import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { assessmentDraftPatch, diagnosticAnswerPatch } from '@/lib/assessment/assessment-flow';
 import {
   scoreBaselineTask1,
   scoreBaselineTask2,
@@ -49,6 +50,8 @@ export async function savePhase1(data: {
         display_name: data.displayName,
         grade_level: data.gradeLevel,
         learner_type: data.learnerType,
+        reveal_summary: null,
+        learning_blueprint: null,
         current_phase: 2,
         updated_at: new Date().toISOString(),
       },
@@ -65,6 +68,26 @@ export async function savePhase1(data: {
 
 // ── Phase 2: Save Diagnostic Responses ──────────────────────────────────────
 
+export async function saveDiagnosticAnswer(questionId: string, optionId: string) {
+  const patch = diagnosticAnswerPatch(questionId, optionId);
+  const { supabase, user } = await getAuthenticatedUser();
+  const { data, error } = await supabase.from('student_assessment_profiles')
+    .update({ ...patch, reveal_summary: null, learning_blueprint: null, updated_at: new Date().toISOString() })
+    .eq('student_id', user.id).select('student_id').single();
+  if (error || !data) throw new Error('Your answer was not saved. Please retry before continuing.');
+  return { success: true };
+}
+
+export async function saveAssessmentAnswer(field: string, value: string) {
+  const patch = assessmentDraftPatch(field, value);
+  const { supabase, user } = await getAuthenticatedUser();
+  const { data, error } = await supabase.from('student_assessment_profiles')
+    .update({ ...patch, reveal_summary: null, learning_blueprint: null, updated_at: new Date().toISOString() })
+    .eq('student_id', user.id).select('student_id').single();
+  if (error || !data) throw new Error('Your answer was not saved. Please retry before continuing.');
+  return { success: true };
+}
+
 export async function savePhase2(data: {
   explanationStyle: string;
   pacingPreference: string;
@@ -74,7 +97,7 @@ export async function savePhase2(data: {
 }) {
   const { supabase, user } = await getAuthenticatedUser();
 
-  const { error } = await supabase
+  const { data: saved, error } = await supabase
     .from('student_assessment_profiles')
     .update({
       explanation_style: data.explanationStyle,
@@ -82,12 +105,14 @@ export async function savePhase2(data: {
       challenge_response: data.challengeResponse,
       ai_literacy_level: data.aiLiteracyLevel,
       motivation_driver: data.motivationDriver,
+      reveal_summary: null,
+      learning_blueprint: null,
       current_phase: 3,
       updated_at: new Date().toISOString(),
     })
-    .eq('student_id', user.id);
+    .eq('student_id', user.id).select('student_id').single();
 
-  if (error) {
+  if (error || !saved) {
     console.error('Phase 2 save error:', error);
     throw new Error('Failed to save Phase 2 data');
   }
@@ -117,7 +142,7 @@ export async function savePhase3(data: {
     task3Result.score,
   );
 
-  const { error } = await supabase
+  const { data: saved, error } = await supabase
     .from('student_assessment_profiles')
     .update({
       baseline_task1_answer: data.task1Answer,
@@ -127,12 +152,14 @@ export async function savePhase3(data: {
       baseline_task3_response: data.task3Response,
       baseline_task3_score: task3Result.score,
       baseline_pdi_snapshot: pdiSnapshot,
+      reveal_summary: null,
+      learning_blueprint: null,
       current_phase: 4,
       updated_at: new Date().toISOString(),
     })
-    .eq('student_id', user.id);
+    .eq('student_id', user.id).select('student_id').single();
 
-  if (error) {
+  if (error || !saved) {
     console.error('Phase 3 save error:', error);
     throw new Error('Failed to save Phase 3 data');
   }
@@ -149,18 +176,20 @@ export async function savePhase4(data: {
 }) {
   const { supabase, user } = await getAuthenticatedUser();
 
-  const { error } = await supabase
+  const { data: saved, error } = await supabase
     .from('student_assessment_profiles')
     .update({
       rescue_target_subject: data.rescueTargetSubject,
       advance_target_subject: data.advanceTargetSubject,
       personal_goal: data.personalGoal,
+      reveal_summary: null,
+      learning_blueprint: null,
       current_phase: 5,
       updated_at: new Date().toISOString(),
     })
-    .eq('student_id', user.id);
+    .eq('student_id', user.id).select('student_id').single();
 
-  if (error) {
+  if (error || !saved) {
     console.error('Phase 4 save error:', error);
     throw new Error('Failed to save Phase 4 data');
   }
@@ -182,6 +211,13 @@ export async function completeAssessment() {
 
   if (fetchError || !profile) {
     throw new Error('Assessment profile not found');
+  }
+
+  // Reopening the reveal must not trigger another provider call or pretend to
+  // save new results. Reuse the last successfully persisted result.
+  if (profile.reveal_summary && profile.learning_blueprint) {
+    const { visionOutcomes = [], ...blueprint } = profile.learning_blueprint;
+    return { success: true, revealSummary: profile.reveal_summary, blueprint, visionOutcomes };
   }
 
   // Build the AssessmentProfile for reveal generation
@@ -247,7 +283,7 @@ export async function completeAssessment() {
 export async function finishAssessmentAction() {
   const { supabase, user } = await getAuthenticatedUser();
 
-  const { error } = await supabase
+  const { data: saved, error } = await supabase
     .from('student_assessment_profiles')
     .update({
       assessment_completed: true,
@@ -255,9 +291,9 @@ export async function finishAssessmentAction() {
       current_phase: 6, // completed
       updated_at: new Date().toISOString(),
     })
-    .eq('student_id', user.id);
+    .eq('student_id', user.id).select('student_id').single();
 
-  if (error) {
+  if (error || !saved) {
     console.error('Finish assessment error:', error);
     throw new Error('Failed to finish assessment');
   }

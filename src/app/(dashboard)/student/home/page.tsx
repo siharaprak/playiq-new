@@ -56,6 +56,10 @@ export default async function StudentDashboard() {
       redirect('/login');
     }
   }
+  // Release shells are opt-in per environment; leave the legacy course intact
+  // until Iris enables the tested release in staging (or later production).
+  if (process.env.PLAYIQ_COURSE_BETA_ENABLED === 'true') redirect('/student/course-beta');
+  if (process.env.PLAYIQ_COURSE_FINAL_ENABLED === 'true') redirect('/student/course');
   const name = (profile as any)?.username || profile?.full_name || 'Student';
   const initials = name.substring(0, 2).toUpperCase();
   const currentUsername: string | null = (profile as any)?.username ?? null;
