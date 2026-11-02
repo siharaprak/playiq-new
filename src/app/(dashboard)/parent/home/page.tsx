@@ -33,6 +33,7 @@ import {
   AnimatedProgressBar,
   AnimatedAnalyticsDashboard 
 } from '@/components/parent/AnimatedVisualizations';
+import { getParentCourseReleaseProgress, type ParentCourseChildProgress } from '@/lib/course-release/parent-progress';
 
 export const dynamic = 'force-dynamic';
 
@@ -208,6 +209,21 @@ export default async function ParentDashboard({
   const totalMastered = Object.values(primaryProgress).reduce((a, b) => a + b, 0);
   const overallPct = TOTAL_NODES > 0 ? Math.round((totalMastered / TOTAL_NODES) * 100) : 0;
 
+  // ---- New course release progress (shown once the beta course is switched on) ----
+  const courseReleaseOn = process.env.PLAYIQ_COURSE_BETA_ENABLED === 'true';
+  let newCourseProgress: Record<string, ParentCourseChildProgress> = {};
+  if (courseReleaseOn) {
+    try {
+      // studentIds come from getParentChildrenRollups (verified parent-child links only).
+      newCourseProgress = await getParentCourseReleaseProgress(studentIds, 'beta');
+    } catch (err) {
+      console.warn('Failed to load new course progress:', err);
+    }
+  }
+  const headerPct = courseReleaseOn && primaryStudentId
+    ? (newCourseProgress[primaryStudentId]?.percent ?? 0)
+    : overallPct;
+
   let proofSummary = null;
   if (primaryStudentId) {
     try {
@@ -273,8 +289,8 @@ export default async function ParentDashboard({
           <div className="flex items-center gap-4 w-full sm:w-auto justify-end">
             {rollups.length > 0 && (
               <div className="glass-card px-4 py-2 border-l-2 border-[#00c8ff] text-center !rounded-none w-full sm:w-auto">
-                <p className="text-xl font-display font-black text-[#00c8ff]">{overallPct}%</p>
-                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">Overall Progress</p>
+                <p className="text-xl font-display font-black text-[#00c8ff]">{headerPct}%</p>
+                <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">{courseReleaseOn ? 'New Course Progress' : 'Overall Progress'}</p>
               </div>
             )}
           </div>
@@ -301,9 +317,77 @@ export default async function ParentDashboard({
           approvedProofs={rollups.reduce((sum, child) => sum + (child.proof_approved_total || 0), 0)}
         />
 
+        {/* ================================================================ */}
+        {/* NEW COURSE PROGRESS (course release, beta)                       */}
+        {/* ================================================================ */}
+        {courseReleaseOn && rollups.length > 0 && (
+          <section id="new-course-progress-section" className="mb-10">
+            <div className="flex items-center gap-3 mb-2">
+              <BookOpen className="w-5 h-5 text-[#00c8ff]" />
+              <h2 className="text-lg font-display font-bold text-[var(--text-primary)] uppercase tracking-wider">
+                New Course Progress
+              </h2>
+              <span className="text-[10px] bg-[#00c8ff]/10 border border-[#00c8ff]/30 px-2 py-0.5 text-[#00c8ff] font-mono font-bold uppercase tracking-wider">
+                Beta
+              </span>
+            </div>
+            <p className="text-xs font-mono text-slate-500 mb-6">
+              Your apprentice&apos;s progress in the new 15-module course (Module 00 + Modules 1–14). Answers stay private to your apprentice; you see status only.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              {rollups.map((child) => {
+                const p = newCourseProgress[child.student_id];
+                return (
+                  <div key={child.student_id} className="glass-card !rounded-none border border-slate-800 p-6 space-y-5">
+                    <div className="flex justify-between items-start gap-4">
+                      <div>
+                        <h3 className="text-base font-display font-bold text-[var(--text-primary)] tracking-wider">{child.display_name}</h3>
+                        <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mt-1.5">
+                          {!p ? 'Progress not available yet'
+                            : p.currentModule ? `Currently on: ${p.currentModule.title}` : 'All modules completed'}
+                        </p>
+                        <p className="text-[10px] font-mono text-slate-600 uppercase tracking-widest mt-1 flex items-center gap-1">
+                          <Clock className="w-3 h-3" /> Last activity: {formatRelativeTime(p?.lastActivityAt ?? null)}
+                        </p>
+                      </div>
+                      <AnimatedRadialProgress
+                        pct={p?.percent ?? 0}
+                        size={72}
+                        strokeWidth={6}
+                        colorClass={(p?.percent ?? 0) >= 100 ? 'text-[#39ff14]' : 'text-[#00c8ff]'}
+                        centerText={`${p?.completedCount ?? 0}/${p?.totalModules ?? 15}`}
+                        label="Modules Done"
+                      />
+                    </div>
+                    {p && (
+                      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+                        {p.modules.map((m) => (
+                          <li key={m.moduleNumber} className="flex items-center justify-between gap-2 px-2.5 py-1.5 bg-black/30 border border-slate-900">
+                            <span className="text-[10px] font-mono text-slate-300 truncate" title={m.title}>
+                              {m.moduleNumber === 0 ? '00' : String(m.moduleNumber).padStart(2, '0')} · {m.title}
+                            </span>
+                            <span className={`shrink-0 text-[8px] font-mono font-bold uppercase tracking-widest ${
+                              m.status === 'completed' ? 'text-[#39ff14]' : m.status === 'in_progress' ? 'text-[#f5c518]' : 'text-slate-600'
+                            }`}>
+                              {m.status === 'completed' ? 'Done' : m.status === 'in_progress' ? 'Started' : '—'}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* Animated Analytics Dashboard */}
         {rollups.length > 0 && (
           <div className="mb-10">
+            {courseReleaseOn && (
+              <p className="text-[10px] font-mono text-slate-500 uppercase tracking-widest mb-3">Previous course (before the new course launch)</p>
+            )}
             <AnimatedAnalyticsDashboard rollups={rollups} progressByStudent={progressByStudent} />
           </div>
         )}
