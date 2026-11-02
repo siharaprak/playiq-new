@@ -58,25 +58,9 @@ export default async function StudentDashboard() {
       redirect('/login');
     }
   }
-  // Check if student has beta release enrollment or if beta flag is active
-  let isBetaEnrolled = false;
-  try {
-    const { data: enrollment } = await supabase
-      .from('course_release_enrollments')
-      .select('enabled')
-      .eq('student_id', user.id)
-      .eq('shell', 'beta')
-      .maybeSingle();
-
-    if (enrollment?.enabled) {
-      isBetaEnrolled = true;
-    }
-  } catch {
-    // Table may not exist yet in unmigrated environments
-  }
-
-  // Release shells are opt-in per environment or tester enrollment; leave legacy intact
-  if (process.env.PLAYIQ_COURSE_BETA_ENABLED === 'true' || isBetaEnrolled) redirect('/student/course-beta');
+  // Release shells are opt-in per environment; leave legacy intact while the switch is off.
+  // (Enrollment alone must not redirect: the course page is hidden until the switch is on.)
+  if (process.env.PLAYIQ_COURSE_BETA_ENABLED === 'true') redirect('/student/course-beta');
   if (process.env.PLAYIQ_COURSE_FINAL_ENABLED === 'true') redirect('/student/course');
 
   const name = (profile as any)?.username || profile?.full_name || 'Student';
@@ -166,24 +150,6 @@ export default async function StudentDashboard() {
             <div className="hidden sm:flex w-10 h-10 rounded-full items-center justify-center font-bold text-sm" style={{ background: 'var(--neon-purple)', color: '#fff' }} title={name}>{initials}</div>
           </div>
         </header>
-
-        {/* Beta Release Quick Access Banner */}
-        <div className="mb-6 sm:mb-8 p-4 sm:p-5 rounded-2xl border border-[var(--neon-cyan)] bg-[rgba(0,200,255,0.06)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">🚀</span>
-            <div>
-              <h2 className="text-sm sm:text-base font-bold font-display text-white">PlayIQ Course Beta (15 Sections)</h2>
-              <p className="text-xs text-slate-300">Access the updated 15-module curriculum, AI Tutor project setup, and Capstone.</p>
-            </div>
-          </div>
-          <Link
-            href="/student/course-beta?module=0"
-            className="w-full sm:w-auto text-center px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all whitespace-nowrap active:scale-[0.98]"
-            style={{ background: 'var(--neon-cyan)', color: '#0a0f1e' }}
-          >
-            Launch Course Beta →
-          </Link>
-        </div>
 
         <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
           <div className="md:col-span-2 space-y-4 sm:space-y-6">

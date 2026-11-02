@@ -158,8 +158,14 @@ export async function updateSession(request: NextRequest) {
       // Assessment gating: redirect students to assessment if not completed
       const isStudentRoute = request.nextUrl.pathname.startsWith('/student')
       const isAssessmentRoute = request.nextUrl.pathname.startsWith('/student/assessment')
+      // The course-release shells (/student/course, /student/course-beta) run their own
+      // Module 00 assessment, so the legacy assessment gate must not block them.
+      const isCourseReleaseRoute = matchesSegment('/student/course') || matchesSegment('/student/course-beta')
+        // When a release shell is switched on, /student/home immediately redirects into it.
+        || ((process.env.PLAYIQ_COURSE_BETA_ENABLED === 'true' || process.env.PLAYIQ_COURSE_FINAL_ENABLED === 'true')
+          && matchesSegment('/student/home'))
 
-      if (isStudentRoute && !isAssessmentRoute) {
+      if (isStudentRoute && !isAssessmentRoute && !isCourseReleaseRoute) {
         // We only want to gate actual students, not admins using the LMS simulator
         const { data: profile } = await supabase
           .from('profiles')
