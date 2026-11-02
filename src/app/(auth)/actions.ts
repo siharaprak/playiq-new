@@ -41,18 +41,32 @@ export async function loginAction(prevState: any, formData: FormData) {
     return { error: 'Both login handle and password are required' };
   }
 
-  // Resolve username to the fake student email if they selected student role and didn't provide an @
-  const email = (loginRole === 'student' && !identifier.includes('@')) 
-    ? `${identifier}@student.playiq.dev` 
-    : identifier;
+  const cleanIdentifier = identifier.trim();
+
+  // Resolve username to the student email if they selected student role and didn't provide an @
+  let email = (loginRole === 'student' && !cleanIdentifier.includes('@')) 
+    ? `${cleanIdentifier}@student.playiq.dev` 
+    : cleanIdentifier;
 
   const supabase = await createSupabaseClient();
-  const { data: authData, error } = await supabase.auth.signInWithPassword({
+  let { data: authData, error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
 
-  if (error || !authData.user) {
+  // If login failed and user provided a handle without @, also try @playiq.dev domain (e.g. beta.student1)
+  if ((error || !authData?.user) && loginRole === 'student' && !cleanIdentifier.includes('@')) {
+    const fallbackRes = await supabase.auth.signInWithPassword({
+      email: `${cleanIdentifier}@playiq.dev`,
+      password,
+    });
+    if (!fallbackRes.error && fallbackRes.data?.user) {
+      authData = fallbackRes.data;
+      error = null;
+    }
+  }
+
+  if (error || !authData?.user) {
     return { error: error?.message || 'Authentication failed' };
   }
 
@@ -74,7 +88,10 @@ export async function loginAction(prevState: any, formData: FormData) {
     return { mfaRequired: true };
   }
 
-  redirect(`/${role}/home`);
+  // DON'T call redirect() directly here — redirect() throws a NEXT_REDIRECT exception
+  // which breaks useActionState on certain hosting adapters and can interrupt Set-Cookie headers.
+  // Return redirectUrl so client-side navigation happens with cookies intact.
+  return { success: true, redirectUrl: `/${role}/home` };
 }
 
 export async function signupAction(prevState: any, formData: FormData) {

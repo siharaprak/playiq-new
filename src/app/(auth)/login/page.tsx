@@ -26,11 +26,14 @@ export default function Login() {
   const [loginRole, setLoginRole] = useState<'student' | 'parent'>('student');
   const router = useRouter();
 
-  // When the server action returns mfaRequired, the response includes Set-Cookie headers
-  // with the session. Navigate client-side so the browser has the cookies before the MFA page loads.
+  // When the server action returns redirectUrl or mfaRequired, the response includes Set-Cookie headers
+  // with the session. Navigate client-side so the browser has the cookies before the destination loads.
   useEffect(() => {
     if (state?.mfaRequired) {
       router.push('/login/mfa');
+    } else if (state?.redirectUrl) {
+      router.push(state.redirectUrl);
+      router.refresh();
     }
   }, [state, router]);
 
