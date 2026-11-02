@@ -30,7 +30,9 @@ export default async function StudentDashboard() {
 
   if (!user) redirect('/login');
 
-  let { data: profile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role, status').eq('id', user.id).single();
+  // Select * so this works whether or not the optional profiles.status column exists
+  // (the weekend-release staging DB has no status column; selecting it fails the query).
+  let { data: profile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
   
   if (!profile) {
     const healed = await ensureProfileExists(
@@ -40,7 +42,7 @@ export default async function StudentDashboard() {
       user.email?.endsWith('@student.playiq.dev') ? 'student' : 'parent'
     );
     if (healed) {
-      const { data: newProfile } = await supabase.from('profiles').select('full_name, email, username, username_change_count, role, status').eq('id', user.id).single();
+      const { data: newProfile } = await supabase.from('profiles').select('*').eq('id', user.id).single();
       profile = newProfile;
     }
   }
