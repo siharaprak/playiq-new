@@ -62,15 +62,44 @@ function CodeBlock({ code, language }: { code: string; language: string }) {
   );
 }
 
-/**
- * Renders basic markdown bold, italic, inline code, fenced code blocks and bullets, sanitizing HTML first.
- */
-function renderMarkdown(text: string) {
-  const sanitized = text
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
 
-  const lines = sanitized.split('\n');
+/** Converts inline markdown (bold, italic, code) in an already-escaped line to HTML. */
+function inlineMarkdownToHtml(escapedLine: string): string {
+  const codeSpans: string[] = [];
+  // Protect inline code first so `*` inside code is not treated as emphasis.
+  let processed = escapedLine.replace(/`([^`]+)`/g, (_match, code: string) => {
+    codeSpans.push(code);
+    return `\u0000${codeSpans.length - 1}\u0000`;
+  });
+  processed = processed
+    .replace(/\*\*(?=\S)(.+?)(?<=\S)\*\*/g, '<strong style="color:var(--text-primary);font-weight:700">$1</strong>')
+    .replace(/__(?=\S)(.+?)(?<=\S)__/g, '<strong style="color:var(--text-primary);font-weight:700">$1</strong>')
+    .replace(/(^|[^*\w])\*(?=\S)([^*]+?)(?<=\S)\*(?!\*)/g, '$1<em>$2</em>')
+    // Any unpaired markers left behind (e.g. bold split across lines) are noise.
+    .replace(/\*\*/g, '');
+  return processed.replace(/\u0000(\d+)\u0000/g, (_match, index: string) =>
+    `<code style="background:rgba(0,200,255,0.12);color:var(--neon-cyan);padding:2px 5px;border-radius:4px;font-family:monospace;font-size:0.9em">${codeSpans[Number(index)]}</code>`);
+}
+
+/** Renders a short single-block string with inline markdown only. */
+export function InlineMarkdown({ text }: { text: string }) {
+  const html = text.split('\n').map(line => inlineMarkdownToHtml(escapeHtml(line))).join('<br />');
+  return <span dangerouslySetInnerHTML={{ __html: html }} />;
+}
+
+/**
+ * Renders basic markdown: headings, bold, italic, inline code, fenced code blocks,
+ * bulleted and numbered lists. HTML is escaped first.
+ */
+export function renderMarkdown(text: string) {
+  const lines = text.replace(/\r\n/g, '\n').split('\n');
   const elements: React.ReactNode[] = [];
   
   let inCodeBlock = false;
@@ -94,33 +123,37 @@ function renderMarkdown(text: string) {
     } else if (inCodeBlock) {
       codeLines.push(line);
     } else {
-      let processed = line;
-
-      // Bold: **text**
-      processed = processed.replace(/\*\*(.+?)\*\*/g, '<strong style="color:var(--text-primary);font-weight:700">$1</strong>');
-
-      // Italic: *text*
-      processed = processed.replace(/(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)/g, '<em>$1</em>');
-
-      // Inline code: `text`
-      processed = processed.replace(/`(.+?)`/g, '<code style="background:rgba(0,200,255,0.12);color:var(--neon-cyan);padding:2px 5px;border-radius:4px;font-family:monospace;font-size:0.9em">$1</code>');
-
-      // Bullet points
-      const isBullet = /^\s*[-*]\s+/.test(processed);
-      if (isBullet) {
-        processed = processed.replace(/^\s*[-*]\s+/, '');
+      const escaped = escapeHtml(line);
+      // Detect block structure BEFORE inline emphasis so a leading "* " bullet
+      // is never mistaken for an italic marker.
+      const heading = escaped.match(/^\s*(#{1,6})\s+(.*)$/);
+      const bullet = escaped.match(/^\s*[-*•]\s+(.*)$/);
+      const numbered = escaped.match(/^\s*(\d+)[.)]\s+(.*)$/);
+      if (heading) {
+        elements.push(
+          <span key={i} className="block text-sm font-bold text-[var(--text-primary)] mt-2"
+            dangerouslySetInnerHTML={{ __html: inlineMarkdownToHtml(heading[2].replace(/\s*#+\s*$/, '')) }} />
+        );
+      } else if (bullet) {
         elements.push(
           <div key={i} className="flex gap-2 ml-1 text-[var(--text-secondary)] text-sm leading-relaxed mt-1">
             <span className="text-[var(--neon-cyan)] flex-shrink-0">▸</span>
-            <span dangerouslySetInnerHTML={{ __html: processed }} />
+            <span dangerouslySetInnerHTML={{ __html: inlineMarkdownToHtml(bullet[1]) }} />
           </div>
         );
-      } else if (processed.trim() === '') {
+      } else if (numbered) {
+        elements.push(
+          <div key={i} className="flex gap-2 ml-1 text-[var(--text-secondary)] text-sm leading-relaxed mt-1">
+            <span className="text-[var(--neon-cyan)] flex-shrink-0 font-mono">{numbered[1]}.</span>
+            <span dangerouslySetInnerHTML={{ __html: inlineMarkdownToHtml(numbered[2]) }} />
+          </div>
+        );
+      } else if (escaped.trim() === '') {
         elements.push(<div key={i} className="h-2" />);
       } else {
         elements.push(
           <span key={i} className="text-[var(--text-secondary)] text-sm block leading-relaxed">
-            <span dangerouslySetInnerHTML={{ __html: processed }} />
+            <span dangerouslySetInnerHTML={{ __html: inlineMarkdownToHtml(escaped) }} />
           </span>
         );
       }
@@ -191,7 +224,7 @@ function PracticeItemCard({ item, index }: { item: PracticeItem; index: number }
                 }`}>
                   {isSelected && <span className="w-1 h-1 rounded-full bg-[var(--space-deep)]"></span>}
                 </span>
-                <span className="leading-relaxed">{opt}</span>
+                <span className="leading-relaxed"><InlineMarkdown text={opt} /></span>
               </button>
             );
           })}
@@ -294,7 +327,7 @@ function LessonRescueCard({ rescue }: { rescue: LessonRescueData }) {
       {/* Next step */}
       <div className="text-xs pt-1 flex items-start gap-1.5 text-[var(--text-secondary)]">
         <span className="font-bold font-mono text-[10px] uppercase tracking-wider text-[var(--neon-green)] mt-0.5">Next step: </span>
-        <span>{rescue.nextStep}</span>
+        <span><InlineMarkdown text={rescue.nextStep} /></span>
       </div>
     </div>
   );
@@ -362,7 +395,7 @@ export function GuidedAiResponse({ data }: GuidedAiResponseProps) {
               : '💡 ' + data.safetyRoute.message}
           </span>
           {data.safetyRoute.target !== 'blocked' && data.suggestedNextStep && (
-            <span>{data.suggestedNextStep}</span>
+            <span><InlineMarkdown text={data.suggestedNextStep} /></span>
           )}
         </div>
       )}
@@ -380,7 +413,7 @@ export function GuidedAiResponse({ data }: GuidedAiResponseProps) {
           <span className="text-[9px] font-bold uppercase tracking-wider block mb-1 font-mono" style={{ color: 'var(--neon-cyan)' }}>
             ✏️ Show your effort:
           </span>
-          <span>{data.effortPrompt}</span>
+          <span><InlineMarkdown text={data.effortPrompt} /></span>
         </div>
       )}
 
@@ -397,7 +430,7 @@ export function GuidedAiResponse({ data }: GuidedAiResponseProps) {
           <span className="text-[9px] font-bold uppercase tracking-wider block mb-1 font-mono" style={{ color: 'var(--neon-gold, #ffaa00)' }}>
             🔄 Try again:
           </span>
-          <span>{data.retryPrompt}</span>
+          <span><InlineMarkdown text={data.retryPrompt} /></span>
         </div>
       )}
 
@@ -429,7 +462,7 @@ export function GuidedAiResponse({ data }: GuidedAiResponseProps) {
           }}
         >
           <span className="font-bold text-[9px] uppercase tracking-wider block mb-1 font-mono">Check yourself:</span>
-          <span className="text-[var(--text-primary)]">{data.followUpQuestion}</span>
+          <span className="text-[var(--text-primary)]"><InlineMarkdown text={data.followUpQuestion} /></span>
         </div>
       )}
 
@@ -437,7 +470,7 @@ export function GuidedAiResponse({ data }: GuidedAiResponseProps) {
       {data.suggestedNextStep && !isRefused && (
         <div className="text-xs flex items-start gap-1.5 text-[var(--text-secondary)]">
           <span className="font-bold font-mono text-[9px] uppercase tracking-widest text-[var(--neon-green)] mt-0.5">Next step: </span>
-          <span>{data.suggestedNextStep}</span>
+          <span><InlineMarkdown text={data.suggestedNextStep} /></span>
         </div>
       )}
 

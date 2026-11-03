@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useId } from 'react';
 import { usePathname } from 'next/navigation';
 import { ChevronDown, ChevronUp, AlertCircle, Maximize2, Minimize2, X } from 'lucide-react';
 import { ModeSelector } from './ModeSelector';
-import { GuidedAiResponse } from './GuidedAiResponse';
+import { GuidedAiResponse, renderMarkdown } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
 import { OrionCharacter } from './OrionCharacter';
 import OrionCompanion from './OrionCompanion';
@@ -579,8 +579,8 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                   msg.response ? (
                     <GuidedAiResponse data={msg.response} />
                   ) : (
-                    <div className="p-3.5 rounded-2xl rounded-tl-none border border-[var(--neon-purple)]/30 bg-[rgba(123,79,206,0.05)] text-[var(--text-primary)] text-sm leading-relaxed whitespace-pre-wrap card-accent-purple shadow-sm select-text">
-                      {msg.content}
+                    <div className="p-3.5 rounded-2xl rounded-tl-none border border-[var(--neon-purple)]/30 bg-[rgba(123,79,206,0.05)] text-[var(--text-primary)] text-sm leading-relaxed card-accent-purple shadow-sm select-text space-y-1">
+                      {renderMarkdown(msg.content)}
                     </div>
                   )
                 ) : msg.error ? (
