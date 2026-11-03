@@ -1,0 +1,16 @@
+Iris — Scott approved the floating Orion website release. Test it first, then make it live for ALL eligible students; do not limit the final rollout to the beta course.
+
+Repository: https://github.com/siharaprak/playiq-new
+Branch: codex/playiq-orion-companion-20261103
+Required implementation commit: 20c7689480dddf5e03c536479fb7b53cea6cf082
+
+Read the complete committed handoff before acting:
+https://github.com/siharaprak/playiq-new/blob/codex/playiq-orion-companion-20261103/docs/HANDOFF_IRIS_PLAYIQ_ORION_LIVE_20261103.md
+
+It is also in AgencyOS/mailbox as HANDOFF_IRIS_PLAYIQ_ORION_LIVE_20261103.md.
+
+Use your own clean checkout, fetch the branch, verify the implementation ancestry, preserve newer main changes, and acknowledge ownership/source before deployment. Keep lesson artwork and the existing chat/safety controls; do not redesign the course, change enrollment/schema/course flags or install the desktop pet.
+
+Run the checks and real-account/mobile acceptance in the handoff. Start with admin-only verification, then, if checks pass, deploy through the existing authorized production workflow and set ORION_COMPANION_MODE=all. Verify an eligible student on the actual live site. Roll back to off/known-good deployment if a regression appears. Do not call a preview or pushed branch live.
+
+Return the deployed SHA, actual live URL, deployment ID, test evidence, effective rollout setting, rollback reference and remaining issues to the mailbox as IRIS_PLAYIQ_ORION_LIVE_COPYBACK_20261103.md, then report to Scott. If anything critical fails, stop broad activation and report the exact blocker rather than guessing success.

@@ -2,6 +2,10 @@
 
 Status: LOCAL_IMPLEMENTATION_VERIFIED; NOT_DEPLOYED; REAL_ACCOUNT_UAT_PENDING.
 
+## Superseding release decision — November 3, 2026
+
+Scott approved Iris testing first, then enabling the website companion for ALL eligible students. Do not restrict this release to the separate beta course. The authoritative execution handoff is `HANDOFF_IRIS_PLAYIQ_ORION_LIVE_20261103.md`. The local test evidence below is unchanged; it is not a claim that deployment or real-account acceptance already occurred. This decision replaces the earlier proposal to run a beta-only rollout or seek a second general rollout approval.
+
 ## Source and approved direction
 
 Product repository: `https://github.com/siharaprak/playiq-new.git`.
@@ -35,7 +39,7 @@ Scott approved keeping lesson/assessment illustrations, introducing a draggable 
 
 The existing assessment-completed/admin visibility gate remains in place. This switch grants no access to courses, chats, profiles, provider tools, or databases. The separate final course and old module routes keep the old presentation in `beta` mode.
 
-Suggested activation order after approval: deploy to the existing review/staging environment with `admin`, verify a real authorized admin account, test an enrolled student on the separate beta shell with `beta`, then obtain approval before considering `all` on production. Change no unrelated hosting settings. Runtime activation/deployment is not performed by this document.
+Approved activation order: Iris verifies this release with an admin account on the existing authorized review deployment or a bounded admin-only production check, completes the real-account/mobile checks, then sets `ORION_COMPANION_MODE=all` on the verified existing production target and verifies an eligible student. No beta-only restriction or second general rollout approval is required if the checks pass. Change no unrelated hosting settings. Codex has not performed runtime activation/deployment.
 
 Rollback: set `ORION_COMPANION_MODE=off` (or remove it) and apply the normal hosting configuration/restart process. The existing launcher and boxed character code are retained. No migration or learner-data rollback is needed.
 
@@ -61,10 +65,10 @@ Screenshots: `orion-companion-evidence/desktop-companion.jpg`, `mobile-companion
 
 ## Still required before wider release
 
-1. Scott/Sihara review this website behavior, including the companion docking into the chat header while chat is open.
+1. Scott approved the hybrid website behavior and the Iris-test-then-all rollout. Iris must verify that behavior in the deployed candidate, including the companion docking into the chat header while chat is open.
 2. Real authorized admin/enrolled beta-student session: confirm eligibility, actual Guided AI replies/thinking/reactions, route navigation, position controls, existing save/export flow and fallback. Synthetic tests do not prove Supabase/provider/hosting health.
 3. Physical iOS Safari and Android touch/keyboard checks; desktop Safari/Chrome checks and screen-reader review. The local browser and pure viewport tests are not this device matrix.
-4. GitHub publication and receiver acceptance, then explicitly authorized review/staging deployment. Neither a local commit nor this document proves Iris has received it or a live site has changed.
+4. GitHub publication and Iris acceptance, followed by the now-authorized test-then-production sequence in the live handoff. Neither a local commit nor this document proves Iris has received it or a live site has changed.
 
 Cosmetic slots exist only as an adapter for explicit unlock inputs. No real course-reward database, inventory, hat/outfit economy, boss scoring, paint-job renderer or automatic rewards were implemented. Those remain separate features, not promises in this release.
 
@@ -84,9 +88,9 @@ The optional `desktop/orion-macos` source is a separate local AppKit review host
 - Lab: PLAYIQ_ORION_WIZARD_LAB (task-scoped label, not a global lane activation).
 - Agent: Codex main; no new workers or recurring operations created.
 - Cycle: orion-companion-20261103; active department: website-beta-implementation-and-local-QA.
-- Approval basis: Scott's direct approval of the hybrid presentation and request to finish; public production activation remains gated on review.
+- Approval basis: Scott's direct approval of the hybrid presentation and latest instruction: Iris tests first, then release to all eligible students, not beta-only. Activation remains gated on passing tests, not another general approval request.
 - Evidence: local implementation, pure/offline tests, local browser observations and synthetic production build. NOT production/runtime/account acceptance.
 - Durable memory receipt: none requested; no claim of a MemPalace write or cross-agent synchronization.
 - Source SHA-256: atlas `8363530b3bc95607df2a54a6a80a469b53d38402d0236ecb81b66641a46d9f23`; manifest `45dfbc6c9bfb2731f662bcd20ff15808bbbf9ac0721e493c49efb9214ab2cb70`; companion `2a93201fb63d1f662479f34727dd0cb315298f11d47f2157ab23df61f6b777fe`; release policy `84ef02e0453708f6106f393dc121949d2d29e402d3a9a4fa746a2c619104448f`; state machine `ac4c4c18e236ad98d28d535169153d303e5e11cde903adc2af52ef0c16c96a6f`; unchanged action contract `d0cb2cdb71af285130c68f6c26d89f2fbe55cd2b439dd2aa4c5faf139e37ac4f`.
 
-Next action: review the committed beta candidate, authorize GitHub delivery/review deployment, then complete the real-account/device acceptance checks. Do not reopen the desktop review pet or modify the official Wizard pet.
+Next action: Iris executes `HANDOFF_IRIS_PLAYIQ_ORION_LIVE_20261103.md`, reports acceptance/testing evidence, and releases to all eligible students only if the checks pass. Do not reopen the desktop review pet or modify the official Wizard pet.
