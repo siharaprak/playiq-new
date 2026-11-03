@@ -6,8 +6,8 @@ import {buildPersonalLearningKnowledgeFile, type CourseModuleRecord, type Course
 import type {CourseLesson} from '@/lib/course-release/content';
 import {GuidedAIPanel} from '@/components/guided-ai/GuidedAIPanel';
 
-export default function PreviewClient({shell,lesson,navigation,fail,failSaves}:{
-  shell:CourseShell; lesson:CourseLesson; navigation:{moduleNumber:number;title:string}[];fail:boolean;failSaves:boolean;
+export default function PreviewClient({shell,lesson,navigation,fail,failSaves,companion=false}:{
+  shell:CourseShell; lesson:CourseLesson; navigation:{moduleNumber:number;title:string}[];fail:boolean;failSaves:boolean;companion?:boolean;
 }) {
   const state = useRef<CourseReleaseState>({records:[],assessmentProfile:null});
   const [initial,setInitial] = useState<CourseReleaseState | null>(null);
@@ -21,11 +21,11 @@ export default function PreviewClient({shell,lesson,navigation,fail,failSaves}:{
       const url = new URL(anchor.href);
       if (!/^\/student\/course(?:-beta)?$/.test(url.pathname)) return;
       event.preventDefault();
-      router.push(`/course-release-preview?shell=${shell}&module=${url.searchParams.get('module') || 0}${fail?'&mode=fail':failSaves?'&mode=savefail':''}`);
+      router.push(`${companion ? '/dev/orion-companion' : '/course-release-preview'}?shell=${shell}&module=${url.searchParams.get('module') || 0}${fail?'&mode=fail':failSaves?'&mode=savefail':''}`);
     };
     document.addEventListener('click',intercept,true);
     return () => document.removeEventListener('click',intercept,true);
-  },[shell,fail,failSaves,router]);
+  },[shell,fail,failSaves,router,companion]);
   const failure = {ok:false as const,error:'SYNTHETIC TEST: storage is unavailable. Nothing was saved.'};
   const actions:CourseShellActions = {
     load:async () => fail ? failure : {ok:true,data:state.current},
@@ -46,6 +46,6 @@ export default function PreviewClient({shell,lesson,navigation,fail,failSaves}:{
     </aside>
     {initial ? <CourseShellClient shell={shell} lesson={lesson} navigation={navigation}
       initialResult={fail?failure:{ok:true,data:initial}} actions={actions}/> : <p>Preparing synthetic UI test…</p>}
-    <GuidedAIPanel isFloating moduleNumber={lesson.moduleNumber} studentName="Synthetic QA" orion3d={false} />
+    <GuidedAIPanel isFloating moduleNumber={lesson.moduleNumber} studentName="Synthetic QA" orion3d={false} companionScope={companion ? 'all' : 'off'} />
   </>;
 }

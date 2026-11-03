@@ -1,6 +1,7 @@
 import React from 'react';
 import { GuidedAIPanel } from "@/components/guided-ai/GuidedAIPanel";
 import { createClient } from '@/utils/supabase/server';
+import { resolveCompanionScope } from '@/lib/orion/companion-policy';
 
 export default async function StudentLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient();
@@ -48,6 +49,8 @@ export default async function StudentLayout({ children }: { children: React.Reac
   // ORION_3D_MODE: 'admin' (prod default) | 'all' (dev default / everyone) | 'off' (static avatar for everyone).
   const orion3dMode = process.env.ORION_3D_MODE ?? (process.env.NODE_ENV === 'development' ? 'all' : 'admin');
   const orion3d = orion3dMode === 'all' || (orion3dMode === 'admin' && isAdmin);
+  // Missing/unknown modes preserve the old UI. 'beta' only affects the separate beta shell.
+  const companionScope = resolveCompanionScope(process.env.ORION_COMPANION_MODE, isAdmin);
 
   return (
     <>
@@ -60,6 +63,7 @@ export default async function StudentLayout({ children }: { children: React.Reac
           studentName={name}
           studentId={userId}
           orion3d={orion3d}
+          companionScope={companionScope}
         />
       )}
     </>

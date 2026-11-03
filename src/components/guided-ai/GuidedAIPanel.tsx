@@ -7,6 +7,8 @@ import { ModeSelector } from './ModeSelector';
 import { GuidedAiResponse } from './GuidedAiResponse';
 import type { GuidedAiModeId, GuidedAiResponseData, LearnYourWayPreferences } from '@/lib/guided-ai/types';
 import { OrionCharacter } from './OrionCharacter';
+import OrionCompanion from './OrionCompanion';
+import {companionVisibleOnRoute, type CompanionScope} from '@/lib/orion/companion-policy';
 import { CHARACTER_ACTION_EVENT_PROTOCOL, syncCharacterWithGuidedAiResponse } from '@/lib/orion/action-contract';
 import { emitOrionCharacterAction, emitOrionReaction, selectLocalReactionForGuidedAiResponse, setOrionThinking } from '@/lib/orion/local-events';
 import { ORION_AVATAR_URL, preloadOrion } from '@/lib/orion/scene-cache';
@@ -23,6 +25,8 @@ interface GuidedAIPanelProps {
   studentId?: string;
   /** Release gate for the draft 3D Orion asset; false shows the static avatar. */
   orion3d?: boolean;
+  /** Server-controlled presentation gate; defaults off until release review. */
+  companionScope?: CompanionScope;
 }
 
 interface ChatMessage {
@@ -70,8 +74,10 @@ export function GuidedAIPanel({
   studentName = 'Student',
   studentId,
   orion3d = true,
+  companionScope = 'off',
 }: GuidedAIPanelProps) {
   const pathname = usePathname();
+  const companion = companionVisibleOnRoute(companionScope, pathname);
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [characterCollapsed, setCharacterCollapsed] = useState<boolean | null>(null);
@@ -785,7 +791,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
     );
   };
 
-  const renderCharacterSection = () => (
+  const renderCharacterSection = () => companion ? null : (
     <div className={styles.characterSection}>
       <button
         type="button"
@@ -806,8 +812,9 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   if (isFloating) {
     return (
       <>
+        {companion && <OrionCompanion onOpenChat={openOrion} chatOpen={isOpen} launcherRef={launcherRef} />}
         {/* Floating Toggle Button */}
-        {!isOpen && (
+        {!isOpen && !companion && (
           <div id="orion-floating-button" className={`${styles.launcher} fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 orion-launcher-bob`}>
             {visibleNudge && (
               <div className="orion-nudge absolute bottom-[4.25rem] right-0 w-56 rounded-2xl rounded-br-sm border border-[var(--neon-cyan)]/40 px-3 py-2 text-xs leading-snug text-[var(--text-primary)] shadow-[0_6px_24px_rgba(0,0,0,0.35)]" style={{ backgroundColor: 'var(--space-deep)' }}>
@@ -883,6 +890,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
                 {/* Cyber Header */}
                 <div className={styles.header}>
                   <div className="flex items-center gap-2.5">
+                    {companion && <img src={ORION_AVATAR_URL} alt="Orion" width={36} height={36} className="h-9 w-9 object-contain" />}
                     <div>
                       <h3 id={titleId} className="font-display font-bold text-sm tracking-widest" style={{ color: 'var(--text-primary)' }}>
                         <span className="gradient-text-cyan text-glow-cyan font-bold">ORION</span>
