@@ -1,0 +1,15 @@
+Iris, continue the existing PlayIQ floating Orion work in your Antigravity workspace. This handoff is primarily about preserving and verifying the new Orion character—not starting another redesign.
+
+Fetch this documentation branch from https://github.com/siharaprak/playiq-new:
+codex/playiq-restoration-contract-20261105
+
+Start here:
+docs/restoration/playiq-20261105/IRIS_ORION_HANDOFF.md
+
+Orion is already implemented in commit 20c7689480dddf5e03c536479fb7b53cea6cf082 and included in the inspected main, along with your Markdown fix and all-eligible-student companion setting. Check what is already integrated and deployed before repeating work. Preserve the actual artwork and animation states, transparent free movement, drag versus click, saved position, docking/hide/restore, reduced motion, existing single authenticated chat, safety controls and mobile behaviour. Confirm real replies, error recovery, and conversation/draft retention. Do not restore the obsolete boxed live launcher, regenerate the character, alter Scott's Wizard pet, or install the desktop demo. Return actual deployed-version and student-account evidence; a localhost check is not live verification.
+
+Course direction: restore the last approved course interface, then insert the complete new material from docs/curriculum/playiq-weekend-test-20261030/. We are NOT changing UI or UX. Use the confirmed original screenshot and actual branded assets—not Codex's rejected replacement. Keep working Orion, security fixes and student records; do not roll back the entire repository. The course is Module 00 plus Modules 1–14, with Capstone at 14. Supporting files cover the exact content/media mapping.
+
+Your subsequent application workflow is: complete Modules 00, 1 and 2 for Scott to review here first. After Scott approves those, finish the whole course, verify it, then commit/push the application and publish the already-reviewed build for Sihara and beta testers. Do not insert an intermediate Sihara design-approval loop or publish an unreviewed course to obtain Scott's approval.
+
+This pushed branch contains handoff documents only—not a finished course restoration. Keep the current site unchanged while preparing Scott's review. Read the named handoff and supporting references, acknowledge the source and existing Orion state, and report the review plan plus any specific blockers through our existing mailbox process.
