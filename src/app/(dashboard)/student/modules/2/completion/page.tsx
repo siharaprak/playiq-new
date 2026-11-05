@@ -3,6 +3,7 @@ import { enforceModuleGating } from '@/lib/gating';
 import { createClient } from '@/utils/supabase/server';
 import { MODULES } from '@/lib/constants';
 import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 
 export default async function Module2CompletionPage() {
   const { user } = await enforceModuleGating('completion', 2, 6);
@@ -18,15 +19,15 @@ export default async function Module2CompletionPage() {
     .maybeSingle();
 
   const unlocks = [
-    'Stronger digital judgment',
-    'More control over your attention',
-    'A clearer sense of responsibility',
-    'Better habits for using AI and the internet wisely',
+    'PlayIQ Digital Power Card & Personal Integrity Pledge',
+    'Approved 10-Question Tutor Discovery Guardrail Summary',
+    'Calibrated Focus Sprint (5 / 10 / 15 min) & Intentional Reset',
+    '5-Step Truth Filter & Triple-P Pause Before Share Protocol',
   ];
 
   return (
     <div
-      className="flex flex-col min-h-screen items-center justify-center px-6 py-12 text-center"
+      className="flex flex-col min-h-screen items-center justify-center px-6 pt-24 pb-12 text-center"
       style={{ background: 'linear-gradient(to bottom, #0a0f1e, rgba(123,79,206,0.08))' }}
     >
       <div
@@ -70,6 +71,16 @@ export default async function Module2CompletionPage() {
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* Interactive Course Learning Record & Beta Feedback Panel */}
+      <div className="w-full max-w-3xl mb-10 text-left">
+        <ModuleLearningRecordPanel
+          moduleNumber={2}
+          showChoices={true}
+          showRecordForm={true}
+          showBetaFeedback={true}
+        />
       </div>
 
       {/* Feedback Form (includes soft-gated Return to Dashboard link) */}

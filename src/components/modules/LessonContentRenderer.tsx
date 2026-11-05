@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Sparkles, 
   HelpCircle, 
@@ -13,9 +13,45 @@ import {
   ShieldAlert, 
   Layers, 
   Zap,
-  BookOpen
+  BookOpen,
+  Copy,
+  Check,
+  Download
 } from 'lucide-react';
 import type { LessonSection } from '@/data/module1Content';
+
+function CopyablePromptCard({ label, promptText }: { label: string; promptText: string }) {
+  const [copied, setCopied] = useState(false);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(promptText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      // Fallback
+    }
+  };
+  return (
+    <div className="rounded-xl border border-cyan-500/40 bg-slate-950/90 p-4 space-y-2.5 shadow-[0_0_15px_rgba(0,200,255,0.08)]">
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#00c8ff]">
+          📋 {label}
+        </span>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-mono font-bold bg-[#00c8ff]/15 text-[#00c8ff] border border-[#00c8ff]/40 hover:bg-[#00c8ff]/25 transition-colors cursor-pointer"
+        >
+          {copied ? <Check className="w-3.5 h-3.5" /> : <Copy className="w-3.5 h-3.5" />}
+          {copied ? 'Copied!' : 'Copy Prompt'}
+        </button>
+      </div>
+      <pre className="text-xs sm:text-sm font-mono text-slate-100 whitespace-pre-wrap leading-relaxed bg-black/50 p-3 rounded-lg border border-slate-800">
+        {promptText}
+      </pre>
+    </div>
+  );
+}
 
 interface LessonContentRendererProps {
   sections: LessonSection[];
@@ -94,6 +130,49 @@ function renderSectionItems(items: string[]) {
   for (let i = 0; i < items.length; i++) {
     const item = items[i];
     const trimmed = item.trim();
+
+    // 0a. Copyable Prompt Block (PROMPT:Label|Prompt body)
+    if (trimmed.startsWith('PROMPT:')) {
+      const raw = trimmed.slice('PROMPT:'.length);
+      const pipeIdx = raw.indexOf('|');
+      const label = pipeIdx !== -1 ? raw.slice(0, pipeIdx).trim() : 'Copyable AI Prompt';
+      const promptText = pipeIdx !== -1 ? raw.slice(pipeIdx + 1).trim() : raw.trim();
+      elements.push(<CopyablePromptCard key={i} label={label} promptText={promptText} />);
+      continue;
+    }
+
+    // 0b. Asset Reference Card (ASSET:/path/to/file|Label|Description)
+    if (trimmed.startsWith('ASSET:')) {
+      const parts = trimmed.slice('ASSET:'.length).split('|');
+      const assetUrl = (parts[0] || '').trim();
+      const assetTitle = (parts[1] || 'Course Asset').trim();
+      const assetDesc = (parts[2] || '').trim();
+      elements.push(
+        <div key={i} className="flex flex-col sm:flex-row items-center gap-4 p-4 rounded-xl border border-purple-500/40 bg-purple-950/20">
+          <img
+            src={assetUrl}
+            alt={assetTitle}
+            className="w-24 h-24 object-contain rounded-lg border border-slate-700 bg-slate-950 p-1 shrink-0"
+          />
+          <div className="flex-1 space-y-2 text-center sm:text-left">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-purple-300">
+              {assetTitle}
+            </div>
+            {assetDesc && <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">{assetDesc}</p>}
+            <a
+              href={assetUrl}
+              download
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-purple-500/20 text-purple-200 border border-purple-400/40 hover:bg-purple-500/30 transition-colors"
+            >
+              <Download className="w-3.5 h-3.5" /> Download Reference Image
+            </a>
+          </div>
+        </div>
+      );
+      continue;
+    }
 
     // 1. Dialogue Speaker (STUDENT: ... or ORION: ...)
     if (trimmed.startsWith('STUDENT:') || trimmed.startsWith('ORION:')) {

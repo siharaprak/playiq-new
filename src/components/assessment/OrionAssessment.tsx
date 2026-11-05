@@ -8,6 +8,7 @@ import ScenarioCard from './ScenarioCard';
 import { BaselineTask1, BaselineTask2, BaselineTask3 } from './BaselineChallenge';
 import LearningBlueprint from './LearningBlueprint';
 import AIWorkspaceTutorial from './AIWorkspaceTutorial';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 import {
   savePhase1,
   savePhase2,
@@ -124,6 +125,39 @@ const ORION_VISION_LINES = [
   "You can learn to make ideas real — from a movie or game to an app, a useful assistant, or a learning dashboard. These are possibilities, not promises; your imagination, practice, judgment, and action make the difference.",
 ];
 
+const CO_PILOT_CHECKLIST_ITEMS = [
+  {
+    id: 'account_access',
+    title: 'Account Access Verified',
+    detail: 'Set up or log into a parent-approved external AI workspace (ChatGPT at chatgpt.com, Claude at claude.ai, or Gemini at gemini.google.com).',
+  },
+  {
+    id: 'privacy_guardrails',
+    title: 'Privacy Guardrails Set',
+    detail: 'Never paste home addresses, phone numbers, school IDs, full legal names of classmates, passwords, or private family data into any AI chat.',
+  },
+  {
+    id: 'no_shortcuts',
+    title: 'No Shortcuts Rule Agreed',
+    detail: 'AI is a coach, tutor, and thinking partner—never a ghostwriter that does homework for you.',
+  },
+  {
+    id: 'school_policy',
+    title: 'School Policy Awareness',
+    detail: "If a teacher bans AI on a specific assignment, the student follows the teacher's rule 100% of the time.",
+  },
+  {
+    id: 'weekly_checkin',
+    title: 'Weekly Check-In Habit',
+    detail: 'Pick one 5-minute time each week where the student shows the parent one cool thing they built or learned using PlayIQ.',
+  },
+  {
+    id: 'verification_mindset',
+    title: 'Verification Mindset',
+    detail: 'Agree that AI can sound confident and still be completely wrong—the human is always the final fact-checker.',
+  },
+];
+
 function getInitialOptionId(questionIndex: number, signalValue?: string | null): string | null {
   if (!signalValue) return null;
   const question = DIAGNOSTIC_QUESTIONS[questionIndex];
@@ -160,6 +194,11 @@ export default function OrionAssessment({
   );
   const [openingComplete, setOpeningComplete] = useState(false);
   const [workspaceReady, setWorkspaceReady] = useState(false);
+  const [coPilotChecks, setCoPilotChecks] = useState<Record<string, boolean>>({});
+  const [coPilotConfirmed, setCoPilotConfirmed] = useState(false);
+  const [genieWish, setGenieWish] = useState('');
+  const [genieQuestion, setGenieQuestion] = useState('');
+  const [showCoPilotModal, setShowCoPilotModal] = useState(false);
 
   // Phase 2 state
   const [currentQuestion, setCurrentQuestion] = useState(() => firstUnansweredDiagnostic(existingProfile));
@@ -410,17 +449,119 @@ export default function OrionAssessment({
           />
 
           {openingComplete && !workspaceReady && (
-            <div className="assessment-form-section text-center">
-              <p className="text-sm leading-relaxed mb-5" style={{ color: 'var(--text-secondary)' }}>
-                If your parent or guardian has completed the setup checklist, continue here. Orion will guide the assessment inside PlayIQ; you do not need to open another AI chat or type a special phrase.
-              </p>
-              <button
-                type="button"
-                onClick={() => setWorkspaceReady(true)}
-                className="assessment-continue-button"
-              >
-                Continue to Orion&apos;s Assessment →
-              </button>
+            <div className="assessment-form-section text-left space-y-6" style={{ maxWidth: '640px' }}>
+              {/* Moment 1: Parent & Student Co-Pilot Setup */}
+              <div className="p-5 rounded-xl border border-cyan-500/30 bg-slate-900/80 space-y-4">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-[11px] font-mono font-bold uppercase tracking-widest text-[var(--neon-cyan)]">
+                    Moment 1 • Parent &amp; Student Co-Pilot Setup (10 Minutes Together)
+                  </span>
+                  <span className="text-[10px] font-mono text-slate-400">
+                    {Object.values(coPilotChecks).filter(Boolean).length}/6 Reviewed
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+                  Before your apprentice steps into Orion&apos;s simulator, take 10 minutes together to establish your home AI ground rules. You are setting up a high-trust learning environment—not a surveillance trap.
+                </p>
+
+                <div className="space-y-2.5">
+                  {CO_PILOT_CHECKLIST_ITEMS.map((item) => {
+                    const checked = Boolean(coPilotChecks[item.id]);
+                    return (
+                      <label
+                        key={item.id}
+                        className="flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-all"
+                        style={{
+                          background: checked ? 'rgba(0, 200, 255, 0.08)' : 'rgba(15, 23, 42, 0.6)',
+                          borderColor: checked ? 'rgba(0, 200, 255, 0.45)' : 'rgba(148, 163, 184, 0.2)',
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={(e) =>
+                            setCoPilotChecks((prev) => ({ ...prev, [item.id]: e.target.checked }))
+                          }
+                          className="mt-1 h-4 w-4 rounded accent-cyan-400"
+                        />
+                        <span className="text-xs leading-relaxed text-slate-200">
+                          <strong className="text-white">{item.title}:</strong> {item.detail}
+                        </span>
+                      </label>
+                    );
+                  })}
+                </div>
+
+                {/* Co-Pilot Checkpoint */}
+                <div className="p-3.5 rounded-lg border border-purple-500/30 bg-purple-950/20 space-y-2">
+                  <p className="text-[11px] font-mono font-bold uppercase tracking-wider text-purple-300">
+                    Co-Pilot Checkpoint (Parent + Student)
+                  </p>
+                  <label className="flex items-start gap-2.5 cursor-pointer text-xs text-slate-200">
+                    <input
+                      type="checkbox"
+                      checked={coPilotConfirmed}
+                      onChange={(e) => setCoPilotConfirmed(e.target.checked)}
+                      className="mt-0.5 h-4 w-4 rounded accent-purple-400"
+                    />
+                    <span>
+                      Both parent/guardian and student have reviewed the 6 Co-Pilot Setup points above and selected the AI workspace we will use for PlayIQ.
+                    </span>
+                  </label>
+                  <p className="text-[11px] text-slate-400 italic">
+                    Privacy Note: Do not type signatures, account passwords, or personal credentials into any online form. Keep account login details with the parent or guardian.
+                  </p>
+                </div>
+              </div>
+
+              {/* The Genie Principle & First Imagination Prompt */}
+              <div className="p-5 rounded-xl border border-amber-500/30 bg-slate-900/80 space-y-4">
+                <div className="text-[11px] font-mono font-bold uppercase tracking-widest text-amber-300">
+                  The Genie Principle • Your First Imagination Prompt
+                </div>
+                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                  You have let the genie out of the bottle. The wishes are unlimited; the secret is learning how to ask for what you want. Before we begin, write down one real thing you wish you could understand, build, or solve:
+                </p>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-xs font-mono text-slate-300 mb-1">
+                      My first wish is to learn, solve, or create:
+                    </label>
+                    <input
+                      type="text"
+                      value={genieWish}
+                      onChange={(e) => setGenieWish(e.target.value)}
+                      placeholder="e.g. Build a game, stop feeling behind in Algebra, create an animation..."
+                      className="assessment-input text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-mono text-slate-300 mb-1">
+                      What question would you need to ask to start making that wish real?
+                    </label>
+                    <input
+                      type="text"
+                      value={genieQuestion}
+                      onChange={(e) => setGenieQuestion(e.target.value)}
+                      placeholder="e.g. How do I break this down into my first 3 steps?"
+                      className="assessment-input text-xs"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center pt-2">
+                <p className="text-xs leading-relaxed mb-4" style={{ color: 'var(--text-secondary)' }}>
+                  Orion will guide the assessment inside PlayIQ; you do not need to open another AI chat yet or type a special phrase.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setWorkspaceReady(true)}
+                  className="assessment-continue-button"
+                >
+                  Continue to Orion&apos;s Assessment →
+                </button>
+              </div>
             </div>
           )}
 
@@ -811,7 +952,7 @@ export default function OrionAssessment({
 
           {/* Step 3: Learning Blueprint */}
           {revealStep === 3 && blueprint && (
-            <div className="assessment-reveal-content">
+            <div className="assessment-reveal-content" style={{ maxWidth: '680px' }}>
               <LearningBlueprint blueprint={blueprint} studentName={displayName || 'Apprentice'} />
 
               <button
@@ -838,6 +979,12 @@ export default function OrionAssessment({
               isPending={isPending}
             />
           )}
+        </div>
+      )}
+
+      {(phase < 5 || revealStep < 4) && (
+        <div className="mt-8 w-full max-w-2xl mx-auto">
+          <ModuleLearningRecordPanel moduleNumber={0} showBlockerOnly={true} />
         </div>
       )}
     </div>

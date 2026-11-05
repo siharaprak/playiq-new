@@ -2,29 +2,29 @@ import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import type { MasteryRequirementConfig, PlaceholderRequirementKey, PlaceholderRequirementStatus } from '@/lib/mastery/types';
 import { inferRequirementDefaultsForNode, getRequirementSummary } from '@/lib/mastery/placeholders';
-import { MODULES } from '@/lib/constants';
+import {
+  COURSE_15_MODULES,
+  getCourseModuleNodeKey,
+  getDbModuleIdForCourseModule,
+  isNodeKeyForCourseModule,
+} from '@/lib/constants';
 
-const MODULE_ID_MAP: Record<number, string> = {
-  0: MODULES.MODULE_0_ID,
-  1: MODULES.MODULE_1_ID,
-  2: MODULES.MODULE_2_ID,
-  3: MODULES.MODULE_3_ID,
-  4: MODULES.MODULE_4_ID,
-  5: MODULES.MODULE_5_ID,
-  6: MODULES.MODULE_6_ID,
-  7: MODULES.MODULE_7_ID,
-  8: MODULES.MODULE_8_ID,
-  9: MODULES.MODULE_9_ID,
-  10: MODULES.MODULE_10_ID,
-  11: MODULES.CAPSTONE_ID,
-};
+export async function checkIsStudentAdmin(supabase: any, userId: string): Promise<boolean> {
+  const [{ data: profile }, { data: roleRows }] = await Promise.all([
+    supabase.from('profiles').select('role').eq('id', userId).maybeSingle(),
+    supabase.from('user_roles').select('role').eq('user_id', userId),
+  ]);
+  return (
+    profile?.role === 'admin' ||
+    Boolean(roleRows?.some((r: any) => r.role === 'admin'))
+  );
+}
 
-// Module-agnostic node gating
-export async function enforceNodeGating(
-  nodeId: string,
-  phase: 'lesson' | 'activity' | 'mini-check' | 'teach-back' | 'completion',
-  moduleNumber: number = 1
-) {
+/**
+ * Enforces that a student cannot jump ahead to Module N (N >= 2) unless
+ * Modules 1..(N-1) have all been completed in sequence (or the user is an admin).
+ */
+export async function enforceSequentialModuleUnlock(moduleNumber: number) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
@@ -32,32 +32,93 @@ export async function enforceNodeGating(
     redirect('/login');
   }
 
-  // Admin bypass: allow administrators to freely test and preview all student nodes
-  const { data: roleRows } = await supabase
-    .from('user_roles')
-    .select('role')
-    .eq('user_id', user.id);
+  const isAdmin = await checkIsStudentAdmin(supabase, user.id);
+  if (isAdmin || moduleNumber <= 1) {
+    return { user, isAdmin };
+  }
 
-  if (roleRows?.some((r: any) => r.role === 'admin')) {
+  const { data: allProgress } = await supabase
+    .from('student_node_progress')
+    .select('module_id, node_id')
+    .eq('student_id', user.id)
+    .eq('node_mastered', true);
+
+  let m13RecordCompleted = false;
+  if (moduleNumber > 13) {
+    try {
+      const { data: lr13 } = await supabase
+        .from('course_release_learning_records')
+        .select('completed')
+        .eq('student_id', user.id)
+        .eq('module_number', 13)
+        .maybeSingle();
+      m13RecordCompleted = Boolean(lr13?.completed);
+    } catch {
+      // ignore if table unavailable
+    }
+  }
+
+  const priorModules = COURSE_15_MODULES.filter(
+    (m) => m.num >= 1 && m.num < moduleNumber,
+  );
+
+  for (const mod of priorModules) {
+    const masteredCount = (allProgress || []).filter((row: any) =>
+      isNodeKeyForCourseModule(mod.num, row.module_id, row.node_id),
+    ).length;
+    const completed =
+      masteredCount >= mod.totalNodes || (mod.num === 13 && m13RecordCompleted);
+    if (!completed) {
+      redirect('/student/home');
+    }
+  }
+
+  return { user, isAdmin: false };
+}
+
+// Module-agnostic node gating across the 15-module course
+export async function enforceNodeGating(
+  nodeId: string,
+  phase: 'lesson' | 'activity' | 'mini-check' | 'teach-back' | 'completion',
+  moduleNumber: number = 1
+) {
+  const { user, isAdmin } = await enforceSequentialModuleUnlock(moduleNumber);
+  if (isAdmin) {
     return { user, progress: null, isAdmin: true };
   }
 
+  const supabase = await createClient();
   const basePath = `/student/modules/${moduleNumber}`;
+  const moduleId = getDbModuleIdForCourseModule(moduleNumber);
+  const dbNodeKey = getCourseModuleNodeKey(moduleNumber, nodeId);
 
-  const moduleId = MODULE_ID_MAP[moduleNumber];
+  // Enforce sequential node order within the module (Node K requires Nodes 1..K-1 mastered)
+  const numericNodeId = Number(nodeId);
+  if (Number.isInteger(numericNodeId) && numericNodeId > 1) {
+    const { data: moduleProgress } = await supabase
+      .from('student_node_progress')
+      .select('node_id, node_mastered')
+      .eq('student_id', user.id)
+      .eq('module_id', moduleId)
+      .eq('node_mastered', true);
+
+    const masteredKeys = new Set((moduleProgress || []).map((r: any) => r.node_id));
+    for (let prev = 1; prev < numericNodeId; prev++) {
+      const prevKey = getCourseModuleNodeKey(moduleNumber, String(prev));
+      if (!masteredKeys.has(prevKey)) {
+        redirect(`${basePath}/overview`);
+      }
+    }
+  }
 
   // Fetch progress for this specific node
-  let query = supabase
+  const { data: progress } = await supabase
     .from('student_node_progress')
     .select('*')
     .eq('student_id', user.id)
-    .eq('node_id', nodeId);
-
-  if (moduleId) {
-    query = query.eq('module_id', moduleId);
-  }
-
-  const { data: progress } = await query.single();
+    .eq('module_id', moduleId)
+    .eq('node_id', dbNodeKey)
+    .maybeSingle();
 
   switch (phase) {
     case 'activity':
@@ -90,87 +151,75 @@ export async function enforceModuleGating(
   moduleNumber: number = 1,
   totalNodes: number = 4
 ) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/login');
-  }
-
-  // Admin bypass: allow administrators to freely test and preview all student modules and assessments
-  const { data: roleRows } = await supabase
-    .from('user_roles')
-    .select('role')
-    .eq('user_id', user.id);
-
-  if (roleRows?.some((r: any) => r.role === 'admin')) {
+  const { user, isAdmin } = await enforceSequentialModuleUnlock(moduleNumber);
+  if (isAdmin) {
     return { user, isAdmin: true };
   }
 
+  // Module 13 is an optional possibility preview with no required quiz, boss battle, or artifact
+  if (moduleNumber === 13) {
+    return { user };
+  }
+
+  const supabase = await createClient();
   const basePath = `/student/modules/${moduleNumber}`;
+  const moduleId = getDbModuleIdForCourseModule(moduleNumber);
 
   // Check node mastery count
   if (phase === 'quiz' || phase === 'boss-battle' || phase === 'artifacts' || phase === 'completion') {
-    const moduleId = MODULE_ID_MAP[moduleNumber];
-    let query = supabase
+    const { data: allNodes } = await supabase
       .from('student_node_progress')
       .select('node_id')
       .eq('student_id', user.id)
+      .eq('module_id', moduleId)
       .eq('node_mastered', true);
 
-    if (moduleId) {
-      query = query.eq('module_id', moduleId);
-    }
+    const matchedNodes = (allNodes || []).filter((n: any) =>
+      isNodeKeyForCourseModule(moduleNumber, moduleId, n.node_id)
+    );
 
-    const { data: allNodes } = await query;
-
-    if (!allNodes || allNodes.length < totalNodes) {
+    if (matchedNodes.length < totalNodes) {
       redirect(`${basePath}/overview`);
     }
   }
 
-  // Fetch the module ID for moduleNumber
-  const { data: currentModule } = await supabase
-    .from('modules')
-    .select('id')
-    .eq('order_num', moduleNumber)
-    .single();
-
-  const moduleId = currentModule?.id;
-
   // Fetch assessments and artifacts for this specific module, ordered by newest first
-  let assessmentQuery = supabase
+  const { data: rawAssessments } = await supabase
     .from('assessment_submissions')
     .select('*')
     .eq('student_id', user.id)
+    .eq('module_id', moduleId)
     .order('created_at', { ascending: false });
 
-  if (moduleId) {
-    assessmentQuery = assessmentQuery.eq('module_id', moduleId);
-  }
+  const assessments = (rawAssessments || []).filter((a: any) => {
+    if (moduleNumber >= 10) {
+      return Number(a.submission_payload?.courseModuleNumber) === moduleNumber;
+    }
+    return a.submission_payload?.courseModuleNumber === undefined || Number(a.submission_payload?.courseModuleNumber) === moduleNumber;
+  });
 
-  const { data: assessments } = await assessmentQuery;
+  const quiz = assessments.find((a: any) => a.assessment_type === 'module_quiz');
+  const bossBattle = assessments.find((a: any) => a.assessment_type === 'boss_battle');
 
-  const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
-  const bossBattle = assessments?.find(a => a.assessment_type === 'boss_battle');
-
-  let artifactQuery = supabase
+  const { data: rawArtifacts } = await supabase
     .from('proof_artifact_submissions')
     .select('*')
     .eq('student_id', user.id)
+    .eq('module_id', moduleId)
     .order('created_at', { ascending: false });
 
-  if (moduleId) {
-    artifactQuery = artifactQuery.eq('module_id', moduleId);
-  }
+  const artifacts = (rawArtifacts || []).filter((a: any) => {
+    if (moduleNumber >= 10) {
+      return Number(a.content_payload?.courseModuleNumber) === moduleNumber;
+    }
+    return a.content_payload?.courseModuleNumber === undefined || Number(a.content_payload?.courseModuleNumber) === moduleNumber;
+  });
 
-  const { data: artifacts } = await artifactQuery;
-
-  const studyRules = artifacts?.find(
-    a => a.artifact_type === 'study_rules' && a.status !== 'draft' && a.status !== 'revise'
+  const studyRules = artifacts.find(
+    (a: any) => a.artifact_type === 'study_rules' && a.status !== 'draft' && a.status !== 'revise'
   );
-  const errorReview = artifacts?.find(
-    a => a.artifact_type === 'error_review' && a.status !== 'draft' && a.status !== 'revise'
+  const errorReview = artifacts.find(
+    (a: any) => a.artifact_type === 'error_review' && a.status !== 'draft' && a.status !== 'revise'
   );
 
   switch (phase) {
@@ -203,15 +252,6 @@ export async function enforceModuleGating(
 // ---------------------------------------------------------------------------
 // Sprint 3: Placeholder requirement helpers (non-breaking, no enforcement)
 // ---------------------------------------------------------------------------
-// These helpers query the mastery placeholder config for a node.
-// They do NOT enforce any gates or alter existing gating behavior.
-
-
-
-/**
- * Returns the full placeholder mastery config for a node.
- * Does not enforce anything.
- */
 export function getPlaceholderRequirementsForNode(
   nodeId: string,
   moduleNumber: number,
@@ -220,10 +260,6 @@ export function getPlaceholderRequirementsForNode(
   return inferRequirementDefaultsForNode(nodeId, moduleNumber, nodeType);
 }
 
-/**
- * Checks if a specific placeholder requirement is required for a node.
- * Does not enforce anything.
- */
 export function hasPlaceholderRequirement(
   nodeId: string,
   moduleNumber: number,
@@ -234,12 +270,6 @@ export function hasPlaceholderRequirement(
   return config.requirements[requirement]?.required ?? false;
 }
 
-/**
- * Returns a list of placeholder requirements that are marked as required
- * but not yet fulfilled. Since enforcement is not active, this returns
- * all required placeholders as "missing" for informational purposes.
- * Does not enforce anything.
- */
 export function describeMissingPlaceholderRequirements(
   nodeId: string,
   moduleNumber: number,

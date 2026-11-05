@@ -304,23 +304,23 @@ export default function CourseNavigationGuide({ studentName, studentId, hasProgr
                 <div className="space-y-3">
                   <div className="flex items-center gap-2">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#f5c518]" />
-                    <span className="font-bold text-slate-200">AI Builders & Master Capstone:</span>
+                    <span className="font-bold text-slate-200">AI Builders & Master Capstone (15-Module Sequence):</span>
                   </div>
                   <p className="text-slate-400 font-sans">
-                    In the final tiers of the curriculum, you move from consumer to architect:
+                    In the final tiers of the 15-module curriculum (Module 00 + Modules 1–14), you move from learner to system architect:
                   </p>
                   <ul className="space-y-2 list-none pl-2 text-slate-400">
                     <li className="flex items-start gap-1.5">
                       <span className="text-[var(--neon-gold)] mt-0.5">•</span>
-                      <span><strong>Module 9 (AI Tutor):</strong> Build a persistent customized learning tutor by writing structured custom system instructions.</span>
+                      <span><strong>Modules 9–10 (AI Tutor Build & Stress-Test):</strong> Assemble your customized AI Tutor v1 with 6 Knowledge Files (including <code className="text-cyan-300">personal_learning_knowledge_file.md</code>) and stress-test it into AI Tutor v2.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
                       <span className="text-[var(--neon-gold)] mt-0.5">•</span>
-                      <span><strong>Module 10 (AI Assistant):</strong> Build a utility assistant resolving real tasks with custom tools and knowledge files.</span>
+                      <span><strong>Modules 11–12 (Personal AI Assistant Build & Stress-Test):</strong> Design a focused Personal AI Assistant v1 with a 1-Job Scope Contract and 3 Knowledge Files, then test it with a second person to ship v2.</span>
                     </li>
                     <li className="flex items-start gap-1.5">
                       <span className="text-[var(--neon-gold)] mt-0.5">•</span>
-                      <span><strong>Module 11 (Capstone):</strong> Complete the Master Trial to earn full validation and complete the course.</span>
+                      <span><strong>Module 13 (Look Ahead) & Module 14 (Capstone: The Master Trial):</strong> Explore future possibilities in Module 13 (no graded artifact required), then complete the 3-Pillar Master Trial in Module 14.</span>
                     </li>
                   </ul>
                 </div>

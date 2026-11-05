@@ -85,10 +85,18 @@ export const module3Nodes: Record<string, NodeContent> = {
         ],
       },
       {
-        title: 'Round B \u2014 Example-first',
+        title: 'Round B \u2014 Example-first (Gameplay Trailer)',
         content: [
           'Start fresh. Prompt: "Give me two simple real-world examples and one non-example of [topic]. Then ask what pattern I notice before explaining the rule."',
           'What pattern did you notice?',
+          'Rate: clarity, curiosity, and overwhelm (each /5).',
+        ],
+      },
+      {
+        title: 'Round C \u2014 Question-first (Quest Log)',
+        content: [
+          'Start fresh. Prompt: "Before explaining [topic], ask me one intriguing Golden Question or puzzle about how it works in real life, then ask what I already know or guess."',
+          'Did starting with a mystery or question make your brain lean in?',
           'Rate: clarity, curiosity, and overwhelm (each /5).',
         ],
       },
@@ -152,11 +160,11 @@ export const module3Nodes: Record<string, NodeContent> = {
         ],
       },
       {
-        title: 'Memory test',
+        title: 'Memory test & Map Scout Character Connection',
         content: [
-          'Read the ten lines once. Cover them and say the core idea from memory.',
-          'What did you remember? What disappeared from memory?',
-          'That missing part is a useful signal for your next question.',
+          'Read the ten lines once. Cover them and say the core idea and Golden Question from memory in 60 seconds.',
+          'What did you remember? What disappeared from memory? That missing part is a useful signal for your next question.',
+          'Optional Character Connection (Map Scout Badge): Use your Module 1 Character Guardrail Card to place your character as a "Map Scout" holding a compass or map for this topic while keeping its three must-keep visual features identical.',
         ],
       },
     ],

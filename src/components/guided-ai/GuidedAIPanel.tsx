@@ -812,7 +812,7 @@ Try asking me "tell me about the first module" or "how do I earn hints?" to simu
   if (isFloating) {
     return (
       <>
-        {companion && <OrionCompanion onOpenChat={openOrion} chatOpen={isOpen} launcherRef={launcherRef} />}
+        {companion && <OrionCompanion onOpenChat={openOrion} chatOpen={false} launcherRef={launcherRef} />}
         {/* Floating Toggle Button */}
         {!isOpen && !companion && (
           <div id="orion-floating-button" className={`${styles.launcher} fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-14 h-14 orion-launcher-bob`}>

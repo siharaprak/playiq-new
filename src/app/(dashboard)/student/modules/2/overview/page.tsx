@@ -3,17 +3,18 @@ import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import { enforceSequentialModuleUnlock } from '@/lib/gating';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 import { module2Nodes } from '@/data/module2Content';
 
 const MODULE_NODES = Object.values(module2Nodes).map(n => ({ id: n.id, title: n.title }));
 
 export default async function Module2OverviewPage() {
+  const { user, isAdmin: isRoleAdmin } = await enforceSequentialModuleUnlock(2);
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect('/login');
 
   // Fetch mastered nodes for this module
   const { data: progressData } = await supabase
@@ -41,7 +42,7 @@ export default async function Module2OverviewPage() {
     .eq('id', user.id)
     .single();
 
-  const isAdmin = profile?.role === 'admin';
+  const isAdmin = isRoleAdmin || profile?.role === 'admin';
 
   const quiz = assessments?.find(a => a.assessment_type === 'module_quiz');
   const bossBattle = assessments?.find(a => a.assessment_type === 'boss_battle');
@@ -58,26 +59,36 @@ export default async function Module2OverviewPage() {
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
 
   return (
-    <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto">
+    <div className="flex flex-col min-h-screen px-4 sm:px-6 pt-24 pb-12 max-w-4xl mx-auto">
       
       <Link href="/student/home" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-8 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
         <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Dashboard</span>
       </Link>
-<div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+      <div className="mb-4 text-sm font-semibold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
         Module 2 • Skill Tree: Highest Path
       </div>
 
       <header className="mb-10">
-        <h1 className="text-4xl font-bold tracking-tight text-[var(--text-primary)] font-display">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-[var(--text-primary)] font-display">
           Digital Smarts &amp; Human Responsibility
         </h1>
-        <p className="text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          AI and the internet are amplifiers. They can make you more focused, help you learn faster, and create better work — or, if used badly, distract you and turn you into a passive consumer. By the end of this module, you&apos;ll know how to use technology in a way that keeps you on your highest path.
+        <p className="text-base sm:text-lg mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          Master the Power Tool Principle (Coach vs. Crutch vs. Gray Zone), run the 5-Point Policy Check and your 10-Question one-at-a-time Tutor Discovery interview in your existing <code>PlayIQ Tutor Project</code>, protect your natural writing voice, apply the 5-Step Truth Filter &amp; Triple-P Check, and calibrate your Focus Sprints.
         </p>
       </header>
 
       <ModuleOpeningHook moduleNumber={2} title="Digital Smarts & Human Responsibility" />
+
+      {/* Practical 10-Question Tutor Discovery Callout */}
+      <section className="p-5 sm:p-6 rounded-xl border mb-8 space-y-2" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-purple)' }}>
+        <div className="text-xs font-mono font-bold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+          New in Module 2 (Node 2) • Practical 10-Question Tutor Discovery Step
+        </div>
+        <p className="text-xs sm:text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          Just like you used a 10-question one-at-a-time discovery interview in Module 1 to lock in your Character Guardrail Card, in <strong>Node 2</strong> you will run a 10-question one-at-a-time Tutor Discovery interview inside your existing <code>PlayIQ Tutor Project</code> to turn your school-policy boundaries, voice-protection rules, and focus sprint habits into an approved <strong>Tutor Guardrail Summary</strong>.
+        </p>
+      </section>
 
       {/* Verified Student Guide PDF Download */}
       <ModulePdfDownload moduleNumber={2} title="Module 2 Student Guide: Digital Smarts & Human Responsibility" className="mb-8" />
@@ -116,10 +127,10 @@ export default async function Module2OverviewPage() {
           Skill Tree
         </h2>
         <div className="flex flex-col gap-3">
-          {MODULE_NODES.map((node, idx) => {
+          {MODULE_NODES.map((node) => {
             const mastered = masteredNodeIds.has(node.id);
             const isNext = node.id === firstActiveNodeId && !mastered;
-            const locked = !isAdmin && !mastered && !isNext && idx > 0 && !masteredNodeIds.has(MODULE_NODES[idx - 1]?.id ?? '');
+            const locked = !isAdmin && !mastered && !isNext;
 
             if (mastered) {
               return (
@@ -178,7 +189,7 @@ export default async function Module2OverviewPage() {
 
           {bossBattleUnlocked ? (
             <Link href="/student/modules/2/boss-battle" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid var(--neon-purple)' }}>
-              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors">Boss Battle — Module 2 Challenge</span>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors">Boss Battle — 2B Highest Path &amp; Deadline Emergency Challenge</span>
               {bossBattlePassed ? (
                 <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>COMPLETED</span>
               ) : (
@@ -193,7 +204,7 @@ export default async function Module2OverviewPage() {
 
           {artifactsUnlocked ? (
             <Link href="/student/modules/2/proof-artifacts" className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)]" style={{ background: 'transparent', border: '1px solid #7b4fce' }}>
-              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[#7b4fce] transition-colors">Proof Artifacts — Submit Artifacts</span>
+              <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[#7b4fce] transition-colors">Proof Artifacts — PlayIQ Digital Power Card &amp; Integrity Pledge</span>
               <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid #7b4fce', color: '#7b4fce' }}>OPEN</span>
             </Link>
           ) : (
@@ -203,6 +214,14 @@ export default async function Module2OverviewPage() {
           )}
         </div>
       </section>
+
+      {/* Interactive Course Learning Record & Blocker Panel */}
+      <ModuleLearningRecordPanel
+        moduleNumber={2}
+        showChoices={true}
+        showRecordForm={true}
+        showBetaFeedback={false}
+      />
     </div>
   );
 }

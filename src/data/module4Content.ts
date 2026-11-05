@@ -167,7 +167,7 @@ export const module4Nodes: Record<string, NodeContent> = {
     ],
     sections: [
       {
-        title: 'The line-by-line scan',
+        title: 'The line-by-line scan (G / M / S) & Rescue Signal',
         content: [
           '1. Read only the first sentence or step.',
           '2. Mark it: G = I get it well enough to explain it. M = maybe; I recognize it but cannot explain it yet. S = stop; this is where I lose the thread.',
@@ -175,6 +175,7 @@ export const module4Nodes: Record<string, NodeContent> = {
           '4. Underline the exact word, step, or connection causing the uncertainty.',
           '5. Name a possible gap type.',
           'Use a short, school-approved paragraph or worked example. Do not upload private information or another student\u2019s work.',
+          'Optional Character Connection (Rescue Signal): Reuse your Module 1 Character Guardrail Card to show your character holding up a "Rescue Signal" at the exact line where G turns into M or S.',
         ],
       },
       {

@@ -123,7 +123,15 @@ export default function OrionCompanion({onOpenChat, chatOpen = false, launcherRe
   function dock(value: boolean) {compactRef.current = value; setCompact(value); move(positionRef.current.x, positionRef.current.y); persist();}
   function updatePrefs(patch: Partial<OrionPreferences>) {const next = {...prefs, ...patch}; setPrefs(next); saveOrionPreferences(next);}
   function closeMenu() {setMenu(false); optionsRef.current?.focus();}
-  function openChat() {setMenu(false); trigger('wave'); onOpenChat();}
+  function openChat() {
+    setMenu(false);
+    trigger('wave');
+    const v = viewportRef.current;
+    if (v.width >= 768 && positionRef.current.x > v.width - 760) {
+      move(Math.max(16, v.width - 760), positionRef.current.y);
+    }
+    onOpenChat();
+  }
   if (!mounted) return null;
   const fallback = !ready || Boolean(error) || prefs.textOnly;
   const geometry = companionGeometry(viewport, compact || fallback);

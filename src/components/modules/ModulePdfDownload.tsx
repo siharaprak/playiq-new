@@ -20,10 +20,12 @@ const PDF_DATA: Record<string, { fileName: string; label: string; size: string }
   '7': { fileName: 'Module_7_Student_Text.pdf', label: 'Module 7 Student Guide', size: '278 KB' },
   '8': { fileName: 'Module_8_Student_Text.pdf', label: 'Module 8 Student Guide', size: '278 KB' },
   '9': { fileName: 'Module_9_Student_Text.pdf', label: 'Module 9 Student Guide', size: '438 KB' },
-  '10': { fileName: 'Module_10_Student_Text.pdf', label: 'Module 10 Student Guide', size: '220 KB' },
-  '11': { fileName: 'Capstone_Student_Text.pdf', label: 'Capstone Master Trial Guide', size: '329 KB' },
+  '10': { fileName: 'Module_9_Student_Text.pdf', label: 'Module 10 Tutor Testing Reference Guide', size: '438 KB' },
+  '11': { fileName: 'Module_10_Student_Text.pdf', label: 'Module 11 Personal Assistant Guide', size: '220 KB' },
+  '12': { fileName: 'Module_10_Student_Text.pdf', label: 'Module 12 Assistant Testing Reference Guide', size: '220 KB' },
+  '14': { fileName: 'Capstone_Student_Text.pdf', label: 'Module 14 Capstone Master Trial Guide', size: '329 KB' },
   'capstone': { fileName: 'Capstone_Student_Text.pdf', label: 'Capstone Master Trial Guide', size: '329 KB' },
-  'master': { fileName: 'PLAYIQ_CURRENT_COMBINED_COURSE_MASTER_20260915.pdf', label: 'Complete Course Master PDF (Modules 0-11)', size: '3.6 MB' },
+  'master': { fileName: 'PLAYIQ_CURRENT_COMBINED_COURSE_MASTER_20260915.pdf', label: 'Complete Course Master PDF', size: '3.6 MB' },
 };
 
 export default function ModulePdfDownload({ moduleNumber, title, className = '' }: ModulePdfDownloadProps) {

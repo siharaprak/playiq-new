@@ -126,10 +126,10 @@ export default function BetaBlockerReport({ shell, moduleNumber, submit = submit
           <p id={`${prefix}-privacy`} className={styles.help}>10–4000 characters. Technical details only; this report is not added to your Tutor knowledge file.</p>
         </fieldset>
         <label className={styles.field} htmlFor={`${prefix}-browser`}>Browser (included with report)
-          <input id={`${prefix}-browser`} name="browser" value={context.browser} readOnly style={{ width: '100%', minHeight: 44, padding: 10, color: '#183448', background: '#fff', border: '1px solid #87aabb', borderRadius: 7 }} />
+          <input id={`${prefix}-browser`} name="browser" value={context.browser} readOnly style={{ width: '100%', minHeight: 44, padding: 10, color: 'var(--course-ink, #f8fafc)', background: 'var(--course-input-bg, rgba(10, 15, 30, 0.9))', border: '1px solid var(--course-input-border, rgba(0, 200, 255, 0.35))', borderRadius: 7 }} />
         </label>
         <label className={styles.field} htmlFor={`${prefix}-device`}>Device / screen size (included with report)
-          <input id={`${prefix}-device`} name="device" value={context.device} readOnly style={{ width: '100%', minHeight: 44, padding: 10, color: '#183448', background: '#fff', border: '1px solid #87aabb', borderRadius: 7 }} />
+          <input id={`${prefix}-device`} name="device" value={context.device} readOnly style={{ width: '100%', minHeight: 44, padding: 10, color: 'var(--course-ink, #f8fafc)', background: 'var(--course-input-bg, rgba(10, 15, 30, 0.9))', border: '1px solid var(--course-input-border, rgba(0, 200, 255, 0.35))', borderRadius: 7 }} />
         </label>
         <p className={styles.small}>Course page: {context.pagePath || 'Checked when you open or submit this report.'}</p>
         {reportReference && !ticketId && <p className={styles.warning}>Report reference (not a confirmation): <span style={{ overflowWrap: 'anywhere' }}>{reportReference}</span>. Keep this page open. Retry sends the same report unchanged, so an uncertain connection does not create duplicate tickets.</p>}
@@ -141,7 +141,7 @@ export default function BetaBlockerReport({ shell, moduleNumber, submit = submit
       {ticketId && <div className={styles.success} role="status" aria-live="polite">
         <p><strong>Report saved and confirmed.</strong> Keep the ticket ID below for the beta team. This confirms storage, not that someone has reviewed or fixed it.</p>
         <label className={styles.field} htmlFor={`${prefix}-ticket`}>Confirmed ticket ID
-          <input id={`${prefix}-ticket`} name="ticketId" ref={ticketInput} value={ticketId} readOnly style={{ width: '100%', minHeight: 44, padding: 10, color: '#183448', background: '#fff', border: '1px solid #87aabb', borderRadius: 7 }} />
+          <input id={`${prefix}-ticket`} name="ticketId" ref={ticketInput} value={ticketId} readOnly style={{ width: '100%', minHeight: 44, padding: 10, color: 'var(--course-ink, #f8fafc)', background: 'var(--course-input-bg, rgba(10, 15, 30, 0.9))', border: '1px solid var(--course-input-border, rgba(0, 200, 255, 0.35))', borderRadius: 7 }} />
         </label>
         <div className={styles.buttonRow}>
           <button type="button" className={styles.secondaryButton} onClick={copyTicket}>Copy ticket ID</button>

@@ -6,12 +6,13 @@ import { MODULES } from '@/lib/constants';
 import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 
 const MODULE_NODES = [
-  { id: '1', title: 'What AI Is Good At vs Bad At' },
-  { id: '2', title: 'Choosing the Right AI Mode' },
-  { id: '3', title: 'Ask Better Questions' },
-  { id: '4', title: 'Verify Before You Believe' },
+  { id: '1', title: 'First-Win Character Lab & What AI Is Good At vs. Bad At' },
+  { id: '2', title: 'Choosing the Right AI Mode (The 6 PlayIQ AI Modes)' },
+  { id: '3', title: 'Ask Better Questions (6-Rung Ladder) & Verify Before You Believe' },
+  { id: '4', title: 'Learn How You Learn Lab, Active Experiment & Blueprint Update' },
 ];
 
 export default async function Module1OverviewPage() {
@@ -62,7 +63,7 @@ export default async function Module1OverviewPage() {
   const firstActiveNodeId = MODULE_NODES.find(n => !masteredNodeIds.has(n.id))?.id ?? '1';
 
   return (
-    <div className="flex flex-col min-h-screen px-4 sm:px-6 py-6 sm:py-12 max-w-4xl mx-auto">
+    <div className="flex flex-col min-h-screen px-4 sm:px-6 pt-24 pb-12 max-w-4xl mx-auto">
       
       <Link href="/student/home" className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold uppercase tracking-wider mb-6 sm:mb-8 transition-colors group min-h-[36px]" style={{ color: 'var(--text-secondary)' }}>
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
@@ -74,19 +75,39 @@ export default async function Module1OverviewPage() {
 
       <header className="mb-6 sm:mb-10">
         <h1 className="text-2xl sm:text-4xl font-bold tracking-tight font-display" style={{ color: 'var(--text-primary)' }}>
-          AI Learning Code
+          Create Your Character &amp; Learn the AI Learning Code
         </h1>
         <p className="text-sm sm:text-lg mt-2 sm:mt-3 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
-          Master the foundation of using AI as a coach, not a shortcut.
+          Start with a fast creative win—building a recognizable character with a Character Guardrail Card—then master the 6 PlayIQ AI Modes, the 6-Rung Question Ladder, the 4-Step Verification Ritual, and your Learn How You Learn Lab.
         </p>
       </header>
 
-      <ModuleOpeningHook moduleNumber={1} title="AI Learning Code" />
+      <ModuleOpeningHook moduleNumber={1} title="Create Your Character & Learn the AI Learning Code" />
+
+      {/* First-Win Character Lab Orientation Banner */}
+      <section className="p-5 sm:p-6 rounded-xl border mb-8 flex flex-col sm:flex-row items-center gap-5" style={{ background: 'var(--space-card)', borderColor: 'var(--neon-purple)' }}>
+        <img
+          src="/course-release/orion-reference.png"
+          alt="Orion Character Reference Example"
+          className="w-24 h-24 rounded-xl object-contain border border-purple-500/40 bg-slate-950 p-1.5 shrink-0"
+        />
+        <div className="space-y-2 text-xs sm:text-sm" style={{ color: 'var(--text-secondary)' }}>
+          <div className="text-xs font-mono font-bold uppercase tracking-wider" style={{ color: 'var(--neon-cyan)' }}>
+            Part 00 • First-Win Tutorial: Build a Character You Can Recognize Again
+          </div>
+          <p className="leading-relaxed">
+            In <strong>Node 1</strong>, you will use a 10-question one-at-a-time discovery interview to build your own original character, lock in 3 Must-Keep Visual Features on a <strong>Character Guardrail Card</strong>, test it in a new scene, and save <code>My_Character_Card_v1.md</code> locally. (Orion is shown here as an example of locked character rules—you will create your own character!)
+          </p>
+        </div>
+      </section>
 
       {/* Verified Student Guide PDF Download */}
-      <ModulePdfDownload moduleNumber={1} title="Module 1 Student Guide: AI Learning Code" className="mb-8" />
+      <ModulePdfDownload moduleNumber={1} title="Module 1 Student Guide: Create Your Character & Learn the AI Learning Code" className="mb-8" />
 
-      {/* Intro Video */}
+      {/* Intro Video (placed on the AI Learning Code section after the Character First-Win intro) */}
+      <div className="mb-2 text-[11px] font-mono text-slate-400">
+        🎬 AI Learning Code Intro Clip (Note: spoken narration references a quick math hook; your written module combines the Character First-Win Lab with the Choose Your Power hook):
+      </div>
       <ModuleIntroVideo src="/videos/module_1_intro.mp4" title="AI Learning Code" />
 
       {/* What You'll Learn */}
@@ -120,10 +141,10 @@ export default async function Module1OverviewPage() {
           Skill Tree
         </h2>
         <div className="flex flex-col gap-2.5 sm:gap-3">
-          {MODULE_NODES.map((node, idx) => {
+          {MODULE_NODES.map((node) => {
             const mastered = masteredNodeIds.has(node.id);
             const isNext = node.id === firstActiveNodeId && !mastered;
-            const locked = !isAdmin && !mastered && !isNext && idx > 0 && !masteredNodeIds.has(MODULE_NODES[idx - 1]?.id ?? '');
+            const locked = !isAdmin && !mastered && !isNext;
 
             if (mastered) {
               return (
@@ -184,7 +205,7 @@ export default async function Module1OverviewPage() {
           {/* Boss Battle */}
           {bossBattleUnlocked ? (
             <Link href="/student/modules/1/boss-battle" className="p-3.5 sm:p-4 min-h-[44px] rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)] active:scale-[0.99]" style={{ background: 'transparent', border: '1px solid var(--neon-purple)' }}>
-              <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors pr-2">Boss Battle — 1B AI Learning Code Challenge</span>
+              <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-purple)] transition-colors pr-2">Boss Battle — 1B Error Hunter &amp; AI Learning Code Challenge</span>
               {bossBattlePassed ? (
                 <span className="text-[10px] sm:text-xs px-2 py-0.5 sm:py-1 rounded flex-shrink-0 font-mono" style={{ border: '1px solid var(--neon-green)', color: 'var(--neon-green)' }}>COMPLETED</span>
               ) : (
@@ -200,7 +221,7 @@ export default async function Module1OverviewPage() {
           {/* Proof Artifacts */}
           {artifactsUnlocked ? (
             <Link href="/student/modules/1/proof-artifacts" className="p-3.5 sm:p-4 min-h-[44px] rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(123,79,206,0.05)] active:scale-[0.99]" style={{ background: 'transparent', border: '1px solid #7b4fce' }}>
-              <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[#7b4fce] transition-colors pr-2">Proof Artifacts — Submit Warrior Code</span>
+              <span className="text-xs sm:text-sm font-mono text-[var(--text-primary)] group-hover:text-[#7b4fce] transition-colors pr-2">Proof Artifacts — Character Guardrail Card, AI Study Rules &amp; Error Review</span>
               <span className="text-[10px] sm:text-xs px-2 py-0.5 sm:py-1 rounded flex-shrink-0 font-mono" style={{ border: '1px solid #7b4fce', color: '#7b4fce' }}>OPEN</span>
             </Link>
           ) : (
@@ -210,6 +231,14 @@ export default async function Module1OverviewPage() {
           )}
         </div>
       </section>
+
+      {/* Interactive Course Learning Record & Blocker Panel */}
+      <ModuleLearningRecordPanel
+        moduleNumber={1}
+        showChoices={true}
+        showRecordForm={true}
+        showBetaFeedback={false}
+      />
     </div>
   );
 }

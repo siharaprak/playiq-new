@@ -3,8 +3,8 @@
 import { createClient } from '@/utils/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import { logProofEvent } from '@/lib/events/learning-events';
+import { resolveCourseModuleFromAnyId } from '@/lib/constants';
 
 export interface ArtifactFileMetadata {
   filePath: string;
@@ -27,14 +27,31 @@ export async function saveArtifactDraft(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated');
 
-  // Check if a record already exists
-  const { data: existing } = await supabaseAdmin
+  const { dbModuleId, courseModuleNumber } = resolveCourseModuleFromAnyId(
+    moduleId,
+    typeof contentPayload?.courseModuleNumber === 'number' ? contentPayload.courseModuleNumber : undefined
+  );
+
+  const enrichedPayload = {
+    ...(contentPayload && typeof contentPayload === 'object' ? contentPayload : {}),
+    courseModuleNumber,
+  };
+
+  // Check if a record already exists for this student + module + type (+ courseModuleNumber for M10-M14)
+  const { data: existingRows } = await supabaseAdmin
     .from('proof_artifact_submissions')
-    .select('id, status')
+    .select('id, status, content_payload')
     .eq('student_id', user.id)
-    .eq('module_id', moduleId)
+    .eq('module_id', dbModuleId)
     .eq('artifact_type', artifactType)
-    .single();
+    .order('created_at', { ascending: false });
+
+  const existing = (existingRows || []).find((row: any) => {
+    if (courseModuleNumber >= 10) {
+      return Number(row.content_payload?.courseModuleNumber) === courseModuleNumber;
+    }
+    return row.content_payload?.courseModuleNumber === undefined || Number(row.content_payload?.courseModuleNumber) === courseModuleNumber;
+  });
 
   if (existing) {
     if (existing.status === 'approved') {
@@ -45,7 +62,7 @@ export async function saveArtifactDraft(
     const { error } = await supabaseAdmin
       .from('proof_artifact_submissions')
       .update({
-        content_payload: contentPayload,
+        content_payload: enrichedPayload,
         status: 'draft', // Reset status if edited
         file_path: fileInfo?.filePath || null,
         file_size: fileInfo?.fileSize || null,
@@ -62,9 +79,9 @@ export async function saveArtifactDraft(
       .from('proof_artifact_submissions')
       .insert({
         student_id: user.id,
-        module_id: moduleId,
+        module_id: dbModuleId,
         artifact_type: artifactType,
-        content_payload: contentPayload,
+        content_payload: enrichedPayload,
         status: 'draft',
         file_path: fileInfo?.filePath || null,
         file_size: fileInfo?.fileSize || null,
@@ -87,21 +104,37 @@ export async function submitArtifactsForReview(moduleId: string, moduleNum: numb
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error('Not authenticated');
 
+  const { dbModuleId, courseModuleNumber } = resolveCourseModuleFromAnyId(moduleId, moduleNum);
+
   // Fetch current submissions
-  const { data: submissions } = await supabaseAdmin
+  const { data: rawSubmissions } = await supabaseAdmin
     .from('proof_artifact_submissions')
-    .select('id, status, artifact_type')
+    .select('id, status, artifact_type, content_payload')
     .eq('student_id', user.id)
-    .eq('module_id', moduleId);
+    .eq('module_id', dbModuleId)
+    .order('created_at', { ascending: false });
 
-  const studyRules = submissions?.find((s: any) => s.artifact_type === 'study_rules');
-  const errorReview = submissions?.find((s: any) => s.artifact_type === 'error_review');
+  const submissions = (rawSubmissions || []).filter((s: any) => {
+    if (courseModuleNumber >= 10) {
+      return Number(s.content_payload?.courseModuleNumber) === courseModuleNumber;
+    }
+    return s.content_payload?.courseModuleNumber === undefined || Number(s.content_payload?.courseModuleNumber) === courseModuleNumber;
+  });
 
-  if (!studyRules || !errorReview) {
-    throw new Error('Both Artifact 1 (Warrior Code) and Artifact 2 (Boundaries Plan) must be created as drafts before submitting.');
+  const studyRules = submissions.find((s: any) => s.artifact_type === 'study_rules');
+  const errorReview = submissions.find((s: any) => s.artifact_type === 'error_review');
+
+  if (!studyRules || (moduleNum <= 2 && !errorReview)) {
+    throw new Error(
+      moduleNum <= 2
+        ? 'Both Artifact 1 and Artifact 2 must be saved as drafts before submitting.'
+        : 'Your Module Proof Artifact must be saved as a draft before submitting.'
+    );
   }
 
-  const toSubmit = [studyRules, errorReview].filter((s: any) => s.status === 'draft' || s.status === 'revise');
+  const toSubmit = [studyRules, errorReview]
+    .filter(Boolean)
+    .filter((s: any) => s.status === 'draft' || s.status === 'revise');
 
   if (toSubmit.length > 0) {
     const { error } = await supabaseAdmin
@@ -110,7 +143,7 @@ export async function submitArtifactsForReview(moduleId: string, moduleNum: numb
         status: 'submitted',
         updated_at: new Date().toISOString()
       })
-      .in('id', toSubmit.map(s => s.id));
+      .in('id', toSubmit.map((s: any) => s.id));
 
     if (error) throw new Error(`Failed to submit artifacts: ${error.message}`);
 

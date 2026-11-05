@@ -33,13 +33,13 @@ export default function Module0CompletedView({
 
   return (
     <div
-      className="min-h-screen px-4 py-8 sm:py-12"
+      className="min-h-screen w-full flex flex-col items-center px-4 pt-24 pb-12"
       style={{
         backgroundColor: 'var(--space-deep)',
         color: 'var(--text-primary)',
       }}
     >
-      <div className="w-full max-w-3xl mx-auto space-y-8">
+      <div className="w-full max-w-3xl mx-auto space-y-8" style={{ maxWidth: '768px', margin: '0 auto', width: '100%' }}>
         {/* Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
           <Link
@@ -58,16 +58,43 @@ export default function Module0CompletedView({
         <div className="space-y-2 text-center sm:text-left">
           <h1 className="text-2xl sm:text-3xl font-extrabold font-display flex items-center justify-center sm:justify-start gap-2">
             <Sparkles className="w-6 h-6 text-[var(--neon-cyan)]" />
-            Module 0: Learning Blueprint &amp; AI Workshop
+            Module 00: The Assessment &amp; AI Workspace Orientation
           </h1>
           <p className="text-sm text-slate-400">
-            Here is your saved Orion calibration, personalized system prompt, and AI workshop setup instructions.
+            Here is your saved Parent &amp; Student Co-Pilot Setup reference, provisional Learning Blueprint hypotheses, personalized Starter System Instructions, and Module 00 Course Learning Record.
           </p>
+        </div>
+
+        {/* Moment 1: Parent & Student Co-Pilot Summary */}
+        <div className="p-5 rounded-2xl border border-cyan-500/30 bg-slate-900/70 space-y-3">
+          <div className="text-xs font-mono font-bold uppercase tracking-widest text-[var(--neon-cyan)]">
+            Moment 1 Reference • Parent &amp; Student Co-Pilot Ground Rules
+          </div>
+          <ul className="grid sm:grid-cols-2 gap-2 text-xs text-slate-300">
+            <li className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+              <strong className="text-white">1. Account Access Verified:</strong> Parent-approved AI workspace selected (<code className="text-cyan-300">PlayIQ Tutor Project</code>).
+            </li>
+            <li className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+              <strong className="text-white">2. Privacy Guardrails:</strong> Never share home addresses, phone numbers, school IDs, full legal names, or passwords.
+            </li>
+            <li className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+              <strong className="text-white">3. No Shortcuts Rule:</strong> AI is a thinking coach and sparring partner—never a homework ghostwriter.
+            </li>
+            <li className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+              <strong className="text-white">4. School Policy First:</strong> Always follow your teacher&apos;s classroom AI rules 100% of the time.
+            </li>
+            <li className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+              <strong className="text-white">5. Weekly 5-Min Check-In:</strong> Share one cool thing you built or learned each week with your parent/guardian.
+            </li>
+            <li className="p-2.5 rounded-lg bg-slate-950/60 border border-slate-800">
+              <strong className="text-white">6. Verification Mindset:</strong> AI can sound confident and still be wrong—the human is the final fact-checker.
+            </li>
+          </ul>
         </div>
 
         {/* Blueprint Card */}
         {blueprint && (
-          <div className="p-1 rounded-2xl bg-gradient-to-b from-[var(--neon-purple)]/30 to-transparent">
+          <div className="w-full">
             <LearningBlueprint
               blueprint={blueprint}
               studentName={studentName}

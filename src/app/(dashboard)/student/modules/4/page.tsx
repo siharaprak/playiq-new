@@ -1,6 +1,5 @@
-import Link from 'next/link';
 import { redirect } from 'next/navigation';
 
-export default function Module4IndexPage() {
+export default function Module4RootPage() {
   redirect('/student/modules/4/overview');
 }

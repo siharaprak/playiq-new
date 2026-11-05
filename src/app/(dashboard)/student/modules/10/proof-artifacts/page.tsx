@@ -1,15 +1,16 @@
 import React from 'react';
 import { enforceModuleGating } from '@/lib/gating';
 import StudentModuleArtifactsContainer from '@/components/artifacts/StudentModuleArtifactsContainer';
-import { MODULES } from '@/lib/constants';
+import { getDbModuleIdForCourseModule } from '@/lib/constants';
+import { getCourseModuleNodeCount } from '@/lib/modules/courseModuleNodes';
 
 export default async function Module10ProofArtifactsPage() {
-  await enforceModuleGating('artifacts', 10, 7);
+  await enforceModuleGating('artifacts', 10, getCourseModuleNodeCount(10));
 
   return (
-    <StudentModuleArtifactsContainer 
-      moduleId={MODULES.MODULE_10_ID} 
-      moduleNum={10} 
+    <StudentModuleArtifactsContainer
+      moduleId={getDbModuleIdForCourseModule(10)}
+      moduleNum={10}
     />
   );
 }

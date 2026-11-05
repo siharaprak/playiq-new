@@ -95,21 +95,48 @@ const HOOK_COPY: Record<number, HookCopy> = {
   },
   10: {
     questions: [
-      'What if you could turn one real problem into a working assistant?',
-      'What if your imagination could help someone else save time and think better?',
-      'What if you could design the first version of a tool that once required a whole team?',
+      'What happens when you put your Personal AI Tutor to the test on a real topic?',
+      'What if changing just one instruction could make your Tutor noticeably smarter?',
+      'What if you had a repeatable loop to turn any new idea into real understanding?',
     ],
-    promise: 'You will learn how to turn an idea into a focused AI assistant with a real job and safe boundaries.',
-    unlock: 'Move from using tools to designing tools that help people.',
+    promise: 'You will run the six quick Tutor behavior tests, improve one instruction and retest it, and use the 7-step learning loop on a real topic.',
+    unlock: 'Turn a built AI Tutor into a tested, reliable learning partner.',
   },
   11: {
     questions: [
+      'What if you could turn one everyday workflow into a working Personal AI Assistant?',
+      'What if 9 one-at-a-time discovery questions could turn a rough idea into a clear Assistant Brief?',
+      'What if you could design a separate tool that helps you organize while you keep every decision?',
+    ],
+    promise: 'You will learn how to map a real workflow and build a focused Personal AI Assistant in its own separate Project with safe boundaries.',
+    unlock: 'Move from using AI for learning to designing a separate Personal AI Assistant for everyday organization.',
+  },
+  12: {
+    questions: [
+      'Does a reminder written in chat prove a real notification is scheduled?',
+      'How does your Personal Assistant handle a missing detail or a boundary test?',
+      'What if your Assistant could help you capture and organize messy notes while you stay in charge?',
+    ],
+    promise: 'You will test your Personal Assistant across three scenarios, tighten one instruction and retest, and master what an assistant can—and cannot—do.',
+    unlock: 'Operate your Personal AI Assistant with real-world capability awareness and verification.',
+  },
+  13: {
+    questions: [
+      'Remember the character you created and protected with a Guardrail Card in Module 1?',
+      'What if that same Character Guardrail Card could anchor a future story, storyboard, or cartoon short?',
+      'How do creators keep creative projects separate from their Tutor and Assistant workspaces?',
+    ],
+    promise: 'This short possibility preview shows how your Module 1 Character Guardrail Card can grow into future creative projects—with zero required homework today.',
+    unlock: 'A clear roadmap for future character stories, storyboards, and animations.',
+  },
+  14: {
+    questions: [
       'Are you ready to prove what you can make with everything you have learned?',
-      'What if your final project showed how far one focused imagination can go?',
+      'What if your Master Trial showed how your learning system, tested Tutor, and tested Assistant work together?',
       'What if the Genie was never the finish line—but the beginning of what you can build next?',
     ],
-    promise: 'The Capstone is your Master Trial: combine your learning systems, AI tutor, assistant, proof, and teach-back into one demonstrated result.',
-    unlock: 'Show that you can communicate, create, verify, and improve in the new AI world.',
+    promise: 'The Capstone is your Master Trial: run the 6-stage Exam & Performance System, build your Learning Dashboard, and complete one Track A–E demonstration.',
+    unlock: 'Show that you can learn, build, verify, and improve independently in the new AI world.',
   },
 };
 

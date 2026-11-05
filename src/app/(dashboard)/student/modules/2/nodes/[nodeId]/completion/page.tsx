@@ -11,7 +11,15 @@ export default async function NodeCompletionPage({ params }: { params: Promise<{
   const isLastNode = nodeId === String(TOTAL_NODES);
 
   return (
-    <div className="flex flex-col min-h-screen items-center justify-center px-6 py-12 text-center">
+    <div className="flex flex-col min-h-screen items-center justify-center px-6 pt-24 pb-12 text-center">
+      <div className="mb-6">
+        <Link
+          href="/student/modules/2/overview"
+          className="text-slate-400 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase inline-flex items-center gap-2"
+        >
+          <span>←</span> Back to Module 2
+        </Link>
+      </div>
       <div
         className="w-24 h-24 rounded-full flex items-center justify-center mb-6 text-4xl"
         style={{ background: 'rgba(57,255,20,0.15)', color: '#39ff14', border: '2px solid rgba(57,255,20,0.4)' }}

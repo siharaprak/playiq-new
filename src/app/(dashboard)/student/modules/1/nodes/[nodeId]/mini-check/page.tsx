@@ -4,6 +4,7 @@ import { enforceNodeGating } from '@/lib/gating';
 import { advanceNodePhase } from '../../../actions';
 import { module1Nodes } from '@/data/module1Content';
 import { NodeMiniCheckForm } from '@/components/forms/NodeMiniCheckForm';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 
 export default async function NodeMiniCheckPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
@@ -16,7 +17,11 @@ export default async function NodeMiniCheckPage({ params }: { params: Promise<{ 
   }
 
   return (
-    <div className="flex flex-col min-h-screen px-6 py-12 max-w-3xl mx-auto">
+    <div className="flex flex-col min-h-screen px-6 pt-24 pb-12 max-w-3xl mx-auto">
+      <Link href="/student/modules/1/overview" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-6 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
+        <span className="group-hover:-translate-x-1 transition-transform">←</span>
+        <span className="group-hover:text-[var(--neon-cyan)] transition-colors">Back to Module</span>
+      </Link>
       <div className="mb-4 text-sm text-[#00c8ff] font-semibold uppercase tracking-wider">
         Module 1 · Node {nodeId} · Check Phase
       </div>
@@ -37,6 +42,8 @@ export default async function NodeMiniCheckPage({ params }: { params: Promise<{ 
           }}
         />
       </div>
+
+      <ModuleLearningRecordPanel moduleNumber={1} showBlockerOnly={true} />
     </div>
   );
 }

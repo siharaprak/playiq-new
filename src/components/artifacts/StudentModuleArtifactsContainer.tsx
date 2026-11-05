@@ -1,108 +1,140 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { createClient } from '@/utils/supabase/client';
 import { saveArtifactDraft, submitArtifactsForReview } from '@/lib/artifacts/actions';
+import { resolveCourseModuleFromAnyId } from '@/lib/constants';
 import ArtifactUploadZone from './ArtifactUploadZone';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 
 interface StudentModuleArtifactsContainerProps {
   moduleId: string;
   moduleNum: number;
 }
 
-const WORKSHEET_OVERVIEWS: Record<number, { title: string; parts: string[] }> = {
+const WORKSHEET_OVERVIEWS: Record<number, { title: string; cardTitle: string; parts: string[] }> = {
   1: {
-    title: "The PlayIQ Foundation",
+    title: "Create Your Character & Learn the AI Learning Code",
+    cardTitle: "Character Guardrail Card + My AI Study Rules + AI Error Review Sheet",
     parts: [
-      "Part 1: What AI Is Good At vs. Bad At (Classification, Scenarios)",
-      "Part 2: Choosing the Right AI Mode (Coach, Quiz, Rescue, Hint)",
-      "Part 3: Ask Better Questions (Prompt Upgrades & Rewrites)",
-      "Part 4: Verify Before You Believe (The Verification Ritual)",
-      "Part 5: Integrity and Identity (Shortcut Identity Audit)",
-      "Part 6: Social Impact & Digital Power (Pause Before Share Rule)"
+      "Part 00: First-Win Character Guardrail Card (My_Character_Card_v1.md)",
+      "Part 1: What AI Is Good At vs. Bad At (Capability Balance Sheet)",
+      "Part 2: Choosing the Right AI Mode (6 PlayIQ AI Modes)",
+      "Part 3: Ask Better Questions (6-Rung Question Ladder)",
+      "Part 4: Verify Before You Believe (4-Step Verification Ritual)",
+      "Part 5–8: Learn How You Learn Lab & Blueprint Update (explanation-start)"
     ]
   },
   2: {
-    title: "Power, Policies, and Gray Zones",
+    title: "Digital Smarts & Human Responsibility",
+    cardTitle: "PlayIQ Digital Power Card + Calibrated Focus Sprint",
     parts: [
-      "Part 1: The Power Tool Principle (Active Branching Scenario)",
-      "Part 2: Navigation — AI Detectors and School Policies",
-      "Part 3: Mid-Module Check-In & Attention Traps (Micro-Win)",
-      "Part 4: The Highest Path Test (Real Decisions)",
-      "Part 5: Social Power & Applied Ethics"
+      "Part 1: The Power Tool Principle (Coach vs. Crutch vs. Gray Zone)",
+      "Part 2: 5-Point Policy Check, Transparency Declaration & 10-Question Tutor Discovery",
+      "Part 3: Keep Your Own Voice (Paper Trail, Oral Defense & Voice Lab)",
+      "Part 4: 5-Step Truth Filter & Triple-P Pause Before Share Protocol",
+      "Part 5–8: Focus Without Overwhelm Lab (5/10/15-Min Sprints) & PlayIQ Digital Power Card"
     ]
   },
   3: {
-    title: "Maps, Principles, and Self-Testing",
+    title: "The Pre-Learn System",
+    cardTitle: "Pre-Learn Mission Card + 10-Line Pre-Learn Brief",
     parts: [
-      "Part 1: Topic Mapping (Pre-Learn Maps & Nudges)",
-      "Part 2: First Principles (Core Idea Simplification & Levels)",
-      "Part 3: Example-First Learning (Examples vs. Non-Examples)",
-      "Part 4: Self-Test Loop (Rereading vs. Testing Reflection)"
+      "Part 0–2: Arrival Style & 5-Part Pre-Learn Map (Headline, 5 Landmarks, 5 Power Words, Anchor Example, Golden Question)",
+      "Part 3: 3-Way Entry Trial (Round 1 Map-First, Round 2 Example-First, Round 3 Question-First)",
+      "Part 4–5: Non-Examples Boundary & 10-Line Pre-Learn Brief (with Map Scout badge connection)",
+      "Part 6–9: Blueprint Update (pre-learn-sequence) & Pre-Learn Mission Card"
     ]
   },
   4: {
-    title: "Rescue and Remediate",
+    title: "Lesson Rescue Mode",
+    cardTitle: "Lesson Rescue Report + First Rescue Move Rule",
     parts: [
-      "Part 1: Paste, Chunk, Scan (Lesson Rescue Prompts)",
-      "Part 2: Identify Gap Type (Word, Background, Step, Overload Gaps)",
-      "Part 3: Remediate in Personal Style (Analogy, Step-by-Step repairs)",
-      "Part 4: Adaptive Questioning Loop (Analyzing Errors & Explaining)",
-      "Part 5: Teach-Back Unlock (Own the Idea in Your Own Words)"
+      "Part 0–2: Four Rescue Moves (Stop, Name, Choose, Prove) & Six Gap Types",
+      "Part 3–4: Chunking — G / M / S Line-by-Line Confusion Scanner (with Rescue Signal connection)",
+      "Part 5–6: Active Comparison of 3 Rescue Methods (Analogy, Step-by-Step, Diagnostic-Question)",
+      "Part 7–10: Blueprint Update (rescue-start) & Lesson Rescue Report"
     ]
   },
   5: {
     title: "Compression Learning",
+    cardTitle: "Retention Test Card + One-Page Understanding Card",
     parts: [
-      "Part 1: Deep Skimming (Visual Cues & Structural Scans)",
-      "Part 2: Summary Gaps (Condensing Info & Finding Core Principles)",
-      "Part 3: Analogy Engine (Building Memorable Memory Anchors)",
-      "Part 4: Real-Life Application (Translating Theory into Practice)"
+      "Part 0–2: Compression Purpose & 4-Level Compression Ladder (Main Question, 1-Sentence Core, 3 Pillars, Accuracy Guardrail)",
+      "Part 3–5: The 3-Ways Rule & One-Page Understanding Card",
+      "Part 6–7: Active Comparison of 3 Review Formats (Audio, Visual Card, Teach-Back on 5 Retrieval Checks)",
+      "Part 8–11: Blueprint Update (review-start) & Retention Test Card"
     ]
   },
   6: {
-    title: "Self-Testing & Mistake Bank",
+    title: "Self-Testing and Mistake Bank",
+    cardTitle: "Quiz and Mistake Repair Card + Realistic Spaced-Review Plan",
     parts: [
-      "Part 1: The Forgetting Curve (Spaced Retrieval Rationale)",
-      "Part 2: Designing Your Quiz (Writing High-Quality Distractors)",
-      "Part 3: Analyzing Your Errors (Root Cause Categorization)",
-      "Part 4: Managing the Mistake Bank (Curing the Weak Spot)"
+      "Part 0–1: Rereading vs. 6-Step Self-Testing Loop",
+      "Part 2–3: Six Mistake Bank Categories & Mistake Repair Loop",
+      "Part 4–7: One-at-a-Time vs. Full-Set Quiz Comparison & Realistic Parent-Approved Reminder Plan",
+      "Part 8–11: Blueprint Update (quiz-start) & Quiz and Mistake Repair Card"
     ]
   },
   7: {
-    title: "Notes & Study Pack Creation",
+    title: "Build Knowledge Files Your Tutor Can Trust",
+    cardTitle: "File Quality Test Card + 8-Part Tutor-Ready Study Pack",
     parts: [
-      "Part 1: The Cornell Upgrade (Active Recall Notes)",
-      "Part 2: Visual Concept Maps (Non-Linear Connections)",
-      "Part 3: Assembling a Study Pack (Curating the Survival Toolkit)",
-      "Part 4: Spaced Retrieval Schedule (Setting up the Tracker)"
+      "Part 0–1: Separating Source Fact, Summary, Question, and Unchecked Guess",
+      "Part 2–4: Building the 8-Part Study Pack (M07_[Subject]_[Topic]_Study_Pack.md)",
+      "Part 5: Active Comparison — Messy Note Dump vs. Clean Study Pack",
+      "Part 6–9: Blueprint Update (knowledge-file-use), Privacy Review & File Quality Test Card"
     ]
   },
   8: {
-    title: "Writing & Answer Clarity",
+    title: "Protect Your Voice and Make Your Answers Clear",
+    cardTitle: "Writing Ownership Test Card + 5-Line CER Answer Map",
     parts: [
-      "Part 1: The Thesis Core (Crafting Unarguable Arguments)",
-      "Part 2: Evidence and Citation (Separating Opinions from Proofs)",
-      "Part 3: AI Peer Review Loop (Prompting for Critical Editing)",
-      "Part 4: Final Clarity Check (The Human Voice Polish)"
+      "Part 0–2: Claim-Evidence-Reasoning (CER) & 5-Line Answer Map",
+      "Part 3–5: Writing-Coach Prompts & Safe Writing Voice Evidence File",
+      "Part 6–7: Active Comparison — AI Replacement Writing vs. Coached Revision",
+      "Part 8–11: Blueprint Update (writing-coach-and-voice) & Writing Ownership Test Card"
     ]
   },
   9: {
-    title: "Build Your AI Tutor",
+    title: "Build Your Personal AI Tutor",
+    cardTitle: "PlayIQ Personal Tutor Integration Record + 6-File PlayIQ Tutor Kit",
     parts: [
-      "Part 1: Defining the Persona (Target Role & Scope)",
-      "Part 2: Seeding the Rules (Guardrails & Dynamic Gating)",
-      "Part 3: Prompt Crafting & Testing (Iterative Refinement)",
-      "Part 4: The Evaluation Standard (Measuring AI Instruction Quality)"
+      "Part 0–3: Review & Download personal_learning_knowledge_file.md (File 2 of 6, replacing student_tutor_profile.md)",
+      "Part 4–7: 6 Discovery Questions, Personality-First vs. Function-First Comparison & Orion Compilation",
+      "Part 8: Assemble & Save the 6-File PlayIQ_Tutor_Kit (with tutor_test_log.md starting as not_tested)",
+      "Part 9–10: Upload to Your Same Module 00 PlayIQ Tutor Project, Run Read-Back Check & Complete Integration Record"
     ]
   },
   10: {
-    title: "Build Your AI Assistant",
+    title: "Test Your Tutor and Learn With It",
+    cardTitle: "PlayIQ Tutor Test & Learning Record + 6-Test Scorecard",
     parts: [
-      "Part 1: Core Use Case (Solving Real-world Problems)",
-      "Part 2: Behavior and Guardrails (Safety & Boundaries)",
-      "Part 3: Multi-Turn Conversation Flow (State Handshakes)",
-      "Part 4: The Live Demonstration (Final Portfolio Presentation)"
+      "Part 0–1: Open Your Built Tutor in the Same Module 00 PlayIQ Tutor Project",
+      "Part 2: Run the 6 Quick Tutor Tests (1 / 2 / 3 / N/T Scorecard)",
+      "Part 3: Improve One Instruction and Retest the Exact Same Prompt",
+      "Part 4–6: Run the 7-Step New Idea to Learning Loop & Update tutor_test_log.md"
+    ]
+  },
+  11: {
+    title: "Build Your Personal AI Assistant",
+    cardTitle: "Personal Assistant Build Record + My_Personal_Assistant_Kit",
+    parts: [
+      "Part 0–2: Choose One Safe Everyday Task & Map the Real Workflow (Task, Steps, Decision Points)",
+      "Part 3: Run 9 One-at-a-Time Discovery Questions to Draft Your Assistant Brief",
+      "Part 4: Write the 7-Section Project Instructions & Save My_Personal_Assistant_Kit",
+      "Part 5–6: Create Your Separate My Personal Assistant Project & Complete Build Record"
+    ]
+  },
+  12: {
+    title: "Test Your Assistant and See What It Could Do",
+    cardTitle: "Personal Assistant Test & Capability Record + 3-Scenario Test Log",
+    parts: [
+      "Part 0–1: Reality Check on Chat Text vs. Real Scheduled Reminders",
+      "Part 2: Run 3 Assistant Tests (Normal Request, Missing Detail, Boundary)",
+      "Part 3–4: Revise One Instruction & Retest + Journal-With-a-Helper Capture",
+      "Part 5–6: Capability Review & Personal Assistant Test Record"
     ]
   }
 };
@@ -123,7 +155,7 @@ export default function StudentModuleArtifactsContainer({
   const [artifactStatus, setArtifactStatus] = useState<string>('draft');
   const [adminNotes, setAdminNotes] = useState<string | null>(null);
 
-  // Form payload states for Module 2 (Power, Policies, and Gray Zones)
+  // Form payload states for Module 2 (Power, Policies, and Gray Zones + Digital Power Card)
   const [m2Q1Superpower, setM2Q1Superpower] = useState('');
   const [m2Q1Superweapon, setM2Q1Superweapon] = useState('');
   const [m2Q2, setM2Q2] = useState('');
@@ -133,8 +165,18 @@ export default function StudentModuleArtifactsContainer({
   const [m2Q5, setM2Q5] = useState('');
   const [m2Q6, setM2Q6] = useState('');
   const [m2Q7, setM2Q7] = useState('');
+  const [m2Handle, setM2Handle] = useState('');
+  const [m2FocusSprint, setM2FocusSprint] = useState('10_min');
+  const [m2Disclosure, setM2Disclosure] = useState('');
+  const [m2IntegrityPledge, setM2IntegrityPledge] = useState('');
+  const [m2TutorDiscoverySummary, setM2TutorDiscoverySummary] = useState('');
 
-  // Form payload states for Module 1 (The PlayIQ Foundation Worksheet)
+  // Form payload states for Module 1 (Character Guardrail Card + The PlayIQ Foundation Worksheet)
+  const [m1CharName, setM1CharName] = useState('');
+  const [m1CharFeatures, setM1CharFeatures] = useState('');
+  const [m1CharRuleFix, setM1CharRuleFix] = useState('');
+  const [m1CharReuseMode, setM1CharReuseMode] = useState('image_reuse');
+  const [m1CharSavedPath, setM1CharSavedPath] = useState('PlayIQ_Character_Kit/My_Character_Card_v1.md');
   const [m1Q1Choice, setM1Q1Choice] = useState('');
   const [m1Q1Explanation, setM1Q1Explanation] = useState('');
   const [m1Q2Use, setM1Q2Use] = useState('');
@@ -163,6 +205,8 @@ export default function StudentModuleArtifactsContainer({
   // File upload metadata states
   const [studyRulesFile, setStudyRulesFile] = useState<any | null>(null);
   const [errorReviewFile, setErrorReviewFile] = useState<any | null>(null);
+  const [m3To12CardSummary, setM3To12CardSummary] = useState<string>('');
+  const [m3To12RuleSummary, setM3To12RuleSummary] = useState<string>('');
 
   const [studentId, setStudentId] = useState<string>('');
 
@@ -174,13 +218,23 @@ export default function StudentModuleArtifactsContainer({
         if (!user) return;
         setStudentId(user.id);
 
-        const { data: submissions, error } = await supabase
+        const { dbModuleId, courseModuleNumber } = resolveCourseModuleFromAnyId(moduleId, moduleNum);
+
+        const { data: rawSubmissions, error } = await supabase
           .from('proof_artifact_submissions')
           .select('*')
           .eq('student_id', user.id)
-          .eq('module_id', moduleId);
+          .eq('module_id', dbModuleId)
+          .order('created_at', { ascending: false });
 
         if (error) throw error;
+
+        const submissions = (rawSubmissions || []).filter((s: any) => {
+          if (courseModuleNumber >= 10) {
+            return Number(s.content_payload?.courseModuleNumber) === courseModuleNumber;
+          }
+          return s.content_payload?.courseModuleNumber === undefined || Number(s.content_payload?.courseModuleNumber) === courseModuleNumber;
+        });
 
         if (submissions && submissions.length > 0) {
           // Both submissions share the status, default status from first item found
@@ -192,6 +246,11 @@ export default function StudentModuleArtifactsContainer({
           if (rules) {
             const p = rules.content_payload || {};
             if (moduleNum === 1) {
+              setM1CharName(p.m1CharName || '');
+              setM1CharFeatures(p.m1CharFeatures || '');
+              setM1CharRuleFix(p.m1CharRuleFix || '');
+              setM1CharReuseMode(p.m1CharReuseMode || 'image_reuse');
+              setM1CharSavedPath(p.m1CharSavedPath || 'PlayIQ_Character_Kit/My_Character_Card_v1.md');
               setM1Q1Choice(p.m1Q1Choice || '');
               setM1Q1Explanation(p.m1Q1Explanation || '');
               setM1Q2Use(p.m1Q2Use || '');
@@ -211,6 +270,10 @@ export default function StudentModuleArtifactsContainer({
               setM2Q3(p.m2Q3 || '');
               setM2Q4Analysis(p.m2Q4Analysis || '');
               setM2Q4Boundary(p.m2Q4Boundary || '');
+              setM2TutorDiscoverySummary(p.m2TutorDiscoverySummary || '');
+            } else if (moduleNum >= 3) {
+              setM3To12CardSummary(p.m3To12CardSummary || '');
+              setM3To12RuleSummary(p.m3To12RuleSummary || '');
             }
 
             if (rules.file_path) {
@@ -244,6 +307,10 @@ export default function StudentModuleArtifactsContainer({
               setM2Q5(p.m2Q5 || '');
               setM2Q6(p.m2Q6 || '');
               setM2Q7(p.m2Q7 || '');
+              setM2Handle(p.m2Handle || '');
+              setM2FocusSprint(p.m2FocusSprint || '10_min');
+              setM2Disclosure(p.m2Disclosure || '');
+              setM2IntegrityPledge(p.m2IntegrityPledge || '');
             }
 
             if (boundaries.file_path) {
@@ -280,6 +347,11 @@ export default function StudentModuleArtifactsContainer({
 
     if (moduleNum === 1) {
       warriorPayload = {
+        m1CharName,
+        m1CharFeatures,
+        m1CharRuleFix,
+        m1CharReuseMode,
+        m1CharSavedPath,
         m1Q1Choice,
         m1Q1Explanation,
         m1Q2Use,
@@ -316,12 +388,27 @@ export default function StudentModuleArtifactsContainer({
         m2Q3,
         m2Q4Analysis,
         m2Q4Boundary,
+        m2TutorDiscoverySummary,
       };
 
       boundariesPayload = {
         m2Q5,
         m2Q6,
         m2Q7,
+        m2Handle,
+        m2FocusSprint,
+        m2Disclosure,
+        m2IntegrityPledge,
+      };
+    } else {
+      warriorPayload = {
+        courseModuleNumber: moduleNum,
+        m3To12CardSummary,
+        m3To12RuleSummary,
+      };
+      boundariesPayload = {
+        courseModuleNumber: moduleNum,
+        m3To12RuleSummary,
       };
     }
 
@@ -358,10 +445,12 @@ export default function StudentModuleArtifactsContainer({
     return () => clearTimeout(timeoutId);
   }, [
     loading, isLocked, artifactStatus,
+    m1CharName, m1CharFeatures, m1CharRuleFix, m1CharReuseMode, m1CharSavedPath,
     m1Q1Choice, m1Q1Explanation, m1Q2Use, m1Q2Explanation, m1Q3Use, m1Q3Explanation,
     m1Q4, m1Q5, m1Q6, m1Q7, m1Q8, m1Q9, m1Q10, m1Q11, m1Q12, m1Q13, m1Q14, m1Q15,
     m1Q16, m1Q17, m1Q18, m1Q19, m1Q20, m1Q21, m2Q1Superpower, m2Q1Superweapon,
-    m2Q2, m2Q3, m2Q4Analysis, m2Q4Boundary, m2Q5, m2Q6, m2Q7
+    m2Q2, m2Q3, m2Q4Analysis, m2Q4Boundary, m2Q5, m2Q6, m2Q7,
+    m2Handle, m2FocusSprint, m2Disclosure, m2IntegrityPledge, m2TutorDiscoverySummary
   ]);
 
   // Core handler to finalize submissions
@@ -373,9 +462,9 @@ export default function StudentModuleArtifactsContainer({
     setSuccessMsg(null);
     setErrorMsg(null);
 
-    // Modules 3-10 require the worksheet file attachment to be uploaded before submission
-    if (moduleNum >= 3 && !studyRulesFile) {
-      setErrorMsg(`You must upload your completed Module ${moduleNum} Worksheet file to submit.`);
+    // Modules 3-12 require either the Proof Artifact Card summary text or a worksheet file attachment
+    if (moduleNum >= 3 && !studyRulesFile && !m3To12CardSummary.trim()) {
+      setErrorMsg(`Complete your Module ${moduleNum} Proof Artifact Card summary or upload your completed file before submitting.`);
       setSubmitting(false);
       return;
     }
@@ -412,7 +501,15 @@ export default function StudentModuleArtifactsContainer({
   const currentWorksheet = WORKSHEET_OVERVIEWS[moduleNum];
 
   return (
-    <div className="flex flex-col min-h-screen px-6 py-12 max-w-4xl mx-auto space-y-8">
+    <div className="flex flex-col min-h-screen px-6 pt-24 pb-12 max-w-4xl mx-auto space-y-8">
+      <div>
+        <a
+          href={`/student/modules/${moduleNum}/overview`}
+          className="text-slate-400 hover:text-white transition-colors text-xs font-mono tracking-wider uppercase inline-flex items-center gap-2"
+        >
+          <span>←</span> Back to Module {moduleNum}
+        </a>
+      </div>
       
       {/* Dynamic State Machine Header Banner */}
       {artifactStatus === 'draft' && (
@@ -524,6 +621,76 @@ export default function StudentModuleArtifactsContainer({
                 <span>ARTIFACT 1: FOUNDATION DIAGNOSTICS (PARTS 0-2)</span>
                 <span className="text-[10px] text-slate-500 font-mono font-normal">REQUIRED TYPE: STUDY_RULES</span>
               </h3>
+
+              {/* Part 00: Character Guardrail Card First-Win Record */}
+              <div className="space-y-4 pb-6 border-b border-slate-800">
+                <h4 className="text-[#00c8ff] font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 00: Character Guardrail Card &amp; First-Win Record</h4>
+                <p className="text-slate-400 font-mono text-xs leading-relaxed">
+                  Record the results of your Node 1 Character Lab (where you uploaded the Orion reference image, answered 10 one-at-a-time questions, built a reusable Character Guardrail Card, and tested it in a new scene).
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Character Name &amp; Role:</label>
+                    <input
+                      disabled={isLocked}
+                      value={m1CharName}
+                      onChange={(e) => setM1CharName(e.target.value)}
+                      type="text"
+                      placeholder="e.g. Orion Companion — Friendly PlayIQ Guide"
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Reuse Mode Tested (Step 6):</label>
+                    <select
+                      disabled={isLocked}
+                      value={m1CharReuseMode}
+                      onChange={(e) => setM1CharReuseMode(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select how you tested your Character Guardrail Card...</option>
+                      <option value="image_scene">Image-capable tool: generated a new scene with the same character</option>
+                      <option value="text_scene">Text-only fallback: wrote a new scene &amp; prompt package keeping the character consistent</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="space-y-3 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 mb-1.5">&gt; Must-Keep Visual Features &amp; Style Rules (from your Character Guardrail Card):</label>
+                    <textarea
+                      disabled={isLocked}
+                      value={m1CharFeatures}
+                      onChange={(e) => setM1CharFeatures(e.target.value)}
+                      placeholder="List the core features, palette, and proportions your Character Guardrail Card locks in..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-slate-300 mb-1.5">&gt; One Drift Error You Caught &amp; Fixed by Rule (Step 5):</label>
+                      <input
+                        disabled={isLocked}
+                        value={m1CharRuleFix}
+                        onChange={(e) => setM1CharRuleFix(e.target.value)}
+                        type="text"
+                        placeholder="e.g. Never change eye glow from cyan to yellow"
+                        className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none disabled:opacity-50"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-slate-300 mb-1.5">&gt; Where You Saved Your Reusable Package (Step 7):</label>
+                      <input
+                        disabled={isLocked}
+                        value={m1CharSavedPath}
+                        onChange={(e) => setM1CharSavedPath(e.target.value)}
+                        type="text"
+                        placeholder="e.g. PlayIQ Tutor Project knowledge file / Character_Guardrail_Card.md"
+                        className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#00c8ff] rounded p-2.5 text-slate-200 text-xs outline-none disabled:opacity-50"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               {/* Part 0: The Lightning Challenge */}
               <div className="space-y-4">
@@ -1147,6 +1314,74 @@ export default function StudentModuleArtifactsContainer({
                 </div>
               </div>
 
+              {/* Part 6: PlayIQ Digital Power Card & 10-Question Tutor Discovery Summary */}
+              <div className="space-y-4 border-t border-slate-800/80 pt-6">
+                <h4 className="text-[#00c8ff] font-bold text-xs uppercase tracking-wider font-mono">&gt; Part 6: PlayIQ Digital Power Card &amp; 10-Question Tutor Discovery Summary</h4>
+                <p className="text-slate-400 font-mono text-xs leading-relaxed">
+                  Complete your Digital Power Card and record the summary from your 10-Question Tutor Discovery session inside your existing <span className="text-white">PlayIQ Tutor Project</span>.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Student Handle / Callsign:</label>
+                    <input
+                      disabled={isLocked}
+                      value={m2Handle}
+                      onChange={(e) => setM2Handle(e.target.value)}
+                      type="text"
+                      placeholder="e.g. NovaBuilder"
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none disabled:opacity-50 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; Chosen Focus Sprint Duration (5, 10, or 15 min):</label>
+                    <select
+                      disabled={isLocked}
+                      value={m2FocusSprint}
+                      onChange={(e) => setM2FocusSprint(e.target.value)}
+                      className="w-full bg-black/60 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none text-xs disabled:opacity-50"
+                    >
+                      <option value="">Select your tested Focus Sprint...</option>
+                      <option value="5_min">5-Minute Micro-Sprint (high friction / starting resistance)</option>
+                      <option value="10_min">10-Minute Builder Sprint (balanced focus block)</option>
+                      <option value="15_min">15-Minute Deep Sprint (steady momentum)</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="space-y-4 font-mono text-xs">
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; My Ready-to-Use AI Transparency Declaration:</label>
+                    <textarea
+                      disabled={isLocked}
+                      value={m2Disclosure}
+                      onChange={(e) => setM2Disclosure(e.target.value)}
+                      placeholder="e.g. For this assignment, I used my PlayIQ Tutor Project in Coach Mode to outline questions and quiz myself. All final writing and explanations are my own."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none h-20 disabled:opacity-50"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; My Voice &amp; Integrity Pledge:</label>
+                    <input
+                      disabled={isLocked}
+                      value={m2IntegrityPledge}
+                      onChange={(e) => setM2IntegrityPledge(e.target.value)}
+                      type="text"
+                      placeholder="e.g. AI can coach me, but I keep my voice, verify every claim, and earn the skill."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none disabled:opacity-50 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-slate-300 font-semibold mb-1.5">&gt; 10-Question Tutor Discovery Summary (from your PlayIQ Tutor Project):</label>
+                    <textarea
+                      disabled={isLocked}
+                      value={m2TutorDiscoverySummary}
+                      onChange={(e) => setM2TutorDiscoverySummary(e.target.value)}
+                      placeholder="Paste or summarize the 3-5 line Tutor Rule Update you created after answering the 10 one-at-a-time questions in your PlayIQ Tutor Project..."
+                      className="neon-input w-full bg-black/50 border border-slate-800 focus:border-[#7b4fce] rounded p-2.5 text-slate-200 outline-none h-24 disabled:opacity-50"
+                    />
+                  </div>
+                </div>
+              </div>
+
               {/* Upload Zone for error_review */}
               <div className="border-t border-slate-800/80 pt-6 space-y-4">
                 <p className="text-slate-500 font-mono text-xs uppercase tracking-widest">&gt; Upload Attachment (Optional)</p>
@@ -1165,28 +1400,54 @@ export default function StudentModuleArtifactsContainer({
 
         ) : (
           <>
-            {/* UPLOAD WORKSHEET CARD FOR MODULES 3 TO 10 */}
+            {/* PROOF ARTIFACT CARD & UPLOAD FOR MODULES 3 TO 12 */}
             <div className="bg-slate-900/60 p-8 rounded-xl border border-slate-800 backdrop-blur-md space-y-6">
               <h3 className="text-[#00c8ff] font-bold uppercase tracking-widest text-sm border-b border-[#00c8ff]/20 pb-2 flex justify-between items-center">
-                <span>ARTIFACT 1: UPLOAD COMPLETED WORKSHEET FILE</span>
+                <span>ARTIFACT 1: {currentWorksheet?.cardTitle ? currentWorksheet.cardTitle.toUpperCase() : `MODULE ${moduleNum} PROOF ARTIFACT`}</span>
                 <span className="text-[10px] text-slate-500 font-mono font-normal">REQUIRED TYPE: STUDY_RULES</span>
               </h3>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#00c8ff] mb-1.5">
+                    1. Proof Artifact Card Summary (Topic, Actual Observations, &amp; Verification)
+                  </label>
+                  <textarea
+                    rows={4}
+                    disabled={isLocked}
+                    value={m3To12CardSummary}
+                    onChange={(e) => setM3To12CardSummary(e.target.value)}
+                    placeholder={`Paste or summarize your completed ${currentWorksheet?.cardTitle || `Module ${moduleNum} Proof Artifact Card`} (what you tested, what you observed, and what you verified in your own words)...`}
+                    className="w-full bg-black/60 border border-slate-700 focus:border-[#00c8ff] rounded-lg p-3 text-xs sm:text-sm font-mono text-slate-100 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-[#a78bfa] mb-1.5">
+                    2. Provisional Rule / Instruction Adjustment &amp; Retest Condition
+                  </label>
+                  <textarea
+                    rows={2}
+                    disabled={isLocked}
+                    value={m3To12RuleSummary}
+                    onChange={(e) => setM3To12RuleSummary(e.target.value)}
+                    placeholder="Write the provisional rule or instruction update you chose to test next, and when you will retest it..."
+                    className="w-full bg-black/60 border border-slate-700 focus:border-[#7b4fce] rounded-lg p-3 text-xs sm:text-sm font-mono text-slate-100 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-slate-800/80">
                 {/* Information panel */}
                 <div className="space-y-4 flex flex-col justify-center">
-                  <p className="text-[#00c8ff] font-mono font-bold text-xs uppercase tracking-wider">&gt; Required Deliverable</p>
+                  <p className="text-[#00c8ff] font-mono font-bold text-xs uppercase tracking-wider">&gt; Optional / Alternative File Upload</p>
                   <p className="text-slate-300 font-mono text-xs leading-relaxed">
-                    Upload your completed Module {moduleNum} Worksheet here. We support multiple file types:
+                    You may also upload your completed Module {moduleNum} Worksheet or Proof Card file (`.md`, `.pdf`, `.png`, `.jpg`):
                   </p>
                   <ul className="space-y-2 text-slate-400 font-mono text-[11px] list-disc list-inside pl-2">
                     <li>Markdown files (`.md`)</li>
                     <li>PDF documents (`.pdf`)</li>
                     <li>Photos of handwritten pages (`.png`, `.jpeg`, `.jpg`)</li>
                   </ul>
-                  <p className="text-slate-500 font-mono text-[10px] italic">
-                    * Make sure all response blocks in the worksheet are filled out before uploading.
-                  </p>
                 </div>
 
                 {/* Upload Zone */}
@@ -1270,6 +1531,14 @@ export default function StudentModuleArtifactsContainer({
           </button>
         </div>
       </form>
+
+      {/* Course Learning Record & Blocker Checkpoint */}
+      <ModuleLearningRecordPanel
+        moduleNumber={moduleNum}
+        showChoices={true}
+        showRecordForm={true}
+        showBetaFeedback={false}
+      />
     </div>
   );
 }

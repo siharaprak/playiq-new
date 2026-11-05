@@ -3,6 +3,7 @@ import { enforceModuleGating } from '@/lib/gating';
 import { createClient } from '@/utils/supabase/server';
 import { MODULES } from '@/lib/constants';
 import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 
 export default async function Module1CompletionPage() {
   const { user } = await enforceModuleGating('completion', 1, 4);
@@ -18,10 +19,10 @@ export default async function Module1CompletionPage() {
     .maybeSingle();
 
   const unlocks = [
-    'Stronger digital judgment',
-    'More control over your attention',
-    'A clearer sense of responsibility',
-    'Better habits for using AI and the internet wisely',
+    'Your Reusable Character Guardrail Card (My_Character_Card_v1.md)',
+    'Mastery of the 6 PlayIQ AI Modes & 6-Rung Question Ladder',
+    'The 4-Step PlayIQ Verification Ritual to catch AI hallucinations',
+    'Your evidence-tested explanation-start Learning Blueprint setting',
   ];
 
   return (
@@ -70,6 +71,16 @@ export default async function Module1CompletionPage() {
             </li>
           ))}
         </ul>
+      </div>
+
+      {/* Interactive Course Learning Record & Beta Feedback Panel */}
+      <div className="w-full max-w-3xl mb-10 text-left">
+        <ModuleLearningRecordPanel
+          moduleNumber={1}
+          showChoices={true}
+          showRecordForm={true}
+          showBetaFeedback={true}
+        />
       </div>
 
       {/* Feedback Form (includes soft-gated Return to Dashboard link) */}

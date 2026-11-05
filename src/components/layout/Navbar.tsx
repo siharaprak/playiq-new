@@ -16,17 +16,21 @@ const publicNavLinks = [
 ];
 
 const studentModuleLinks = [
-  { href: '/student/modules/1/overview', label: 'Module 1', sub: 'AI Learning Code' },
+  { href: '/student/assessment?view=true', label: 'Module 00', sub: 'Assessment & AI Workspace Orientation' },
+  { href: '/student/modules/1/overview', label: 'Module 1', sub: 'Create Your Character & AI Learning Code' },
   { href: '/student/modules/2/overview', label: 'Module 2', sub: 'Digital Smarts & Human Responsibility' },
-  { href: '/student/modules/3/overview', label: 'Module 3', sub: 'Pre-Learn System' },
+  { href: '/student/modules/3/overview', label: 'Module 3', sub: 'The Pre-Learn System' },
   { href: '/student/modules/4/overview', label: 'Module 4', sub: 'Lesson Rescue Mode' },
   { href: '/student/modules/5/overview', label: 'Module 5', sub: 'Compression Learning' },
-  { href: '/student/modules/6/overview', label: 'Module 6', sub: 'Self-Testing and Mistake Bank' },
-  { href: '/student/modules/7/overview', label: 'Module 7', sub: 'Notes and Study Pack Creation' },
-  { href: '/student/modules/8/overview', label: 'Module 8', sub: 'Writing and Answer Clarity' },
+  { href: '/student/modules/6/overview', label: 'Module 6', sub: 'Self-Testing & Mistake Bank' },
+  { href: '/student/modules/7/overview', label: 'Module 7', sub: 'Notes & Study Pack Creation' },
+  { href: '/student/modules/8/overview', label: 'Module 8', sub: 'Writing & Answer Clarity' },
   { href: '/student/modules/9/overview', label: 'Module 9', sub: 'Build Your AI Tutor' },
-  { href: '/student/modules/10/overview', label: 'Module 10', sub: 'Build Your AI Assistant' },
-  { href: '/student/modules/11/overview', label: 'Capstone', sub: 'Master Trial' },
+  { href: '/student/modules/10/overview', label: 'Module 10', sub: 'Test and Improve Your AI Tutor' },
+  { href: '/student/modules/11/overview', label: 'Module 11', sub: 'Prepare Your Personal AI Assistant' },
+  { href: '/student/modules/12/overview', label: 'Module 12', sub: 'Test Your Personal AI Assistant' },
+  { href: '/student/modules/13/overview', label: 'Module 13', sub: 'Look Ahead: Where You Can Take This Next' },
+  { href: '/student/modules/14/overview', label: 'Module 14', sub: 'Capstone: The Master Trial' },
 ];
 
 export function Navbar() {

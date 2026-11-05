@@ -1,42 +1,16 @@
-import Link from 'next/link';
 import React from 'react';
-import { enforceNodeGating } from '@/lib/gating';
+import { CourseNodeMiniCheckView } from '@/components/modules/CourseNodePhaseViews';
+import { getCourseModuleNodes } from '@/lib/modules/courseModuleNodes';
 import { advanceNodePhase } from '../../../actions';
-import { module10Nodes } from '@/data/module10Content';
-import { NodeMiniCheckForm } from '@/components/forms/NodeMiniCheckForm';
 
-export default async function NodeMiniCheckPage({ params }: { params: Promise<{ nodeId: string }> }) {
+export default async function Module10NodeMiniCheckPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
-  await enforceNodeGating(nodeId, 'mini-check', 10);
-
-  const lessonData = module10Nodes[nodeId];
-
-  if (!lessonData) {
-    return <div className="p-12 text-center text-red-500 font-mono">ERR: NODE_DATA_NOT_FOUND</div>;
-  }
-
   return (
-    <div className="flex flex-col min-h-screen px-6 py-12 max-w-3xl mx-auto">
-      <div className="mb-4 text-sm text-[#00c8ff] font-semibold uppercase tracking-wider">
-        Module 10 · Node {nodeId} · Check Phase
-      </div>
-
-      <h1 className="text-4xl font-bold tracking-tight mb-8 text-[var(--text-primary)] uppercase font-display">Mini-Check Validation</h1>
-
-      <div className="bg-slate-800/60 p-8 rounded-xl border border-slate-700/50 mb-12 backdrop-blur-md">
-        <h2 className="text-[#7b4fce] font-bold uppercase tracking-widest text-xs mb-3">LESSON CHECK</h2>
-        <p className="mb-8 text-slate-400 font-mono text-sm">Answer the following questions in 1–3 full sentences each to confirm your understanding.</p>
-
-        <NodeMiniCheckForm
-          nodeId={nodeId}
-          moduleId={10}
-          questions={lessonData.miniCheck}
-          submitAction={async () => {
-            'use server';
-            await advanceNodePhase(nodeId, 'mini-check');
-          }}
-        />
-      </div>
-    </div>
+    <CourseNodeMiniCheckView
+      moduleNum={10}
+      nodeId={nodeId}
+      nodesRecord={getCourseModuleNodes(10)}
+      advanceNodePhase={advanceNodePhase}
+    />
   );
 }

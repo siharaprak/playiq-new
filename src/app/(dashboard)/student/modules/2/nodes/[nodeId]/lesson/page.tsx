@@ -4,6 +4,7 @@ import { enforceNodeGating } from '@/lib/gating';
 import { advanceNodePhase } from '../../../actions';
 import { module2Nodes } from '@/data/module2Content';
 import LessonContentRenderer from '@/components/modules/LessonContentRenderer';
+import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 
 export default async function NodeLessonPage({ params }: { params: Promise<{ nodeId: string }> }) {
   const { nodeId } = await params;
@@ -16,7 +17,7 @@ export default async function NodeLessonPage({ params }: { params: Promise<{ nod
   }
 
   return (
-    <div className="flex flex-col min-h-screen px-6 py-12 max-w-3xl mx-auto">
+    <div className="flex flex-col min-h-screen px-6 pt-24 pb-12 max-w-3xl mx-auto">
       
       <Link href="/student/modules/2/overview" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider mb-8 transition-colors group" style={{ color: 'var(--text-secondary)' }}>
         <span className="group-hover:-translate-x-1 transition-transform">←</span>
@@ -63,6 +64,8 @@ export default async function NodeLessonPage({ params }: { params: Promise<{ nod
           </button>
         </form>
       </div>
+
+      <ModuleLearningRecordPanel moduleNumber={2} showBlockerOnly={true} />
     </div>
   );
 }

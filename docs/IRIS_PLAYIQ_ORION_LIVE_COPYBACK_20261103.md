@@ -16,12 +16,12 @@ Authority: Scott's explicit directive ("yes your reco. Iris tests it, no need to
 - **Codex Delivery Commit**: `e1d7af2f8a58f52a43cd2de0bb01ee9d77ab3af6`
 - **Iris Integrated Commits**:
   - `4e31250146456dbd5323771ba8f9017d9dc22d81`: `fix(orion): render markdown properly in all Orion response fields`
-  - `cb1ff3d08518df4ec8637bb3fe33ba6804595fa4`: `feat(orion): enable floating companion for all eligible students in apphosting config`
-- **Final Deployed Commit on `main`**: `cb1ff3d08518df4ec8637bb3fe33ba6804595fa4`
+  - `cb1ff3d5915f6277c50f5f9ae3ba0484d518ef1d`: `feat(orion): enable floating companion for all eligible students in apphosting config` (reconciled full SHA; earlier note had typo `cb1ff3d08518df4ec8637bb3fe33ba6804595fa4`)
+- **Final Deployed Commit on `main` (Orion Live Release)**: `cb1ff3d5915f6277c50f5f9ae3ba0484d518ef1d` (ancestor of current `origin/main` `9cbde86ab28d9922a29354419767bd183db1d45a`)
 - **Pushed References**:
-  - `origin/codex/playiq-orion-companion-20261103` -> `cb1ff3d`
-  - `origin/main` -> `cb1ff3d`
-  - `siharaprak/main` -> `cb1ff3d`
+  - `origin/codex/playiq-orion-companion-20261103` -> `cb1ff3d5915f6277c50f5f9ae3ba0484d518ef1d`
+  - `origin/main` -> `cb1ff3d5915f6277c50f5f9ae3ba0484d518ef1d` (subsequently advanced to `9cbde86ab28d9922a29354419767bd183db1d45a`)
+  - `siharaprak/main` -> `cb1ff3d5915f6277c50f5f9ae3ba0484d518ef1d` (subsequently advanced to `9cbde86ab28d9922a29354419767bd183db1d45a`)
 
 ---
 
@@ -70,13 +70,21 @@ Authority: Scott's explicit directive ("yes your reco. Iris tests it, no need to
 ### F. Production Build & Gate Verification
 - **Command**: `npm run build`
 - **Outcome**: `PASS` (Clean Next.js 16.4.3 Turbopack production compilation)
-- **Production HTTP Verification (Local Port 3001)**:
+- **Production HTTP Verification (Local Build Server Port 3001)**:
   - `GET /dev/orion-companion`: `404 Not Found` (PASS - dev route locked in prod)
   - `POST /dev/orion-companion/export`: `404 Not Found` (PASS - export locked in prod)
   - `GET /course-release-preview`: `404 Not Found` (PASS - preview locked in prod)
   - `GET /character-assets/orion/companion-v1/atlas.png`: `200 OK` (PASS)
   - `GET /character-assets/orion/companion-v1/manifest.json`: `200 OK` (PASS)
   - `GET /login`: `200 OK` (PASS)
+- **Live Domain HTTPS Verification (`https://weplayiq.com`, verified 2026-11-06)**:
+  - `GET https://weplayiq.com/login`: `200 OK` (46,218 bytes)
+  - `GET https://weplayiq.com/dev/orion-companion`: `404 Not Found` (PASS - dev route locked on live domain)
+  - `GET https://weplayiq.com/course-release-preview`: `404 Not Found` (PASS - preview route locked on live domain)
+  - `GET https://weplayiq.com/character-assets/orion/companion-v1/manifest.json`: `200 OK` (17,256 bytes, SHA-256 `45dfbc6c9bfb2731f662bcd20ff15808bbbf9ac0721e493c49efb9214ab2cb70` — exact match)
+  - `GET https://weplayiq.com/character-assets/orion/companion-v1/atlas.png`: `200 OK` (1,507,994 bytes, SHA-256 `8363530b3bc95607df2a54a6a80a469b53d38402d0236ecb81b66641a46d9f23` — exact match)
+- **Tracked Existing Orion Behavior Item**:
+  - `src/components/guided-ai/OrionCompanion.tsx` currently sets `hidden={chatOpen}` on the floating wrapper while `GuidedAIPanel` is open (`RESTORATION_CONTRACT.md` Section 5). Tracked separately from the course material restoration; chat panel dimensions and behavior are not being redesigned during the course update.
 
 ---
 
