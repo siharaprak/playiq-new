@@ -202,3 +202,36 @@ test('Orion stays visible when chat opens and BetaBlockerReport is centered in d
     'BetaBlockerReport .panel must be centered with margin:28px auto and dark fallback background',
   );
 });
+
+test('Orion Guided AI schema, context loader, and token budget cover all 15 modules (00..14)', () => {
+  const typesSource = fs.readFileSync(
+    path.join(root, 'src', 'lib', 'guided-ai', 'types.ts'),
+    'utf8',
+  );
+  assert.ok(
+    typesSource.includes('moduleNumber: z.number().int().min(0).max(14).optional()'),
+    'GuidedAiRequestSchema must allow moduleNumber 0 through 14',
+  );
+
+  const contextSource = fs.readFileSync(
+    path.join(root, 'src', 'lib', 'guided-ai', 'context.ts'),
+    'utf8',
+  );
+  assert.ok(
+    contextSource.includes('@/data/module10TutorTestContent') &&
+      contextSource.includes('@/data/module11AssistantBuildContent') &&
+      contextSource.includes('@/data/module12AssistantTestContent') &&
+      contextSource.includes('SPECIAL_MODULE_SUMMARIES'),
+    'Guided AI context loader must cover Modules 0, 10, 11, 12, 13, and 14',
+  );
+
+  const runGuidedSource = fs.readFileSync(
+    path.join(root, 'src', 'lib', 'guided-ai', 'run-guided-mode.ts'),
+    'utf8',
+  );
+  assert.ok(
+    runGuidedSource.includes('thinkingBudget: 0') &&
+      runGuidedSource.includes('maxOutputTokens: 2048'),
+    'runGuidedMode must disable thinking token consumption and set maxOutputTokens: 2048',
+  );
+});

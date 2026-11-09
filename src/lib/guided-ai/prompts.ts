@@ -322,13 +322,14 @@ export function buildGuidedAiUserPrompt(
   const parts: string[] = [];
 
   // Add curriculum context
+  if (context.moduleSummary) {
+    parts.push(`=== MODULE CONTEXT ===`);
+    parts.push(context.moduleSummary);
+    parts.push('');
+  }
   if (context.nodeContent) {
     parts.push(`=== CURRENT LESSON CONTEXT ===`);
     parts.push(context.nodeContent);
-    parts.push('');
-  } else if (context.moduleSummary) {
-    parts.push(`=== MODULE CONTEXT ===`);
-    parts.push(context.moduleSummary);
     parts.push('');
   }
 

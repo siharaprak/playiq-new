@@ -53,12 +53,108 @@ import {
 // ---------------------------------------------------------------------------
 
 const getGeminiClient = () => {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
+  const apiKey =
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
+    process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY;
   if (!apiKey) {
     throw new Error('GEMINI_API_KEY is missing from environment variables.');
   }
   return new GoogleGenAI({ apiKey });
 };
+
+function extractJsonObject(rawText: string): string {
+  let clean = rawText.trim();
+  if (clean.startsWith('```json')) {
+    clean = clean.replace(/```json/g, '').replace(/```/g, '').trim();
+  } else if (clean.startsWith('```')) {
+    clean = clean.replace(/```/g, '').trim();
+  }
+  const firstBrace = clean.indexOf('{');
+  const lastBrace = clean.lastIndexOf('}');
+  if (firstBrace !== -1 && lastBrace > firstBrace) {
+    return clean.slice(firstBrace, lastBrace + 1);
+  }
+  return clean;
+}
+
+async function callGuidedAiModel(systemPrompt: string, userPrompt: string): Promise<string> {
+  const timeoutMs = 15000;
+  const withTimeout = <T>(promise: Promise<T>, label: string): Promise<T> =>
+    Promise.race([
+      promise,
+      new Promise<never>((_, reject) => setTimeout(() => reject(new Error(`${label} timeout`)), timeoutMs)),
+    ]);
+
+  let lastError: unknown;
+  const geminiKey =
+    process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
+    process.env.GEMINI_API_KEY ||
+    process.env.GOOGLE_API_KEY;
+
+  if (geminiKey) {
+    const ai = getGeminiClient();
+    for (const modelName of ['gemini-2.5-flash', 'gemini-2.0-flash']) {
+      try {
+        const res = await withTimeout(
+          ai.models.generateContent({
+            model: modelName,
+            contents: userPrompt,
+            config: {
+              systemInstruction: systemPrompt,
+              responseMimeType: 'application/json',
+              temperature: 0.4,
+              maxOutputTokens: 2048,
+              ...(modelName.startsWith('gemini-2.5')
+                ? { thinkingConfig: { thinkingBudget: 0 } }
+                : {}),
+            },
+          }),
+          modelName,
+        );
+        if (res.text && res.text.trim()) {
+          return res.text;
+        }
+      } catch (err) {
+        lastError = err;
+      }
+    }
+  }
+
+  const openAiKey = process.env.OPENAI_API_KEY;
+  if (openAiKey) {
+    const res = await withTimeout(
+      fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${openAiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt },
+          ],
+          response_format: { type: 'json_object' },
+          temperature: 0.4,
+          max_tokens: 2048,
+        }),
+      }),
+      'OpenAI',
+    );
+    if (!res.ok) {
+      throw new Error(`OpenAI API error: ${res.status}`);
+    }
+    const json = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
+    const text = json.choices?.[0]?.message?.content;
+    if (text && text.trim()) {
+      return text;
+    }
+  }
+
+  throw lastError ?? new Error('No AI provider response available');
+}
 
 // ---------------------------------------------------------------------------
 // Safe fallback response
@@ -290,41 +386,12 @@ export async function runGuidedMode(
   const systemPrompt = `${buildGuidedAiSystemPrompt(input.mode, studentLevel as any)}\n\n${visualActionInstructions}`;
   const userPrompt = buildGuidedAiUserPrompt(clampedInput, context);
 
-  // 4. Call Gemini (non-streaming, JSON output)
+  // 4. Call AI provider (non-streaming, JSON output with thinkingBudget: 0 and fallback)
   try {
-    const ai = getGeminiClient();
-
-    // Timeout wrapper: 15 seconds
-    const timeoutPromise = new Promise<never>((_, reject) => {
-      setTimeout(() => reject(new Error('Gemini API timeout')), 15000);
-    });
-
-    const geminiCall = ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: userPrompt,
-      config: {
-        systemInstruction: systemPrompt,
-        responseMimeType: 'application/json',
-        temperature: 0.4,
-        maxOutputTokens: 1000,
-      },
-    });
-
-    const response = await Promise.race([geminiCall, timeoutPromise]);
-
-    if (!response.text) {
-      console.error('[runGuidedMode] Empty response from Gemini');
-      return buildFallbackResponse(input.mode);
-    }
+    const rawResponseText = await callGuidedAiModel(systemPrompt, userPrompt);
 
     // 5. Parse and validate with Zod
-    let cleanJson = response.text;
-    if (cleanJson.startsWith('```json')) {
-      cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
-    }
-    if (cleanJson.startsWith('```')) {
-      cleanJson = cleanJson.replace(/```/g, '').trim();
-    }
+    const cleanJson = extractJsonObject(rawResponseText);
 
     let parsed: unknown;
     try {

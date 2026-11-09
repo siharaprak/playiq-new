@@ -45,6 +45,8 @@ Format:
         systemInstruction,
         responseMimeType: "application/json",
         temperature: 0.1,
+        maxOutputTokens: 1024,
+        thinkingConfig: { thinkingBudget: 0 },
       }
     });
 
@@ -118,6 +120,8 @@ Format:
         systemInstruction,
         responseMimeType: "application/json",
         temperature: 0.1,
+        maxOutputTokens: 1024,
+        thinkingConfig: { thinkingBudget: 0 },
       }
     });
 

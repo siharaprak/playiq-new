@@ -144,7 +144,7 @@ export function GuidedAIPanel({
   const [teachBackInput, setTeachBackInput] = useState('');
 
   // Extract parameters dynamically if floating
-  let activeModuleNumber = moduleNumber ?? 1;
+  let activeModuleNumber: number | undefined = moduleNumber;
   let activeNodeId = nodeId;
   let activePageType = pageType;
 
@@ -153,9 +153,13 @@ export function GuidedAIPanel({
   if (isFloating && pathname?.startsWith('/student')) {
     const match = pathname?.match(/\/student\/modules\/(\d+)/);
     if (match) {
-      activeModuleNumber = parseInt(match[1]);
+      activeModuleNumber = parseInt(match[1], 10);
+    } else if (pathname?.startsWith('/student/assessment')) {
+      activeModuleNumber = 0;
+    } else if (pathname === '/student/home') {
+      activeModuleNumber = undefined;
     } else {
-      activeModuleNumber = 1;
+      activeModuleNumber = moduleNumber ?? 1;
     }
 
     const nodeMatch = pathname?.match(/\/nodes\/([^/]+)/);
@@ -163,12 +167,20 @@ export function GuidedAIPanel({
       activeNodeId = nodeMatch[1];
     }
 
-    if (pathname?.includes('/lesson')) {
+    if (pathname === '/student/home') {
+      activePageType = 'dashboard';
+    } else if (pathname?.startsWith('/student/assessment')) {
+      activePageType = 'overview';
+    } else if (pathname?.includes('/lesson')) {
       activePageType = 'lesson';
     } else if (pathname?.includes('/activity')) {
       activePageType = 'activity';
+    } else if (pathname?.includes('/quiz')) {
+      activePageType = 'quiz';
     } else if (pathname?.includes('/boss-battle')) {
       activePageType = 'boss_battle';
+    } else if (pathname?.includes('/proof')) {
+      activePageType = 'proof';
     } else if (pathname?.includes('/overview')) {
       activePageType = 'overview';
     } else {
@@ -228,7 +240,7 @@ export function GuidedAIPanel({
 
 Since this is a new student account, let's run a quick simulation of how you will navigate the course:
 
-1. 🌲 **Skill Tree:** You will unlock and complete 11 training modules in sequential order.
+1. 🌲 **Skill Tree:** You will unlock and complete 15 course modules in sequential order.
 2. 📖 **Nodes:** Each module has interactive lesson nodes. You must write out your attempted approach before asking me for hints! No lazy prompt cheats allowed.
 3. ⚔️ **Quizzes & Bosses:** Master all nodes in a module to unlock the Quiz. Score 80%+ to unlock the Boss Battle simulation.
 4. 🛡️ **Proof:** Defeat the Boss to unlock the Proof Artifacts step. Upload your work to unlock the next module!

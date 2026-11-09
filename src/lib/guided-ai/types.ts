@@ -106,8 +106,8 @@ export type LearningLevel = z.infer<typeof LearningLevelSchema>;
 
 export const GuidedAiRequestSchema = z.object({
   mode: GuidedAiModeId,
-  moduleNumber: z.number().int().min(1).max(11).optional(),
-  nodeId: z.string().max(10).optional(),
+  moduleNumber: z.number().int().min(0).max(14).optional(),
+  nodeId: z.string().max(40).optional(),
   pageType: PageType.optional(),
   message: z.string().min(1).max(2000),
   selectedText: z.string().max(1000).optional(),

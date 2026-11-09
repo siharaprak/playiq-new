@@ -9,12 +9,69 @@
 
 import type { GuidedAiContext } from './types';
 import type { NodeContent } from '@/data/module1Content';
+import { COURSE_15_MODULES } from '@/lib/constants';
 
 // ---------------------------------------------------------------------------
 // Module content loaders (dynamic import by module number)
 // ---------------------------------------------------------------------------
 
 type ModuleNodes = Record<string, NodeContent>;
+
+const SPECIAL_MODULE_SUMMARIES: Record<number, { title: string; summary: string; nodeContent: string }> = {
+  0: {
+    title: 'Module 00: The Assessment & AI Workspace Orientation',
+    summary: [
+      'Module 0 topics:',
+      'Step 1: 10-Question Baseline Learning & AI Diagnostic',
+      'Step 2: Provisional Learning Fingerprint Reveal (Explanation Style, Pace, Practice Preference, Verification Habit)',
+      'Step 3: PlayIQ AI Workspace Orientation (Coach vs. Crutch Rules & 6 PlayIQ AI Modes)',
+    ].join('\n'),
+    nodeContent: [
+      'Topic: The Assessment & AI Workspace Orientation',
+      '',
+      'Key concepts:',
+      '- Complete the 10-question baseline diagnostic to build your provisional Learning Fingerprint.',
+      '- Understand the difference between using AI as a learning coach vs. an answer-machine crutch.',
+      '- Meet Orion, your AI Study Partner across Chat, Explain, Hint Ladder, Quiz Practice, Study Coach, Learn Your Way, and Lesson Rescue modes.',
+    ].join('\n'),
+  },
+  13: {
+    title: "Module 13: Create Your Character Adventure — Orion's World",
+    summary: [
+      'Module 13 topics:',
+      "Step 1: Enter Orion's 3D World & Character Adventure Preview",
+      'Step 2: Complete Interactive Mission Checkpoints with Your Guardrailed Character',
+      'Step 3: Review Coaching Feedback & Submit Adventure Reflection',
+    ].join('\n'),
+    nodeContent: [
+      "Topic: Create Your Character Adventure — Orion's World",
+      '',
+      'Key concepts:',
+      '- Test your custom AI character guardrails inside an interactive adventure environment.',
+      '- Practice Socratic problem-solving and verify how your character responds under pressure.',
+      '- Reflect on how character design, boundaries, and coaching habits come together before the Master Trial.',
+    ].join('\n'),
+  },
+  14: {
+    title: 'Module 14: The Master Trial — Capstone Project',
+    summary: [
+      'Module 14 topics:',
+      'Phase 1: Pre-Learn & Target Selection (3-Minute Skim, 3 Anchor Terms, 2 Prediction Questions)',
+      'Phase 2: Lesson Rescue Diagnosis (Gap Type Identification & Rescue Mode Selection)',
+      'Phase 3: Active Recall Practice Engine & Hint Ladder Discipline',
+      'Phase 4: Socratic Coach Verification & Truth Filter Audit',
+      'Phase 5: Final Proof Packet & Teach-Back Synthesis',
+    ].join('\n'),
+    nodeContent: [
+      'Topic: The Master Trial — Capstone Project',
+      '',
+      'Key concepts:',
+      '- Combine every PlayIQ system—Pre-Learn, Lesson Rescue, Practice Engine, Socratic Coach, and Proof Packet—into one independent learning run.',
+      '- Demonstrate authentic voice, verification discipline, and zero-shortcut mastery on a real study topic.',
+      '- Submit your complete 5-phase Capstone Proof Packet to graduate the 15-module PlayIQ curriculum.',
+    ].join('\n'),
+  },
+};
 
 /**
  * Dynamically loads the static content for a given module number.
@@ -60,12 +117,16 @@ export async function getStaticModuleContent(moduleNumber: number): Promise<Modu
         return mod.module9Nodes;
       }
       case 10: {
-        const mod = await import('@/data/module10Content');
-        return mod.module10Nodes;
+        const mod = await import('@/data/module10TutorTestContent');
+        return mod.module10TutorTestNodes;
       }
       case 11: {
-        const mod = await import('@/data/module11Content');
-        return mod.module11Nodes;
+        const mod = await import('@/data/module11AssistantBuildContent');
+        return mod.module11AssistantBuildNodes;
+      }
+      case 12: {
+        const mod = await import('@/data/module12AssistantTestContent');
+        return mod.module12AssistantTestNodes;
       }
       default:
         return null;
@@ -93,11 +154,21 @@ export async function getNodeContext(
  * Returns a summary of all node titles in a module.
  */
 export async function getModuleContextSummary(moduleNumber: number): Promise<string> {
+  const special = SPECIAL_MODULE_SUMMARIES[moduleNumber];
+  if (special) {
+    return `${special.title}\n${special.summary}`;
+  }
+
+  const courseMeta = COURSE_15_MODULES.find(m => m.num === moduleNumber);
+  const moduleHeader = courseMeta
+    ? `Module ${moduleNumber}: ${courseMeta.title} — ${courseMeta.desc}`
+    : `Module ${moduleNumber}`;
+
   const nodes = await getStaticModuleContent(moduleNumber);
-  if (!nodes) return `Module ${moduleNumber} (content not available)`;
+  if (!nodes) return `${moduleHeader} (content not available)`;
 
   const titles = Object.values(nodes).map((n, i) => `Node ${i + 1}: ${n.title}`);
-  return `Module ${moduleNumber} topics:\n${titles.join('\n')}`;
+  return `${moduleHeader}\nModule ${moduleNumber} topics:\n${titles.join('\n')}`;
 }
 
 /**
@@ -111,10 +182,29 @@ export async function buildGuidedAiContext(params: {
 }): Promise<GuidedAiContext> {
   const { moduleNumber, nodeId, pageType } = params;
 
-  // Default context when no module specified
-  if (!moduleNumber) {
+  // Default context when no module specified (e.g., main dashboard)
+  if (moduleNumber === undefined || moduleNumber === null) {
+    const overviewLines = COURSE_15_MODULES.map(
+      m => `- Module ${String(m.num).padStart(2, '0')}: ${m.title}`
+    ).join('\n');
     return {
-      moduleSummary: 'No specific module context. The student is browsing the platform.',
+      moduleSummary: [
+        'Student is on the PlayIQ Student Dashboard (15-Module AI Learning Curriculum: Module 00 Assessment through Module 14 Master Trial Capstone).',
+        'PlayIQ teaches students how to use AI as a high-integrity thinking coach rather than an answer-machine crutch, earn node mastery, pass quizzes (80%+), defeat Boss Battles, and submit Proof Packets.',
+        'Full 15-Module Course Map:',
+        overviewLines,
+      ].join('\n'),
+      pageType: pageType ?? 'dashboard',
+    };
+  }
+
+  const special = SPECIAL_MODULE_SUMMARIES[moduleNumber];
+  if (special) {
+    return {
+      moduleNumber,
+      moduleSummary: `${special.title}\n${special.summary}`,
+      nodeTitle: special.title,
+      nodeContent: special.nodeContent,
       pageType,
     };
   }
@@ -123,9 +213,20 @@ export async function buildGuidedAiContext(params: {
 
   // If no specific node, return module-level context
   if (!nodeId) {
+    const nodes = await getStaticModuleContent(moduleNumber);
+    const firstNode = nodes ? Object.values(nodes)[0] : undefined;
     return {
       moduleNumber,
       moduleSummary,
+      nodeTitle: firstNode?.title,
+      nodeContent: firstNode
+        ? [
+            `Module ${moduleNumber} Overview — First Topic: ${firstNode.title}`,
+            '',
+            'Key concepts:',
+            ...firstNode.bigIdea.map(idea => `- ${idea}`),
+          ].join('\n')
+        : undefined,
       pageType,
     };
   }
