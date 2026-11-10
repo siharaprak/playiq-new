@@ -1,0 +1,28 @@
+name: Daily PlayIQ SEO Cron
+
+on:
+  schedule:
+    # Runs daily at 04:00 UTC (12:00 PM PHT)
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-seo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger PlayIQ Daily SEO & Sitemap Health Check
+        env:
+          SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://weplayiq.com' }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X GET "${SITE_URL}/api/cron/daily-seo" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            -H "x-cron-trigger: true")
+          HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
+          BODY=$(echo "$RESPONSE" | sed '$d')
+          echo "Response ($HTTP_CODE): $BODY"
+          if [ "$HTTP_CODE" -ge 500 ]; then
+            exit 1
+          fi
+
