@@ -234,4 +234,15 @@ test('Orion Guided AI schema, context loader, and token budget cover all 15 modu
       runGuidedSource.includes('maxOutputTokens: 2048'),
     'runGuidedMode must disable thinking token consumption and set maxOutputTokens: 2048',
   );
+
+  const aiProviderSource = fs.readFileSync(
+    path.join(root, 'src', 'lib', 'ai-provider.ts'),
+    'utf8',
+  );
+  assert.ok(
+    aiProviderSource.includes("'gpt-6-luna'") &&
+      aiProviderSource.includes('max_completion_tokens') &&
+      aiProviderSource.includes('process.env.OPENAI_API_KEY'),
+    'ai-provider.ts must default to gpt-6-luna with max_completion_tokens and read OPENAI_API_KEY from environment variables',
+  );
 });

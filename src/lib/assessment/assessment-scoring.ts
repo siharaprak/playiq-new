@@ -6,15 +6,7 @@
  * They feed the PDI baseline snapshot.
  */
 
-import { GoogleGenAI } from '@google/genai';
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-function getGeminiClient() {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error('GEMINI_API_KEY is missing from environment variables.');
-  return new GoogleGenAI({ apiKey });
-}
+import { generatePlayIqAiContent, extractCleanJsonObject } from '@/lib/ai-provider';
 
 // ── Task 1: AI Verification Instinct (binary) ──────────────────────────────
 
@@ -56,8 +48,6 @@ export async function scoreBaselineTask2(response: string): Promise<{ score: num
   }
 
   try {
-    const ai = getGeminiClient();
-
     const systemInstruction = `You are an internal scoring engine for PlayIQ — a learning platform for teenagers.
 You are evaluating a student's explanation of gravity. Score from 1 to 5:
 
@@ -69,24 +59,14 @@ You are evaluating a student's explanation of gravity. Score from 1 to 5:
 
 Return ONLY raw JSON: { "score": number, "feedback": "1 brief sentence" }`;
 
-    const result = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `Student response: "${response}"\n\nScore this explanation of gravity.`,
-      config: {
-        systemInstruction,
-        responseMimeType: 'application/json',
-        temperature: 0.1,
-      },
+    const rawText = await generatePlayIqAiContent({
+      systemInstruction,
+      userPrompt: `Student response: "${response}"\n\nScore this explanation of gravity.`,
+      jsonMode: true,
+      maxOutputTokens: 512,
     });
 
-    if (!result.text) return { score: 2, feedback: 'Evaluation unavailable.' };
-
-    let cleanJson = result.text;
-    if (cleanJson.startsWith('```json')) {
-      cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
-    }
-
-    const parsed = JSON.parse(cleanJson);
+    const parsed = JSON.parse(extractCleanJsonObject(rawText));
     return {
       score: Math.max(1, Math.min(5, parsed.score ?? 2)),
       feedback: parsed.feedback ?? '',
@@ -111,8 +91,6 @@ export async function scoreBaselineTask3(response: string): Promise<{ score: num
   }
 
   try {
-    const ai = getGeminiClient();
-
     const systemInstruction = `You are an internal scoring engine for PlayIQ. You are evaluating a student's approach to a logic/word problem.
 
 The correct answer is: Field B = 25, Field A = 50, Field C = 35 (total = 110).
@@ -128,24 +106,14 @@ IMPORTANT: We value seeing their THINKING PROCESS more than getting the right an
 
 Return ONLY raw JSON: { "score": number, "feedback": "1 brief sentence" }`;
 
-    const result = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `Student response: "${response}"\n\nScore this problem approach.`,
-      config: {
-        systemInstruction,
-        responseMimeType: 'application/json',
-        temperature: 0.1,
-      },
+    const rawText = await generatePlayIqAiContent({
+      systemInstruction,
+      userPrompt: `Student response: "${response}"\n\nScore this problem approach.`,
+      jsonMode: true,
+      maxOutputTokens: 512,
     });
 
-    if (!result.text) return { score: 2, feedback: 'Evaluation unavailable.' };
-
-    let cleanJson = result.text;
-    if (cleanJson.startsWith('```json')) {
-      cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
-    }
-
-    const parsed = JSON.parse(cleanJson);
+    const parsed = JSON.parse(extractCleanJsonObject(rawText));
     return {
       score: Math.max(1, Math.min(5, parsed.score ?? 2)),
       feedback: parsed.feedback ?? '',

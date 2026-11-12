@@ -23,7 +23,6 @@
  */
 
 import 'server-only';
-import { GoogleGenAI } from '@google/genai';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import type { GuidedAiRequest, GuidedAiResponseData, LearnYourWayPreferences, HintLevel } from './types';
 import { GuidedAiResponseDataSchema, LessonRescueDataSchema, ConfusionType } from './types';
@@ -52,108 +51,19 @@ import {
 // Gemini client (reuses same pattern as gemini.ts)
 // ---------------------------------------------------------------------------
 
-const getGeminiClient = () => {
-  const apiKey =
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
-    process.env.GEMINI_API_KEY ||
-    process.env.GOOGLE_API_KEY;
-  if (!apiKey) {
-    throw new Error('GEMINI_API_KEY is missing from environment variables.');
-  }
-  return new GoogleGenAI({ apiKey });
-};
+import { generatePlayIqAiContent, extractCleanJsonObject } from '@/lib/ai-provider';
 
-function extractJsonObject(rawText: string): string {
-  let clean = rawText.trim();
-  if (clean.startsWith('```json')) {
-    clean = clean.replace(/```json/g, '').replace(/```/g, '').trim();
-  } else if (clean.startsWith('```')) {
-    clean = clean.replace(/```/g, '').trim();
-  }
-  const firstBrace = clean.indexOf('{');
-  const lastBrace = clean.lastIndexOf('}');
-  if (firstBrace !== -1 && lastBrace > firstBrace) {
-    return clean.slice(firstBrace, lastBrace + 1);
-  }
-  return clean;
-}
+const extractJsonObject = extractCleanJsonObject;
 
 async function callGuidedAiModel(systemPrompt: string, userPrompt: string): Promise<string> {
-  const timeoutMs = 15000;
-  const withTimeout = <T>(promise: Promise<T>, label: string): Promise<T> =>
-    Promise.race([
-      promise,
-      new Promise<never>((_, reject) => setTimeout(() => reject(new Error(`${label} timeout`)), timeoutMs)),
-    ]);
-
-  let lastError: unknown;
-  const geminiKey =
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
-    process.env.GEMINI_API_KEY ||
-    process.env.GOOGLE_API_KEY;
-
-  if (geminiKey) {
-    const ai = getGeminiClient();
-    for (const modelName of ['gemini-2.5-flash', 'gemini-2.0-flash']) {
-      try {
-        const res = await withTimeout(
-          ai.models.generateContent({
-            model: modelName,
-            contents: userPrompt,
-            config: {
-              systemInstruction: systemPrompt,
-              responseMimeType: 'application/json',
-              temperature: 0.4,
-              maxOutputTokens: 2048,
-              ...(modelName.startsWith('gemini-2.5')
-                ? { thinkingConfig: { thinkingBudget: 0 } }
-                : {}),
-            },
-          }),
-          modelName,
-        );
-        if (res.text && res.text.trim()) {
-          return res.text;
-        }
-      } catch (err) {
-        lastError = err;
-      }
-    }
-  }
-
-  const openAiKey = process.env.OPENAI_API_KEY;
-  if (openAiKey) {
-    const res = await withTimeout(
-      fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${openAiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userPrompt },
-          ],
-          response_format: { type: 'json_object' },
-          temperature: 0.4,
-          max_tokens: 2048,
-        }),
-      }),
-      'OpenAI',
-    );
-    if (!res.ok) {
-      throw new Error(`OpenAI API error: ${res.status}`);
-    }
-    const json = (await res.json()) as { choices?: Array<{ message?: { content?: string } }> };
-    const text = json.choices?.[0]?.message?.content;
-    if (text && text.trim()) {
-      return text;
-    }
-  }
-
-  throw lastError ?? new Error('No AI provider response available');
+  // Primary: OpenAI ChatGPT 6 Luna (`gpt-6-luna`), with automatic fallback to `gpt-4o-mini` / Gemini (`thinkingBudget: 0`, `maxOutputTokens: 2048`)
+  return generatePlayIqAiContent({
+    systemInstruction: systemPrompt,
+    userPrompt,
+    jsonMode: true,
+    maxOutputTokens: 2048,
+    timeoutMs: 20000,
+  });
 }
 
 // ---------------------------------------------------------------------------

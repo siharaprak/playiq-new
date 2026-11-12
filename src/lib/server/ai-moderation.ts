@@ -1,13 +1,5 @@
 import 'server-only';
-import { GoogleGenAI } from '@google/genai';
-
-const getGeminiClient = () => {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is missing from environment variables.");
-  }
-  return new GoogleGenAI({ apiKey });
-};
+import { generatePlayIqAiContent, extractCleanJsonObject } from '@/lib/ai-provider';
 
 export interface AIModerationResult {
   flagged: boolean;
@@ -22,8 +14,6 @@ export async function moderateContentWithGemini(
   title?: string
 ): Promise<AIModerationResult> {
   try {
-    const ai = getGeminiClient();
-
     const systemInstruction = `
 You are the PlayIQ AI Community Moderator. Your job is to analyze student posts or comments in the discussion forum.
 Categorize the content into one of three categories:
@@ -46,33 +36,24 @@ Format:
   "feedback": "User-facing cyberpunk-themed explanation or coaching guidance (only if flagged)"
 }`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: `Title: "${title || ''}"\nBody: "${body}"\n\nModerate this.`,
-      config: {
-        systemInstruction,
-        responseMimeType: "application/json",
-        temperature: 0.1,
-      }
+    const rawText = await generatePlayIqAiContent({
+      systemInstruction,
+      userPrompt: `Title: "${title || ''}"\nBody: "${body}"\n\nModerate this.`,
+      jsonMode: true,
+      maxOutputTokens: 1024,
     });
 
-    if (!response.text) throw new Error("Empty response from AI");
-
-    let cleanJson = response.text;
-    if (cleanJson.startsWith('```json')) {
-      cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
-    }
-
+    const cleanJson = extractCleanJsonObject(rawText);
     return JSON.parse(cleanJson) as AIModerationResult;
 
   } catch (err: any) {
-    console.error("Gemini Moderation Error:", err);
+    console.error("AI Moderation Error:", err);
     // Fallback: assume clean in case of network/key failures to avoid blocking the student
     return {
       flagged: false,
       category: 'clean',
       confidence: 1,
-      reason: 'Gemini API error, failing open to prevent user lock',
+      reason: 'AI API error, failing open to prevent user lock',
       feedback: ''
     };
   }

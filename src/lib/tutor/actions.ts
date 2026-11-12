@@ -824,31 +824,16 @@ export async function chatWithTutor(
       systemInstruction += '\n\n';
     }
 
-    // ── Call Gemini API ──
-    const { GoogleGenAI } = await import('@google/genai');
-    const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return { ok: false, error: 'AI API Key is not configured on the server' };
-    }
-
-    const ai = new GoogleGenAI({ apiKey });
-
-    // Map history to Google Gen AI format
-    const contents = messages.map((msg) => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }],
-    }));
-
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: contents as any,
-      config: {
-        systemInstruction: systemInstruction,
-        temperature: 0.7,
-      },
+    // ── Call PlayIQ AI Provider (OpenAI ChatGPT 6 Luna primary) ──
+    const { generatePlayIqAiContent } = await import('@/lib/ai-provider');
+    const replyText = await generatePlayIqAiContent({
+      systemInstruction,
+      messages: messages.map((msg) => ({
+        role: msg.role === 'user' ? 'user' : 'assistant',
+        content: msg.content,
+      })),
+      maxOutputTokens: 1500,
     });
-
-    const replyText = response.text || '';
 
     // ── SAFETY: No raw prompts or responses are stored ──
     // Only safe metadata is logged (if at all). Prompts and responses

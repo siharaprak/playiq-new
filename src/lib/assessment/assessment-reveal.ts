@@ -6,13 +6,7 @@
  * personalized summary for Part A of The Reveal.
  */
 
-import { GoogleGenAI } from '@google/genai';
-
-function getGeminiClient() {
-  const apiKey = process.env.GOOGLE_GENERATIVE_AI_API_KEY || process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error('GEMINI_API_KEY is missing from environment variables.');
-  return new GoogleGenAI({ apiKey });
-}
+import { generatePlayIqAiContent } from '@/lib/ai-provider';
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -97,8 +91,6 @@ export function getVisionOutcomes(motivationDriver: string): string[] {
 
 export async function generateRevealSummary(profile: AssessmentProfile): Promise<string> {
   try {
-    const ai = getGeminiClient();
-
     const systemInstruction = `You are Orion, the AI mentor inside PlayIQ — a learning platform for teenagers.
 
 You just completed an assessment with a new apprentice. Based on their responses, you need to deliver a SHORT, SPECIFIC, EMOTIONALLY RESONANT preview of what you can do for them.
@@ -132,20 +124,13 @@ Here is an example of the right tone and structure:
 
 Generate the personalized reveal summary.`;
 
-    const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
-      contents: userContext,
-      config: {
-        systemInstruction,
-        temperature: 0.7,
-        maxOutputTokens: 2048,
-        thinkingConfig: {
-          thinkingBudget: 0,
-        },
-      },
+    const text = await generatePlayIqAiContent({
+      systemInstruction,
+      userPrompt: userContext,
+      maxOutputTokens: 2048,
     });
 
-    return response.text || getFallbackReveal(profile);
+    return text || getFallbackReveal(profile);
   } catch (err) {
     console.error('Reveal generation error:', err);
     return getFallbackReveal(profile);
