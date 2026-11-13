@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {COMPANION_ANIMATIONS,transitionCompanion,idleCompanion,companionFrame,clampCompanion,animationForOrionPose} from '../src/lib/orion/companion-state.ts';
-import {resolveCompanionScope,companionVisibleOnRoute,companionGeometry,boundCompanion} from '../src/lib/orion/companion-policy.ts';
+import {resolveCompanionScope,companionVisibleOnRoute,companionGeometry,boundCompanion,defaultCompanionPosition} from '../src/lib/orion/companion-policy.ts';
 test('nine states have fixed rows, eight frames, timing and loop semantics',()=>{
   assert.equal(Object.keys(COMPANION_ANIMATIONS).length,9);
   assert.deepEqual(Object.values(COMPANION_ANIMATIONS).map(v=>v.row),[0,1,2,3,4,5,6,7,8]);
@@ -49,6 +49,12 @@ test('release gate fails closed and beta scope cannot leak into other student ro
 test('responsive geometry includes keyboard viewport offsets, controls and invalid stored values',()=>{
   const phone={width:390,height:844,offsetLeft:0,offsetTop:0};
   assert.equal(companionGeometry(phone).height,130);assert.equal(companionGeometry(phone,true).width,56);
+  const phoneDefaultSprite=defaultCompanionPosition(phone,false);
+  const phoneDefaultCompact=defaultCompanionPosition(phone,true);
+  assert.equal(phoneDefaultSprite.x,390-120-16);
+  assert.equal(phoneDefaultSprite.y,844-130-56);
+  assert.equal(phoneDefaultCompact.x,390-56-16);
+  assert.equal(phoneDefaultCompact.y,844-56-56);
   for(const compact of [true,false])for(const width of [320,390,768,1440])for(const height of [200,390,844,900]){
     const v={width,height,offsetLeft:12,offsetTop:160},g=companionGeometry(v,compact);
     for(const [x,y] of [[-500,-3],[Infinity,NaN],[10000,20000]]){const p=boundCompanion(x,y,v,compact);assert.ok(p.x>=12&&p.y>=160);assert.ok(p.x+g.width+8<=12+width);assert.ok(p.y+g.height+48<=160+height);}

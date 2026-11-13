@@ -22,3 +22,13 @@ export function boundCompanion(x: number, y: number, viewport: CompanionViewport
     y: Math.max(top, Math.min(safe(y), top + Math.max(0, safe(viewport.height) - height - 48))),
   };
 }
+export function defaultCompanionPosition(viewport: CompanionViewport, compact = false) {
+  const {width, height} = companionGeometry(viewport, compact);
+  const safe = (value: number) => Number.isFinite(value) ? value : 0;
+  return boundCompanion(
+    safe(viewport.offsetLeft) + safe(viewport.width) - width - 16,
+    safe(viewport.offsetTop) + safe(viewport.height) - height - 56,
+    viewport,
+    compact,
+  );
+}
