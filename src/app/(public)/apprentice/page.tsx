@@ -1,3 +1,4 @@
+import { buildPublicPageJsonLd } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -11,7 +12,14 @@ export const metadata: Metadata = {
 
 export default function Apprentice() {
   return (
-    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPublicPageJsonLd('/apprentice')).replace(/</g, "\\u003c"),
+        }}
+      />
+      <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.04)] rounded-full blur-[140px] animate-drift pointer-events-none" />
       <div className="absolute bottom-[10%] right-[10%] w-[400px] h-[400px] bg-[rgba(123,79,206,0.06)] rounded-full blur-[120px] animate-drift pointer-events-none" style={{ animationDelay: '5s' }} />
@@ -117,5 +125,6 @@ export default function Apprentice() {
 
       </div>
     </main>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import { buildPublicPageJsonLd } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BetaForm } from '@/components/forms/BetaForm';
@@ -50,7 +51,14 @@ export default async function Beta({ searchParams }: { searchParams: Promise<{ [
   }
 
   return (
-    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPublicPageJsonLd('/beta')).replace(/</g, "\\u003c"),
+        }}
+      />
+      <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       {/* Background glow ambients */}
       <div className="absolute top-[20%] right-[10%] w-[600px] h-[600px] bg-[rgba(123,79,206,0.08)] rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-[50%] left-[5%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.06)] rounded-full blur-[140px] pointer-events-none" />
@@ -291,5 +299,6 @@ export default async function Beta({ searchParams }: { searchParams: Promise<{ [
         </section>
       </div>
     </main>
+    </>
   );
 }

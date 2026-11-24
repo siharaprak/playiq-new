@@ -1,3 +1,4 @@
+import { buildPublicPageJsonLd } from '@/lib/seo';
 import type { Metadata } from 'next';
 import HomeContent from './HomeContent';
 
@@ -7,5 +8,15 @@ export const metadata: Metadata = {
 };
 
 export default function Home() {
-  return <HomeContent />;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPublicPageJsonLd('/')).replace(/</g, "\\u003c"),
+        }}
+      />
+      <HomeContent />
+    </>
+  );
 }

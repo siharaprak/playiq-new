@@ -1,3 +1,4 @@
+import { buildPublicPageJsonLd } from '@/lib/seo';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
@@ -9,7 +10,14 @@ export const metadata: Metadata = {
 
 export default function Proof() {
   return (
-    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPublicPageJsonLd('/proof')).replace(/</g, "\\u003c"),
+        }}
+      />
+      <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       {/* Background Accent Gradients */}
       <div className="absolute top-[10%] left-[20%] w-[600px] h-[600px] bg-[rgba(0,200,255,0.03)] rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[10%] right-[10%] w-[500px] h-[500px] bg-[rgba(123,79,206,0.04)] rounded-full blur-[120px] pointer-events-none" />
@@ -124,5 +132,6 @@ export default function Proof() {
         </section>
       </div>
     </main>
+    </>
   );
 }

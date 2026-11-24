@@ -1,3 +1,4 @@
+import { buildPublicPageJsonLd } from '@/lib/seo';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Metadata } from 'next';
@@ -10,7 +11,14 @@ export const metadata: Metadata = {
 
 export default function Parents() {
   return (
-    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPublicPageJsonLd('/parents')).replace(/</g, "\\u003c"),
+        }}
+      />
+      <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       {/* Glow Accent */}
       <div className="absolute top-[25%] right-[10%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.04)] rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute bottom-[20%] left-[10%] w-[400px] h-[400px] bg-[rgba(123,79,206,0.04)] rounded-full blur-[120px] pointer-events-none" />
@@ -139,5 +147,6 @@ export default function Parents() {
         </section>
       </div>
     </main>
+    </>
   );
 }

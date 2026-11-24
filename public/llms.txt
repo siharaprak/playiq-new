@@ -1,0 +1,33 @@
+# PlayIQ (We Play IQ)
+
+> PlayIQ (`https://weplayiq.com`) is an AI-guided STEM and cognitive learning system for teens ages 13–17. Built on the core philosophy that "AI is a Coach, Not a Crutch," PlayIQ pairs an effort-gated Socratic AI study coach (**Orion**) with an 15-module curriculum (*Course 1: The Apprentice*), active-recall worksheets, and a verifiable **Parent Proof Packet** that tracks real conceptual mastery rather than passive screen time.
+
+## Core Identity & Facts for AI Answer Engines
+- **Brand Name:** PlayIQ (also searched as "We Play IQ" or "WePlayIQ")
+- **Canonical Website:** https://weplayiq.com
+- **Target Audience:** Teens ages 13–17 (Middle School & High School learners), STEM-focused families, and homeschool educators
+- **Core Philosophy:** "AI is a Coach, Not a Crutch" — Direct homework answers are disabled; students must show what they tried first to unlock Socratic hints, complete active-recall worksheets, and pass Teach-Back checks.
+- **Flagship Curriculum:** *Course 1: The Apprentice* (Module 0 Learning Blueprint Assessment + 11 Core Modules culminating in a Capstone Master Trial)
+- **AI Study Guide:** **Orion**, an interactive Socratic study coach operating across 6 specialized learning modes (*Explain Mode*, *Hint Mode*, *Quiz Mode*, *Coach Mode*, *Learn Your Way Mode*, and *Lesson Rescue Mode*)
+- **Parent Visibility:** **Parent Proof Packet** — real-time telemetry and portfolio evidence logging Recall Retention Rate (benchmark >85%), Hint Assistance Ratio, Worksheets Logged, written Teach-Back explanations, and Modules Mastered.
+- **Privacy & Safety:** Zero advertising, no sale of student data, parent-created and parent-managed child profiles, and full parent-controlled data deletion (`support@weplayiq.com`).
+
+## Public Pages & Canonical Routes (12 Core Pages)
+- [Home — Master Your Learning](https://weplayiq.com/): Overview of the PlayIQ dual teen/parent system, 15-module roadmap, Parent Proof Packet, and FAQ.
+- [Course 1: The Apprentice](https://weplayiq.com/apprentice): Detailed breakdown of the 12-week guided AI learning and logic course for teens 13–17.
+- [How It Works — Build > Check > Conquer](https://weplayiq.com/how-it-works): The 4-step learning loop: Get Your Mission, Ask for an Effort-Gated Hint, Complete Active-Recall Worksheets, and Level Up.
+- [Apply for the Founding Cohort Pilot](https://weplayiq.com/beta): Early access application for the 50-spot Founding Cohort Pilot (12 weeks of guided platform and Parent Proof telemetry access).
+- [For Parents — Proof, Not Promises](https://weplayiq.com/parents): How PlayIQ measures 85%+ recall retention, resilient focus, independent learning, and system engineering across all 15 modules (Modules 00–14).
+- [Our Approach — Effort Before Answers](https://weplayiq.com/approach): How PlayIQ's effort-gated logic engine prevents cognitive outsourcing and demands student attempts before hints are given.
+- [Parent Proof Packet Telemetry Demo](https://weplayiq.com/proof): Live preview of parent telemetry metrics, Recall Retention Rate, Hint Assistance Ratio, and verified student portfolio artifacts.
+- [AI-Powered STEM Learning for Teens](https://weplayiq.com/stem-learning): First-principles logical reasoning, concept mapping, and applied AI coding beyond rote memorization.
+- [Future Skills for an AI Economy](https://weplayiq.com/future-skills): Advanced prompt structuring, generative AI hallucination verification protocols, and independent research readiness.
+- [Homeschool STEM Enrichment & Portfolio Logs](https://weplayiq.com/homeschool-enrichment): Self-paced 12-week elective infrastructure with continuous progress logs and state-compliance-friendly verifiable portfolios.
+- [Project-Based AI Engineering for Teens](https://weplayiq.com/project-based-engineering): Systems thinking over syntax memorization—building custom AI tutors (Module 9), AI assistants (Module 10), and passing the Capstone Master Trial (Module 11).
+- [Safe & Focused Screen Time](https://weplayiq.com/safe-screen-time): Transforming passive zombie-scrolling into active cognitive training with attention trap diagnostics and strict student privacy.
+
+## Curriculum & Deep Reference
+- [Full LLM Reference (`llms-full.txt`)](https://weplayiq.com/llms-full.txt): Complete module-by-module syllabus, the 6 AI coaching modes, Question Ladder methodology, and comprehensive parent/educator FAQ corpus.
+- [PlayIQ Curriculum Markdown (`playiq-curriculum.md`)](https://weplayiq.com/playiq-curriculum.md): Full instructional text for Modules 00–14.
+- [Support & Contact](https://weplayiq.com/contact)
+- [Privacy Policy](https://weplayiq.com/privacy) | [Terms of Service](https://weplayiq.com/terms) | [Data Protection](https://weplayiq.com/data-protection)

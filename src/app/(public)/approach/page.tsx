@@ -1,3 +1,4 @@
+import { buildPublicPageJsonLd } from '@/lib/seo';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -10,7 +11,14 @@ export const metadata: Metadata = {
 
 export default function Approach() {
   return (
-    <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(buildPublicPageJsonLd('/approach')).replace(/</g, "\\u003c"),
+        }}
+      />
+      <main className="w-full bg-[#020617] star-field min-h-screen relative overflow-hidden">
       <div className="absolute top-[10%] left-[30%] w-[500px] h-[500px] bg-[rgba(0,200,255,0.03)] rounded-full blur-[140px] pointer-events-none" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-10 pb-16 sm:pt-16 sm:pb-24 relative z-10 space-y-10 sm:space-y-16">
@@ -72,5 +80,6 @@ export default function Approach() {
         </section>
       </div>
     </main>
+    </>
   );
 }
