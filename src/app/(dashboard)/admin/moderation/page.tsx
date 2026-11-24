@@ -81,8 +81,8 @@ export default async function AdminModerationPage() {
   });
 
   return (
-    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] p-6 md:p-12">
-      <div className="max-w-6xl mx-auto relative z-10 font-mono">
+    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] px-4 sm:px-6 lg:px-8 pt-28 md:pt-32 pb-16">
+      <div className="max-w-[1440px] mx-auto relative z-10 font-mono">
         <header className="flex justify-between items-center mb-12 border-b border-slate-800 pb-6">
           <div>
             <Link href="/admin/home" className="text-xs font-bold text-[#00c8ff] hover:underline mb-2 block uppercase tracking-widest">

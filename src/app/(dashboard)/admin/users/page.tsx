@@ -2,24 +2,17 @@ import { createClient } from '@/utils/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Users, Trash2, ShieldOff, ShieldCheck, ChevronRight, CheckCircle2, Circle, Lock, RotateCcw, Sparkles } from 'lucide-react';
+import { Users, Trash2, ShieldOff, ShieldCheck, CheckCircle2, Circle, Lock, RotateCcw, Sparkles } from 'lucide-react';
 import { deleteUser, suspendUser, restoreUser, updateLearningLevel, resetStudentProgress, resetModule0 } from './actions';
-import { MODULES } from '@/lib/constants';
+import { COURSE_15_MODULES, isNodeKeyForCourseModule } from '@/lib/constants';
 import ConfirmButton from '@/components/admin/ConfirmButton';
 
-const MODULE_LIST = [
-  { id: MODULES.MODULE_1_ID, num: 1, title: 'AI Learning Code', totalNodes: 4 },
-  { id: MODULES.MODULE_2_ID, num: 2, title: 'Digital Smarts', totalNodes: 6 },
-  { id: MODULES.MODULE_3_ID, num: 3, title: 'Pre-Learn System', totalNodes: 4 },
-  { id: MODULES.MODULE_4_ID, num: 4, title: 'Lesson Rescue Mode', totalNodes: 5 },
-  { id: MODULES.MODULE_5_ID, num: 5, title: 'Compression Learning', totalNodes: 4 },
-  { id: MODULES.MODULE_6_ID, num: 6, title: 'Self-Testing', totalNodes: 4 },
-  { id: MODULES.MODULE_7_ID, num: 7, title: 'Notes & Study Packs', totalNodes: 4 },
-  { id: MODULES.MODULE_8_ID, num: 8, title: 'Writing Clarity', totalNodes: 4 },
-  { id: MODULES.MODULE_9_ID, num: 9, title: 'Build AI Tutor', totalNodes: 6 },
-  { id: MODULES.MODULE_10_ID, num: 10, title: 'Build AI Assistant', totalNodes: 7 },
-  { id: MODULES.CAPSTONE_ID, num: 11, title: 'Capstone', totalNodes: 1 },
-];
+const MODULE_LIST = COURSE_15_MODULES.filter((m) => m.num >= 1).map((m) => ({
+  id: m.dbModuleId,
+  num: m.num,
+  title: m.title,
+  totalNodes: m.totalNodes,
+}));
 
 export default async function AdminUsersPage({
   searchParams,
@@ -46,14 +39,12 @@ export default async function AdminUsersPage({
 
   if (studentsError) {
     console.error('❌ Admin Roster Error (profiles):', studentsError);
-  } else {
-    console.log('✅ Admin Roster Success (profiles), count:', students?.length);
   }
 
   // Fetch all node progress across all students in one query
   const { data: allProgress, error: progressError } = await supabaseAdmin
     .from('student_node_progress')
-    .select('student_id, module_id, node_mastered');
+    .select('student_id, module_id, node_id, node_mastered');
 
   if (progressError) {
     console.error('❌ Admin Roster Error (progress):', progressError);
@@ -75,12 +66,16 @@ export default async function AdminUsersPage({
     }
   }
 
-  // Group progress per student per module
-  const progressMap: Record<string, Record<string, number>> = {};
+  // Group progress per student per 15-module course number (1..14)
+  const progressMap: Record<string, Record<number, number>> = {};
   for (const row of (allProgress || [])) {
     if (!row.node_mastered) continue;
     if (!progressMap[row.student_id]) progressMap[row.student_id] = {};
-    progressMap[row.student_id][row.module_id] = (progressMap[row.student_id][row.module_id] || 0) + 1;
+    for (const mod of MODULE_LIST) {
+      if (isNodeKeyForCourseModule(mod.num, row.module_id, row.node_id)) {
+        progressMap[row.student_id][mod.num] = (progressMap[row.student_id][mod.num] || 0) + 1;
+      }
+    }
   }
 
   const totalStudents = students?.length || 0;
@@ -110,8 +105,8 @@ export default async function AdminUsersPage({
   });
 
   return (
-    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)]">
-      <div className="max-w-screen-2xl mx-auto px-6 py-10 relative z-10">
+    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] px-4 sm:px-6 lg:px-8 pt-28 md:pt-32 pb-16">
+      <div className="max-w-[1440px] mx-auto relative z-10">
 
         {/* Header */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 border-b border-slate-800 pb-6">
@@ -166,7 +161,7 @@ export default async function AdminUsersPage({
             </button>
           </form>
           
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Link
               href={`/admin/users?filter=all${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`}
               className={`px-4 py-2.5 rounded text-xs font-bold uppercase transition-all border ${
@@ -218,14 +213,6 @@ export default async function AdminUsersPage({
               const totalMastered = Object.values(studentProgress).reduce((a: number, b: number) => a + b, 0);
               const totalNodes = MODULE_LIST.reduce((a: number, m: any) => a + m.totalNodes, 0);
               const overallPct = Math.round((totalMastered / totalNodes) * 100);
-              
-              // Find furthest unlocked module
-              let lastUnlockedModule = 1;
-              let prevDone = true;
-              for (const mod of MODULE_LIST) {
-                if (prevDone) lastUnlockedModule = mod.num;
-                prevDone = (studentProgress[mod.id] || 0) >= mod.totalNodes;
-              }
 
               return (
                 <div key={student.id} className="glass-card !rounded-none border border-slate-800 overflow-hidden">
@@ -233,12 +220,12 @@ export default async function AdminUsersPage({
                   {/* Student Header Row */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-6 py-4 border-b border-slate-800 bg-black/30">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-[#020617] border border-[#7b4fce] flex items-center justify-center text-[#7b4fce] font-display font-black text-sm shadow-[0_0_10px_rgba(123,79,206,0.3)]">
+                      <div className="w-10 h-10 rounded-full bg-[#020617] border border-[#7b4fce] flex items-center justify-center text-[#7b4fce] font-display font-black text-sm shadow-[0_0_10px_rgba(123,79,206,0.3)] shrink-0">
                         {(student.full_name || student.email || 'ST').substring(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <p className="font-display font-bold text-[var(--text-primary)] tracking-wide flex items-center gap-2">
-                          {student.full_name || '—'}
+                        <p className="font-display font-bold text-[var(--text-primary)] tracking-wide flex flex-wrap items-center gap-2">
+                          <span>{student.full_name || '—'}</span>
                           {student.status === 'suspended' && (
                             <span className="text-[9px] font-mono font-bold uppercase tracking-widest px-2 py-0.5 bg-amber-500/20 text-amber-400 border border-amber-500/30">
                               Suspended
@@ -369,14 +356,14 @@ export default async function AdminUsersPage({
                     </div>
                   </div>
 
-                  {/* Module Progress Grid */}
+                  {/* Module Progress Grid (M00..M14) */}
                   <div className="px-6 py-4 overflow-x-auto">
                     <div className="flex gap-2 min-w-max">
-                      {/* Module 0 Status */}
+                      {/* Module 00 Status */}
                       {(() => {
                         const m0Complete = !!assessmentMap[student.id];
                         return (
-                          <div className={`flex flex-col items-center gap-1 w-[68px] p-2 border transition-colors
+                          <div className={`flex flex-col items-center gap-1 w-[64px] p-2 border transition-colors
                             ${m0Complete ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5' : 'border-amber-500/30 bg-amber-500/5'}`}
                           >
                             {m0Complete ? (
@@ -385,7 +372,7 @@ export default async function AdminUsersPage({
                               <Circle className="w-4 h-4 text-amber-400" />
                             )}
                             <span className={`font-mono text-[9px] font-bold ${m0Complete ? 'text-[#00c8ff]' : 'text-amber-400'}`}>
-                              M0
+                              M00
                             </span>
                             <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
                               <div
@@ -401,14 +388,17 @@ export default async function AdminUsersPage({
                       })()}
 
                       {MODULE_LIST.map((mod) => {
-                        const mastered = studentProgress[mod.id] || 0;
+                        const mastered = studentProgress[mod.num] || 0;
                         const pct = Math.round((mastered / mod.totalNodes) * 100);
                         const isComplete = mastered >= mod.totalNodes;
                         const isStarted = mastered > 0;
 
                         return (
-                          <div key={mod.id} className={`flex flex-col items-center gap-1 w-[68px] p-2 border transition-colors
-                            ${isComplete ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5' : isStarted ? 'border-[#7b4fce]/30 bg-[#7b4fce]/5' : 'border-slate-800 bg-black/20'}`}
+                          <div
+                            key={mod.num}
+                            title={`Module ${String(mod.num).padStart(2, '0')}: ${mod.title}`}
+                            className={`flex flex-col items-center gap-1 w-[64px] p-2 border transition-colors
+                              ${isComplete ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5' : isStarted ? 'border-[#7b4fce]/30 bg-[#7b4fce]/5' : 'border-slate-800 bg-black/20'}`}
                           >
                             {isComplete ? (
                               <CheckCircle2 className="w-4 h-4 text-[#00c8ff]" />
@@ -418,7 +408,7 @@ export default async function AdminUsersPage({
                               <Lock className="w-4 h-4 text-slate-700" />
                             )}
                             <span className={`font-mono text-[9px] font-bold ${isComplete ? 'text-[#00c8ff]' : isStarted ? 'text-[#7b4fce]' : 'text-slate-600'}`}>
-                              M{mod.num}
+                              M{String(mod.num).padStart(2, '0')}
                             </span>
                             <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
                               <div

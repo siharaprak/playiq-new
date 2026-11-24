@@ -159,8 +159,8 @@ export default async function AdminAgentsPage({
   });
 
   return (
-    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] font-mono">
-      <div className="max-w-screen-2xl mx-auto px-6 py-10 relative z-10">
+    <div className="min-h-screen bg-[#020617] star-field text-[var(--text-primary)] font-mono px-4 sm:px-6 lg:px-8 pt-28 md:pt-32 pb-16">
+      <div className="max-w-[1440px] mx-auto relative z-10">
         
         {/* Header */}
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 border-b border-slate-800 pb-6">

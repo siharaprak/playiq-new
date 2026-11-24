@@ -79,8 +79,8 @@ export default async function PrivacyDeletionsPage({
   const closed = requests.filter((r) => r.status === 'completed');
 
   return (
-    <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] px-4 sm:px-6 py-10">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-[#020617] text-[var(--text-primary)] px-4 sm:px-6 lg:px-8 pt-28 md:pt-32 pb-16">
+      <div className="max-w-[1440px] mx-auto">
         <Link href="/admin/home" className="flex items-center gap-2 text-slate-500 hover:text-[#00c8ff] font-mono text-xs uppercase tracking-widest transition-colors mb-8">
           <ArrowLeft className="w-4 h-4" /> Admin Home
         </Link>

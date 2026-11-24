@@ -104,8 +104,11 @@ export function Navbar() {
         />
       )}
 
-      <nav ref={navRef} className="fixed top-2.5 sm:top-4 left-1/2 -translate-x-1/2 z-50 w-[94%] sm:w-[98%] max-w-[1400px]">
-        <div className="glass-card flex items-center justify-between px-4 py-2.5 sm:px-8 sm:py-4 rounded-none border-t-[3px] border-t-[#00c8ff] shadow-lg">
+      <nav ref={navRef} className="fixed top-2.5 sm:top-4 left-1/2 -translate-x-1/2 z-50 w-[95%] sm:w-[96%] max-w-[1440px]">
+        <div
+          className="glass-card flex items-center justify-between px-4 py-2.5 sm:px-6 sm:py-3.5 rounded-none border-t-[3px] border-t-[#00c8ff] shadow-[0_12px_36px_rgba(0,0,0,0.75)] backdrop-blur-xl"
+          style={{ backgroundColor: 'rgba(4, 9, 26, 0.94)' }}
+        >
 
           {/* Logo */}
           <Link href={homeHref} className="flex items-center gap-2 flex-shrink-0 group" aria-label="PlayIQ Home">
@@ -113,7 +116,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-4 flex-shrink-0">
+          <div className="hidden lg:flex items-center gap-2 xl:gap-3.5 flex-shrink-0">
             {/* Public links (only shown for guest users) */}
             {!userRole && publicNavLinks.map((link) => {
               const isActive = link.href === '/' ? pathname === '/' : pathname.startsWith(link.href);
@@ -128,8 +131,24 @@ export function Navbar() {
             {!isLoading && userRole && (
               <>
                 <Link href={userRole === 'parent' ? '/parent/home' : userRole === 'admin' ? '/admin/home' : '/student/home'} className={`${baseLinkClass} ${pathname.startsWith('/parent/home') || pathname.startsWith('/admin/home') || pathname.startsWith('/student/home') || pathname.startsWith('/student/modules') ? activeLinkClass : inactiveLinkClass}`}>
-                  {userRole === 'parent' || userRole === 'admin' ? 'DASHBOARD' : 'MODULES'}
+                  {userRole === 'admin' ? 'COMMAND HUD' : userRole === 'parent' ? 'DASHBOARD' : 'MODULES'}
                 </Link>
+                {userRole === 'admin' && (
+                  <>
+                    <Link href="/admin/users" className={`${baseLinkClass} ${pathname.startsWith('/admin/users') ? activeLinkClass : inactiveLinkClass}`}>
+                      STUDENTS
+                    </Link>
+                    <Link href="/admin/artifacts" className={`${baseLinkClass} ${pathname.startsWith('/admin/artifacts') ? activeLinkClass : inactiveLinkClass}`}>
+                      ARTIFACTS
+                    </Link>
+                    <Link href="/admin/agents" className={`${baseLinkClass} ${pathname.startsWith('/admin/agents') ? activeLinkClass : inactiveLinkClass}`}>
+                      AGENTS
+                    </Link>
+                    <Link href="/admin/support" className={`${baseLinkClass} ${pathname.startsWith('/admin/support') ? activeLinkClass : inactiveLinkClass}`}>
+                      SUPPORT
+                    </Link>
+                  </>
+                )}
                 <Link href="/discussions" className={`${baseLinkClass} ${pathname.startsWith('/discussions') ? activeLinkClass : inactiveLinkClass}`}>
                   DISCUSSIONS
                 </Link>
@@ -142,8 +161,24 @@ export function Navbar() {
                   <button className={`flex items-center gap-1 cursor-pointer bg-transparent border-none ${baseLinkClass} ${inactiveLinkClass}`}>
                     MORE <ChevronDown size={10} className="w-2.5 h-2.5 group-hover/more:rotate-180 transition-transform duration-300 text-[#00c8ff]" />
                   </button>
-                  <div className="absolute top-full right-0 mt-2 w-48 opacity-0 invisible group-hover/more:opacity-100 group-hover/more:visible transition-all duration-300 translate-y-2 group-hover/more:translate-y-0 z-50">
+                  <div className="absolute top-full right-0 mt-2 w-52 opacity-0 invisible group-hover/more:opacity-100 group-hover/more:visible transition-all duration-300 translate-y-2 group-hover/more:translate-y-0 z-50">
                     <div className="glass-card border border-[var(--space-card-border)] p-2 rounded shadow-2xl flex flex-col gap-1.5 backdrop-blur-md" style={{ backgroundColor: 'var(--space-card)' }}>
+                      {userRole === 'admin' && (
+                        <>
+                          <Link href="/admin/enrollments" className="block px-4 py-2 text-[0.65rem] font-bold tracking-[0.1em] text-[#00c8ff] hover:bg-[rgba(0,200,255,0.08)] transition-all duration-200 uppercase font-display border-l-2 border-transparent hover:border-[#00c8ff]">
+                            ENROLLMENT OVERRIDES
+                          </Link>
+                          <Link href="/admin/feedback" className="block px-4 py-2 text-[0.65rem] font-bold tracking-[0.1em] text-[#00c8ff] hover:bg-[rgba(0,200,255,0.08)] transition-all duration-200 uppercase font-display border-l-2 border-transparent hover:border-[#00c8ff]">
+                            MODULE FEEDBACK
+                          </Link>
+                          <Link href="/admin/moderation" className="block px-4 py-2 text-[0.65rem] font-bold tracking-[0.1em] text-[#00c8ff] hover:bg-[rgba(0,200,255,0.08)] transition-all duration-200 uppercase font-display border-l-2 border-transparent hover:border-[#00c8ff]">
+                            MODERATION QUEUE
+                          </Link>
+                          <Link href="/admin/privacy" className="block px-4 py-2 text-[0.65rem] font-bold tracking-[0.1em] text-[#00c8ff] hover:bg-[rgba(0,200,255,0.08)] transition-all duration-200 uppercase font-display border-l-2 border-transparent hover:border-[#00c8ff] border-b border-b-slate-800 pb-2.5 mb-1">
+                            PRIVACY REQUESTS
+                          </Link>
+                        </>
+                      )}
                       {publicNavLinks.map((link) => (
                         <Link
                           key={link.href}
@@ -161,16 +196,16 @@ export function Navbar() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-2 sm:gap-4 xl:gap-6 flex-shrink-0 justify-end">
+          <div className="flex items-center gap-2 sm:gap-4 xl:gap-5 flex-shrink-0 justify-end">
             <ThemeToggle />
 
             {!isLoading && (
               <div className="hidden sm:flex items-center gap-4">
                 <Link
-                  href={userRole ? `/${userRole}/home` : '/login'}
+                  href={userRole === 'admin' ? (pathname.startsWith('/student') ? '/admin/home' : '/student/home') : userRole ? `/${userRole}/home` : '/login'}
                   className={`font-display text-[0.65rem] xl:text-[0.7rem] font-bold uppercase tracking-[0.15em] hover:text-[#00c8ff] transition-colors whitespace-nowrap ${userRole ? 'text-[#7b4fce]' : 'text-slate-400'}`}
                 >
-                  &gt; {userRole ? 'DASHBOARD' : 'LOG IN'}
+                  &gt; {userRole === 'admin' ? (pathname.startsWith('/student') ? 'ADMIN HUD' : 'LMS SIMULATOR') : userRole ? 'DASHBOARD' : 'LOG IN'}
                 </Link>
                 {userRole && (
                   <form action="/auth/signout" method="post" className="inline">
