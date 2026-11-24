@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { enforceNodeGating } from '@/lib/gating';
-import { advanceNodePhase } from '../../../actions';
+import { submitMiniCheckAction } from '../../../actions';
 import { module1Nodes } from '@/data/module1Content';
 import { NodeMiniCheckForm } from '@/components/forms/NodeMiniCheckForm';
 import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
@@ -36,10 +36,7 @@ export default async function NodeMiniCheckPage({ params }: { params: Promise<{ 
           nodeId={nodeId}
           moduleId={1}
           questions={lessonData.miniCheck}
-          submitAction={async () => {
-            'use server';
-            await advanceNodePhase(nodeId, 'mini-check');
-          }}
+          submitAction={submitMiniCheckAction.bind(null, nodeId)}
         />
       </div>
 

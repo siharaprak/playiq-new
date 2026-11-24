@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';
 import {
   getCourseModuleNodeKey,
   getDbModuleIdForCourseModule,
@@ -13,6 +12,7 @@ import ModuleIntroVideo from '@/components/modules/ModuleIntroVideo';
 import ModuleOpeningHook from '@/components/modules/ModuleOpeningHook';
 import ModulePdfDownload from '@/components/modules/ModulePdfDownload';
 import Module9TutorGenerator from '@/components/modules/Module9TutorGenerator';
+import Module12AssistantKitPanel from '@/components/modules/Module12AssistantKitPanel';
 import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
 import ModuleFeedbackForm from '@/components/forms/ModuleFeedbackForm';
 import { getStudentStagedRules } from '@/lib/tutor/rule-staging';
@@ -142,11 +142,16 @@ export default async function CourseModuleOverviewView({
         </section>
       )}
 
+      {/* Modules 11 & 12: Personal AI Assistant System Instructions & Knowledge Files Kit */}
+      {(moduleNum === 11 || moduleNum === 12) && (
+        <Module12AssistantKitPanel moduleNum={moduleNum} />
+      )}
+
       {/* Interactive Digital Lesson Choices & Learning Record Panel */}
       <ModuleLearningRecordPanel
         moduleNumber={moduleNum}
         showChoices={true}
-        showRecordForm={moduleNum >= 9}
+        showRecordForm={true}
         showBetaFeedback={false}
         title={`Module ${moduleNum} • Interactive Lesson Choices & Learning Record`}
       />
@@ -386,14 +391,16 @@ export default async function CourseModuleOverviewView({
             </Link>
           )}
 
-          {moduleNum === 11 && (
+          {(moduleNum === 11 || moduleNum === 12) && (
             <Link
-              href="/student/modules/11/assistant-builder"
+              href={`/student/modules/${moduleNum}/assistant-builder`}
               className="p-4 rounded-lg flex items-center justify-between transition-all group hover:bg-[rgba(0,200,255,0.05)]"
               style={{ background: 'transparent', border: '1px solid var(--neon-cyan)' }}
             >
               <span className="text-sm font-mono text-[var(--text-primary)] group-hover:text-[var(--neon-cyan)] transition-colors">
-                Personal AI Assistant Builder — Configure Your Separate Assistant Project
+                {moduleNum === 12
+                  ? 'Personal AI Assistant Builder & Verification Sandbox — Install Instructions, Upload Knowledge Files & Run Tests'
+                  : 'Personal AI Assistant Builder — Configure Your Separate Assistant Project'}
               </span>
               <span className="text-xs px-2 py-1 rounded" style={{ border: '1px solid var(--neon-cyan)', color: 'var(--neon-cyan)' }}>
                 OPEN BUILDER

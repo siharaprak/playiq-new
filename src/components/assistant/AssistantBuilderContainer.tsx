@@ -13,6 +13,7 @@ import {
   DEFAULT_PERSONA_CONFIG,
   DEFAULT_TOOLS_CONFIG,
 } from '@/lib/assistant/types';
+import { STARTER_ASSISTANT_SYSTEM_INSTRUCTIONS } from '@/lib/assistant/starter-kit';
 import type {
   AssistantProfile,
   AssistantVersion,
@@ -58,10 +59,10 @@ export default function AssistantBuilderContainer({
   // ── Form State ──────────────────────────────────────────────────
   const [name, setName] = useState('');
   const [personaConfig, setPersonaConfig] = useState<AssistantPersonaConfig>(DEFAULT_PERSONA_CONFIG);
-  const [systemPrompt, setSystemPrompt] = useState('');
+  const [systemPrompt, setSystemPrompt] = useState(STARTER_ASSISTANT_SYSTEM_INSTRUCTIONS);
   const [toolsConfig, setToolsConfig] = useState<AssistantToolsConfig>(DEFAULT_TOOLS_CONFIG);
   const [testLog, setTestLog] = useState<string[]>([]);
-  const [changeSummary, setChangeSummary] = useState('');
+  const [changeSummary, setChangeSummary] = useState('Initial 7-section Personal Assistant instructions & reference kit');
 
   // Locked states if active/published
   const isLocked = profile?.status === 'published';

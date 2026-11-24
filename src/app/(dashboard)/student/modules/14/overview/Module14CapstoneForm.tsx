@@ -14,15 +14,16 @@ interface Module14CapstoneFormProps {
 
 export default function Module14CapstoneForm({ initialPayload }: Module14CapstoneFormProps) {
   const [state, formAction, isPending] = useActionState(submitModule14MasterTrialAction, null);
+  const effectivePayload = state?.submittedPayload || initialPayload;
   const [selectedTrack, setSelectedTrack] = useState<string>(
-    initialPayload?.skillsTrack?.selected_track || 'track-a',
+    effectivePayload?.skillsTrack?.selected_track || 'track-a',
   );
 
-  const stages = initialPayload?.stages || {};
-  const records = initialPayload?.dashboard?.records || [{}, {}, {}];
-  const skillsTrack = initialPayload?.skillsTrack || {};
-  const reviews = initialPayload?.reviews || {};
-  const bossBattle = initialPayload?.bossBattle || {};
+  const stages = effectivePayload?.stages || {};
+  const records = effectivePayload?.dashboard?.records || [{}, {}, {}];
+  const skillsTrack = effectivePayload?.skillsTrack || {};
+  const reviews = effectivePayload?.reviews || {};
+  const bossBattle = effectivePayload?.bossBattle || {};
 
   const inputCls =
     'w-full rounded-lg border border-slate-700 bg-slate-950/90 px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:border-[#00c8ff] focus:outline-none';
@@ -60,7 +61,7 @@ export default function Module14CapstoneForm({ initialPayload }: Module14Capston
             type="text"
             name="topic"
             required
-            defaultValue={initialPayload?.topic || ''}
+            defaultValue={effectivePayload?.topic || ''}
             placeholder="e.g., Photosynthesis & Cellular Respiration, Fractions & Ratios, The American Revolution..."
             className={inputCls}
           />
@@ -394,7 +395,7 @@ export default function Module14CapstoneForm({ initialPayload }: Module14Capston
                       type="radio"
                       name={`q${idx + 1}`}
                       value={opt.value}
-                      defaultChecked={initialPayload?.quiz?.[`q${idx + 1}`] === opt.value}
+                      defaultChecked={effectivePayload?.quiz?.[`q${idx + 1}`] === opt.value}
                       required
                       className="mt-0.5 accent-[#00c8ff]"
                     />

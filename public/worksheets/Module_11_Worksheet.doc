@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Module 11 Worksheet — Build Your Personal AI Assistant</title>
+<style>
+  body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; line-height: 1.6; margin: 40px auto; max-width: 800px; padding: 0 20px; background-color: #ffffff; }
+  h1 { font-size: 26px; color: #0f172a; border-bottom: 3px solid #7b4fce; padding-bottom: 12px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.02em; }
+  h2, h3 { font-size: 18px; color: #7b4fce; margin-top: 35px; margin-bottom: 15px; border-left: 4px solid #00c8ff; padding-left: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  p { font-size: 14px; margin-bottom: 12px; color: #334155; }
+  .instructions { background-color: #f8fafc; border-left: 4px solid #7b4fce; padding: 15px; margin-bottom: 30px; font-size: 13px; color: #475569; font-style: italic; }
+  .question { font-size: 14px; font-weight: bold; color: #0f172a; margin-top: 25px; margin-bottom: 8px; }
+  .response-box { background-color: #f8fafc; border: 1px dashed #7b4fce; border-left: 4px solid #7b4fce; padding: 15px 20px; margin: 10px 0 25px 0; border-radius: 4px; color: #475569; }
+  .response-label { margin: 0 0 6px 0; font-size: 10px; font-weight: bold; color: #7b4fce; text-transform: uppercase; letter-spacing: 0.08em; font-family: monospace; }
+  .response-placeholder { margin: 0; font-size: 13px; color: #94a3b8; font-style: italic; }
+  hr { border: 0; border-top: 1px solid #e2e8f0; margin: 40px 0; }
+</style>
+</head>
+<body>
+<h1>PlayIQ Module 11 Worksheet: Build Your Personal AI Assistant</h1>
+<div class="instructions"><strong>Instructions:</strong> Map your everyday workflow, run Discovery Questions, and configure your separate Personal AI Assistant (kept separate from your Module 00 PlayIQ Tutor).</div>
+<hr>
+<h3>Part 1: Workflow &amp; Decision Points</h3>
+<div class="question">1. My Chosen Focus &amp; Trigger: What safe everyday task or routine will your Personal Assistant help organize, and when do you want help with it?</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">2. Steps &amp; Missing-Detail Rule: List your workflow steps, what the assistant must ask when a detail is missing, and which decisions stay 100% yours.</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<hr>
+<h3>Part 2: Discovery Brief &amp; Studio Setup</h3>
+<div class="question">3. Approved Assistant Brief: Summarize your approved purpose, safe inputs, output format, and privacy/integrity boundaries.</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">4. Separate Project &amp; Studio Setup: Confirm your Assistant name, separation from your Module 00 Tutor Project, parent privacy review (Yes / Not yet), and Snapshot v1 saved in PlayIQ Assistant Studio.</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">5. Teach-Back: Why do discovery questions and locked boundaries prevent "weak AI" compared to asking AI to "help with everything"?</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+</body>
+</html>

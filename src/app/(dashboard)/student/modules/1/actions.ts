@@ -1,14 +1,21 @@
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
-import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import { logAttemptEvent, logCompletionEvent, logProofEvent, logModuleCompletedIdempotent } from '@/lib/events/learning-events';
+import { module1Nodes, type NodeContent } from '@/data/module1Content';
+import type { NodePhaseFormState } from '@/components/forms/NodeActivityForm';
 
 const MODULE_ID = MODULES.MODULE_1_ID;
 const MODULE_NUM = 1;
 const BASE = `/student/modules/${MODULE_NUM}`;
+
+function buildLessonSectionContext(lessonData: NodeContent): string {
+  return lessonData.sections
+    .map((sec) => `### ${sec.title}\n${sec.content.join('\n')}`)
+    .join('\n\n');
+}
 
 export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') {
   const supabase = await createClient();
@@ -92,6 +99,147 @@ export async function advanceNodePhase(nodeId: string, phase: 'lesson' | 'activi
   if (phase === 'mini-check') redirect(`${BASE}/nodes/${nodeId}/teach-back`);
 }
 
+export async function submitActivityAction(
+  nodeId: string,
+  prevState: NodePhaseFormState,
+  formData: FormData,
+): Promise<NodePhaseFormState> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  const lessonData = module1Nodes[nodeId];
+  if (!lessonData) return { error: 'Node lesson configuration not found.' };
+
+  const submittedValues: Record<string, string> = {};
+  const items: { label: string; answer: string }[] = [];
+
+  lessonData.activity.scenarios.forEach((scenario, i) => {
+    const key = `scenario-${i}`;
+    const val = ((formData.get(key) as string) || '').trim();
+    submittedValues[key] = val;
+    items.push({ label: scenario, answer: val });
+  });
+
+  (lessonData.activity.reflection ?? []).forEach((prompt, i) => {
+    const key = `reflection-${i}`;
+    const val = ((formData.get(key) as string) || '').trim();
+    submittedValues[key] = val;
+    items.push({ label: prompt, answer: val });
+  });
+
+  const { evaluateNodeActivity } = await import('@/lib/gemini');
+  const evaluation = await evaluateNodeActivity({
+    moduleNum: MODULE_NUM,
+    nodeId,
+    nodeTitle: lessonData.title,
+    bigIdea: lessonData.bigIdea,
+    activityTitle: lessonData.activity.title,
+    instructions: lessonData.activity.instructions,
+    items,
+  });
+
+  if (!evaluation.passed) {
+    return { error: evaluation.feedback, submittedValues };
+  }
+
+  await advanceNodePhase(nodeId, 'activity');
+  return null;
+}
+
+export async function submitMiniCheckAction(
+  nodeId: string,
+  prevState: NodePhaseFormState,
+  formData: FormData,
+): Promise<NodePhaseFormState> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  const lessonData = module1Nodes[nodeId];
+  if (!lessonData) return { error: 'Node lesson configuration not found.' };
+
+  const submittedValues: Record<string, string> = {};
+  const qaPairs = lessonData.miniCheck.map((question, i) => {
+    const key = `minicheck-${i}`;
+    const answer = ((formData.get(key) as string) || '').trim();
+    submittedValues[key] = answer;
+    return { question, answer };
+  });
+
+  const { evaluateNodeMiniCheck } = await import('@/lib/gemini');
+  const evaluation = await evaluateNodeMiniCheck({
+    moduleNum: MODULE_NUM,
+    nodeId,
+    nodeTitle: lessonData.title,
+    bigIdea: lessonData.bigIdea,
+    sectionContext: buildLessonSectionContext(lessonData),
+    qaPairs,
+  });
+
+  if (!evaluation.passed) {
+    await supabase.from('assessment_submissions').insert({
+      student_id: user.id,
+      module_id: MODULE_ID,
+      node_id: nodeId,
+      assessment_type: 'mini_check',
+      submission_payload: { status: 'revise', answers: submittedValues, geminiFeedback: evaluation.feedback },
+      pass_status: 'revise',
+    });
+    return { error: evaluation.feedback, submittedValues };
+  }
+
+  const { data: progress } = await supabase
+    .from('student_node_progress')
+    .select('id')
+    .eq('student_id', user.id)
+    .eq('module_id', MODULE_ID)
+    .eq('node_id', nodeId)
+    .maybeSingle();
+
+  if (!progress) {
+    await supabase.from('student_node_progress').insert({
+      student_id: user.id,
+      module_id: MODULE_ID,
+      node_id: nodeId,
+      lesson_completed: true,
+      activity_completed: true,
+      mini_check_passed: true,
+      teach_back_status: 'revise',
+      node_mastered: false,
+    });
+  } else {
+    await supabase.from('student_node_progress').update({ mini_check_passed: true }).eq('id', progress.id);
+  }
+
+  const { data: submission } = await supabase.from('assessment_submissions').insert({
+    student_id: user.id,
+    module_id: MODULE_ID,
+    node_id: nodeId,
+    assessment_type: 'mini_check',
+    submission_payload: { status: 'passed', answers: submittedValues, geminiFeedback: evaluation.feedback },
+    pass_status: 'pass',
+  }).select().single();
+
+  if (submission) {
+    await logAttemptEvent({
+      studentId: user.id,
+      eventType: 'assessment_submitted',
+      submissionId: submission.id,
+      assessmentType: 'mini_check',
+      metadata: {
+        nodeId,
+        moduleId: MODULE_ID,
+        passed: true,
+        auto_graded: true,
+        source: 'submitMiniCheckAction',
+      },
+    });
+  }
+
+  redirect(`${BASE}/nodes/${nodeId}/teach-back`);
+}
+
 export async function submitTeachBackAction(nodeId: string, prompt: string, prevState: unknown, formData: FormData) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -101,8 +249,13 @@ export async function submitTeachBackAction(nodeId: string, prompt: string, prev
   const content = formData.get('teachBackResponse') as string;
   if (!content) return { error: 'Response is required.', submittedText: content };
 
+  const lessonData = module1Nodes[nodeId];
   const { evaluateTeachBack } = await import('@/lib/gemini');
-  const evaluation = await evaluateTeachBack(prompt, content);
+  const evaluation = await evaluateTeachBack(
+    prompt,
+    content,
+    lessonData ? buildLessonSectionContext(lessonData) : undefined,
+  );
 
   if (!evaluation.passed) {
     return { error: evaluation.feedback, submittedText: content };

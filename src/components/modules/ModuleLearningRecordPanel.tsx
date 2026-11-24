@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
 import BetaBlockerReport from '@/components/course-release/BetaBlockerReport';
 import {
   activitiesForModule,
@@ -277,10 +278,14 @@ export default function ModuleLearningRecordPanel({
       const others = prev.filter(r => r.moduleNumber !== moduleNumber);
       return [...others, res.record].sort((a, b) => a.moduleNumber - b.moduleNumber);
     });
+    const exportApprovalNote =
+      moduleNumber <= 8 && !res.record.includeInTutor
+        ? ' Note: This module is currently marked Excluded from Module 9’s personal_learning_knowledge_file.md—check "Approve for my Personal Learning Knowledge File" above and save again if you want Module 9 to include it.'
+        : '';
     setRecordConfirmedMsg(
       res.record.completed
-        ? `Confirmed saved & marked complete (${res.record.updatedAt ? new Date(res.record.updatedAt).toLocaleTimeString() : 'just now'}). Reopen this page anytime to verify your saved answers.`
-        : `Draft confirmed saved (${res.record.updatedAt ? new Date(res.record.updatedAt).toLocaleTimeString() : 'just now'}).`,
+        ? `Confirmed saved & marked complete (${res.record.updatedAt ? new Date(res.record.updatedAt).toLocaleTimeString() : 'just now'}). Reopen this page anytime to verify your saved answers.${exportApprovalNote}`
+        : `Draft confirmed saved (${res.record.updatedAt ? new Date(res.record.updatedAt).toLocaleTimeString() : 'just now'}).${exportApprovalNote}`,
     );
   }
 
@@ -436,10 +441,16 @@ export default function ModuleLearningRecordPanel({
               const rec = allRecords.find(r => r.moduleNumber === mNum);
               const isApproved = Boolean(rec?.includeInTutor);
               const isDone = Boolean(rec?.completed);
+              const moduleHref =
+                mNum === 0
+                  ? '/student/assessment#module-learning-record'
+                  : `/student/modules/${mNum}/overview#module-learning-record`;
               return (
-                <div
+                <Link
                   key={mNum}
-                  className="p-2.5 rounded-lg border text-center font-mono text-xs"
+                  href={moduleHref}
+                  title={`Open Module ${String(mNum).padStart(2, '0')} Learning Record to review, save, or approve`}
+                  className="p-2.5 rounded-lg border text-center font-mono text-xs transition-transform hover:-translate-y-0.5 hover:brightness-110 block"
                   style={{
                     borderColor: isApproved
                       ? 'rgba(57, 255, 20, 0.45)'
@@ -461,7 +472,7 @@ export default function ModuleLearningRecordPanel({
                   >
                     {isApproved ? (isDone ? '✓ Approved' : 'Draft OK') : rec ? 'Excluded' : 'Missing'}
                   </div>
-                </div>
+                </Link>
               );
             })}
           </div>
@@ -647,7 +658,8 @@ export default function ModuleLearningRecordPanel({
       {/* Module Learning Record Fields */}
       {!loading && showRecordForm && fields.length > 0 && (
         <section
-          className="p-6 rounded-xl border space-y-6"
+          id="module-learning-record"
+          className="p-6 rounded-xl border space-y-6 scroll-mt-24"
           style={{ background: 'var(--space-card)', borderColor: 'var(--neon-cyan)' }}
         >
           <div>

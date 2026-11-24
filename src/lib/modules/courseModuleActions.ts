@@ -5,6 +5,15 @@ import { redirect } from 'next/navigation';
 import { getDbModuleIdForCourseModule, getCourseModuleNodeKey } from '@/lib/constants';
 import { logAttemptEvent, logCompletionEvent, logProofEvent, logModuleCompletedIdempotent } from '@/lib/events/learning-events';
 import { COURSE_MODULES_3_TO_12_CONFIG } from '@/data/courseModules3To12Meta';
+import { getCourseModuleNodes } from '@/lib/modules/courseModuleNodes';
+import type { NodeContent } from '@/data/module1Content';
+import type { NodePhaseFormState } from '@/components/forms/NodeActivityForm';
+
+function buildLessonSectionContext(lessonData: NodeContent): string {
+  return lessonData.sections
+    .map((sec) => `### ${sec.title}\n${sec.content.join('\n')}`)
+    .join('\n\n');
+}
 
 export async function advanceCourseNodePhase(
   moduleNum: number,
@@ -104,6 +113,175 @@ export async function advanceCourseNodePhase(
   if (phase === 'mini-check') redirect(`${base}/nodes/${nodeId}/teach-back`);
 }
 
+export async function submitCourseActivityAction(
+  moduleNum: number,
+  nodeId: string,
+  prevState: NodePhaseFormState,
+  formData: FormData,
+): Promise<NodePhaseFormState> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  const lessonData = getCourseModuleNodes(moduleNum)[nodeId];
+  if (!lessonData) return { error: 'Node lesson configuration not found.' };
+
+  const submittedValues: Record<string, string> = {};
+  const items: { label: string; answer: string }[] = [];
+
+  lessonData.activity.scenarios.forEach((scenario, i) => {
+    const key = `scenario-${i}`;
+    const val = ((formData.get(key) as string) || '').trim();
+    submittedValues[key] = val;
+    items.push({ label: scenario, answer: val });
+  });
+
+  (lessonData.activity.reflection ?? []).forEach((prompt, i) => {
+    const key = `reflection-${i}`;
+    const val = ((formData.get(key) as string) || '').trim();
+    submittedValues[key] = val;
+    items.push({ label: prompt, answer: val });
+  });
+
+  const { evaluateNodeActivity } = await import('@/lib/gemini');
+  const evaluation = await evaluateNodeActivity({
+    moduleNum,
+    nodeId,
+    nodeTitle: lessonData.title,
+    bigIdea: lessonData.bigIdea,
+    activityTitle: lessonData.activity.title,
+    instructions: lessonData.activity.instructions,
+    items,
+  });
+
+  if (!evaluation.passed) {
+    return { error: evaluation.feedback, submittedValues };
+  }
+
+  await advanceCourseNodePhase(moduleNum, nodeId, 'activity');
+  return null;
+}
+
+export async function submitCourseMiniCheckAction(
+  moduleNum: number,
+  nodeId: string,
+  prevState: NodePhaseFormState,
+  formData: FormData,
+): Promise<NodePhaseFormState> {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  const lessonData = getCourseModuleNodes(moduleNum)[nodeId];
+  if (!lessonData) return { error: 'Node lesson configuration not found.' };
+
+  const submittedValues: Record<string, string> = {};
+  const qaPairs = lessonData.miniCheck.map((question, i) => {
+    const key = `minicheck-${i}`;
+    const answer = ((formData.get(key) as string) || '').trim();
+    submittedValues[key] = answer;
+    return { question, answer };
+  });
+
+  const { evaluateNodeMiniCheck } = await import('@/lib/gemini');
+  const evaluation = await evaluateNodeMiniCheck({
+    moduleNum,
+    nodeId,
+    nodeTitle: lessonData.title,
+    bigIdea: lessonData.bigIdea,
+    sectionContext: buildLessonSectionContext(lessonData),
+    qaPairs,
+  });
+
+  const dbModuleId = getDbModuleIdForCourseModule(moduleNum);
+  const dbNodeKey = getCourseModuleNodeKey(moduleNum, nodeId);
+  const base = `/student/modules/${moduleNum}`;
+
+  if (!evaluation.passed) {
+    await supabase.from('assessment_submissions').insert({
+      student_id: user.id,
+      module_id: dbModuleId,
+      node_id: moduleNum <= 9 ? nodeId : null,
+      assessment_type: 'mini_check',
+      submission_payload: {
+        status: 'revise',
+        answers: submittedValues,
+        geminiFeedback: evaluation.feedback,
+        nodeId,
+        dbNodeKey,
+        courseModuleNumber: moduleNum,
+      },
+      pass_status: 'revise',
+    });
+    return { error: evaluation.feedback, submittedValues };
+  }
+
+  const { data: progress } = await supabase
+    .from('student_node_progress')
+    .select('id')
+    .eq('student_id', user.id)
+    .eq('module_id', dbModuleId)
+    .eq('node_id', dbNodeKey)
+    .maybeSingle();
+
+  if (!progress) {
+    await supabase.from('student_node_progress').insert({
+      student_id: user.id,
+      module_id: dbModuleId,
+      node_id: dbNodeKey,
+      lesson_completed: true,
+      activity_completed: true,
+      mini_check_passed: true,
+      teach_back_status: 'revise',
+      node_mastered: false,
+    });
+  } else {
+    await supabase
+      .from('student_node_progress')
+      .update({ mini_check_passed: true })
+      .eq('id', progress.id);
+  }
+
+  const { data: submission } = await supabase
+    .from('assessment_submissions')
+    .insert({
+      student_id: user.id,
+      module_id: dbModuleId,
+      node_id: moduleNum <= 9 ? nodeId : null,
+      assessment_type: 'mini_check',
+      submission_payload: {
+        status: 'passed',
+        answers: submittedValues,
+        geminiFeedback: evaluation.feedback,
+        nodeId,
+        dbNodeKey,
+        courseModuleNumber: moduleNum,
+      },
+      pass_status: 'pass',
+    })
+    .select()
+    .maybeSingle();
+
+  if (submission) {
+    await logAttemptEvent({
+      studentId: user.id,
+      eventType: 'assessment_submitted',
+      submissionId: submission.id,
+      assessmentType: 'mini_check',
+      metadata: {
+        nodeId: dbNodeKey,
+        moduleId: dbModuleId,
+        courseModuleNumber: moduleNum,
+        passed: true,
+        auto_graded: true,
+        source: 'submitCourseMiniCheckAction',
+      },
+    });
+  }
+
+  redirect(`${base}/nodes/${nodeId}/teach-back`);
+}
+
 export async function submitCourseTeachBackAction(
   moduleNum: number,
   nodeId: string,
@@ -118,12 +296,17 @@ export async function submitCourseTeachBackAction(
   const dbModuleId = getDbModuleIdForCourseModule(moduleNum);
   const dbNodeKey = getCourseModuleNodeKey(moduleNum, nodeId);
   const base = `/student/modules/${moduleNum}`;
+  const lessonData = getCourseModuleNodes(moduleNum)[nodeId];
 
   const content = formData.get('teachBackResponse') as string;
   if (!content) return { error: 'Response is required.', submittedText: content };
 
   const { evaluateTeachBack } = await import('@/lib/gemini');
-  const evaluation = await evaluateTeachBack(prompt, content);
+  const evaluation = await evaluateTeachBack(
+    prompt,
+    content,
+    lessonData ? buildLessonSectionContext(lessonData) : undefined,
+  );
 
   if (!evaluation.passed) {
     return { error: evaluation.feedback, submittedText: content };
@@ -305,36 +488,46 @@ export async function submitCourseBossBattleAction(
   const reflection2 = (formData.get('reflection2') as string) || '';
   const reflection3 = (formData.get('reflection3') as string) || '';
 
-  // Compute deterministic scenario score against expected labels for this module
+  // Compute deterministic scenario score against expected labels + non-gibberish reasoning
+  const { validateTextResponseDeterministic, evaluateBossBattle } = await import('@/lib/gemini');
   let scenarioScore = 0;
+  let matchingLabels = 0;
   if (config?.bossScenarios?.length === 6) {
     config.bossScenarios.forEach((sc, idx) => {
       const submitted = scenarios[idx];
       if (!submitted) return;
       const labelMatches =
         submitted.label.trim().toLowerCase() === sc.expectedLabel.trim().toLowerCase();
-      const hasReasoning =
-        submitted.question.trim().length >= 8 && submitted.verification.trim().length >= 8;
-      if (labelMatches && hasReasoning) {
+      const whyValid = validateTextResponseDeterministic(submitted.question, sc.text, {
+        minChars: 12,
+        minWords: 3,
+      }).ok;
+      const nextValid = validateTextResponseDeterministic(submitted.verification, sc.text, {
+        minChars: 12,
+        minWords: 3,
+      }).ok;
+      if (labelMatches) matchingLabels += 1;
+      if (labelMatches && whyValid && nextValid) {
         scenarioScore += 1;
-      } else if (hasReasoning) {
-        scenarioScore += 0.5;
       }
     });
   } else {
-    const { evaluateBossBattle } = await import('@/lib/gemini');
     const evaluation = await evaluateBossBattle(scenarios);
     scenarioScore = evaluation.score;
   }
 
   const reflectionScore = [reflection1, reflection2, reflection3].filter(
-    (r) => r && r.trim().length >= 12,
+    (r, idx) =>
+      validateTextResponseDeterministic(r || '', config?.bossReflections?.[idx] || 'Reflection', {
+        minChars: 16,
+        minWords: 4,
+      }).ok,
   ).length;
   const totalScore = Math.round((scenarioScore + reflectionScore) * 10) / 10;
 
-  if (totalScore < 4) {
+  if (totalScore < 6 || (config?.bossScenarios?.length === 6 && matchingLabels < 4)) {
     return {
-      error: `You scored ${totalScore}/9 on the Boss Battle. Review your scenario classifications and explain both why each move is strong/weak and the better next move.`,
+      error: `You scored ${totalScore}/9 on the Boss Battle (${matchingLabels}/6 scenario labels accurate). Correctly classify at least 4 scenarios and explain both why each move is strong/weak and the better next move in clear sentences.`,
     };
   }
 

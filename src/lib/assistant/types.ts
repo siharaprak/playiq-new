@@ -23,9 +23,12 @@ export interface AssistantToolsConfig {
 // ---------------------------------------------------------------------------
 export interface AssistantProfile {
   id: string;
+  owner_user_id?: string | null;
   student_id: string;
   course_id: string | null;
   name: string;
+  purpose?: string | null;
+  audience?: string | null;
   status: 'draft' | 'active' | 'published';
   current_version_id: string | null;
   persona_config: AssistantPersonaConfig;

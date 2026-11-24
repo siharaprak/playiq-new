@@ -38,10 +38,20 @@ export default async function NodeTeachBackPage({ params }: { params: Promise<{ 
           <p className="text-[var(--text-primary)] font-mono text-lg">&gt; &quot;{lessonData.teachBack}&quot;</p>
         </div>
 
-        <TeachBackForm nodeId={nodeId} prompt={lessonData.teachBack} submitAction={submitTeachBackAction} />
+        <TeachBackForm moduleId={2} nodeId={nodeId} prompt={lessonData.teachBack} submitAction={submitTeachBackAction} />
       </div>
 
-      <ModuleLearningRecordPanel moduleNumber={2} showBlockerOnly={true} />
+      {nodeId === String(Object.keys(module2Nodes).length) ? (
+        <ModuleLearningRecordPanel
+          moduleNumber={2}
+          showChoices={false}
+          showRecordForm={true}
+          showBetaFeedback={false}
+          title="Module 2 • Save Your Learning Answers & Tutor Project Checkpoint"
+        />
+      ) : (
+        <ModuleLearningRecordPanel moduleNumber={2} showBlockerOnly={true} />
+      )}
     </div>
   );
 }

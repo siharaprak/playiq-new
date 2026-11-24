@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Module 12 Worksheet — Personal Assistant, Local Memory Vault & 4-Test Verification</title>
+<style>
+  body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1e293b; line-height: 1.6; margin: 40px auto; max-width: 800px; padding: 0 20px; background-color: #ffffff; }
+  h1 { font-size: 26px; color: #0f172a; border-bottom: 3px solid #7b4fce; padding-bottom: 12px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 0.02em; }
+  h2, h3 { font-size: 18px; color: #7b4fce; margin-top: 35px; margin-bottom: 15px; border-left: 4px solid #00c8ff; padding-left: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+  p { font-size: 14px; margin-bottom: 12px; color: #334155; }
+  .instructions { background-color: #f8fafc; border-left: 4px solid #7b4fce; padding: 15px; margin-bottom: 30px; font-size: 13px; color: #475569; font-style: italic; }
+  .question { font-size: 14px; font-weight: bold; color: #0f172a; margin-top: 25px; margin-bottom: 8px; }
+  .response-box { background-color: #f8fafc; border: 1px dashed #7b4fce; border-left: 4px solid #7b4fce; padding: 15px 20px; margin: 10px 0 25px 0; border-radius: 4px; color: #475569; }
+  .response-label { margin: 0 0 6px 0; font-size: 10px; font-weight: bold; color: #7b4fce; text-transform: uppercase; letter-spacing: 0.08em; font-family: monospace; }
+  .response-placeholder { margin: 0; font-size: 13px; color: #94a3b8; font-style: italic; }
+  hr { border: 0; border-top: 1px solid #e2e8f0; margin: 40px 0; }
+</style>
+</head>
+<body>
+<h1>PlayIQ Module 12 Worksheet: Personal Assistant &amp; Local Memory Vault</h1>
+<div class="instructions"><strong>Instructions:</strong> Create <code>Documents/My_Personal_Assistant/</code> on your computer. Run <strong>Prompts 1 -&gt; 5</strong> from the Module 12 Overview page to build <code>00_MY_COMPASS.md</code>, <code>01_ABOUT_ME_AND_HOW_I_WORK.md</code>, <code>02_ACTIVE_GOALS_AND_ROUTINES.md</code>, <code>03_LONG_TERM_MEMORY_VAULT.md</code>, <code>04_SESSION_HANDOFF_LOG.md</code>, and <code>00_MASTER_ASSISTANT_INSTRUCTIONS.md</code>. Install them in your separate Assistant Project + PlayIQ Studio, then record your 4 checks below (Rating: 3 = Worked, 2 = Partly, 1 = Missed, N/T = not_tested).</div>
+<hr>
+<h3>Part 0 &amp; Part 1: Reminder Reality Check &amp; 5-File Local Memory Setup</h3>
+<div class="question">1. 30-Second Reality Check: Why does "Reminder set for 4:00 PM!" in chat NOT prove a notification is scheduled, and what real calendar/alarm tool do you use outside chat?</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">2. 5-Prompt Local Memory Folder Check: Confirm you created <code>My_Personal_Assistant/</code>, ran Prompts 1-5, and installed <code>00_MASTER_ASSISTANT_INSTRUCTIONS.md</code> + Knowledge Files 00-04.</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<hr>
+<h3>Part 2: Four Verification Checks (1 / 2 / 3 / N/T)</h3>
+<div class="question">3. Test 1 — Normal Request (/capture or /plan): Record your prompt, observed reply, and rating (1/2/3/N/T).</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">4. Test 2 — Missing Detail or Changed Plan: What detail did you omit, did it ask 1-2 clarifying questions instead of guessing, and what rating did it earn?</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">5. Test 3 — Boundary Refusal: What schoolwork or decision-takeover boundary did you test, did it refuse safely, and what rating did it earn?</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">6. Test 4 — Fresh-Chat Memory Recall: In a brand-new chat, what did your assistant accurately recall from <code>00_MY_COMPASS.md</code> and <code>01_ABOUT_ME_AND_HOW_I_WORK.md</code>?</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<hr>
+<h3>Part 3–6: One-Line Revision (v2), /closeout Handoff &amp; Teach-Back</h3>
+<div class="question">7. One-Instruction Revision &amp; /closeout Save: Which single line in <code>00_MASTER_ASSISTANT_INSTRUCTIONS.md</code> did you tighten (Before vs. After), and confirm you saved a 5-bullet /closeout entry in <code>04_SESSION_HANDOFF_LOG.md</code>.</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+<div class="question">8. Teach-Back: Why does "Text &gt; Brain" (saving Trust-Tagged .md files + 5-bullet handoffs on your local drive) keep your Personal Assistant smart and portable across any AI?</div>
+<div class="response-box">
+  <p class="response-label">Student Response Area (Double-click to type)</p>
+  <p class="response-placeholder">[ Type your response here... ]</p>
+</div>
+</body>
+</html>

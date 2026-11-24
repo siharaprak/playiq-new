@@ -7,6 +7,10 @@ import { NodeActivityForm } from '@/components/forms/NodeActivityForm';
 import { NodeMiniCheckForm } from '@/components/forms/NodeMiniCheckForm';
 import { TeachBackForm } from '@/components/forms/TeachBackForm';
 import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
+import {
+  submitCourseActivityAction,
+  submitCourseMiniCheckAction,
+} from '@/lib/modules/courseModuleActions';
 
 export async function CourseNodeLessonView({
   moduleNum,
@@ -94,12 +98,11 @@ export async function CourseNodeActivityView({
   moduleNum,
   nodeId,
   nodesRecord,
-  advanceNodePhase,
 }: {
   moduleNum: number;
   nodeId: string;
   nodesRecord: Record<string, NodeContent>;
-  advanceNodePhase: (nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') => Promise<void>;
+  advanceNodePhase?: (nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') => Promise<void>;
 }) {
   await enforceNodeGating(nodeId, 'activity', moduleNum);
   const lessonData = nodesRecord[nodeId];
@@ -133,10 +136,7 @@ export async function CourseNodeActivityView({
         scenarios={lessonData.activity.scenarios}
         reflection={lessonData.activity.reflection}
         backLink={`/student/modules/${moduleNum}/nodes/${nodeId}/lesson`}
-        submitAction={async () => {
-          'use server';
-          await advanceNodePhase(nodeId, 'activity');
-        }}
+        submitAction={submitCourseActivityAction.bind(null, moduleNum, nodeId)}
       />
 
       <ModuleLearningRecordPanel moduleNumber={moduleNum} showBlockerOnly={true} />
@@ -148,12 +148,11 @@ export async function CourseNodeMiniCheckView({
   moduleNum,
   nodeId,
   nodesRecord,
-  advanceNodePhase,
 }: {
   moduleNum: number;
   nodeId: string;
   nodesRecord: Record<string, NodeContent>;
-  advanceNodePhase: (nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') => Promise<void>;
+  advanceNodePhase?: (nodeId: string, phase: 'lesson' | 'activity' | 'mini-check') => Promise<void>;
 }) {
   await enforceNodeGating(nodeId, 'mini-check', moduleNum);
   const lessonData = nodesRecord[nodeId];
@@ -182,10 +181,7 @@ export async function CourseNodeMiniCheckView({
           nodeId={nodeId}
           moduleId={moduleNum}
           questions={lessonData.miniCheck}
-          submitAction={async () => {
-            'use server';
-            await advanceNodePhase(nodeId, 'mini-check');
-          }}
+          submitAction={submitCourseMiniCheckAction.bind(null, moduleNum, nodeId)}
         />
       </div>
 
@@ -241,7 +237,7 @@ export async function CourseNodeTeachBackView({
           <p className="text-[var(--text-primary)] font-mono text-lg">&gt; &quot;{lessonData.teachBack}&quot;</p>
         </div>
 
-        <TeachBackForm nodeId={nodeId} prompt={lessonData.teachBack} submitAction={submitTeachBackAction} />
+        <TeachBackForm moduleId={moduleNum} nodeId={nodeId} prompt={lessonData.teachBack} submitAction={submitTeachBackAction} />
       </div>
 
       {isFinalNode ? (

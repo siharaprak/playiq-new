@@ -4,18 +4,19 @@ import React, { useActionState, useRef } from 'react';
 import { useFormAutoSave } from '@/hooks/useFormAutoSave';
 
 interface TeachBackFormProps {
+  moduleId?: string | number;
   nodeId: string;
   prompt: string;
   submitAction: (nodeId: string, prompt: string, prevState: any, formData: FormData) => Promise<any>;
 }
 
-export function TeachBackForm({ nodeId, prompt, submitAction }: TeachBackFormProps) {
-  // Bind the static arguments to the passed-in server action
+export function TeachBackForm({ moduleId, nodeId, prompt, submitAction }: TeachBackFormProps) {
   const boundAction = submitAction.bind(null, nodeId, prompt);
   const [state, formAction, isPending] = useActionState(boundAction, null);
   const formRef = useRef<HTMLFormElement>(null);
-  
-  useFormAutoSave(`teachback-autosave-${nodeId}`, formRef);
+  const storageKey = moduleId !== undefined ? `teachback-autosave-m${moduleId}-n${nodeId}` : `teachback-autosave-${nodeId}`;
+
+  useFormAutoSave(storageKey, formRef, `m${moduleId ?? 'legacy'}:n${nodeId}:${prompt}`);
 
   return (
     <form ref={formRef} action={formAction}>
@@ -32,8 +33,8 @@ export function TeachBackForm({ nodeId, prompt, submitAction }: TeachBackFormPro
           </div>
         </div>
       )}
-      
-      <textarea 
+
+      <textarea
         required
         name="teachBackResponse"
         className={`neon-input w-full min-h-[200px] p-5 rounded-lg border ${state?.error ? 'border-red-500/50 focus:border-red-400' : 'border-slate-700 focus:border-[#00c8ff]'} bg-black/60 text-white placeholder:opacity-50 font-mono text-sm outline-none mb-8 transition-colors`}
@@ -42,7 +43,7 @@ export function TeachBackForm({ nodeId, prompt, submitAction }: TeachBackFormPro
       ></textarea>
 
       <div className="flex justify-end mt-4 border-t border-slate-800 pt-8">
-        <button 
+        <button
           type="submit"
           disabled={isPending}
           className={`px-8 py-4 rounded-lg font-bold uppercase tracking-wider w-full md:w-auto transition-all ${isPending ? 'bg-slate-700 text-slate-400 cursor-not-allowed' : 'btn-neon-filled'}`}
@@ -53,4 +54,3 @@ export function TeachBackForm({ nodeId, prompt, submitAction }: TeachBackFormPro
     </form>
   );
 }
-

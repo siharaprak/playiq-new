@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
 import { logAttemptEvent, logProofEvent, logModuleCompletedIdempotent } from '@/lib/events/learning-events';
+import { RELEASE_ID } from '@/lib/course-release/learning-record';
 
 export async function submitModule14MasterTrialAction(prevState: unknown, formData: FormData) {
   const supabase = await createClient();
@@ -54,34 +55,6 @@ export async function submitModule14MasterTrialAction(prevState: unknown, formDa
   const boss_show = ((formData.get('boss_show') as string) || '').trim();
   const boss_choose = ((formData.get('boss_choose') as string) || '').trim();
 
-  if (!topic || !stage1_prelearn || !stage3_compress || !stage6_answer) {
-    return {
-      error:
-        'Please complete your Master Trial topic and the 6-Stage Exam & Performance System fields before submitting.',
-    };
-  }
-
-  if (!track_prompt || !track_output || !track_improvement) {
-    return {
-      error:
-        'Please complete your chosen Skills Demonstration Track (prompt used, AI output/plan, and one improvement you made).',
-    };
-  }
-
-  if (q1 !== 'b' || q2 !== 'b' || q3 !== 'b') {
-    return {
-      error:
-        'Please review the 3 Quick Quiz questions in Part 7. All 3 must be answered accurately to certify your Master Trial.',
-    };
-  }
-
-  if (!boss_explain || !boss_show || !boss_choose) {
-    return {
-      error:
-        'Please complete all 3 Capstone Boss Battle responses (Explain, Show, and Choose) in Part 8.',
-    };
-  }
-
   const now = new Date().toISOString();
   const masterTrialPayload = {
     courseModuleNumber: 14,
@@ -119,6 +92,60 @@ export async function submitModule14MasterTrialAction(prevState: unknown, formDa
     bossBattle: { boss_explain, boss_show, boss_choose },
     submittedAt: now,
   };
+
+  if (!topic || !stage1_prelearn || !stage3_compress || !stage6_answer) {
+    return {
+      error:
+        'Please complete your Master Trial topic and the 6-Stage Exam & Performance System fields before submitting.',
+      submittedPayload: masterTrialPayload,
+    };
+  }
+
+  if (!track_prompt || !track_output || !track_improvement) {
+    return {
+      error:
+        'Please complete your chosen Skills Demonstration Track (prompt used, AI output/plan, and one improvement you made).',
+      submittedPayload: masterTrialPayload,
+    };
+  }
+
+  if (q1 !== 'b' || q2 !== 'b' || q3 !== 'b') {
+    return {
+      error:
+        'Please review the 3 Quick Quiz questions in Part 7. All 3 must be answered accurately to certify your Master Trial.',
+      submittedPayload: masterTrialPayload,
+    };
+  }
+
+  if (!boss_explain || !boss_show || !boss_choose) {
+    return {
+      error:
+        'Please complete all 3 Capstone Boss Battle responses (Explain, Show, and Choose) in Part 8.',
+      submittedPayload: masterTrialPayload,
+    };
+  }
+
+  const { evaluateCapstoneMasterTrial } = await import('@/lib/gemini');
+  const semanticEval = await evaluateCapstoneMasterTrial({
+    topic,
+    stage1Prelearn: stage1_prelearn,
+    stage3Compress: stage3_compress,
+    stage6Answer: stage6_answer,
+    selectedTrack: selected_track,
+    trackPrompt: track_prompt,
+    trackOutput: track_output,
+    trackImprovement: track_improvement,
+    bossExplain: boss_explain,
+    bossShow: boss_show,
+    bossChoose: boss_choose,
+  });
+
+  if (!semanticEval.passed) {
+    return {
+      error: semanticEval.feedback,
+      submittedPayload: masterTrialPayload,
+    };
+  }
 
   const { data: bossSub } = await supabase
     .from('assessment_submissions')
@@ -191,15 +218,27 @@ export async function submitModule14MasterTrialAction(prevState: unknown, formDa
     { onConflict: 'student_id,module_id,node_id' },
   );
 
+  const { data: existingRecord } = await supabase
+    .from('course_release_learning_records')
+    .select('answers,include_in_tutor')
+    .eq('student_id', user.id)
+    .eq('release_id', RELEASE_ID)
+    .eq('shell', 'beta')
+    .eq('module_number', 14)
+    .maybeSingle();
+
   await supabase.from('course_release_learning_records').upsert(
     {
       student_id: user.id,
+      release_id: RELEASE_ID,
+      shell: 'beta',
       module_number: 14,
-      module_slug: 'module-14',
+      answers: existingRecord?.answers ?? {},
+      include_in_tutor: Boolean(existingRecord?.include_in_tutor),
       completed: true,
       updated_at: now,
     },
-    { onConflict: 'student_id,module_number' },
+    { onConflict: 'student_id,release_id,shell,module_number' },
   );
 
   await logModuleCompletedIdempotent(user.id, MODULES.CAPSTONE_ID);

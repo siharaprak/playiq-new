@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { enforceNodeGating } from '@/lib/gating';
-import { advanceNodePhase } from '../../../actions';
+import { submitActivityAction } from '../../../actions';
 import { module1Nodes } from '@/data/module1Content';
 import { NodeActivityForm } from '@/components/forms/NodeActivityForm';
 import ModuleLearningRecordPanel from '@/components/modules/ModuleLearningRecordPanel';
@@ -45,10 +45,7 @@ export default async function NodeActivityPage({ params }: { params: Promise<{ n
         scenarios={lessonData.activity.scenarios}
         reflection={lessonData.activity.reflection}
         backLink={`/student/modules/1/nodes/${nodeId}/lesson`}
-        submitAction={async () => {
-          'use server';
-          await advanceNodePhase(nodeId, 'activity');
-        }}
+        submitAction={submitActivityAction.bind(null, nodeId)}
       />
 
       <ModuleLearningRecordPanel moduleNumber={1} showBlockerOnly={true} />

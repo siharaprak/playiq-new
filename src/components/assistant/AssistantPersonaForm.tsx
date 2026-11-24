@@ -25,8 +25,38 @@ export default function AssistantPersonaForm({
 
   const labelCls = 'block font-mono text-xs uppercase tracking-widest text-[var(--text-secondary)] mb-1.5';
 
+  const handleLoadStarterPersona = () => {
+    if (disabled) return;
+    onChange({
+      name: name.trim() || 'My Personal Organizer',
+      persona_config: {
+        purpose:
+          'Help me turn safe everyday project ideas, practice sessions, or messy notes into a clear 3-step checklist while asking 1–2 clarifying questions whenever a detail is missing.',
+        user_target: 'Myself (with parent/guardian review)',
+        boundaries:
+          'Never complete school homework or essays; never ask for or store passwords or private personal data; never claim a chat reply scheduled a real device alarm or permanent memory; keep all final decisions with me.',
+      },
+    });
+  };
+
   return (
     <div className="space-y-5">
+      <div className="flex items-center justify-between flex-wrap gap-2 p-3 rounded-lg border border-slate-800 bg-black/30">
+        <p className="text-xs text-slate-300">
+          Define one focused everyday workflow for your separate Personal Assistant—or load the PlayIQ starter template
+          and customize it.
+        </p>
+        {!disabled && (
+          <button
+            type="button"
+            onClick={handleLoadStarterPersona}
+            className="px-3 py-1.5 rounded border border-[#00c8ff] text-[#00c8ff] hover:bg-[#00c8ff]/15 font-mono text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer shrink-0"
+          >
+            + Pre-Fill Starter Persona
+          </button>
+        )}
+      </div>
+
       {/* Assistant Name */}
       <div>
         <label className={labelCls}>Assistant Name</label>

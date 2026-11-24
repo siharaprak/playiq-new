@@ -4,6 +4,7 @@ import { createClient } from '@/utils/supabase/server';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { MODULES } from '@/lib/constants';
+import { RELEASE_ID } from '@/lib/course-release/learning-record';
 
 export async function completeModule13PreviewAction() {
   const supabase = await createClient();
@@ -27,15 +28,27 @@ export async function completeModule13PreviewAction() {
     { onConflict: 'student_id,module_id,node_id' },
   );
 
+  const { data: existingRecord } = await supabase
+    .from('course_release_learning_records')
+    .select('answers,include_in_tutor')
+    .eq('student_id', user.id)
+    .eq('release_id', RELEASE_ID)
+    .eq('shell', 'beta')
+    .eq('module_number', 13)
+    .maybeSingle();
+
   await supabase.from('course_release_learning_records').upsert(
     {
       student_id: user.id,
+      release_id: RELEASE_ID,
+      shell: 'beta',
       module_number: 13,
-      module_slug: 'module-13',
+      answers: existingRecord?.answers ?? {},
+      include_in_tutor: Boolean(existingRecord?.include_in_tutor),
       completed: true,
       updated_at: now,
     },
-    { onConflict: 'student_id,module_number' },
+    { onConflict: 'student_id,release_id,shell,module_number' },
   );
 
   revalidatePath('/student/home');
