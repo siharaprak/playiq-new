@@ -31,6 +31,12 @@ function revalidateAssistantPaths() {
   revalidatePath('/student/modules/12/assistant-builder');
 }
 
+function normalizeAssistantAudience(userTarget?: string | null): string {
+  const raw = (userTarget || '').trim().toLowerCase();
+  if (raw === 'self' || raw === 'peers' || raw === 'family') return raw;
+  return 'self';
+}
+
 // ---------------------------------------------------------------------------
 // Read: Get assistant profile
 // ---------------------------------------------------------------------------
@@ -154,7 +160,7 @@ export async function createAssistantProfile(
         student_id: user.id,
         name: parsed.name,
         purpose: parsed.persona_config.purpose || null,
-        audience: parsed.persona_config.user_target || null,
+        audience: normalizeAssistantAudience(parsed.persona_config.user_target),
         persona_config: parsed.persona_config,
         metadata: parsed.metadata ?? {},
         status: 'draft',
@@ -256,7 +262,7 @@ export async function updateAssistantProfile(
         updatePayload.purpose = input.persona_config.purpose || null;
       }
       if (input.persona_config.user_target !== undefined) {
-        updatePayload.audience = input.persona_config.user_target || null;
+        updatePayload.audience = normalizeAssistantAudience(input.persona_config.user_target);
       }
     }
     if (input.metadata !== undefined) updatePayload.metadata = input.metadata;
@@ -633,9 +639,9 @@ export async function chatWithAssistant(
     let systemInstruction = PLAYIQ_ASSISTANT_SYSTEM_PREFIX;
 
     const resolvedPurpose =
-      assistantProfile.purpose || assistantProfile.persona_config?.purpose || 'Not specified';
+      assistantProfile.persona_config?.purpose || assistantProfile.purpose || 'Not specified';
     const resolvedAudience =
-      assistantProfile.audience || assistantProfile.persona_config?.user_target || 'Not specified';
+      assistantProfile.persona_config?.user_target || assistantProfile.audience || 'Not specified';
     const resolvedBoundaries = assistantProfile.persona_config?.boundaries || '';
 
     systemInstruction += `\n--- Student-Configured Assistant Profile ---\n`;
