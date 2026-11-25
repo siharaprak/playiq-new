@@ -6,10 +6,13 @@ import { MessageCircle, Star } from 'lucide-react';
 import { MODULES } from '@/lib/constants';
 
 // Helper to get a human readable module name
-function getModuleName(moduleId: string) {
+function getModuleName(moduleId: string, courseModuleNumber?: number) {
+  if (typeof courseModuleNumber === 'number' && courseModuleNumber >= 0 && courseModuleNumber <= 14) {
+    return courseModuleNumber === 14 ? 'Module 14 (Capstone)' : `Module ${courseModuleNumber}`;
+  }
   for (const [key, value] of Object.entries(MODULES)) {
     if (value === moduleId) {
-      if (key === 'CAPSTONE_ID') return 'Capstone';
+      if (key === 'CAPSTONE_ID') return 'Module 14 (Capstone)';
       return `Module ${key.split('_')[1]}`;
     }
   }
@@ -86,7 +89,7 @@ export default async function AdminFeedbackPage() {
                           <div className="text-xs text-slate-500">{studentInfo.email}</div>
                         </td>
                         <td className="px-6 py-4 text-[#00c8ff] font-bold">
-                          {getModuleName(fb.module_id)}
+                          {getModuleName(fb.module_id, answers?.courseModuleNumber)}
                         </td>
                         <td className="px-6 py-4">
                           <div className="flex items-center text-amber-400">

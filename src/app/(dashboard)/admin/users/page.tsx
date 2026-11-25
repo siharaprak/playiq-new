@@ -2,17 +2,32 @@ import { createClient } from '@/utils/supabase/server';
 import { supabaseAdmin } from '@/lib/supabase/admin';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Users, Trash2, ShieldOff, ShieldCheck, CheckCircle2, Circle, Lock, RotateCcw, Sparkles } from 'lucide-react';
-import { deleteUser, suspendUser, restoreUser, updateLearningLevel, resetStudentProgress, resetModule0 } from './actions';
+import {
+  Users,
+  Trash2,
+  ShieldOff,
+  ShieldCheck,
+  CheckCircle2,
+  Circle,
+  Lock,
+  RotateCcw,
+  Sparkles,
+} from 'lucide-react';
+import {
+  deleteUser,
+  suspendUser,
+  restoreUser,
+  updateLearningLevel,
+  resetStudentProgress,
+  resetModule0,
+  resetSingleModule,
+  adjustStudentModuleProgress,
+} from './actions';
 import { COURSE_15_MODULES, isNodeKeyForCourseModule } from '@/lib/constants';
 import ConfirmButton from '@/components/admin/ConfirmButton';
 
-const MODULE_LIST = COURSE_15_MODULES.filter((m) => m.num >= 1).map((m) => ({
-  id: m.dbModuleId,
-  num: m.num,
-  title: m.title,
-  totalNodes: m.totalNodes,
-}));
+const MODULE_LIST = COURSE_15_MODULES.filter((m) => m.num >= 1);
+const TOTAL_COURSE_NODES = MODULE_LIST.reduce((sum, m) => sum + m.totalNodes, 0);
 
 export default async function AdminUsersPage({
   searchParams,
@@ -41,7 +56,7 @@ export default async function AdminUsersPage({
     console.error('❌ Admin Roster Error (profiles):', studentsError);
   }
 
-  // Fetch all node progress across all students in one query
+  // Fetch all node progress across all students (including node_id so M10–M14 are strictly isolated)
   const { data: allProgress, error: progressError } = await supabaseAdmin
     .from('student_node_progress')
     .select('student_id, module_id, node_id, node_mastered');
@@ -50,7 +65,7 @@ export default async function AdminUsersPage({
     console.error('❌ Admin Roster Error (progress):', progressError);
   }
 
-  // Fetch all student assessment profiles for Module 0 status
+  // Fetch all student assessment profiles for Module 00 status
   const { data: assessmentProfiles, error: assessmentError } = await supabaseAdmin
     .from('student_assessment_profiles')
     .select('student_id, assessment_completed');
@@ -59,29 +74,68 @@ export default async function AdminUsersPage({
     console.error('❌ Admin Roster Error (assessments):', assessmentError);
   }
 
+  // Fetch course_release_learning_records completion state for 15-module tracking (M00, M13, M14)
+  const learningRecordCompletedMap: Record<string, Record<number, boolean>> = {};
+  try {
+    const { data: lrRows } = await supabaseAdmin
+      .from('course_release_learning_records')
+      .select('student_id, module_number, completed');
+    for (const row of lrRows || []) {
+      if (row.completed) {
+        if (!learningRecordCompletedMap[row.student_id]) {
+          learningRecordCompletedMap[row.student_id] = {};
+        }
+        learningRecordCompletedMap[row.student_id][row.module_number] = true;
+      }
+    }
+  } catch {
+    // Non-fatal if table is absent in a local environment
+  }
+
   const assessmentMap: Record<string, boolean> = {};
-  for (const row of (assessmentProfiles || [])) {
+  for (const row of assessmentProfiles || []) {
     if (row.assessment_completed) {
       assessmentMap[row.student_id] = true;
     }
   }
 
-  // Group progress per student per 15-module course number (1..14)
-  const progressMap: Record<string, Record<number, number>> = {};
-  for (const row of (allProgress || [])) {
+  // Group deduplicated mastered node keys per student so each of Modules 01..14 gets an exact count
+  const rawRowsByStudent: Record<string, Array<{ module_id: string; node_id: string }>> = {};
+  for (const row of allProgress || []) {
     if (!row.node_mastered) continue;
-    if (!progressMap[row.student_id]) progressMap[row.student_id] = {};
-    for (const mod of MODULE_LIST) {
-      if (isNodeKeyForCourseModule(mod.num, row.module_id, row.node_id)) {
-        progressMap[row.student_id][mod.num] = (progressMap[row.student_id][mod.num] || 0) + 1;
-      }
-    }
+    if (!rawRowsByStudent[row.student_id]) rawRowsByStudent[row.student_id] = [];
+    rawRowsByStudent[row.student_id].push({
+      module_id: String(row.module_id),
+      node_id: String(row.node_id),
+    });
   }
+
+  const progressByStudentModuleNum: Record<string, Record<number, number>> = {};
+  for (const student of students || []) {
+    const studentRows = rawRowsByStudent[student.id] || [];
+    const studentLr = learningRecordCompletedMap[student.id] || {};
+    const perMod: Record<number, number> = {};
+
+    for (const mod of MODULE_LIST) {
+      const uniqueMasteredKeys = new Set(
+        studentRows
+          .filter((r) => isNodeKeyForCourseModule(mod.num, r.module_id, r.node_id))
+          .map((r) => r.node_id),
+      );
+      const rawCount = Math.min(mod.totalNodes, uniqueMasteredKeys.size);
+      const recordCompleted = mod.num >= 13 && Boolean(studentLr[mod.num]);
+      perMod[mod.num] = recordCompleted ? Math.max(rawCount, mod.totalNodes) : rawCount;
+    }
+    progressByStudentModuleNum[student.id] = perMod;
+  }
+
+  const isModule0DoneForStudent = (studentId: string) =>
+    Boolean(assessmentMap[studentId] || learningRecordCompletedMap[studentId]?.[0]);
 
   const totalStudents = students?.length || 0;
   const activeStudents = (students || []).filter((s: any) => {
-    const prog = progressMap[s.id];
-    return prog && Object.values(prog).some((n: number) => n > 0);
+    const prog = progressByStudentModuleNum[s.id] || {};
+    return isModule0DoneForStudent(s.id) || Object.values(prog).some((n: number) => n > 0);
   }).length;
   const suspendedStudents = (students || []).filter((s: any) => s.status === 'suspended').length;
 
@@ -92,9 +146,9 @@ export default async function AdminUsersPage({
         student.email?.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
 
-    const studentProgress = progressMap[student.id] || {};
+    const studentProgress = progressByStudentModuleNum[student.id] || {};
     const totalMastered = Object.values(studentProgress).reduce((a: number, b: number) => a + b, 0);
-    const isActive = totalMastered > 0;
+    const isActive = isModule0DoneForStudent(student.id) || totalMastered > 0;
 
     let matchesFilter = true;
     if (filterType === 'active') matchesFilter = isActive && student.status !== 'suspended';
@@ -123,6 +177,9 @@ export default async function AdminUsersPage({
               Student Roster
               <span className="bg-[#7b4fce] text-[#020617] text-xs px-3 py-1 font-bold shadow-[0_0_10px_#7b4fce]">ADMIN</span>
             </h1>
+            <p className="text-xs font-mono text-slate-400 mt-1">
+              Full 15-Module Course Progression (M00 Orientation + Modules M01–M14 Capstone)
+            </p>
           </div>
           <div className="flex gap-4">
             <div className="glass-card px-6 py-3 border-l-2 border-[#00c8ff] text-center !rounded-none">
@@ -160,8 +217,8 @@ export default async function AdminUsersPage({
               Search
             </button>
           </form>
-          
-          <div className="flex flex-wrap gap-2">
+
+          <div className="flex gap-2">
             <Link
               href={`/admin/users?filter=all${searchTerm ? `&search=${encodeURIComponent(searchTerm)}` : ''}`}
               className={`px-4 py-2.5 rounded text-xs font-bold uppercase transition-all border ${
@@ -209,14 +266,22 @@ export default async function AdminUsersPage({
         {filteredStudents && filteredStudents.length > 0 ? (
           <div className="space-y-6">
             {filteredStudents.map((student: any) => {
-              const studentProgress = progressMap[student.id] || {};
+              const studentProgress = progressByStudentModuleNum[student.id] || {};
               const totalMastered = Object.values(studentProgress).reduce((a: number, b: number) => a + b, 0);
-              const totalNodes = MODULE_LIST.reduce((a: number, m: any) => a + m.totalNodes, 0);
-              const overallPct = Math.round((totalMastered / totalNodes) * 100);
+              const overallPct = Math.min(100, Math.round((totalMastered / TOTAL_COURSE_NODES) * 100));
+              const m0Complete = isModule0DoneForStudent(student.id);
+
+              // Sequential unlock tracking across M01..M14
+              let prevDone = m0Complete;
+              const unlockedModules = new Set<number>();
+              for (const mod of MODULE_LIST) {
+                if (prevDone) unlockedModules.add(mod.num);
+                prevDone = prevDone && (studentProgress[mod.num] || 0) >= mod.totalNodes;
+              }
 
               return (
                 <div key={student.id} className="glass-card !rounded-none border border-slate-800 overflow-hidden">
-                  
+
                   {/* Student Header Row */}
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-6 py-4 border-b border-slate-800 bg-black/30">
                     <div className="flex items-center gap-4">
@@ -275,10 +340,43 @@ export default async function AdminUsersPage({
                         </button>
                       </form>
 
+                      {/* Per-Module Adjustment Form (M00–M14 Unlock / Complete / Reset) */}
+                      <form action={adjustStudentModuleProgress} className="flex items-center gap-1.5 bg-black/40 border border-slate-700 px-3 py-2 font-mono">
+                        <input type="hidden" name="userId" value={student.id} />
+                        <label className="text-[9px] text-slate-500 uppercase tracking-widest">Mod:</label>
+                        <select
+                          name="moduleNum"
+                          defaultValue="12"
+                          className="bg-[#020617] text-xs text-slate-300 border border-slate-800 focus:border-[#00c8ff] rounded px-2 py-1 outline-none cursor-pointer"
+                        >
+                          {COURSE_15_MODULES.map((m) => (
+                            <option key={m.num} value={m.num}>
+                              M{String(m.num).padStart(2, '0')} — {m.title.length > 22 ? `${m.title.slice(0, 22)}…` : m.title}
+                            </option>
+                          ))}
+                        </select>
+                        <select
+                          name="adjustment"
+                          defaultValue="unlock_to"
+                          className="bg-[#020617] text-xs text-slate-300 border border-slate-800 focus:border-[#7b4fce] rounded px-2 py-1 outline-none cursor-pointer"
+                        >
+                          <option value="unlock_to">Unlock Up To</option>
+                          <option value="complete_module">Mark Complete</option>
+                          <option value="reset_module">Reset Module</option>
+                        </select>
+                        <ConfirmButton
+                          type="submit"
+                          className="text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 bg-slate-800 hover:bg-[#7b4fce] hover:text-white border border-slate-700 hover:border-[#7b4fce] transition-all cursor-pointer font-sans"
+                          confirmMessage={`Apply selected module adjustment for ${student.email}?`}
+                        >
+                          APPLY
+                        </ConfirmButton>
+                      </form>
+
                       {/* Overall progress pill */}
-                      <div className="flex items-center gap-2 bg-black/40 border border-slate-700 px-4 py-2">
+                      <div className="flex items-center gap-2 bg-black/40 border border-slate-700 px-4 py-2" title={`${totalMastered} / ${TOTAL_COURSE_NODES} nodes mastered across M01–M14`}>
                         <div className="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                          <div 
+                          <div
                             className="h-full bg-gradient-to-r from-[#7b4fce] to-[#00c8ff] rounded-full transition-all"
                             style={{ width: `${overallPct}%` }}
                           />
@@ -286,7 +384,7 @@ export default async function AdminUsersPage({
                         <span className="font-mono text-xs text-[#00c8ff] font-bold">{overallPct}%</span>
                         <span className="font-mono text-[10px] text-slate-500 uppercase">Overall</span>
                       </div>
-                      <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest hidden lg:block">
+                      <span className="font-mono text-[10px] text-slate-500 uppercase tracking-widest hidden xl:block">
                         Joined {new Date(student.created_at).toLocaleDateString()}
                       </span>
 
@@ -316,14 +414,15 @@ export default async function AdminUsersPage({
                           </ConfirmButton>
                         </form>
                       )}
+
                       {/* Reset Module 0 Action */}
                       <form action={resetModule0}>
                         <input type="hidden" name="userId" value={student.id} />
                         <ConfirmButton
                           type="submit"
-                          title="Reset Module 0 Only"
+                          title="Reset Module 00 Only"
                           className="p-2 border border-[#7b4fce]/40 text-[#7b4fce] hover:bg-[#7b4fce]/10 transition-colors"
-                          confirmMessage={`Reset Module 0 for ${student.email}? This will require them to redo the Orion assessment & AI workshop on next login without touching other module progress.`}
+                          confirmMessage={`Reset Module 00 for ${student.email}? This will require them to redo the Orion assessment & AI workshop on next login without touching other module progress.`}
                         >
                           <Sparkles className="w-4 h-4" />
                         </ConfirmButton>
@@ -334,9 +433,9 @@ export default async function AdminUsersPage({
                         <input type="hidden" name="userId" value={student.id} />
                         <ConfirmButton
                           type="submit"
-                          title="Reset All Progress"
+                          title="Reset All Progress (M00–M14)"
                           className="p-2 border border-[#00c8ff]/40 text-[#00c8ff] hover:bg-[#00c8ff]/10 transition-colors"
-                          confirmMessage={`Reset all course progress for ${student.email}? This will wipe their node progress, quizzes, and assessment profile back to Module 0.`}
+                          confirmMessage={`Reset all course progress (M00–M14) for ${student.email}? This will wipe their node progress, learning records, quizzes, and assessment profile back to Module 00.`}
                         >
                           <RotateCcw className="w-4 h-4" />
                         </ConfirmButton>
@@ -360,63 +459,114 @@ export default async function AdminUsersPage({
                   <div className="px-6 py-4 overflow-x-auto">
                     <div className="flex gap-2 min-w-max">
                       {/* Module 00 Status */}
-                      {(() => {
-                        const m0Complete = !!assessmentMap[student.id];
-                        return (
-                          <div className={`flex flex-col items-center gap-1 w-[64px] p-2 border transition-colors
-                            ${m0Complete ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5' : 'border-amber-500/30 bg-amber-500/5'}`}
-                          >
-                            {m0Complete ? (
-                              <CheckCircle2 className="w-4 h-4 text-[#00c8ff]" />
-                            ) : (
-                              <Circle className="w-4 h-4 text-amber-400" />
-                            )}
-                            <span className={`font-mono text-[9px] font-bold ${m0Complete ? 'text-[#00c8ff]' : 'text-amber-400'}`}>
-                              M00
-                            </span>
-                            <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
-                              <div
-                                className={`h-full rounded-full transition-all ${m0Complete ? 'bg-[#00c8ff]' : 'bg-amber-400'}`}
-                                style={{ width: m0Complete ? '100%' : '0%' }}
-                              />
-                            </div>
-                            <span className={`font-mono text-[8px] ${m0Complete ? 'text-[#00c8ff]' : 'text-amber-400'}`}>
-                              {m0Complete ? 'Calibrated' : 'Pending'}
-                            </span>
-                          </div>
-                        );
-                      })()}
+                      <div
+                        title={`Module 00: ${COURSE_15_MODULES[0].title}`}
+                        className={`relative group flex flex-col items-center gap-1 w-[64px] p-2 border transition-colors ${
+                          m0Complete
+                            ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5'
+                            : 'border-amber-500/30 bg-amber-500/5'
+                        }`}
+                      >
+                        {m0Complete && (
+                          <form action={resetSingleModule} className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <input type="hidden" name="userId" value={student.id} />
+                            <input type="hidden" name="moduleNum" value={0} />
+                            <ConfirmButton
+                              type="submit"
+                              title="Reset M00"
+                              className="p-0.5 text-slate-400 hover:text-[#00c8ff] cursor-pointer"
+                              confirmMessage={`Reset Module 00 for ${student.email}?`}
+                            >
+                              <RotateCcw className="w-2.5 h-2.5" />
+                            </ConfirmButton>
+                          </form>
+                        )}
+                        {m0Complete ? (
+                          <CheckCircle2 className="w-4 h-4 text-[#00c8ff]" />
+                        ) : (
+                          <Circle className="w-4 h-4 text-amber-400" />
+                        )}
+                        <span className={`font-mono text-[9px] font-bold ${m0Complete ? 'text-[#00c8ff]' : 'text-amber-400'}`}>
+                          M00
+                        </span>
+                        <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
+                          <div
+                            className={`h-full rounded-full transition-all ${m0Complete ? 'bg-[#00c8ff]' : 'bg-amber-400'}`}
+                            style={{ width: m0Complete ? '100%' : '0%' }}
+                          />
+                        </div>
+                        <span className={`font-mono text-[8px] ${m0Complete ? 'text-[#00c8ff]' : 'text-amber-400'}`}>
+                          {m0Complete ? 'Calibrated' : 'Pending'}
+                        </span>
+                      </div>
 
                       {MODULE_LIST.map((mod) => {
                         const mastered = studentProgress[mod.num] || 0;
-                        const pct = Math.round((mastered / mod.totalNodes) * 100);
+                        const pct = Math.min(100, Math.round((mastered / mod.totalNodes) * 100));
                         const isComplete = mastered >= mod.totalNodes;
                         const isStarted = mastered > 0;
+                        const isUnlocked = unlockedModules.has(mod.num);
+                        const codeLabel = `M${String(mod.num).padStart(2, '0')}`;
 
                         return (
                           <div
                             key={mod.num}
-                            title={`Module ${String(mod.num).padStart(2, '0')}: ${mod.title}`}
-                            className={`flex flex-col items-center gap-1 w-[64px] p-2 border transition-colors
-                              ${isComplete ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5' : isStarted ? 'border-[#7b4fce]/30 bg-[#7b4fce]/5' : 'border-slate-800 bg-black/20'}`}
+                            title={`Module ${String(mod.num).padStart(2, '0')}: ${mod.title} (${mastered}/${mod.totalNodes} nodes)`}
+                            className={`relative group flex flex-col items-center gap-1 w-[64px] p-2 border transition-colors ${
+                              isComplete
+                                ? 'border-[#00c8ff]/40 bg-[#00c8ff]/5'
+                                : isStarted
+                                  ? 'border-[#7b4fce]/40 bg-[#7b4fce]/5'
+                                  : isUnlocked
+                                    ? 'border-slate-700 bg-slate-900/40'
+                                    : 'border-slate-800 bg-black/20'
+                            }`}
                           >
+                            {isStarted && (
+                              <form action={resetSingleModule} className="absolute top-1 right-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <input type="hidden" name="userId" value={student.id} />
+                                <input type="hidden" name="moduleNum" value={mod.num} />
+                                <ConfirmButton
+                                  type="submit"
+                                  title={`Reset ${codeLabel}`}
+                                  className="p-0.5 text-slate-400 hover:text-[#00c8ff] cursor-pointer"
+                                  confirmMessage={`Reset Module ${String(mod.num).padStart(2, '0')} (${mod.title}) for ${student.email}?`}
+                                >
+                                  <RotateCcw className="w-2.5 h-2.5" />
+                                </ConfirmButton>
+                              </form>
+                            )}
                             {isComplete ? (
                               <CheckCircle2 className="w-4 h-4 text-[#00c8ff]" />
                             ) : isStarted ? (
                               <Circle className="w-4 h-4 text-[#7b4fce]" />
+                            ) : isUnlocked ? (
+                              <Circle className="w-4 h-4 text-slate-500" />
                             ) : (
                               <Lock className="w-4 h-4 text-slate-700" />
                             )}
-                            <span className={`font-mono text-[9px] font-bold ${isComplete ? 'text-[#00c8ff]' : isStarted ? 'text-[#7b4fce]' : 'text-slate-600'}`}>
-                              M{String(mod.num).padStart(2, '0')}
+                            <span
+                              className={`font-mono text-[9px] font-bold ${
+                                isComplete
+                                  ? 'text-[#00c8ff]'
+                                  : isStarted
+                                    ? 'text-[#7b4fce]'
+                                    : isUnlocked
+                                      ? 'text-slate-300'
+                                      : 'text-slate-600'
+                              }`}
+                            >
+                              {codeLabel}
                             </span>
                             <div className="w-full h-1 bg-slate-800 rounded-full overflow-hidden">
                               <div
-                                className={`h-full rounded-full transition-all ${isComplete ? 'bg-[#00c8ff]' : 'bg-[#7b4fce]'}`}
+                                className={`h-full rounded-full transition-all ${
+                                  isComplete ? 'bg-[#00c8ff]' : 'bg-[#7b4fce]'
+                                }`}
                                 style={{ width: `${pct}%` }}
                               />
                             </div>
-                            <span className={`font-mono text-[8px] ${isComplete ? 'text-[#00c8ff]' : 'text-slate-600'}`}>
+                            <span className={`font-mono text-[8px] ${isComplete ? 'text-[#00c8ff]' : 'text-slate-500'}`}>
                               {mastered}/{mod.totalNodes}
                             </span>
                           </div>

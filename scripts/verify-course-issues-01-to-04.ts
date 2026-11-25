@@ -146,7 +146,26 @@ async function main() {
     '✅ PASS: Issue 04 — Module 12 5-Prompt Personal Assistant Builder, Local Memory Vault, PDFs, Worksheets, and Studio route verified',
   );
 
-  console.log('\n🎉 All Issues 01–04 + Module 12 Local Memory verification assertions passed.');
+  // Admin Student Roster 15-Module Parity
+  const adminRosterSrc = read('src/app/(dashboard)/admin/users/page.tsx');
+  const adminActionsSrc = read('src/app/(dashboard)/admin/users/actions.ts');
+  assert.ok(
+    adminRosterSrc.includes('COURSE_15_MODULES') && adminRosterSrc.includes('isNodeKeyForCourseModule'),
+    'Admin Student Roster must render all 15 modules via COURSE_15_MODULES and isolate M10–M14 via isNodeKeyForCourseModule',
+  );
+  assert.ok(
+    !adminRosterSrc.includes("num: 11, title: 'Capstone'"),
+    'Admin Student Roster must not cap module progression at legacy Module 11',
+  );
+  assert.ok(
+    adminActionsSrc.includes('resetSingleModule') &&
+      adminActionsSrc.includes('adjustStudentModuleProgress') &&
+      adminActionsSrc.includes('course_release_learning_records'),
+    'Admin user actions must support 15-module resets and adjustments including course_release_learning_records',
+  );
+  console.log('✅ PASS: Admin Student Roster — Full 15-module (M00–M14) progression, isolated node counts, and reset/adjustment controls verified');
+
+  console.log('\n🎉 All Issues 01–04 + Admin 15-Module Roster verification assertions passed.');
 }
 
 main().catch((err) => {
